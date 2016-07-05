@@ -7,7 +7,7 @@ RSpec.describe Event, type: :model do
       it { is_expected.to validate_presence_of s}
     end
 
-    it "start_time must be lower than end_time" do
+    it "must ensure that start_time is lower than end_time" do
       start_time = Time.now
       end_time = start_time - 10
       event = Event.new description: "123", user: "user", location: "location", start_time: start_time, end_time: end_time
