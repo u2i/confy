@@ -1,5 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe CalendarController, type: :controller do
-  pending "should render main calendar view"
+  describe "GET index" do
+    render_views
+
+    it "renders" do
+      get :index
+      expect(response).to be_ok
+      expect(response.body).to include 'Confy'
+    end
+  end
 end
