@@ -1,0 +1,21 @@
+<div class="container">
+  <table class="calendar table table-bordered table-striped table-responsive">
+    <tr>
+      <th class="col-md-1"></th>
+      <% @days.each do |name| %>
+          <th class="col-md-2"><%= name %></th>
+      <% end %>
+    </tr>
+    <% @times.each do |time| %>
+        <tr>
+          <td class="text-right">
+            <small><%= time.strftime('%H:%M') %></small>
+          </td>
+          <% @days.each do %>
+              <td></td>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+</div>
+
