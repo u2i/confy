@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Event, type: :model do
 
   describe 'validation' do
-    let(:event) { FactoryGirl.build :event }
+    let(:event) { build :event }
 
     %i(start_time end_time user location).each do |s|
       it { is_expected.to validate_presence_of s}
@@ -22,16 +22,16 @@ RSpec.describe Event, type: :model do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:expected_events) {
       [
-          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
-          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
-          FactoryGirl.create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
-          FactoryGirl.create(:event, start_time: start_time, end_time: start_time + 2.hours),
-          FactoryGirl.create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
+          create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
+          create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
+          create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
+          create(:event, start_time: start_time, end_time: start_time + 2.hours),
+          create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
       ]
     }
     let!(:not_expected_events) {
       [
-          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
+          create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
       ]
     }
 
