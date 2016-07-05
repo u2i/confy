@@ -3,7 +3,7 @@
     <tr>
       <th class="col-md-1"></th>
       <% @days.each do |name| %>
-          <th class="col-md-2"><%= name %></th>
+          <th class="col-md-2 text-center"><%= name.strftime('%a %m/%d') %></th>
       <% end %>
     </tr>
     <% @times.each do |time| %>
@@ -11,8 +11,15 @@
           <td class="text-right">
             <small><%= time.strftime('%H:%M') %></small>
           </td>
-          <% @days.each do %>
-              <td></td>
+          <% @days.each do |day| %>
+              <% current_event = get_event(day, time) %>
+
+              <% if current_event %>
+                  <td rowspan="<%= event_span(current_event) %>"><%= current_event.description %></td>
+              <% elsif !event_ongoing?(day, time) %>
+                  <td></td>
+              <% end %>
+
           <% end %>
         </tr>
     <% end %>
