@@ -4,14 +4,14 @@ module CalendarHelper
     datetime = add_date_and_time(day, time)
     @events[day.wday].find do |event|
       event.start_time == datetime
-    end
+    end if @events[day.wday]
   end
 
   def event_ongoing?(day, time)
     datetime = add_date_and_time(day, time)
     @events[day.wday].any? do |event|
       event.start_time < datetime && event.end_time > datetime
-    end
+    end if @events[day.wday]
   end
 
   def event_span(event)

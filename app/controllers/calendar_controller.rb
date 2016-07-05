@@ -1,8 +1,8 @@
 class CalendarController < ApplicationController
 
   def index
-    week_start = Date.new(2016, 6, 11)
-    week_end = Date.new(2016, 6, 15)
+    week_start = params[:start] ? Date.parse(params[:start]) : Date.today.beginning_of_week
+    week_end = params[:end] ? Date.parse(params[:end]) : week_start + 4
     @days = (week_start..week_end).to_a
 
     start_time = Time.now.at_beginning_of_day
@@ -10,14 +10,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = {}
-    @days.each do |day|
-      @events[day.wday] = []
-    end
-    Event.all.map do |event|
-      wday = event.start_time.wday
-      @events[wday] << event
-    end
+    @events = Event.all.group_by { |e| e.start_time.wday }
   end
 
   private
