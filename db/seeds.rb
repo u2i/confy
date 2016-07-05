@@ -22,7 +22,7 @@ event_id = 1
       event.description = Faker::Company.catch_phrase
       event.location = locations.sample
       event.user = Faker::Name.name
-      event_id += 1
     end
+    event_id += 1
   end
 end
