@@ -13,7 +13,7 @@ class Event < ApplicationRecord
     query = '(start_time >= :start_week AND start_time <= :end_week)'\
     'OR (end_time >= :start_week AND end_time <= :end_week )'\
     'OR (start_time <= :start_week AND end_time >= :end_week)'
-    Event.where(query, start_week: week.beginning_of_week, end_week: week.end_of_week)
+    where(query, start_week: week.beginning_of_week, end_week: week.end_of_week)
   }
 
 end
