@@ -6,7 +6,7 @@ class Event < ApplicationRecord
   validate :start_time_must_be_lower_than_end_time
 
   def start_time_must_be_lower_than_end_time
-    errors.add(:start_time, "Can't be higher than end_time") if self.start_time > self.end_time
+    errors.add(:start_time, "Can't be higher than end_time") if start_time.try(:>, end_time)
   end
 
 end
