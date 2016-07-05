@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-day_time = Time.new(2016,6,11,8,0,0,"+02:00")
+day_time = Time.new(2016,7,11,8,0,0,"+02:00")
 locations = ["Mordor", "Neverland", "Sherwood Forest", "Valhalla", "Voyager", "Winterfell", "Yellow Submarine"]
 
 event_id = 1
