@@ -17,4 +17,27 @@ RSpec.describe Event, type: :model do
       expect(event).to be_valid
     end
   end
+
+  describe '#in_week' do
+    let(:start_time) { Time.now.beginning_of_week }
+    let!(:expected_events) {
+      [
+          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
+          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
+          FactoryGirl.create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
+          FactoryGirl.create(:event, start_time: start_time, end_time: start_time + 2.hours),
+          FactoryGirl.create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
+      ]
+    }
+    let!(:not_expected_events) {
+      [
+          FactoryGirl.create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
+      ]
+    }
+
+    it "returns all events from specified week" do
+      expect(described_class.in_week(start_time)).to match_array expected_events
+    end
+
+  end
 end
