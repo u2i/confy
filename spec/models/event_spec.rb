@@ -36,7 +36,7 @@ RSpec.describe Event, type: :model do
     }
 
     it "returns all events from specified week" do
-      expect(Event.in_week(start_time)).to match_array expected_events
+      expect(described_class.in_week(start_time)).to match_array expected_events
     end
 
   end
