@@ -2,8 +2,8 @@
   <table class="calendar table table-bordered table-striped table-responsive">
     <tr>
       <th class="col-md-1"></th>
-      <% @days.each do |name| %>
-        <th class="col-md-2 text-center"><%= name.strftime('%a %m/%d') %></th>
+      <% @days.each do |day| %>
+        <th class="col-md-2 text-center"><%= day.strftime('%a %m/%d') %></th>
       <% end %>
     </tr>
     <% @times.each do |time| %>

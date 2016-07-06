@@ -1,8 +1,8 @@
 class CalendarController < ApplicationController
 
   def index
-    week_start = params[:start] ? Date.parse(params[:start]) : Date.today.beginning_of_week
-    week_end = params[:end] ? Date.parse(params[:end]) : week_start + 4
+    week_start = params[:date] ? Date.parse(params[:date]).at_beginning_of_week : Date.today.beginning_of_week
+    week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     @days = (week_start..week_end).to_a
 
     start_time = Time.now.at_beginning_of_day
@@ -10,7 +10,8 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = Event.all.group_by { |e| e.start_time.wday }
+    @events = Event.where("start_time >= ? AND end_time <= ?", week_start, week_end)
+                .group_by { |e| e.start_time.wday }
   end
 
   private
