@@ -9,11 +9,14 @@ class Event < ApplicationRecord
     errors.add(:start_time, "Can't be higher than end_time") if start_time.try(:>, end_time)
   end
 
+  scope :in_span, -> (starting, ending) {
+    where('start_time >= ? AND start_time <= ?', starting, ending)
+    .or(where('end_time >= ? AND end_time <= ?', starting, ending))
+    .or(where('start_time <= ? AND end_time >= ?', starting, ending))
+  }
+
   scope :in_week, ->(week) {
-    query = '(start_time >= :start_week AND start_time <= :end_week)'\
-    'OR (end_time >= :start_week AND end_time <= :end_week )'\
-    'OR (start_time <= :start_week AND end_time >= :end_week)'
-    where(query, start_week: week.beginning_of_week, end_week: week.end_of_week)
+    in_span(week.beginning_of_week, week.end_of_week)
   }
 
 end

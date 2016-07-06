@@ -18,7 +18,7 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#in_week' do
+  describe '.in_week' do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:expected_events) {
       [
