@@ -44,7 +44,7 @@ RSpec.describe Event, type: :model do
 
     let(:start_time) { Time.now.beginning_of_week }
 
-    it 'calls. in_span with correct arguemnts' do
+    it 'calls .in_span with correct arguemnts' do
       expect(described_class).to receive(:in_span).with(start_time.beginning_of_week, start_time.end_of_week)
       described_class.in_week(start_time)
     end
