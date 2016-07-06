@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: confy_production
-  username: confy
+  database: <%= ENV['CONFY_DATABASE'] %>
+  username: <%= ENV['CONFY_DATABASE_USER'] %>
   password: <%= ENV['CONFY_DATABASE_PASSWORD'] %>
