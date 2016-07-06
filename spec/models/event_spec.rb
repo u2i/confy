@@ -18,7 +18,7 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#in_week' do
+  describe '.in_span' do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:expected_events) {
       [
@@ -36,9 +36,18 @@ RSpec.describe Event, type: :model do
     }
 
     it "returns all events from specified week" do
-      expect(described_class.in_week(start_time)).to match_array expected_events
+      expect(described_class.in_span(start_time.beginning_of_week, start_time.end_of_week)).to match_array expected_events
     end
+  end
 
+  describe '.in_week' do
+
+    let(:start_time) { Time.now.beginning_of_week }
+
+    it 'calls .in_span with correct arguemnts' do
+      expect(described_class).to receive(:in_span).with(start_time.beginning_of_week, start_time.end_of_week)
+      described_class.in_week(start_time)
+    end
   end
 
   describe '#in_week_group_by_weekday' do
