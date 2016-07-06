@@ -46,6 +46,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'pry-doc'
 end
 
 group :development do
