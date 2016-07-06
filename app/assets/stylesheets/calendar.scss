@@ -1,0 +1,30 @@
+// Place all the styles related to the calendar controller here.
+// They will automatically be included in application.css.scss.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.calendar > tbody > tr {
+
+  > td {
+    padding-top: 0;
+    padding-bottom: 1em;
+  }
+
+  .event {
+    .event-time {
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+
+    .event-description {
+      margin: 0.2em 0;
+    }
+
+    .event-user, .event-location {
+      font-size: 0.9em;
+
+      > small {
+        font-style: italic;
+      }
+    }
+  }
+}
