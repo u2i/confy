@@ -40,4 +40,29 @@ RSpec.describe Event, type: :model do
     end
 
   end
+
+  describe '#in_week_group_by_weekday' do
+    let(:start_time) { Time.now.beginning_of_week }
+    let!(:expected_events) {
+      {0 => [
+        create(:event, start_time: start_time, end_time: start_time + 2.hours),
+      ],
+      1 => [
+        create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days),
+      ]}
+    }
+    let!(:not_expected_events) {
+      {
+        9 => [
+          create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days)
+        ]
+      }
+    }
+
+    it "returns all events from specified week grouped by weekday" do
+      events = described_class.in_week_group_by_weekday(start_time)
+      expect(events).to include expected_events
+      expect(events).not_to include not_expected_events
+    end
+  end
 end
