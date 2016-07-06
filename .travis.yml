@@ -4,4 +4,4 @@ rvm:
   - 2.3.0
 before_script:
   - bundle exec rake db:create
-  - bundle exec rake dm:migrate
+  - bundle exec rake db:migrate
