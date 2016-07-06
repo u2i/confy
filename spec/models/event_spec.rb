@@ -6,7 +6,7 @@ RSpec.describe Event, type: :model do
     let(:event) { build :event }
 
     %i(start_time end_time user location).each do |s|
-      it { is_expected.to validate_presence_of s}
+      it { is_expected.to validate_presence_of s }
     end
 
     it "must ensure that start_time is lower than end_time" do
@@ -22,16 +22,16 @@ RSpec.describe Event, type: :model do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:expected_events) {
       [
-          create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
-          create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
-          create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
-          create(:event, start_time: start_time, end_time: start_time + 2.hours),
-          create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
+        create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
+        create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
+        create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
+        create(:event, start_time: start_time, end_time: start_time + 2.hours),
+        create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
       ]
     }
     let!(:not_expected_events) {
       [
-          create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
+        create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
       ]
     }
 
@@ -44,19 +44,20 @@ RSpec.describe Event, type: :model do
   describe '#in_week_group_by_weekday' do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 2.hours) }
-    let!(:event2) { create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days)}
-    let!(:event3) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days)}
+    let!(:event2) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 2.hours) }
+    let!(:event3) { create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days) }
+    let!(:event4) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days) }
 
     let(:expected_events) do
       {
-        0 => [event1],
-        1 => [event2]
+        event1.start_time.wday => [event1, event2],
+        event3.start_time.wday => [event3]
       }
     end
 
     let(:not_expected_events) {
       {
-        9 => [event3]
+        9 => [event4]
       }
     }
 
