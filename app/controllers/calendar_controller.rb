@@ -10,8 +10,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = Event.where("start_time >= ? AND end_time <= ?", week_start, week_end)
-                .group_by { |e| e.start_time.wday }
+    @events = Event.in_week_group_by_weekday(week_start)
   end
 
   private

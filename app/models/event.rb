@@ -16,4 +16,8 @@ class Event < ApplicationRecord
     where(query, start_week: week.beginning_of_week, end_week: week.end_of_week)
   }
 
+  scope :in_week_group_by_weekday, -> (week) {
+    in_week(week).group_by { |e| e.start_time.wday }
+  }
+
 end
