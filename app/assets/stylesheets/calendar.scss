@@ -9,4 +9,22 @@
     padding-bottom: 1em;
   }
 
+  .event {
+    .event-time {
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+
+    .event-description {
+      margin: 0.2em 0;
+    }
+
+    .event-user, .event-location {
+      font-size: 0.9em;
+
+      > small {
+        font-style: italic;
+      }
+    }
+  }
 }
