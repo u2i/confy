@@ -10,9 +10,7 @@ class Event < ApplicationRecord
   end
 
   scope :in_span, -> (starting, ending) {
-    where('start_time >= ? AND start_time <= ?', starting, ending)
-    .or(where('end_time >= ? AND end_time <= ?', starting, ending))
-    .or(where('start_time <= ? AND end_time >= ?', starting, ending))
+    where('? <= end_time AND ? >= start_time', starting, ending)
   }
 
   scope :in_week, ->(week) {
