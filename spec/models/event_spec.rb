@@ -50,7 +50,7 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#in_week_group_by_weekday' do
+  describe '.in_week_group_by_weekday' do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 2.hours) }
     let!(:event2) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 2.hours) }
@@ -70,8 +70,8 @@ RSpec.describe Event, type: :model do
       }
     }
 
+    subject(:events) { described_class.in_week_group_by_weekday(start_time) }
     it "returns all events from specified week grouped by weekday" do
-      events = described_class.in_week_group_by_weekday(start_time)
       expect(events).to include expected_events
       expect(events).not_to include not_expected_events
     end

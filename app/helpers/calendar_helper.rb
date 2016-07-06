@@ -3,7 +3,7 @@ module CalendarHelper
   WEEK_LENGTH = 5
   EVENT_TIME_GRANULARITY = 30.minutes
 
-  def get_event(day, time)
+  def event_at(day, time)
     return unless @events[day.wday].present?
     datetime = add_date_and_time(day, time)
     @events[day.wday].find do |event|
