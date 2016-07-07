@@ -17,26 +17,10 @@
           <div class="modal-body">
             <section class="row">
               <div class="col-md-5">
-                <%= label_tag :start_time, 'Start time' %>
-                <div class="form-group">
-                  <div class="input-group date" id="start-time-picker">
-                    <%= e.text_field :start_time, class: 'form-control' %>
-                    <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>
-                </div>
+                <%= render partial: 'datepicker', locals: {event: e, name: :start_time, text: 'Start Time', id: 'start-time-picker'} %>
               </div>
               <div class="col-md-5">
-                <%= label_tag :end_time, 'End time' %>
-                <div class="form-group">
-                  <div class="input-group date" id="end-time-picker">
-                    <%= e.text_field :end_time, class: 'form-control' %>
-                    <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>
-                </div>
+                <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time', id: 'end-time-picker'} %>
               </div>
             </section>
             <%= label_tag :user, 'Requester' %>
