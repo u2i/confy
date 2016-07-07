@@ -4,6 +4,6 @@ FactoryGirl.define do
     user "user"
     start_time Time.now
     end_time Time.now + 10.minutes
-    conference_room
+    association :conference_room, factory: :conference_room
   end
 end

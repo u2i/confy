@@ -7,14 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 day_time = Time.new(2016,7,11,8,0,0,"+02:00")
-locations = ["Mordor", "Neverland", "Sherwood Forest", "Valhalla", "Voyager", "Winterfell", "Yellow Submarine"].map do |n|
-  params = { title: n, capacity: rand(5.20), color: "#%06x" % (rand * 0xffffff) }
-  if (c = ConferenceRoom.find_by_title(n))
-    c.update_attributes!(**params)
-    c
-  else
-    ConferenceRoom.create!(**params)
-  end
+conference_rooms = ["Mordor", "Neverland", "Sherwood Forest", "Valhalla", "Voyager", "Winterfell", "Yellow Submarine"].map do |name|
+  params = { capacity: rand(5.20), color: "#%06x" % (rand * 0xffffff) }
+  ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
 event_id = 1
@@ -28,14 +23,10 @@ event_id = 1
         start_time: start_time,
         end_time: end_time,
         description: Faker::Company.catch_phrase,
-        conference_room: locations.sample,
+        conference_room: conference_rooms.sample,
         user: Faker::Name.name
     }
-    if (e = Event.find_by_id(event_id))
-      e.update_attributes!(**params)
-    else
-      Event.create!(**params)
-    end
+    Event.where(id: event_id).first_or_create(params).update(params)
     event_id += 1
   end
 end
