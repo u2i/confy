@@ -1,10 +1,14 @@
-
 $(function () {
+    var DATE_FORMAT = 'DD/MM/YYYY HH:mm';
+
     var startTimePicker = $('#start-time-picker');
     var endTimePicker = $('#end-time-picker');
-    startTimePicker.datetimepicker();
+    startTimePicker.datetimepicker({
+        format: DATE_FORMAT
+    });
     endTimePicker.datetimepicker({
-        useCurrent: false
+        useCurrent: false,
+        format: DATE_FORMAT
     });
 
     var startData = startTimePicker.data('DateTimePicker');
