@@ -26,7 +26,7 @@
             <%= label_tag :user, 'Requester' %>
             <%= e.text_field :user, class: 'form-control' %>
             <%= label_tag :location, 'Location' %>
-            <%= e.text_field :location, class: 'form-control' %>
+            <%= e.collection_select :conference_room_id, ConferenceRoom.all, :id, :title, {}, {class: 'form-control'} %>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
