@@ -2,6 +2,20 @@
 // They will automatically be included in application.css.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+html, body, .container {
+  width: 100%;
+}
+
+.container {
+  margin-top: 25px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .calendar > tbody > tr {
 
   > td {
