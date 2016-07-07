@@ -42,3 +42,7 @@ html, body, .container {
     }
   }
 }
+
+.input-group.date .input-group-addon {
+  cursor: inherit;
+}
