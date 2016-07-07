@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
+  let(:room) { create :conference_room }
 
   describe 'validation' do
     let(:event) { build :event }
 
-    %i(start_time end_time user location).each do |s|
+    %i(start_time end_time user conference_room).each do |s|
       it { is_expected.to validate_presence_of s }
     end
+
 
     it "must ensure that start_time is lower than end_time" do
       event.end_time = event.start_time - 10
@@ -22,16 +24,16 @@ RSpec.describe Event, type: :model do
     let(:start_time) { Time.now.beginning_of_week }
     let!(:expected_events) {
       [
-        create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days),
-        create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days),
-        create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days),
-        create(:event, start_time: start_time, end_time: start_time + 2.hours),
-        create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours)
+        create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days, conference_room: room),
+        create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days, conference_room: room),
+        create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days, conference_room: room),
+        create(:event, start_time: start_time, end_time: start_time + 2.hours, conference_room: room),
+        create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours, conference_room: room)
       ]
     }
     let!(:not_expected_events) {
       [
-        create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours)
+        create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours, conference_room: room)
       ]
     }
 
@@ -52,10 +54,10 @@ RSpec.describe Event, type: :model do
 
   describe '.in_week_group_by_weekday' do
     let(:start_time) { Time.now.beginning_of_week }
-    let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 2.hours) }
-    let!(:event2) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 2.hours) }
-    let!(:event3) { create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days) }
-    let!(:event4) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days) }
+    let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 2.hours, conference_room: room) }
+    let!(:event2) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 2.hours, conference_room: room) }
+    let!(:event3) { create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days, conference_room: room) }
+    let!(:event4) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
 
     let(:expected_events) do
       {

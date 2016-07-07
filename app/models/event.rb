@@ -1,8 +1,10 @@
 class Event < ApplicationRecord
+  belongs_to :conference_room
+
   validates :start_time, presence: true
   validates :end_time, presence: true
   validates :user, presence: true
-  validates :location, presence: true
+  validates :conference_room, presence: true
   validate :start_time_must_be_lower_than_end_time
 
   def start_time_must_be_lower_than_end_time
