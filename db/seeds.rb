@@ -8,7 +8,7 @@
 
 day_time = Time.new(2016,7,11,8,0,0,"+02:00")
 conference_rooms = ["Mordor", "Neverland", "Sherwood Forest", "Valhalla", "Voyager", "Winterfell", "Yellow Submarine"].map do |name|
-  params = { capacity: rand(5.20), color: "#%06x" % (rand * 0xffffff) }
+  params = { capacity: rand(5..20), color: "#%06x" % (rand * 0xffffff) }
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
