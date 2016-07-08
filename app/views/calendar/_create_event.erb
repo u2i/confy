@@ -5,46 +5,46 @@
      aria-labelledby="create-event-modal-label">
   <div class="modal-dialog" role="document">
     <%= form_for :event, url: events_path, remote: true, html: {id: 'create-event-form'} do |e| %>
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h1>Create Event</h1>
-          </div>
-          <div class="modal-body">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h1>Create Event</h1>
+        </div>
+        <div class="modal-body">
 
-            <div class="alert alert-danger" id="create-event-error"></div>
+          <div class="alert alert-danger" id="create-event-error"></div>
 
-            <section class="form-group">
-              <%= label_tag :description, 'Description' %>
-              <%= e.text_field :description, class: 'form-control' %>
-            </section>
+          <section class="form-group">
+            <%= label_tag :description, 'Description' %>
+            <%= e.text_field :description, class: 'form-control' %>
+          </section>
 
-            <section class="row">
-              <div class="col-md-5">
-                <%= render partial: 'datepicker', locals: {event: e, name: :start_time, text: 'Start Time', id: 'start-time-picker'} %>
-              </div>
-              <div class="col-md-5">
-                <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time', id: 'end-time-picker'} %>
-              </div>
-            </section>
+          <section class="row">
+            <div class="col-md-5">
+              <%= render partial: 'datepicker', locals: {event: e, name: :start_time, text: 'Start Time', id: 'start-time-picker'} %>
+            </div>
+            <div class="col-md-5">
+              <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time', id: 'end-time-picker'} %>
+            </div>
+          </section>
 
-            <section class="form-group">
-              <%= label_tag :user, 'Requester' %>
-              <%= e.text_field :user, class: 'form-control' %>
-            </section>
+          <section class="form-group">
+            <%= label_tag :user, 'Requester' %>
+            <%= e.text_field :user, class: 'form-control' %>
+          </section>
 
-            <section class="form-group">
-              <%= label_tag :location, 'Location' %>
-              <%= e.collection_select :conference_room_id, ConferenceRoom.all, :id, :title, {}, {class: 'form-control'} %>
-            </section>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
+          <section class="form-group">
+            <%= label_tag :location, 'Location' %>
+            <%= e.collection_select :conference_room_id, ConferenceRoom.all, :id, :title, {}, {class: 'form-control'} %>
+          </section>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     <% end %>
-    </div>
   </div>
 </div>

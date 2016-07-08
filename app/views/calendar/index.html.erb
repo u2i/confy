@@ -13,18 +13,18 @@
       <tr>
         <th class="col-md-1"></th>
         <% @days.each do |day| %>
-            <th class="col-md-2 text-center"><%= day.strftime('%a %m/%d') %></th>
+          <th class="col-md-2 text-center"><%= day.strftime('%a %m/%d') %></th>
         <% end %>
       </tr>
       <% @times.each do |time| %>
-          <tr>
-            <td class="text-right">
-              <small><%= time.strftime('%H:%M') %></small>
-            </td>
-            <% @days.each do |day| %>
-                <%= render partial: 'event_cell', locals: {current_event: event_at(day, time), day: day, time: time} %>
-            <% end %>
-          </tr>
+        <tr>
+          <td class="text-right">
+            <small><%= time.strftime('%H:%M') %></small>
+          </td>
+          <% @days.each do |day| %>
+            <%= render partial: 'event_cell', locals: {current_event: event_at(day, time), day: day, time: time} %>
+          <% end %>
+        </tr>
       <% end %>
     </table>
   </div>
