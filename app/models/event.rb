@@ -6,13 +6,24 @@ class Event < ApplicationRecord
   validates :user, presence: true
   validates :conference_room, presence: true
   validate :start_time_must_be_lower_than_end_time
+  validate :no_collision
 
   def start_time_must_be_lower_than_end_time
     errors.add(:start_time, "Can't be higher than end_time") if start_time.try(:>, end_time)
   end
 
+  def no_collision
+    return unless start_time && end_time
+    return unless Event.in_span_for_conference_room(start_time, end_time, conference_room).exists?
+    errors.add(:start_time, "Can't start while another event is in progress")
+  end
+
   scope :in_span, -> (starting, ending) {
     where('? <= end_time AND ? >= start_time', starting, ending)
+  }
+
+  scope :in_span_for_conference_room, -> (starting, ending, conference_room) {
+    in_span(starting, ending).where(conference_room: conference_room)
   }
 
   scope :in_week, ->(week) {

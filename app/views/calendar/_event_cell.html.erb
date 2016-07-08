@@ -1,9 +1,14 @@
 <% if current_event %>
-    <td class="event" rowspan="<%= event_span(current_event) %>">
-      <div class="event-time"><%= current_event.start_time.strftime('%H:%M') %> - <%= current_event.end_time.strftime('%H:%M') %></div>
-      <div class="event-description"><%= current_event.description %></div>
-      <div class="event-user"><small>by</small> <%= current_event.user %></div>
-      <div class="event-location"><small>in</small> <%= current_event.location %></div>
+    <td rowspan="<%= event_span(current_event) %>">
+      <div class="event">
+        <div class="event-time"><%= current_event.start_time.strftime('%H:%M') %>
+          - <%= current_event.end_time.strftime('%H:%M') %></div>
+        <div class="event-description"><%= current_event.description %></div>
+        <div class="event-user">
+          <small>by</small> <%= current_event.user %></div>
+        <div class="event-location">
+          <small>in</small> <%= current_event.conference_room.title %></div>
+      </div>
     </td>
 <% elsif !event_ongoing?(day, time) %>
     <td></td>

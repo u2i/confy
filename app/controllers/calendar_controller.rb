@@ -10,9 +10,12 @@ class CalendarController < ApplicationController
     @times = time_interval(start_time, end_time, step)
 
     @events = Event.in_week_group_by_weekday(week_start)
+
+    @conference_rooms = ConferenceRoom.all
   end
 
   private
+
   def time_interval(start_time, end_time, step)
     (start_time.to_i..end_time.to_i).step(step).collect { |time| Time.at time }
   end
