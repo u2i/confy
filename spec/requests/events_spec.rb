@@ -22,8 +22,9 @@ RSpec.describe 'Events', type: :request do
     end
 
     context 'with colliding event' do
-      let!(:event) { create(:event, start_time: Time.now, end_time: Time.now, conference_room_id: conference_room.id) }
-      let(:invalid_event) { attributes_for :event, start_time: Time.now, end_time: Time.now, conference_room_id: conference_room.id }
+      let(:start_time) { Time.now }
+      let!(:event) { create(:event, start_time: start_time, end_time: start_time + 1.hour, conference_room_id: conference_room.id) }
+      let(:invalid_event) { attributes_for :event, start_time: start_time, end_time: start_time + 1.hour, conference_room_id: conference_room.id }
       it 'should respond with 422' do
         post events_path, params: {event: invalid_event}
         expect(response).to have_http_status(:unprocessable_entity)

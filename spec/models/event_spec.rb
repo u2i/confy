@@ -20,11 +20,12 @@ RSpec.describe Event, type: :model do
 
     context 'must ensure events do not collide' do
       context 'with same conference room' do
-        let!(:other_event) { create(:event, conference_room: room) }
+        let!(:other_event) { create(:event, start_time: event.start_time, conference_room: room) }
 
         it 'is not valid' do
           event.conference_room = room
           expect(event).not_to be_valid
+          expect(event.errors[:start_time]).to be_present
         end
       end
 
@@ -43,18 +44,15 @@ RSpec.describe Event, type: :model do
 
   describe '.in_span' do
     let(:start_time) { Time.now.beginning_of_week }
+    let!(:event1) { create(:event, start_time: start_time - 2.days, end_time: start_time, conference_room: room) }
+    let!(:event2) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
+    let!(:event3) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 1.days, conference_room: room) }
     let!(:expected_events) {
-      [
-        create(:event, start_time: start_time - 2.days, end_time: start_time + 2.days, conference_room: room),
-        create(:event, start_time: start_time - 2.days, end_time: start_time + 10.days, conference_room: room),
-        create(:event, start_time: start_time + 1.days, end_time: start_time + 10.days, conference_room: room),
-        create(:event, start_time: start_time, end_time: start_time + 2.hours, conference_room: room),
-        create(:event, start_time: start_time + 1.days, end_time: start_time + 1.days + 2.hours, conference_room: room)
-      ]
+      [event1, event2, event3]
     }
     let!(:not_expected_events) {
       [
-        create(:event, start_time: start_time - 2.days, end_time: start_time - 2.days + 1.hours, conference_room: room)
+        create(:event, start_time: start_time - 3.days, end_time: start_time - 2.days - 1.hour, conference_room: room)
       ]
     }
 
@@ -93,8 +91,8 @@ RSpec.describe Event, type: :model do
 
   describe '.in_week_group_by_weekday' do
     let(:start_time) { Time.now.beginning_of_week }
-    let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 2.hours, conference_room: room) }
-    let!(:event2) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 2.hours, conference_room: room) }
+    let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 30.minutes, conference_room: room) }
+    let!(:event2) { create(:event, start_time: start_time + 1.hours, end_time: start_time + 4.hours, conference_room: room) }
     let!(:event3) { create(:event, start_time: start_time + 1.days, end_time: start_time + 2.days, conference_room: room) }
     let!(:event4) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
 
