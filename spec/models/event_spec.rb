@@ -16,6 +16,8 @@ RSpec.describe Event, type: :model do
       expect(event.errors[:start_time]).to be_present
       event.end_time = event.start_time + 20.minutes
       expect(event).to be_valid
+      event.end_time = event.start_time
+      expect(event).to be_invalid
     end
 
     context 'must ensure events do not collide' do
