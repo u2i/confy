@@ -22,8 +22,9 @@ RSpec.describe Event, type: :model do
       context 'with same conference room' do
         let!(:other_event) { create(:event, start_time: event.start_time, conference_room: room) }
 
+        before { event.conference_room = room }
+
         it 'is not valid' do
-          event.conference_room = room
           expect(event).not_to be_valid
           expect(event.errors[:start_time]).to be_present
         end
@@ -33,8 +34,9 @@ RSpec.describe Event, type: :model do
         let!(:other_event) { create(:event, conference_room: room) }
         let!(:other_room) { create(:conference_room) }
 
+        before { event.conference_room = other_room }
+
         it 'is valid' do
-          event.conference_room = other_room
           expect(event).to be_valid
         end
       end
