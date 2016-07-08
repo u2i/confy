@@ -22,6 +22,7 @@ event_id = 1
     params = {
         start_time: start_time,
         end_time: end_time,
+        name: Faker::Company.name,
         description: Faker::Company.catch_phrase,
         conference_room: conference_rooms.sample,
         user: Faker::Name.name
