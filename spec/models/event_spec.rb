@@ -10,7 +10,6 @@ RSpec.describe Event, type: :model do
       it { is_expected.to validate_presence_of s }
     end
 
-
     it "must ensure that start_time is lower than end_time" do
       event.end_time = event.start_time - 10
       expect(event).not_to be_valid
@@ -18,6 +17,28 @@ RSpec.describe Event, type: :model do
       event.end_time = event.start_time + 20.minutes
       expect(event).to be_valid
     end
+
+    context 'must ensure events do not collide' do
+      context 'with same conference room' do
+        let!(:other_event) { create(:event, conference_room: room) }
+
+        it 'is not valid' do
+          event.conference_room = room
+          expect(event).not_to be_valid
+        end
+      end
+
+      context 'with different conference room' do
+        let!(:other_event) { create(:event, conference_room: room) }
+        let!(:other_room) { create(:conference_room) }
+
+        it 'is valid' do
+          event.conference_room = other_room
+          expect(event).to be_valid
+        end
+      end
+    end
+
   end
 
   describe '.in_span' do
@@ -39,6 +60,24 @@ RSpec.describe Event, type: :model do
 
     it "returns all events from specified week" do
       expect(described_class.in_span(start_time.beginning_of_week, start_time.end_of_week)).to match_array expected_events
+    end
+  end
+
+  describe '.in_span_for_conference_room' do
+    let(:start_time) { Time.now.beginning_of_week }
+    let!(:other_room) { create(:conference_room) }
+    let!(:event1) { create(:event, start_time: start_time - 2.days, end_time: start_time, conference_room: room) }
+    let!(:event2) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
+    let!(:event3) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 1.days, conference_room: room) }
+    let!(:not_expected_events) {
+      create(:event, start_time: start_time + 1.days + 1.hour, end_time: start_time + 2.days, conference_room: other_room)
+    }
+
+    let!(:expected_events) { [event1, event2, event3] }
+
+    subject(:events) { described_class.in_span_for_conference_room(start_time.beginning_of_week, start_time.end_of_week, room) }
+    it 'returns all events from specified time span for given conference room' do
+      expect(events).to match_array expected_events
     end
   end
 
