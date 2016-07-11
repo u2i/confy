@@ -22,7 +22,12 @@ class CalendarController < ApplicationController
     session[:credentials] = GoogleOauth.refresh_token(session[:credentials]) if session[:credentials]
   end
 
+  def list_events
+    render json: GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
+  end
+
   def index
+    return redirect_to action: :list_events
     week_start, week_end = build_week_boundaries(params[:date])
     @days = (week_start..week_end).to_a
 

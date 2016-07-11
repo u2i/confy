@@ -6,6 +6,7 @@ class ConferenceRoom < ApplicationRecord
   validates :capacity, presence: true
   validates :color, presence: true, uniqueness: { case_sensitive: false }, format: HEX_COLOR_FORMAT
   validates :title, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
   has_many :events, dependent: :destroy
 
 end

@@ -4,12 +4,13 @@ RSpec.describe ConferenceRoom, type: :model do
   describe "validation" do
     subject { build :conference_room }
 
-    %i(title color capacity).each do |s|
+    %i(title color capacity email).each do |s|
       it { is_expected.to validate_presence_of s }
     end
 
     it { is_expected.to validate_uniqueness_of(:color).case_insensitive }
     it { is_expected.to validate_uniqueness_of(:title) }
+    it { is_expected.to validate_uniqueness_of(:email) }
 
     let(:valid_colors) { %w(#FfF000 #231482 #AbdD12 #E22 #123) }
     let(:invalid_colors) { %w(1023o 1230 12345 124fe #jugrju #123jku #9999999 #1234 #12 #A #b) }
