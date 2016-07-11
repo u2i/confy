@@ -65,24 +65,6 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '.in_span_for_conference_room' do
-    let(:start_time) { Time.now.beginning_of_week }
-    let!(:other_room) { create(:conference_room) }
-    let!(:event1) { create(:event, start_time: start_time - 2.days, end_time: start_time, conference_room: room) }
-    let!(:event2) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
-    let!(:event3) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 1.days, conference_room: room) }
-    let!(:not_expected_events) {
-      create(:event, start_time: start_time + 1.days + 1.hour, end_time: start_time + 2.days, conference_room: other_room)
-    }
-
-    let!(:expected_events) { [event1, event2, event3] }
-
-    subject(:events) { described_class.in_span_for_conference_room(start_time.beginning_of_week, start_time.end_of_week, room) }
-    it 'returns all events from specified time span for given conference room' do
-      expect(events).to match_array expected_events
-    end
-  end
-
   describe '.in_week' do
 
     let(:start_time) { Time.now.beginning_of_week }

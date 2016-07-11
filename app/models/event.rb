@@ -14,7 +14,7 @@ class Event < ApplicationRecord
 
   def no_collision
     return unless start_time && end_time
-    event = Event.in_span_for_conference_room(start_time, end_time, conference_room).first
+    event = conference_room.events.in_span(start_time, end_time).first
     return unless event
 
     event_in_progress_text = "Another event already in progress in #{conference_room.title} (#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
@@ -30,10 +30,6 @@ class Event < ApplicationRecord
 
   scope :in_span, -> (starting, ending) {
     where('? <= end_time AND ? >= start_time', starting, ending)
-  }
-
-  scope :in_span_for_conference_room, -> (starting, ending, conference_room) {
-    in_span(starting, ending).where(conference_room: conference_room)
   }
 
   scope :in_week, ->(week) {
