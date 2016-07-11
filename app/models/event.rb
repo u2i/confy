@@ -8,6 +8,18 @@ class Event < ApplicationRecord
   validate :start_time_must_be_lower_than_end_time
   validate :no_collision
 
+  scope :in_span, -> (starting, ending) {
+    where('? <= end_time AND ? >= start_time', starting, ending)
+  }
+
+  scope :in_week, ->(week) {
+    in_span(week.beginning_of_week, week.end_of_week)
+  }
+
+  scope :in_week_group_by_weekday, -> (week) {
+    in_week(week).group_by { |e| e.start_time.wday }
+  }
+
   def start_time_must_be_lower_than_end_time
     return unless start_time && end_time
     errors.add(:start_time, 'Start time must be lower than end time')
@@ -29,18 +41,5 @@ class Event < ApplicationRecord
       errors.add(:end_time, event_in_progress_text)
     end
   end
-
-  scope :in_span, -> (starting, ending) {
-    where('? <= end_time AND ? >= start_time', starting, ending)
-  }
-
-  scope :in_week, ->(week) {
-    in_span(week.beginning_of_week, week.end_of_week)
-  }
-
-  scope :in_week_group_by_weekday, -> (week) {
-    in_week(week).group_by { |e| e.start_time.wday }
-  }
-
 end
 
