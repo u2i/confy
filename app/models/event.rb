@@ -18,7 +18,8 @@ class Event < ApplicationRecord
     event = conference_room.events.in_span(start_time, end_time).first
     return unless event
 
-    event_in_progress_text = "Another event already in progress in #{conference_room.title} (#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
+    event_in_progress_text = "Another event already in progress in #{conference_room.title} "\
+        "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
 
     if start_time < event.end_time && start_time >= event.start_time
       errors.add(:start_time, event_in_progress_text)
