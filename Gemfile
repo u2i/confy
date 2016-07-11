@@ -36,6 +36,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'faker'
 
+gem 'google-api-client', '~> 0.9', require: 'google/apis/calendar_v3'
+
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
 end
