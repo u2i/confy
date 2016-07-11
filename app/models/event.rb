@@ -9,7 +9,8 @@ class Event < ApplicationRecord
   validate :no_collision
 
   def start_time_must_be_lower_than_end_time
-    errors.add(:start_time, "Start time must be lower than end time") if start_time.try(:>=, end_time)
+    return unless start_time && end_time
+    errors.add(:start_time, 'Start time must be lower than end time')
   end
 
   def no_collision
