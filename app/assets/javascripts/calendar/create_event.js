@@ -3,17 +3,15 @@ $(function () {
         $('#create-event-modal').modal('hide');
     }).on('ajax:error', '#create-event-form', function (e, xhr) {
         var responseObj = JSON.parse(xhr.responseText);
-        var errorElem = $('#create-event-error');
-        errorElem.empty();
-        var errorList = errorElem.append('<ul></ul>');
+
+        $('.form-group').removeClass('has-error')
+            .children('.error-text').empty();
 
         Object.getOwnPropertyNames(responseObj)
             .forEach(function (propName) {
-                responseObj[propName].forEach(function (error) {
-                    errorList.append('<li>' + error + '</li>')
-                });
+                var fieldGroup = $('#' + propName + '-field-group');
+                fieldGroup.addClass('has-error')
+                    .children('.error-text').text(responseObj[propName][0]);
             });
-
-        errorElem.show();
     });
 });

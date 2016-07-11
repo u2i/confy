@@ -14,30 +14,31 @@
         </div>
         <div class="modal-body">
 
-          <div class="alert alert-danger" id="create-event-error"></div>
-
           <section class="form-group">
             <%= label_tag :description, 'Description' %>
             <%= e.text_field :description, class: 'form-control' %>
+            <span class="error-text text-danger"></span>
           </section>
 
           <section class="row">
             <div class="col-md-5">
-              <%= render partial: 'datepicker', locals: {event: e, name: :start_time, text: 'Start Time', id: 'start-time-picker'} %>
+              <%= render partial: 'datepicker', locals: {event: e, name: :start_time, text: 'Start Time'} %>
             </div>
             <div class="col-md-5">
-              <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time', id: 'end-time-picker'} %>
+              <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time'} %>
             </div>
           </section>
 
           <section class="form-group">
             <%= label_tag :user, 'Requester' %>
             <%= e.text_field :user, required: true, class: 'form-control' %>
+            <span class="error-text text-danger"></span>
           </section>
 
           <section class="form-group">
             <%= label_tag :location, 'Location' %>
             <%= e.collection_select :conference_room_id, conference_rooms, :id, :title, {}, {class: 'form-control'} %>
+            <span class="error-text text-danger"></span>
           </section>
         </div>
         <div class="modal-footer">
