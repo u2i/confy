@@ -31,9 +31,26 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
+    @events = Event.in_week_group_by_weekday(week_start)
+
+    @conference_rooms = ConferenceRoom.all
+  end
+
+  # Index for showing events from Google calendar
+  def google_index
+    week_start, week_end = build_week_boundaries(params[:date])
+    @days = (week_start..week_end).to_a
+
+    start_time = Time.now.at_beginning_of_day
+    end_time = Time.now.at_end_of_day
+    step = 30.minutes
+    @times = time_interval(start_time, end_time, step)
+
     @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
 
     @conference_rooms = ConferenceRoom.all
+
+    render :index
   end
 
   private

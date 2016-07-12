@@ -4,5 +4,7 @@ Rails.application.routes.draw do
 
   get 'oauth2callback' => 'calendar#authenticate'
 
+  get 'google_index' => 'calendar#google_index'
+
   resources :events, only: [:create]
 end
