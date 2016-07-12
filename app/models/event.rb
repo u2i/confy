@@ -31,7 +31,7 @@ class Event < ApplicationRecord
     events = conference_room.events.in_span(start_time, end_time)
     return unless events.exists?
 
-    event_in_progress_text = lambda do |event|
+    event_in_progress_text = -> (event) do
       "Another event already in progress in #{conference_room.title} "\
       "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
     end
