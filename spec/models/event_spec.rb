@@ -26,7 +26,7 @@ RSpec.describe Event, type: :model do
         before { event.conference_room = room }
 
         context 'when starting during another event' do
-          let!(:other_event) { create(:event, start_time: event.start_time, end_time: event.end_time + 1.minute, conference_room: room) }
+          let!(:other_event) { create(:event, start_time: event.start_time, end_time: event.end_time + 1.hour, conference_room: room) }
 
           it 'is not valid' do
             expect(event).not_to be_valid
@@ -35,7 +35,7 @@ RSpec.describe Event, type: :model do
         end
 
         context 'when ending during another event' do
-          let!(:other_event) { create(:event, start_time: event.start_time - 1.minute, end_time: event.end_time, conference_room: room) }
+          let!(:other_event) { create(:event, start_time: event.start_time - 1.hour, end_time: event.end_time, conference_room: room) }
 
           it 'is not valid' do
             expect(event).not_to be_valid
