@@ -3,10 +3,14 @@ require 'google/api_client/client_secrets'
 
 include Rails.application.routes.url_helpers
 
-
 module GoogleOauth
-
   CLIENT_SECRETS = Google::APIClient::ClientSecrets.load("client_secrets.json")
+  AUTH_CLIENT = CLIENT_SECRETS.to_authorization.tap do |auth_client|
+    auth_client.update!(
+        scope: 'https://www.googleapis.com/auth/calendar',
+        redirect_uri: (url_for action: :authenticate, controller: :calendar, host: "http://localhost:3000")
+    )
+  end
 
   module_function
 
@@ -25,10 +29,7 @@ module GoogleOauth
   end
 
   def default_client
-    auth_client = CLIENT_SECRETS.to_authorization
-    auth_client.update!(
-        :scope => 'https://www.googleapis.com/auth/calendar',
-        :redirect_uri => (url_for action: :authenticate, controller: :calendar, host: "http://localhost:3000"))
+    AUTH_CLIENT.clone
   end
 
   def request_code_uri

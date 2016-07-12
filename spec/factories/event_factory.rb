@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :event do
-    name "name"
+    name "EventName"
     description "123"
     user "user"
     start_time Time.new(2016, 01, 01)
