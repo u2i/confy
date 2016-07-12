@@ -15,6 +15,11 @@
         <div class="modal-body">
 
           <section class="form-group">
+            <%= label_tag :name, 'Name' %>
+            <%= e.text_field :name, class: 'form-control' %>
+          </section>
+
+          <section class="form-group">
             <%= label_tag :description, 'Description' %>
             <%= e.text_field :description, class: 'form-control' %>
             <span class="error-text text-danger"></span>

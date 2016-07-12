@@ -3,7 +3,7 @@
       <div class="event">
         <div class="event-time"><%= current_event.start_time.strftime('%H:%M') %>
           - <%= current_event.end_time.strftime('%H:%M') %></div>
-        <div class="event-description"><%= current_event.description %></div>
+        <div class="event-name"><%= current_event.name %></div>
         <div class="event-user">
           <small>by</small> <%= current_event.user %></div>
         <div class="event-location">
