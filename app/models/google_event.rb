@@ -1,29 +1,39 @@
 class GoogleEvent
-  CALENDAR_IDS = ConferenceRoom.select(:email).map {|k| k[:email]}
+  class << self
+    #You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
+    FIELDS = "items(start, end, summary, recurrence, creator(displayName))".freeze
 
-  def self.list_events(credentials, starting, ending)
-    service = get_service(credentials)
-    events = []
-    service.batch do |s|
-      CALENDAR_IDS.each do |calendar_id|
-        s.list_events(calendar_id, fields: "summary, items(start, end, summary, recurrence)", single_events: true, time_min: starting.rfc3339(9), time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw') do |n, _|
-          events << n.to_json
+    def list_events(credentials, starting, ending)
+      events = {}
+      rooms = ConferenceRoom.all
+      get_service(credentials).batch do |s|
+        rooms.each do |room|
+          s.list_events(room.email, fields: FIELDS, single_events: true, time_min: starting.rfc3339(9), time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw') do |n, _|
+            n&.items&.each do |e|
+              events[e.start.date_time.wday] ||= []
+              ev = Event.new(user: e.creator.display_name, end_time: e.end.date_time, start_time: e.start.date_time, conference_room: room, description: e.summary)
+              events[e.start.date_time.wday] << ev
+            end
+          end
         end
       end
+      events
     end
 
-    return events
+    def get_service(credentials)
+      Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = get_client(credentials) }
+    end
+
+    def get_client(credentials)
+      Signet::OAuth2::Client.new(JSON.parse(credentials))
+    end
+
+    def load_emails()
+      ConferenceRoom.pluck(:email)
+    end
+
   end
 
-  def self.get_service(credentials)
-    service = Google::Apis::CalendarV3::CalendarService.new
-    service.tap { |s| s.authorization = get_client(credentials) }
-  end
-
-  def self.get_client(credentials)
-    Signet::OAuth2::Client.new(JSON.parse(credentials))
-  end
-
-  private_class_method :get_service, :get_client
+  private_class_method :get_service, :get_client, :load_emails
 
 end

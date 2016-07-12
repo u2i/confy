@@ -4,7 +4,5 @@ Rails.application.routes.draw do
 
   get 'oauth2callback' => 'calendar#authenticate'
 
-  get 'list_events' => 'calendar#list_events'
-
   resources :events, only: [:create]
 end
