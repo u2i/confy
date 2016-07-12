@@ -36,9 +36,9 @@ class Event < ApplicationRecord
       "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
     end
 
-    event = events.find { |e| e.start_time >= start_time && e.start_time < end_time }
+    event = events.find { |e| start_time < e.end_time && start_time >= e.start_time }
     errors.add(:start_time, event_in_progress_text.call(event)) if event
-    event = events.find { |e| e.end_time <= end_time && e.end_time > start_time }
+    event = events.find { |e| end_time > e.start_time && end_time <= e.end_time }
     errors.add(:end_time, event_in_progress_text.call(event)) if event
   end
 end

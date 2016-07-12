@@ -22,13 +22,25 @@ RSpec.describe Event, type: :model do
 
     context 'must ensure events do not collide' do
       context 'with same conference room' do
-        let!(:other_event) { create(:event, start_time: event.start_time, conference_room: room) }
 
         before { event.conference_room = room }
 
-        it 'is not valid' do
-          expect(event).not_to be_valid
-          expect(event.errors[:start_time]).to be_present
+        context 'when starting during another event' do
+          let!(:other_event) { create(:event, start_time: event.start_time, end_time: event.end_time + 1.minute, conference_room: room) }
+
+          it 'is not valid' do
+            expect(event).not_to be_valid
+            expect(event.errors[:start_time]).to be_present
+          end
+        end
+
+        context 'when ending during another event' do
+          let!(:other_event) { create(:event, start_time: event.start_time - 1.minute, end_time: event.end_time, conference_room: room) }
+
+          it 'is not valid' do
+            expect(event).not_to be_valid
+            expect(event.errors[:end_time]).to be_present
+          end
         end
       end
 
