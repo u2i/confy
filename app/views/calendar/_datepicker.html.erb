@@ -1,9 +1,10 @@
 <%= label_tag name, text %>
-<div class="form-group">
+<div class="form-group" id="<%= "#{name}-field-group" %>">
   <div class="input-group date">
-    <%= event.text_field name, class: 'form-control', id: id %>
+    <%= event.text_field name, required: true, class: 'form-control', id: "#{name}-picker" %>
     <span class="input-group-addon">
       <span class="glyphicon glyphicon-calendar"></span>
     </span>
   </div>
+  <span class="error-text text-danger"></span>
 </div>

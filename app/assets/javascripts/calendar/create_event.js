@@ -3,7 +3,21 @@ $(function () {
         $('#create-event-modal').modal('hide');
         $('#create-event-form')[0].reset();
         window.location.reload();
-    }).on('ajax:error', '#create-event-form', function (e, xhr, status, err) {
-        $('#create-event-error').text('Failed to create event: ' + err).show();
-    })
+    }).on('ajax:error', '#create-event-form', function (e, xhr) {
+        var responseObj = JSON.parse(xhr.responseText);
+
+        $('.form-group')
+            .removeClass('has-error')
+            .children('.error-text')
+            .empty();
+
+        Object.getOwnPropertyNames(responseObj)
+            .forEach(function (propName) {
+                var fieldGroup = $('#' + propName + '-field-group');
+                fieldGroup
+                    .addClass('has-error')
+                    .children('.error-text')
+                    .text(responseObj[propName][0]);
+            });
+    });
 });
