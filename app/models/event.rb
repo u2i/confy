@@ -22,24 +22,24 @@ class Event < ApplicationRecord
 
   def start_time_must_be_lower_than_end_time
     return unless start_time && end_time
+    return unless start_time >= end_time
     errors.add(:start_time, 'Start time must be lower than end time')
   end
 
   def no_collision
     return unless start_time && end_time
-    event = conference_room.events.in_span(start_time, end_time).first
-    return unless event
+    events = conference_room.events.in_span(start_time, end_time)
+    return unless events.exists?
 
-    event_in_progress_text = "Another event already in progress in #{conference_room.title} "\
-        "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
-
-    if start_time < event.end_time && start_time >= event.start_time
-      errors.add(:start_time, event_in_progress_text)
+    event_in_progress_text = lambda do |event|
+      "Another event already in progress in #{conference_room.title} "\
+      "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
     end
 
-    if end_time > event.start_time && end_time <= event.end_time
-      errors.add(:end_time, event_in_progress_text)
-    end
+    event = events.find { |e| e.start_time >= start_time && e.start_time < end_time }
+    errors.add(:start_time, event_in_progress_text.call(event)) if event
+    event = events.find { |e| e.end_time <= end_time && e.end_time > start_time }
+    errors.add(:end_time, event_in_progress_text.call(event)) if event
   end
 end
 
