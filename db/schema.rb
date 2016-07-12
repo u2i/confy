@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20160711143716) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "conference_room_id"
+    t.string   "name"
     t.index ["conference_room_id"], name: "index_events_on_conference_room_id", using: :btree
   end
 

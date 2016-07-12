@@ -1,8 +1,8 @@
 $(function () {
     var DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
-    var startTimePicker = $('#start-time-picker');
-    var endTimePicker = $('#end-time-picker');
+    var startTimePicker = $('#start_time-picker');
+    var endTimePicker = $('#end_time-picker');
     startTimePicker.datetimepicker({
         format: DATE_FORMAT
     });

@@ -7,7 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 day_time = Time.now.beginning_of_week
-
 conference_rooms = {
     "Mordor" => "u2i.com_2d3631343934393033313035@resource.calendar.google.com",
     "Neverland" => "u2i.com_3530363130383730383638@resource.calendar.google.com",
@@ -21,7 +20,7 @@ conference_rooms = {
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
-event_id = 1
+event_id = 0
 
 4.times do |i|
   day_time += 1.days
@@ -31,11 +30,16 @@ event_id = 1
     params = {
         start_time: start_time,
         end_time: end_time,
+        name: Faker::Company.name,
         description: Faker::Company.catch_phrase,
         conference_room: conference_rooms.sample,
         user: Faker::Name.name
     }
-    Event.where(id: event_id).first_or_create(params).update(params)
+    if (event = Event.all[event_id])
+      event.update(params)
+    else
+      Event.create(params)
+    end
     event_id += 1
   end
 end

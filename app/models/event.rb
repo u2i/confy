@@ -8,22 +8,8 @@ class Event < ApplicationRecord
   validate :start_time_must_be_lower_than_end_time
   validate :no_collision
 
-  def start_time_must_be_lower_than_end_time
-    errors.add(:start_time, "Can't be higher than end_time") if start_time.try(:>=, end_time)
-  end
-
-  def no_collision
-    return unless start_time && end_time
-    return unless Event.in_span_for_conference_room(start_time, end_time, conference_room).exists?
-    errors.add(:start_time, "Can't start while another event is in progress")
-  end
-
   scope :in_span, -> (starting, ending) {
     where('? <= end_time AND ? >= start_time', starting, ending)
-  }
-
-  scope :in_span_for_conference_room, -> (starting, ending, conference_room) {
-    in_span(starting, ending).where(conference_room: conference_room)
   }
 
   scope :in_week, ->(week) {
@@ -34,4 +20,26 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
+  def start_time_must_be_lower_than_end_time
+    return unless start_time && end_time
+    return unless start_time >= end_time
+    errors.add(:start_time, 'Start time must be lower than end time')
+  end
+
+  def no_collision
+    return unless start_time && end_time
+    events = conference_room.events.in_span(start_time, end_time)
+    return unless events.exists?
+
+    event_in_progress_text = -> (event) do
+      "Another event already in progress in #{conference_room.title} "\
+      "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
+    end
+
+    event = events.find { |e| start_time < e.end_time && start_time >= e.start_time }
+    errors.add(:start_time, event_in_progress_text.call(event)) if event
+    event = events.find { |e| end_time > e.start_time && end_time <= e.end_time }
+    errors.add(:end_time, event_in_progress_text.call(event)) if event
+  end
 end
+
