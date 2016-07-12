@@ -1,0 +1,30 @@
+.event {
+  padding: 10px;
+
+  flex-basis: 0;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+
+  border: 1px solid #F7F7F7;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  .event-time {
+    font-weight: bold;
+    font-size: 0.8em;
+  }
+
+  .event-description {
+    margin: 0.2em 0;
+  }
+
+  .event-user, .event-location {
+    font-size: 0.9em;
+
+    > small {
+      font-style: italic;
+    }
+  }
+}

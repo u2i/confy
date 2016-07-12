@@ -18,23 +18,10 @@ html, body, .container {
     padding-top: 0;
     padding-bottom: 1em;
   }
+}
 
-  .event {
-    .event-time {
-      font-weight: bold;
-      font-size: 0.8em;
-    }
-
-    .event-name {
-      margin: 0.2em 0;
-    }
-
-    .event-user, .event-location {
-      font-size: 0.9em;
-
-      > small {
-        font-style: italic;
-      }
-    }
-  }
+.event-container {
+  position: absolute;
+  display: flex;
+  align-items: stretch;
 }
