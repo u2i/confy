@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = Event.in_week_group_by_weekday(week_start)
+    @events = Event.in_week(week_start).group_into_blocks
 
     @conference_rooms = ConferenceRoom.all
   end
@@ -67,5 +67,4 @@ class CalendarController < ApplicationController
     week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     [week_start, week_end]
   end
-
 end

@@ -35,7 +35,7 @@
 <%= render partial: 'create_event', locals: {conference_rooms: @conference_rooms}%>
 
 <%= javascript_tag do %>
-  window.events = <%= raw Event.in_week(params[:date] ? Time.parse(params[:date]) : Time.now).to_json %>
+  window.events = <%= raw @events.to_json %>
   window.eventUrl = '<%= events_path %>'
   window.eventTimeGranularity = <%= CalendarHelper::EVENT_TIME_GRANULARITY %>
 <% end %>

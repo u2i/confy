@@ -20,6 +20,26 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
+  scope :group_into_blocks, -> {
+    events = order(:end_time)
+    blocks = []
+
+    current_block = []
+    previous_event = events.first
+
+    events.each do |event|
+      unless event.start_time < previous_event.end_time
+        blocks << current_block
+        current_block = []
+      end
+      current_block << event
+      current_block.sort_by! { |e| e.start_time }
+      previous_event = event
+    end
+
+    blocks
+  }
+
   def start_time_must_be_lower_than_end_time
     return unless start_time && end_time
     return unless start_time >= end_time
