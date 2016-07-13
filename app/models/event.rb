@@ -22,18 +22,13 @@ class Event < ApplicationRecord
 
   class << self
     def not_free(week)
-      occupied_slot = ConferenceRoom.new(capacity: 99, title: "NoWayLand", color: "repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)", email: "fake_email@com")
+      css_color = 'repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)'
+      occupied_slot = ConferenceRoom.new(capacity: 99, title: 'NoWayLand', color: css_color, email: 'fake_email@com')
       Hash[(1..7).map { |n| [n, []] }].merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week))).tap do |vals|
-
-        vals.each do |wday, ranges|
-          start_time = (week.beginning_of_week + wday - 1).beginning_of_day
-          end_time = (start_time + 1.days).beginning_of_day
+        vals.each_value do |ranges|
           ranges.map! do |range|
-            e = Event.new(start_time: range.begin, end_time: range.end, name: 'Impossibru', description: 'Occupied', user: 'Very occupied user', conference_room: occupied_slot)# if start_time < range.begin
-            start_time = range.end
-            e
+            Event.new(start_time: range.begin, end_time: range.end, name: 'Impossibru', description: 'Occupied', user: 'Very occupied user', conference_room: occupied_slot)
           end
-          #ranges << Event.new(start_time: start_time, end_time: end_time, name: 'Occupied', description: 'Occupied', user: 'Very occupied user', conference_room: occupied_slot) if start_time < end_time
         end
       end
     end
