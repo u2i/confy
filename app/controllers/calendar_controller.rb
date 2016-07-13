@@ -19,6 +19,22 @@ class CalendarController < ApplicationController
     session[:credentials] = GoogleOauth.refresh_token(session[:credentials]) if session[:credentials]
   end
 
+  def free_rooms
+    week_start, week_end = build_week_boundaries(params[:date])
+    @days = (week_start..week_end).to_a
+
+    start_time = Time.now.at_beginning_of_day
+    end_time = Time.now.at_end_of_day
+    step = 30.minutes
+    @times = time_interval(start_time, end_time, step)
+
+    @events = Event.not_free(week_start)
+    @events.each_value { |n| n.each { |e| e.start_time = e.start_time.beginning_of_hour and e.end_time = e.end_time.beginning_of_hour } }
+
+    @conference_rooms = ConferenceRoom.all
+    render :index
+  end
+
   def index
     week_start, week_end = build_week_boundaries(params[:date])
     @days = (week_start..week_end).to_a

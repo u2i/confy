@@ -27,8 +27,8 @@ conference_rooms = {
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
-event_id = 0
 
+event_id = 0
 4.times do |i|
   day_time += 1.days
   4.times do |j|
@@ -48,5 +48,22 @@ event_id = 0
       Event.create(params)
     end
     event_id += 1
+  end
+end
+
+event_id = 0
+ConferenceRoom.all.each do |conference_room|
+  params = {
+      start_time: Time.now.beginning_of_day + 6.hours,
+      end_time: Time.now.beginning_of_day + 7.hours,
+      name: Faker::Company.name,
+      description: Faker::Company.catch_phrase,
+      conference_room: conference_room,
+      user: Faker::Name.name
+  }
+  if(event = Event.all[event_id])
+    event.update(params)
+  else
+    Event.create(params)
   end
 end
