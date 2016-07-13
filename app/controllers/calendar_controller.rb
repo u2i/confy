@@ -7,12 +7,9 @@ class CalendarController < ApplicationController
   before_action :refresh_token
 
   def authenticate
-    if params['code'] == nil
-      redirect_to GoogleOauth.request_code_uri
-    else
-      session[:credentials] = GoogleOauth.get_user_credentials(params[:code])
-      redirect_to action: :index
-    end
+    fail ArgumentError, 'No code parameter' if params[:code].blank?
+    session[:credentials] = GoogleOauth.get_user_credentials(params[:code])
+    redirect_to action: :index
   rescue
     session.delete(:credentials)
     redirect_to GoogleOauth.request_code_uri
