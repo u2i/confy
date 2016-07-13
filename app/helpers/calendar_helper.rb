@@ -24,6 +24,6 @@ module CalendarHelper
   end
 
   def add_date_and_time(date, time)
-    date.to_datetime + time.seconds_since_midnight.seconds
+    date.beginning_of_day + time.seconds_since_midnight.seconds
   end
 end

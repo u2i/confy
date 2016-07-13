@@ -2,7 +2,10 @@ sudo: false
 language: ruby
 cache: bundler
 rvm:
-  - 2.3.0
+- 2.3.0
 before_script:
-  - bundle exec rake db:create
-  - bundle exec rake db:migrate
+- bundle exec rake db:create
+- bundle exec rake db:migrate
+before_install:
+- openssl aes-256-cbc -K $encrypted_2862f5971073_key -iv $encrypted_2862f5971073_iv
+  -in client_secrets.json.enc -out client_secrets.json -d
