@@ -1,5 +1,5 @@
 <% if current_event %>
-    <td rowspan="<%= event_span(current_event) %>">
+    <td rowspan="<%= event_span(current_event) %>" style="<%= event_style(current_event) %>">
       <div class="event">
         <div class="event-time"><%= current_event.start_time.strftime('%H:%M') %>
           - <%= current_event.end_time.strftime('%H:%M') %></div>
