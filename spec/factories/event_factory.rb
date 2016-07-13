@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :event do
-    name "EventName"
+    sequence :name do |n|
+      "event##{n}'s name"
+    end
     description "123"
     user "user"
     start_time Time.new(2016, 01, 01)

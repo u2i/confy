@@ -31,7 +31,6 @@ module GoogleOauth
   def default_client
     AUTH_CLIENT.clone
   end
-
   def request_code_uri
     default_client.authorization_uri.to_s
   end
