@@ -7,6 +7,13 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 day_time = Time.now.beginning_of_week
+colors = {'Mordor' => '#cde6f4',
+          'Neverland' => '#d2d4f6',
+          'Sherwood Forest' => '#ffebd3',
+          'Valhalla' => '#ffeec0',
+          'Voyager' => '#cdf8e7',
+          'Winterfell' => '#ffd7d3',
+          'Yellow Submarine' => '#ffdddd'}
 conference_rooms = {
     "Mordor" => "u2i.com_2d3631343934393033313035@resource.calendar.google.com",
     "Neverland" => "u2i.com_3530363130383730383638@resource.calendar.google.com",
@@ -16,7 +23,7 @@ conference_rooms = {
     "Winterfell" => "u2i.com_3331393831383634333035@resource.calendar.google.com",
     "Yellow Submarine" => "u2i.com_3239383237392d373233@resource.calendar.google.com"
 }.map do |name, email|
-  params = { capacity: rand(5..20), color: "#%06x" % (rand * 0xffffff), email: email }
+  params = { capacity: rand(5..20), color: colors[name], email: email }
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
@@ -28,12 +35,12 @@ event_id = 0
     start_time = day_time + j.hours * 3
     end_time = start_time + rand(1..2).hours + 30*(rand(0..1)).minutes
     params = {
-        start_time: start_time,
-        end_time: end_time,
-        name: Faker::Company.name,
-        description: Faker::Company.catch_phrase,
-        conference_room: conference_rooms.sample,
-        user: Faker::Name.name
+      start_time: start_time,
+      end_time: end_time,
+      name: Faker::Company.name,
+      description: Faker::Company.catch_phrase,
+      conference_room: conference_rooms.sample,
+      user: Faker::Name.name
     }
     if (event = Event.all[event_id])
       event.update(params)
