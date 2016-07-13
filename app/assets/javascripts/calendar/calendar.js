@@ -2,24 +2,43 @@ $(function () {
     events.forEach(function (event) {
         event.start_time = new Date(event.start_time);
         event.end_time = new Date(event.end_time);
-        var tableCell = $("td[data-date='" + event.start_time.getTime() / 1000 + "']");
-        var eventElement = tableCell.children('.event-container');
+        var tableCell = getEventTableCell(event);
+        var eventContainer = tableCell.children('.event-container');
+
         $.ajax({
             type: 'GET',
             dataType: 'html',
             url: eventUrl + '/' + event.id
         }).success(function (data) {
-            eventElement.append(data);
-            var length = (event.end_time.getTime() - event.start_time.getTime()) / 1000 / eventTimeGranularity;
-
-            var top = tableCell.offset().top,
-                left = tableCell.offset().left,
-                width = tableCell.css('width'),
-                height = length * parseInt(tableCell.css('height'));
-            eventElement.css({top: top, left: left, width: width, height: height + 'px'});
-            $('body').append(eventElement);
+            eventContainer.append(data);
+            setEventSize(tableCell, eventContainer, event);
         }).error(function (xhr, status, err) {
             console.log(err)
         });
-    })
+    });
+
+    $(window).resize(function () {
+        events.forEach(function (event) {
+            var tableCell = getEventTableCell(event);
+            var eventContainer = tableCell.children('.event-container');
+            setEventSize(tableCell, eventContainer, event);
+        });
+    });
+
+    function getEventTableCell(event) {
+        return $("td[data-date='" + event.start_time.getTime() / 1000 + "']");
+    }
+
+    function getEventElement(eventContainer, event) {
+        return eventContainer.children('.event[data-id="' + event.id + '"]');
+    }
+
+    function setEventSize(tableCell, eventContainer, event) {
+        var length = (event.end_time.getTime() - event.start_time.getTime()) / 1000 / eventTimeGranularity;
+
+        var width = tableCell.css('width'),
+            height = length * parseInt(tableCell.css('height'));
+        eventContainer.css({width: width});
+        getEventElement(eventContainer, event).css({height: height + 'px'});
+    }
 });

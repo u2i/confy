@@ -15,8 +15,8 @@ html, body, .container {
 .calendar > tbody > tr {
 
   > td {
-    padding-top: 0;
-    padding-bottom: 1em;
+    padding: 0 0.5em 1em 0;
+    overflow: visible;
   }
 }
 
