@@ -63,14 +63,12 @@ RSpec.describe Event, type: :model do
     let!(:event1) { create(:event, start_time: start_time - 2.days, end_time: start_time, conference_room: room) }
     let!(:event2) { create(:event, start_time: start_time + 3.days, end_time: start_time + 4.days, conference_room: room) }
     let!(:event3) { create(:event, start_time: start_time + 1.hour, end_time: start_time + 1.days, conference_room: room) }
-    let!(:expected_events) {
-      [event1, event2, event3]
-    }
-    let!(:not_expected_events) {
+    let!(:expected_events) { [event1, event2, event3] }
+    let!(:not_expected_events) do
       [
         create(:event, start_time: start_time - 3.days, end_time: start_time - 2.days - 1.hour, conference_room: room)
       ]
-    }
+    end
 
     it "returns all events from specified week" do
       expect(described_class.in_span(start_time.beginning_of_week, start_time.end_of_week)).to match_array expected_events
@@ -126,28 +124,35 @@ RSpec.describe Event, type: :model do
     let(:end_time2) { start_time2 + 4.hours }
     let(:end_time3) { start_time3 + 2.hours }
 
-    let(:event1) { build :event, start_time: start_time1, end_time: end_time1, conference_room: room1 }
-    let(:event2) { build :event, start_time: start_time2, end_time: end_time2, conference_room: room2 }
-    let(:event3) { build :event, start_time: start_time3, end_time: end_time3, conference_room: room1 }
+    let(:event1) do
+      build :event, start_time: start_time1, end_time: end_time1, conference_room: room1
+    end
+    let(:event2) do
+      build :event, start_time: start_time2, end_time: end_time2, conference_room: room2
+    end
+    let(:event3) do
+      build :event, start_time: start_time3, end_time: end_time3, conference_room: room1
+    end
 
-    let(:reservations) {
+    let(:reservations) do
       {
           start_time1.wday => [event1, event2, event3]
       }
-    }
+    end
 
-    let(:expected_result1) {
+    let(:expected_result1) do
       {
           start_time1.wday => [start_time2..end_time1]
       }
-    }
-    let(:expected_result2) {
+    end
+
+    let(:expected_result2) do
       {
           start_time1.wday => []
       }
-    }
+    end
 
-    it "should return totally occupied slots per day" do
+    it 'should return totally occupied slots per day' do
       expect(Event.occupied_slots_per_wday(reservations.clone)).to eq expected_result1
       create :conference_room
       expect(Event.occupied_slots_per_wday(reservations)).to eq expected_result2

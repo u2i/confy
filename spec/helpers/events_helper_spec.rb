@@ -12,12 +12,9 @@ require 'rails_helper'
 # end
 RSpec.describe EventsHelper, type: :helper do
   describe '.next_week' do
-    let(:custom_day) {
-      Date.today - 24.days
-    }
-    let(:custom_day_s) {
-      custom_day.to_s
-    }
+    let(:custom_day) { Date.today - 24.days }
+    let(:custom_day_s) { custom_day.to_s }
+
     context 'nil given' do
       it 'returns day from the following week' do
         expect(helper.next_week(nil)).to eq(Date.today + 7.days)
@@ -38,12 +35,9 @@ RSpec.describe EventsHelper, type: :helper do
   end
 
   describe '.previous_week' do
-    let(:custom_day) {
-      Date.today - 24.days
-    }
-    let(:custom_day_s) {
-      custom_day.to_s
-    }
+    let(:custom_day) { Date.today - 24.days }
+    let(:custom_day_s) { custom_day.to_s }
+
     context 'nil given' do
       it 'returns day from the previous week' do
         expect(helper.previous_week(nil)).to eq(Date.today - 7.days)
