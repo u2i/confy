@@ -10,7 +10,7 @@ RSpec.describe Event, type: :model do
       it { is_expected.to validate_presence_of s }
     end
 
-    it "must ensure that start_time is lower than end_time" do
+    it 'must ensure that start_time is lower than end_time' do
       event.end_time = event.start_time - 10
       expect(event).not_to be_valid
       expect(event.errors[:start_time]).to be_present
@@ -22,7 +22,6 @@ RSpec.describe Event, type: :model do
 
     context 'must ensure events do not collide' do
       context 'with same conference room' do
-
         before { event.conference_room = room }
 
         context 'when starting during another event' do
@@ -55,7 +54,6 @@ RSpec.describe Event, type: :model do
         end
       end
     end
-
   end
 
   describe '.in_span' do
@@ -70,13 +68,12 @@ RSpec.describe Event, type: :model do
       ]
     end
 
-    it "returns all events from specified week" do
+    it 'returns all events from specified week' do
       expect(described_class.in_span(start_time.beginning_of_week, start_time.end_of_week)).to match_array expected_events
     end
   end
 
   describe '.in_week' do
-
     let(:start_time) { Time.now.beginning_of_week }
 
     it 'calls .in_span with correct arguemnts' do
@@ -99,14 +96,14 @@ RSpec.describe Event, type: :model do
       }
     end
 
-    let(:not_expected_events) {
+    let(:not_expected_events) do
       {
         9 => [event4]
       }
-    }
+    end
 
     subject(:events) { described_class.in_week_group_by_weekday(start_time) }
-    it "returns all events from specified week grouped by weekday" do
+    it 'returns all events from specified week grouped by weekday' do
       expect(events).to include expected_events
       expect(events).not_to include not_expected_events
     end
@@ -136,19 +133,19 @@ RSpec.describe Event, type: :model do
 
     let(:reservations) do
       {
-          start_time1.wday => [event1, event2, event3]
+        start_time1.wday => [event1, event2, event3]
       }
     end
 
     let(:expected_result1) do
       {
-          start_time1.wday => [start_time2..end_time1]
+        start_time1.wday => [start_time2..end_time1]
       }
     end
 
     let(:expected_result2) do
       {
-          start_time1.wday => []
+        start_time1.wday => []
       }
     end
 
@@ -158,5 +155,4 @@ RSpec.describe Event, type: :model do
       expect(Event.occupied_slots_per_wday(reservations)).to eq expected_result2
     end
   end
-
 end

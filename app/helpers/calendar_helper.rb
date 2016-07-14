@@ -1,5 +1,4 @@
 module CalendarHelper
-
   WEEK_LENGTH = 5
   EVENT_TIME_GRANULARITY = 30.minutes
 

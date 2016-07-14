@@ -4,13 +4,13 @@ require 'google/api_client/client_secrets'
 include Rails.application.routes.url_helpers
 
 module GoogleOauth
-  CLIENT_SECRETS = Google::APIClient::ClientSecrets.load("client_secrets.json")
+  CLIENT_SECRETS = Google::APIClient::ClientSecrets.load('client_secrets.json')
 
   module_function
 
   def is_authenticated?(credentials = {})
     return false unless Hash === credentials
-    credentials.has_key? "client_id" and credentials.has_key? "client_secret"
+    credentials.key?('client_id') && credentials.key?('client_secret')
   end
 
   def refresh_token(credentials = {})
@@ -25,11 +25,12 @@ module GoogleOauth
   def default_client
     CLIENT_SECRETS.to_authorization.tap do |auth_client|
       auth_client.update!(
-          scope: 'https://www.googleapis.com/auth/calendar',
-          redirect_uri: (url_for action: :authenticate, controller: :calendar, host: ENV['HOSTNAME'])
+        scope: 'https://www.googleapis.com/auth/calendar',
+        redirect_uri: (url_for action: :authenticate, controller: :calendar, host: ENV['HOSTNAME'])
       )
     end
   end
+
   def request_code_uri
     default_client.authorization_uri.to_s
   end
@@ -40,6 +41,4 @@ module GoogleOauth
       auth_client.fetch_access_token!
     end.to_json
   end
-
-
 end

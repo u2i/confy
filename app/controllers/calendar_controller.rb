@@ -2,12 +2,11 @@ require 'google/apis/calendar_v3'
 require 'google/api_client/client_secrets'
 
 class CalendarController < ApplicationController
-
   before_action :check_authentication, except: :authenticate
   before_action :refresh_token
 
   def authenticate
-    fail ArgumentError, 'No code parameter' if params[:code].blank?
+    raise ArgumentError, 'No code parameter' if params[:code].blank?
     session[:credentials] = GoogleOauth.get_user_credentials(params[:code])
     redirect_to action: :index
   rescue
@@ -43,6 +42,7 @@ class CalendarController < ApplicationController
   end
 
   private
+
   def index_setup(week_start, week_end)
     @days = (week_start..week_end).to_a
     start_time = Time.now.at_beginning_of_day
@@ -53,7 +53,7 @@ class CalendarController < ApplicationController
   end
 
   def check_authentication
-    unless session[:credentials] and GoogleOauth.is_authenticated?(JSON.parse(session[:credentials]))
+    unless session[:credentials] && GoogleOauth.is_authenticated?(JSON.parse(session[:credentials]))
       redirect_to action: :authenticate
     end
   end
@@ -67,5 +67,4 @@ class CalendarController < ApplicationController
     week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     [week_start, week_end]
   end
-
 end

@@ -25,17 +25,17 @@ class Event < ApplicationRecord
     def not_free(week, css_color = DEFAULT_COLOR)
       occupied_slot = ConferenceRoom.new(capacity: 99, title: 'NoWayLand', color: css_color)
       Hash[(1..7).map { |n| [n, []] }]
-          .merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
-          .tap do |wday_group|
+        .merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
+        .tap do |wday_group|
         wday_group.each_value do |ranges|
           ranges.map! do |range|
             Event.new(
-                start_time: range.begin,
-                end_time: range.end,
-                name: 'Impossibru',
-                description: 'Occupied',
-                user:'Very occupied user',
-                conference_room: occupied_slot
+              start_time: range.begin,
+              end_time: range.end,
+              name: 'Impossibru',
+              description: 'Occupied',
+              user: 'Very occupied user',
+              conference_room: occupied_slot
             )
           end
         end
@@ -53,7 +53,7 @@ class Event < ApplicationRecord
         first_iteration = true
         rooms.each do |_room, events|
           if first_iteration
-            events.each { |n| not_free << (n.start_time..n.end_time)}
+            events.each { |n| not_free << (n.start_time..n.end_time) }
             first_iteration = false
           else
             new_not_free = []
@@ -101,7 +101,7 @@ class Event < ApplicationRecord
     events = conference_room.events.in_span(start_time, end_time)
     return unless events.exists?
 
-    event_in_progress_text = -> (event) do
+    event_in_progress_text = lambda do |event|
       "Another event already in progress in #{conference_room.title} "\
       "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
     end
@@ -111,5 +111,4 @@ class Event < ApplicationRecord
     event = events.find { |e| end_time > e.start_time && end_time <= e.end_time }
     errors.add(:end_time, event_in_progress_text.call(event)) if event
   end
-
 end

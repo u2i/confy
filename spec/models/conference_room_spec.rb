@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ConferenceRoom, type: :model do
-  describe "validation" do
+  describe 'validation' do
     subject { build :conference_room }
 
     %i(title color capacity email).each do |s|
@@ -15,20 +15,19 @@ RSpec.describe ConferenceRoom, type: :model do
     let(:valid_colors) { %w(#FfF000 #231482 #AbdD12 #E22 #123) }
     let(:invalid_colors) { %w(1023o 1230 12345 124fe #jugrju #123jku #9999999 #1234 #12 #A #b) }
 
-    it "must ensure that color has the right format" do
+    it 'must ensure that color has the right format' do
       expect(valid_colors.all? { |n| subject.tap { |s| s.color = n }.valid? }).to be true
       expect(invalid_colors.none? { |n| subject.tap { |s| s.color = n }.valid? }).to be true
     end
   end
 
-  describe "before_validation" do
-    let(:color) { "#fFB021" }
+  describe 'before_validation' do
+    let(:color) { '#fFB021' }
     let(:conference_room) { build :conference_room, color: color }
 
-    it "must downcases color" do
+    it 'must downcases color' do
       conference_room.valid? # Triggers before_validation
       expect(conference_room.color).to eq color.downcase
     end
   end
 end
-
