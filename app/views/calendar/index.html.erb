@@ -1,15 +1,14 @@
 <div class="container">
-  <aside class="col-xs-12 col-md-1 sidebar menu_button">
+  <aside class="col-xs-12 col-md-2 sidebar">
     <button type="button"
-            class="btn btn-primary"
+            class="btn btn-primary menu_button"
             data-toggle="modal"
             data-target="#create-event-modal">
       Create Event
     </button>
-    <%= button_to 'Free Rooms', free_rooms_path, method: :get, class: 'btn btn-primary menu_button' %>
-    <%= button_to 'Home', root_path, method: :get, class: 'btn btn-primary menu_button' %>
-</aside>
-
+    <%= link_to 'Free Rooms', free_rooms_path, method: :get, class: 'btn btn-primary menu_button' %>
+    <%= link_to 'Home', root_path, method: :get, class: 'btn btn-primary menu_button' %>
+  </aside>
   <div class="col-xs-12 col-md-8">
     <table class="calendar table table-bordered table-striped table-responsive">
       <tr>
