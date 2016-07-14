@@ -1,11 +1,13 @@
+$eventBorderColor: #f7f7f7f;
+
 .event {
+  border: 1px solid $eventBorderColor;
+  border-radius: 5px;
+
   flex-basis: 0;
   flex-grow: 1;
   height: 100%;
   overflow: hidden;
-
-  border: 1px solid #F7F7F7;
-  border-radius: 5px;
 
   > * {
     margin-left: 10%;

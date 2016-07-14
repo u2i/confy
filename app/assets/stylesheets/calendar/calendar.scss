@@ -15,13 +15,13 @@ html, body, .container {
 .calendar > tbody > tr {
 
   > td {
-    padding: 0 0.5em 1em 0;
     overflow: visible;
+    padding: 0 0.5em 1em 0;
   }
 }
 
 .event-container {
-  position: absolute;
-  display: flex;
   align-items: stretch;
+  display: flex;
+  position: absolute;
 }
