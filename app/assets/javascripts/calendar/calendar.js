@@ -1,4 +1,6 @@
 $(function () {
+    console.log(events);
+
    events.forEach(function (block) {
         block.forEach(function (event) {
             var tableCell = getEventTableCell(event);

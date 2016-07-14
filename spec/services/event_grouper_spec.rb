@@ -25,7 +25,7 @@ RSpec.describe EventGrouper do
 
     let!(:expected_events) { [[event1, event2, event3], [event4], [event5]] }
 
-    subject(:events) { described_class.group_into_blocks(Event.all) }
+    subject(:events) { described_class.new(Event.all).call }
     it 'groups overlapping events' do
       expect(events).to match_array(expected_events)
     end
