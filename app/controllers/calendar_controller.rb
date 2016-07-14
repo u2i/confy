@@ -4,6 +4,9 @@ require 'google/api_client/client_secrets'
 class CalendarController < ApplicationController
   before_action :check_authentication, except: :authenticate
   before_action :refresh_token
+  before_action only: [:index, :free_rooms, :google_index] do
+    index_setup(*build_week_boundaries)
+  end
 
   def authenticate
     raise ArgumentError, 'No code parameter' if params[:code].blank?
@@ -19,21 +22,16 @@ class CalendarController < ApplicationController
   end
 
   def index
-    week_start, week_end = build_week_boundaries(params[:date])
-    index_setup(week_start, week_end)
     @events = Event.in_week_group_by_weekday(week_start)
   end
 
   def free_rooms
-    week_start, week_end = build_week_boundaries(params[:date])
-    index_setup(week_start, week_end)
     @events = Event.not_free(week_start)
     render :index
   end
 
   # Index for showing events from Google calendar
   def google_index
-    index_setup(*build_week_boundaries(params[:date]))
     @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
     render :index
   rescue Google::Apis::AuthorizationError
@@ -62,8 +60,11 @@ class CalendarController < ApplicationController
     (start_time.to_i..end_time.to_i).step(step).collect { |time| Time.at time }
   end
 
-  def build_week_boundaries(date)
-    week_start = date ? Date.parse(date).at_beginning_of_week : Date.today.beginning_of_week
+  def week_start
+    params[:date] ? Date.parse(params[:date]).at_beginning_of_week : Date.today.beginning_of_week
+  end
+
+  def build_week_boundaries
     week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     [week_start, week_end]
   end
