@@ -12,8 +12,8 @@ $(function () {
             var width = eventsInThisContainer * eventWidth,
                 offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
             eventContainer.css({width: width, 'margin-left': offset});
-
-            var length = (new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / 1000 / eventTimeGranularity;
+            
+            var length = eventLengthInSeconds(event);
 
             $.ajax({
                 type: 'GET',
@@ -59,5 +59,9 @@ $(function () {
         var width = eventsInThisContainer * eventWidth,
             offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
         eventContainer.css({width: width, 'margin-left': offset});
+    }
+
+    function eventLengthInSeconds(event) {
+        return (new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / 1000 / eventTimeGranularity;
     }
 });
