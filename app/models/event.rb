@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+
   belongs_to :conference_room
 
   validates :start_time, presence: true
@@ -20,63 +21,15 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
-  class << self
-    DEFAULT_COLOR = 'repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)'.freeze
-    def not_free(week, css_color = DEFAULT_COLOR)
-      occupied_slot = ConferenceRoom.new(capacity: 99, title: 'NoWayLand', color: css_color)
-      Hash[(1..7).map { |n| [n, []] }]
-        .merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
+  DEFAULT_COLOR = 'repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)'.freeze
+  def self.not_free(week, css_color = DEFAULT_COLOR)
+    occupied_slot = ConferenceRoom.new(color: css_color)
+    Hash[(1..7).map { |n| [n, []] }]
+        .merge(OccupiedRangeBuilder.occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
         .tap do |wday_group|
-        wday_group.each_value do |ranges|
-          ranges.map! do |range|
-            Event.new(
-              start_time: range.begin,
-              end_time: range.end,
-              name: 'Impossibru',
-              description: 'Occupied',
-              user: 'Very occupied user',
-              conference_room: occupied_slot
-            )
-          end
-        end
+      wday_group.each_value do |ranges|
+        ranges.map! { |range| new(start_time: range.begin, end_time: range.end, conference_room: occupied_slot) }
       end
-    end
-
-    def occupied_slots_per_wday(reservations)
-      occupied = {}
-      empty_rooms = Hash[ConferenceRoom.all.map { |c| [c, []] }]
-      reservations.each do |wday, events|
-        reservations[wday] = empty_rooms.merge(events.group_by(&:conference_room))
-      end
-      reservations.each do |wday, rooms|
-        not_free = []
-        first_iteration = true
-        rooms.each do |_room, events|
-          if first_iteration
-            events.each { |n| not_free << (n.start_time..n.end_time) }
-            first_iteration = false
-          else
-            new_not_free = []
-            events.each do |event|
-              not_free.each do |range|
-                if (intersected = intersection(range, event))
-                  new_not_free << intersected
-                end
-              end
-            end
-            not_free = new_not_free
-            break if not_free.empty?
-          end
-        end
-        occupied[wday] = not_free
-      end
-      occupied
-    end
-
-    def intersection(left, right)
-      return nil unless left && right
-      return nil if left.max < right.begin || right.max < left.begin
-      [left.begin, right.begin].max..[left.max, right.max].min
     end
   end
 

@@ -4,10 +4,10 @@ module EventsHelper
   end
 
   def next_week(date)
-    (date.nil? || !(date.is_a? String)) ? Date.today + 7.days : Date.parse(date) + 7.days
+    date.blank? ? Date.today.next_week : Date.parse(date.to_s).next_week
   end
 
   def previous_week(date)
-    (date.nil? || !(date.is_a? String)) ? Date.today - 7.days : Date.parse(date) - 7.days
+    date.blank? ? Date.today.prev_week : Date.parse(date.to_s).prev_week
   end
 end
