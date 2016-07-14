@@ -28,7 +28,7 @@ conference_rooms = {
 end
 
 
-event_id = 0
+event_id = 1
 4.times do |i|
   day_time += 1.days
   4.times do |j|
@@ -42,7 +42,7 @@ event_id = 0
       conference_room: conference_rooms.sample,
       user: Faker::Name.name
     }
-    if (event = Event.all[event_id])
+    if (event = Event.find_by_id(event_id))
       event.update(params)
     else
       Event.create(params)
@@ -51,7 +51,7 @@ event_id = 0
   end
 end
 
-event_id = 0
+event_id = 1
 ConferenceRoom.all.each do |conference_room|
   params = {
       start_time: Time.now.beginning_of_day + 6.hours,
@@ -61,7 +61,7 @@ ConferenceRoom.all.each do |conference_room|
       conference_room: conference_room,
       user: Faker::Name.name
   }
-  if(event = Event.all[event_id])
+  if(event = Event.find_by_id(event_id))
     event.update(params)
   else
     Event.create(params)

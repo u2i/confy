@@ -39,18 +39,22 @@ class Event < ApplicationRecord
       reservations.each { |wday, events| reservations[wday] = empty_rooms.merge(events.group_by(&:conference_room)) }
       reservations.each do |wday, rooms|
         not_free = []
-        flag = true
-        rooms.each do |room, events|
-          if flag
+        first_iteration = true
+        rooms.each do |_room, events|
+          if first_iteration
             events.each { |n| not_free << (n.start_time..n.end_time)}
-            flag = false
+            first_iteration = false
           else
-            tmp = []
+            new_not_free = []
             events.each do |event|
-              not_free.each { |i| (nf = intersection(i, event)) && tmp << nf }
+              not_free.each do |range|
+                if (intersected = intersection(range, event))
+                  new_not_free << intersected
+                end
+              end
             end
-            not_free = tmp
-            break if tmp == []
+            not_free = new_not_free
+            break if new_not_free == []
           end
         end
         occupied[wday] = not_free
