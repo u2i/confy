@@ -1,19 +1,21 @@
 $(function () {
-
     events.forEach(function (block) {
-        var eventWidth = parseInt(getEventTableCell(block[0]).css('width')) / block.length;
-
-        var promises = [];
+        var eventWidth = getEventWidth(block);
 
         block.forEach(function (event) {
-            event.start_time = new Date(event.start_time);
-            event.end_time = new Date(event.end_time);
             var tableCell = getEventTableCell(event);
             var eventContainer = tableCell.children('.event-container');
+            var eventsInThisContainer = block.filter(function (e) {
+                return e.start_time == event.start_time;
+            }).length;
 
-            var length = (event.end_time.getTime() - event.start_time.getTime()) / 1000 / eventTimeGranularity;
+            var width = eventsInThisContainer * eventWidth,
+                offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
+            eventContainer.css({width: width, 'margin-left': offset});
 
-            promises.push($.ajax({
+            var length = (new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / 1000 / eventTimeGranularity;
+
+            $.ajax({
                 type: 'GET',
                 dataType: 'html',
                 url: eventUrl + '/' + event.id
@@ -21,47 +23,41 @@ $(function () {
                 eventContainer.append(data);
                 var height = length * parseInt(tableCell.css('height'));
                 getEventElement(eventContainer, event).css({height: height + 'px'});
-            }).error(function (xhr, status, err) {
-                console.log(err)
-            }));
-
-            Promise.all(promises).then(function () {
-                var eventsInThisContainer = eventContainer.children('.event').length;
-                var width = eventsInThisContainer * eventWidth,
-                    offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
-                eventContainer.css({width: width, 'margin-left': offset});
             });
         });
-
-
     });
 
     $(window).resize(function () {
-        events.forEach(function (event) {
-            var tableCell = getEventTableCell(event);
-            var eventContainer = tableCell.children('.event-container');
-            setEventSize(tableCell, eventContainer, event);
+        events.forEach(function (block) {
+            block.forEach(function (event) {
+                var tableCell = getEventTableCell(event);
+                var eventContainer = tableCell.children('.event-container');
+                setEventSize(eventContainer, block, event);
+            });
         });
     });
 
+    function getEventWidth(block) {
+        return parseInt(getEventTableCell(block[0]).css('width')) / block.length;
+    }
+
     function getEventTableCell(event) {
-        if (!event.start_time.getTime) {
-            event.start_time = new Date(event.start_time);
-            event.end_time = new Date(event.end_time);
-        }
-        return $("td[data-date='" + event.start_time.getTime() / 1000 + "']");
+        return $("td[data-date='" + new Date(event.start_time).getTime() / 1000 + "']");
     }
 
     function getEventElement(eventContainer, event) {
         return eventContainer.children('.event[data-id="' + event.id + '"]');
     }
 
-    function setEventSize(tableCell, eventContainer, event) {
-        var length = (event.end_time.getTime() - event.start_time.getTime()) / 1000 / eventTimeGranularity;
+    function setEventSize(eventContainer, block, event) {
+        var eventWidth = getEventWidth(block);
 
-        var width = tableCell.css('width'),
-            height = length * parseInt(tableCell.css('height'));
-        eventContainer.css({width: width});
-        getEventElement(eventContainer, event).css({height: height + 'px'});
+        var eventsInThisContainer = block.filter(function (e) {
+            return e.start_time == event.start_time;
+        }).length;
+
+        var width = eventsInThisContainer * eventWidth,
+            offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
+        eventContainer.css({width: width, 'margin-left': offset});
     }
 });
