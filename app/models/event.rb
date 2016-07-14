@@ -24,10 +24,19 @@ class Event < ApplicationRecord
     DEFAULT_COLOR = 'repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)'.freeze
     def not_free(week, css_color = DEFAULT_COLOR)
       occupied_slot = ConferenceRoom.new(capacity: 99, title: 'NoWayLand', color: css_color)
-      Hash[(1..7).map { |n| [n, []] }].merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week))).tap do |wday_group|
+      Hash[(1..7).map { |n| [n, []] }]
+          .merge(occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
+          .tap do |wday_group|
         wday_group.each_value do |ranges|
           ranges.map! do |range|
-            Event.new(start_time: range.begin, end_time: range.end, name: 'Impossibru', description: 'Occupied', user: 'Very occupied user', conference_room: occupied_slot)
+            Event.new(
+                start_time: range.begin,
+                end_time: range.end,
+                name: 'Impossibru',
+                description: 'Occupied',
+                user:'Very occupied user',
+                conference_room: occupied_slot
+            )
           end
         end
       end
@@ -36,7 +45,9 @@ class Event < ApplicationRecord
     def occupied_slots_per_wday(reservations)
       occupied = {}
       empty_rooms = Hash[ConferenceRoom.all.map { |c| [c, []] }]
-      reservations.each { |wday, events| reservations[wday] = empty_rooms.merge(events.group_by(&:conference_room)) }
+      reservations.each do |wday, events|
+        reservations[wday] = empty_rooms.merge(events.group_by(&:conference_room))
+      end
       reservations.each do |wday, rooms|
         not_free = []
         first_iteration = true
