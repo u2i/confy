@@ -8,7 +8,7 @@ class EventsController < ApplicationController
     event = Event.new(event_params)
     event.save!
     render json: event, status: :created
-  rescue
+  rescue ActiveRecord::RecordInvalid
     render json: event.errors, status: :unprocessable_entity
   end
 
