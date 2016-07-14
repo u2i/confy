@@ -11,20 +11,22 @@ class OccupiedRangeBuilder
     end
 
     def occupied_ranges(rooms)
-      not_free, first_iteration = [], true
+      not_free = []
+      first_iteration = true
       rooms.each do |_room, events|
         if first_iteration
           events.each { |n| not_free << (n.start_time..n.end_time) }
           first_iteration = false
-        else
-          break if (not_free = intersection_ranges(not_free, events)).empty?
+        elsif (not_free = intersection_ranges(not_free, events)).empty?
+          break
         end
       end
       not_free
     end
 
     def occupied_slots_per_wday(reservations)
-      occupied, empty_rooms = {}, Hash[ConferenceRoom.all.map { |c| [c, []] }]
+      occupied = {}
+      empty_rooms = Hash[ConferenceRoom.all.map { |c| [c, []] }]
       reservations.each do |wday, events|
         reservations[wday] = empty_rooms.merge(events.group_by(&:conference_room))
       end

@@ -1,5 +1,4 @@
 class Event < ApplicationRecord
-
   belongs_to :conference_room
 
   validates :start_time, presence: true

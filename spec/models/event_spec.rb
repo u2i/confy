@@ -108,6 +108,4 @@ RSpec.describe Event, type: :model do
       expect(events).not_to include not_expected_events
     end
   end
-
-
 end
