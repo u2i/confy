@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = Event.in_week(week_start).group_into_blocks
+    @events = EventGrouper.group_into_blocks(Event.in_week(week_start))
 
     @conference_rooms = ConferenceRoom.all
   end
@@ -43,7 +43,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
+    @events = EventGrouper.group_into_blocks(GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days))
 
     @conference_rooms = ConferenceRoom.all
 
