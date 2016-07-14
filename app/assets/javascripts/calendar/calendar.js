@@ -1,18 +1,10 @@
 $(function () {
-    events.forEach(function (block) {
-        var eventWidth = getEventWidth(block);
-
+   events.forEach(function (block) {
         block.forEach(function (event) {
             var tableCell = getEventTableCell(event);
             var eventContainer = tableCell.children('.event-container');
-            var eventsInThisContainer = block.filter(function (e) {
-                return e.start_time == event.start_time;
-            }).length;
+            setEventSize(eventContainer, block, event);
 
-            var width = eventsInThisContainer * eventWidth,
-                offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
-            eventContainer.css({width: width, 'margin-left': offset});
-            
             var length = eventLengthInSeconds(event);
 
             $.ajax({
@@ -37,7 +29,7 @@ $(function () {
         });
     });
 
-    function getEventWidth(block) {
+    function eventWidth(block) {
         return parseInt(getEventTableCell(block[0]).css('width')) / block.length;
     }
 
@@ -50,15 +42,15 @@ $(function () {
     }
 
     function setEventSize(eventContainer, block, event) {
-        var eventWidth = getEventWidth(block);
+        var width = eventWidth(block);
 
         var eventsInThisContainer = block.filter(function (e) {
             return e.start_time == event.start_time;
         }).length;
 
-        var width = eventsInThisContainer * eventWidth,
-            offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth;
-        eventContainer.css({width: width, 'margin-left': offset});
+        var containerWidth = eventsInThisContainer * width,
+            offset = (block.indexOf(event) - eventsInThisContainer + 1) * containerWidth;
+        eventContainer.css({width: containerWidth, 'margin-left': offset});
     }
 
     function eventLengthInSeconds(event) {
