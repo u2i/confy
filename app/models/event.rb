@@ -37,6 +37,8 @@ class Event < ApplicationRecord
       previous_event = event
     end
 
+    blocks << current_block unless current_block.empty?
+
     blocks
   }
 
