@@ -1,6 +1,5 @@
 <div class="event" data-id="<%= event.id %>" style="<%= event_style(event) %>">
-  <div class="event-time"><%= event.start_time.strftime('%H:%M') %>
-    - <%= event.end_time.strftime('%H:%M') %></div>
+  <div class="event-time"><%= event.start_time.strftime('%H:%M') %></div>
   <div class="event-name"><%= event.name %></div>
   <div class="event-user">
     <small>by</small> <%= event.user %></div>

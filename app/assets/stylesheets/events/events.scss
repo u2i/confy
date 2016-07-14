@@ -1,6 +1,4 @@
 .event {
-  padding: 10px;
-
   flex-basis: 0;
   flex-grow: 1;
   height: 100%;
@@ -11,13 +9,24 @@
   -moz-border-radius: 5px;
   border-radius: 5px;
 
+  > * {
+    margin-left: 10%;
+
+    &:first-child {
+      margin-top: 10%;
+    }
+  }
+
+
+
   .event-time {
     font-weight: bold;
     font-size: 0.8em;
   }
 
   .event-name {
-    margin: 0.2em 0;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
   }
 
   .event-user, .event-location {
