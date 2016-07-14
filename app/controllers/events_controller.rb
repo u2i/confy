@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
 
   def index
-    render json: Event.in_week_group_by_weekday(Date.parse params[:date])
+    render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
   end
 
   def create
