@@ -13,17 +13,14 @@ $(function () {
 
             var length = (event.end_time.getTime() - event.start_time.getTime()) / 1000 / eventTimeGranularity;
 
-            var width = tableCell.css('width'),
-                height = length * parseInt(tableCell.css('height'));
-            getEventElement(eventContainer, event).css({height: height + 'px'});
-
             promises.push($.ajax({
                 type: 'GET',
                 dataType: 'html',
                 url: eventUrl + '/' + event.id
             }).done(function (data) {
                 eventContainer.append(data);
-                // setEventSize(tableCell, eventContainer, event);
+                var height = length * parseInt(tableCell.css('height'));
+                getEventElement(eventContainer, event).css({height: height + 'px'});
             }).error(function (xhr, status, err) {
                 console.log(err)
             }));
