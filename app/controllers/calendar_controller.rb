@@ -37,7 +37,7 @@ class CalendarController < ApplicationController
     index_setup(*build_week_boundaries(params[:date]))
     @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
     render :index
-  rescue
+  rescue Google::Apis::AuthorizationError
     session.delete(:credentials)
     redirect_to action: :authenticate
   end
