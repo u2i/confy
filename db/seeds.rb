@@ -61,7 +61,7 @@ ConferenceRoom.all.each do |conference_room|
       conference_room: conference_room,
       user: Faker::Name.name
   }
-  if(event = Event.find_by_id(event_id))
+  if event = Event.find_by_id(event_id)
     event.update(params)
   else
     Event.create(params)

@@ -69,7 +69,6 @@ class Event < ApplicationRecord
     end
   end
 
-
   def begin
     start_time
   end
@@ -103,4 +102,3 @@ class Event < ApplicationRecord
   end
 
 end
-
