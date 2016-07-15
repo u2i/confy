@@ -7,7 +7,6 @@ class CalendarController < ApplicationController
   before_action :load_dates_and_rooms, only: [:index, :google_index]
 
   def authenticate
-    raise ArgumentError, 'No code parameter' if params[:code].blank?
     session[:credentials] = GoogleOauth.get_user_credentials(params[:code])
     redirect_to action: :index
   rescue
