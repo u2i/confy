@@ -1,4 +1,4 @@
-$(function () {
+$(document).on('turbolinks:load', (function () {
     $(document).on('ajax:success', '#create-event-form', function () {
         $('#create-event-modal').modal('hide');
         $('#create-event-form')[0].reset();
@@ -20,4 +20,4 @@ $(function () {
                     .text(responseObj[propName][0]);
             });
     });
-});
+}));

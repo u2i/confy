@@ -1,13 +1,15 @@
 <div class="container">
   <aside class="col-xs-12 col-md-2 sidebar">
     <button type="button"
-            class="btn btn-primary"
+            class="btn btn-primary menu_button btn-block"
             data-toggle="modal"
             data-target="#create-event-modal">
       Create Event
     </button>
+    <%= link_to 'Home', root_path(params: {date: params[:date]}), class: 'btn btn-primary menu-button btn-block' %>
+    <%= link_to 'Next Week', root_path(params: {date: next_week(params[:date])}), class: 'btn btn-primary menu-button btn-block' %>
+    <%= link_to 'Previous Week', root_path(params: {date: previous_week(params[:date])}) , class: 'btn btn-primary menu-button btn-block' %>
   </aside>
-
   <div class="col-xs-12 col-md-8">
     <table class="calendar table table-bordered table-striped table-responsive">
       <tr>
@@ -22,7 +24,9 @@
             <small><%= time.strftime('%H:%M') %></small>
           </td>
           <% @days.each do |day| %>
-            <%= render partial: 'event_cell', locals: {current_event: event_at(day, time), day: day, time: time} %>
+            <td data-date="<%= add_date_and_time(day, time).to_i %>">
+              <div class="event-container"></div>
+            </td>
           <% end %>
         </tr>
       <% end %>
@@ -31,3 +35,9 @@
 </div>
 
 <%= render partial: 'create_event', locals: {conference_rooms: @conference_rooms}%>
+
+<%= javascript_tag do %>
+  window.blocks = <%= raw @events.to_json %>
+  window.eventUrl = '<%= events_path %>'
+  window.unitEventLength = <%= CalendarHelper::UNIT_EVENT_LENGTH %>
+<% end %>

@@ -20,6 +20,8 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
+  private
+
   def start_time_must_be_lower_than_end_time
     return unless start_time && end_time
     return unless start_time >= end_time
@@ -31,7 +33,7 @@ class Event < ApplicationRecord
     events = conference_room.events.in_span(start_time, end_time)
     return unless events.exists?
 
-    event_in_progress_text = -> (event) do
+    event_in_progress_text = lambda do |event|
       "Another event already in progress in #{conference_room.title} "\
       "(#{event.start_time.strftime('%H:%M')} - #{event.end_time.strftime('%H:%M')})"
     end
@@ -42,4 +44,3 @@ class Event < ApplicationRecord
     errors.add(:end_time, event_in_progress_text.call(event)) if event
   end
 end
-

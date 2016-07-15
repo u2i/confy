@@ -1,0 +1,38 @@
+$event-border-color: #f7f7f7;
+
+.event {
+  border: 1px solid $event-border-color;
+  border-radius: 5px;
+
+  flex-basis: 0;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+
+  > * {
+    margin-left: 5%;
+
+    &:first-child {
+      margin-top: 5%;
+    }
+  }
+
+  .event-time {
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+
+  .event-name {
+    margin-bottom: 0.2em;
+    margin-top: 0.2em;
+  }
+
+  .event-user,
+  .event-location {
+    font-size: 0.9em;
+
+    > small {
+      font-style: italic;
+    }
+  }
+}

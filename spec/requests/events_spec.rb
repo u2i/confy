@@ -27,8 +27,18 @@ RSpec.describe 'Events', type: :request do
 
     context 'with colliding event' do
       let!(:start_time) { Time.now }
-      let!(:valid_event) { create(:event, start_time: start_time, end_time: start_time + 1.hour, conference_room_id: conference_room.id) }
-      let(:invalid_event) { attributes_for :event, start_time: start_time, end_time: start_time + 1.hour, conference_room_id: conference_room.id }
+      let!(:valid_event) do
+        create(:event,
+               start_time: start_time,
+               end_time: start_time + 1.hour,
+               conference_room_id: conference_room.id)
+      end
+      let(:invalid_event) do
+        attributes_for(:event,
+                       start_time: start_time,
+                       end_time: start_time + 1.hour,
+                       conference_room_id: conference_room.id)
+      end
       let(:event) { invalid_event }
 
       before { post events_path, params: {event: event} }
@@ -39,4 +49,3 @@ RSpec.describe 'Events', type: :request do
     end
   end
 end
-
