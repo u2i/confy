@@ -50,7 +50,6 @@ event_id = 1
   end
 end
 
-event_id = 1
 ConferenceRoom.all.each do |conference_room|
   params = {
     start_time: Time.now.beginning_of_day + 6.hours,
@@ -60,9 +59,5 @@ ConferenceRoom.all.each do |conference_room|
     conference_room: conference_room,
     user: Faker::Name.name
   }
-  if (event = Event.find_by_id(event_id))
-    event.update(params)
-  else
-    Event.create(params)
-  end
+  Event.create(params)
 end

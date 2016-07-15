@@ -4,9 +4,7 @@ require 'google/api_client/client_secrets'
 class CalendarController < ApplicationController
   before_action :check_authentication, except: :authenticate
   before_action :refresh_token
-  before_action only: [:index, :free_rooms, :google_index] do
-    index_setup(*build_week_boundaries)
-  end
+  before_action :index_setup, only: [:index, :free_rooms, :google_index]
 
   def authenticate
     raise ArgumentError, 'No code parameter' if params[:code].blank?
@@ -36,7 +34,8 @@ class CalendarController < ApplicationController
 
   private
 
-  def index_setup(week_start, week_end)
+  def index_setup
+    week_start, week_end = build_week_boundaries
     @days = (week_start..week_end).to_a
     start_time = Time.now.at_beginning_of_day
     end_time = Time.now.at_end_of_day

@@ -15,7 +15,7 @@ RSpec.describe ConferenceRoom, type: :model do
     let(:valid_colors) { %w(#FfF000 #231482 #AbdD12 #E22 #123) }
     let(:invalid_colors) { %w(1023o 1230 12345 124fe #jugrju #123jku #9999999 #1234 #12 #A #b) }
 
-    it 'must ensure that color has the right format' do
+    it 'ensures that color has the right format' do
       expect(valid_colors.all? { |n| subject.tap { |s| s.color = n }.valid? }).to be true
       expect(invalid_colors.none? { |n| subject.tap { |s| s.color = n }.valid? }).to be true
     end

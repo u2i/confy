@@ -10,11 +10,7 @@
           <% end %>
         </div>
         <div class="event-location">
-          <% if current_event.conference_room&.title %>
-            <small>in</small> <%= current_event.conference_room.title %>
-          <% else %>
-              Occupied
-          <% end %>
+          <small>in</small> <%= current_event.conference_room.title %>
         </div>
       </div>
     </td>
