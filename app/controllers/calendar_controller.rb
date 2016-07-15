@@ -4,7 +4,7 @@ require 'google/api_client/client_secrets'
 class CalendarController < ApplicationController
   before_action :check_authentication, except: :authenticate
   before_action :refresh_token
-  before_action :index_setup, only: [:index, :free_rooms, :google_index]
+  before_action :load_dates_and_rooms, only: [:index, :google_index]
 
   def authenticate
     raise ArgumentError, 'No code parameter' if params[:code].blank?
@@ -34,13 +34,12 @@ class CalendarController < ApplicationController
 
   private
 
-  def index_setup
+  def load_dates_and_rooms
     week_start, week_end = build_week_boundaries
     @days = (week_start..week_end).to_a
     start_time = Time.now.at_beginning_of_day
     end_time = Time.now.at_end_of_day
-    step = 30.minutes
-    @times = time_interval(start_time, end_time, step)
+    @times = time_interval(start_time, end_time, 30.minutes)
     @conference_rooms = ConferenceRoom.all
   end
 
@@ -55,7 +54,7 @@ class CalendarController < ApplicationController
   end
 
   def week_start
-    params[:date] ? Date.parse(params[:date]).at_beginning_of_week : Date.today.beginning_of_week
+    params[:date].present? ? Date.parse(params[:date]).at_beginning_of_week : Date.today.beginning_of_week
   end
 
   def build_week_boundaries
