@@ -2,24 +2,12 @@ require 'rails_helper'
 
 describe GoogleEvent do
   describe '.list_events' do
-    let!(:sample_conference_room1) do
-      create :conference_room
-    end
-    let!(:sample_conference_room2) do
-      create :conference_room
-    end
-    let(:sample_time1) do
-      DateTime.now.beginning_of_week
-    end
-    let(:sample_time2) do
-      DateTime.now.beginning_of_week + 1.days
-    end
-    let(:sample_end_time1) do
-      sample_time1 + 2.hours
-    end
-    let(:sample_end_time2) do
-      sample_time2 + 2.hours
-    end
+    let!(:sample_conference_room1) { create :conference_room }
+    let!(:sample_conference_room2) { create :conference_room }
+    let(:sample_time1) { DateTime.now.beginning_of_week }
+    let(:sample_time2) { DateTime.now.beginning_of_week + 1.days }
+    let(:sample_end_time1) { sample_time1 + 2.hours }
+    let(:sample_end_time2) { sample_time2 + 2.hours }
 
     let(:sample_event1) do
       build :event, start_time: sample_time1, end_time: sample_end_time1, conference_room: sample_conference_room1, user: 'name', description: sample_summary
