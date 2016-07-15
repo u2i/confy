@@ -19,8 +19,7 @@ class Event < ApplicationRecord
   scope :in_week_group_by_weekday, -> (week) {
     in_week(week).group_by { |e| e.start_time.wday }
   }
-
-
+  
   private
 
   def start_time_must_be_lower_than_end_time
