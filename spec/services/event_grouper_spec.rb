@@ -10,21 +10,29 @@ RSpec.describe EventGrouper do
     let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 1.hour, conference_room: room1) }
 
     context 'with mutually colliding events' do
-      let!(:event2) { create(:event,
-                             start_time: start_time + 30.minutes,
-                             end_time: start_time + 2.hours,
-                             conference_room: room2) }
-      let!(:event3) { create(:event,
-                             start_time: start_time + 1.hour,
-                             end_time: start_time + 2.hours,
-                             conference_room: room1) }
-      let!(:event4) { create(:event, start_time: start_time + 2.hours,
-                             end_time: start_time + 3.hours,
-                             conference_room: room1) }
-      let!(:event5) { create(:event,
-                             start_time: start_time + 3.hours,
-                             end_time: start_time + 5.hours,
-                             conference_room: room1) }
+      let!(:event2) do
+        create(:event,
+               start_time: start_time + 30.minutes,
+               end_time: start_time + 2.hours,
+               conference_room: room2)
+      end
+      let!(:event3) do
+        create(:event,
+               start_time: start_time + 1.hour,
+               end_time: start_time + 2.hours,
+               conference_room: room1)
+      end
+      let!(:event4) do
+        create(:event, start_time: start_time + 2.hours,
+               end_time: start_time + 3.hours,
+               conference_room: room1)
+      end
+      let!(:event5) do
+        create(:event,
+               start_time: start_time + 3.hours,
+               end_time: start_time + 5.hours,
+               conference_room: room1)
+      end
 
       let(:expected_events) { [[event1, event2, event3], [event4], [event5]] }
 
@@ -35,14 +43,18 @@ RSpec.describe EventGrouper do
     end
 
     context 'with pairwise colliding events' do
-      let!(:event2) { create(:event,
-                             start_time: start_time - 1.hour,
-                             end_time: start_time + 2.hours,
-                             conference_room: room1) }
-      let!(:event3) { create(:event,
-                             start_time: start_time + 1.hour,
-                             end_time: start_time + 3.hours,
-                             conference_room: room2) }
+      let!(:event2) do
+        create(:event,
+               start_time: start_time - 1.hour,
+               end_time: start_time + 2.hours,
+               conference_room: room1)
+      end
+      let!(:event3) do
+        create(:event,
+               start_time: start_time + 1.hour,
+               end_time: start_time + 3.hours,
+               conference_room: room2)
+      end
 
       let(:expected_events) { [[event2, event1, event3]] }
 
