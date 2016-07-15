@@ -9,7 +9,7 @@ module GoogleOauth
   module_function
 
   def is_authenticated?(credentials = {})
-    return false unless credentials.kind_of?(Hash)
+    return false unless credentials.is_a?(Hash)
     credentials.key?('client_id') && credentials.key?('client_secret')
   end
 
