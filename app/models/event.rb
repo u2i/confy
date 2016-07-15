@@ -20,25 +20,6 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
-  DEFAULT_COLOR = 'repeating-linear-gradient(-45deg,#D3E9FF,#D3E9FF 10px,#B8DCFF 10px,#B8DCFF 20px)'.freeze
-  def self.not_free(week, css_color = DEFAULT_COLOR)
-    occupied_slot = ConferenceRoom.new(color: css_color)
-    Hash[(1..7).map { |n| [n, []] }]
-        .merge(OccupiedRangeBuilder.occupied_slots_per_wday(order('start_time').in_week_group_by_weekday(week)))
-        .tap do |wday_group|
-      wday_group.each_value do |ranges|
-        ranges.map! { |range| new(start_time: range.begin, end_time: range.end, conference_room: occupied_slot) }
-      end
-    end
-  end
-
-  def begin
-    start_time
-  end
-
-  def max
-    end_time
-  end
 
   private
 

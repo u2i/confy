@@ -25,16 +25,11 @@ class CalendarController < ApplicationController
     @events = Event.in_week_group_by_weekday(week_start)
   end
 
-  def free_rooms
-    @events = Event.not_free(week_start)
-    render :index
-  end
-
   # Index for showing events from Google calendar
   def google_index
     @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
     render :index
-  rescue Google::Apis::AuthorizationError
+  rescue ArgumentError
     session.delete(:credentials)
     redirect_to action: :authenticate
   end

@@ -6,15 +6,9 @@
             data-target="#create-event-modal">
       Create Event
     </button>
-    <%= link_to 'Free Rooms', free_rooms_path(params: { date: params[:date] }), class: 'btn btn-primary menu-button btn-block' %>
     <%= link_to 'Home', root_path(params: { date: params[:date] }), class: 'btn btn-primary menu-button btn-block' %>
-    <% if params[:action] == 'index' %>
-        <%= link_to 'Next Week', root_path(params: { date: next_week(params[:date]) }), class: 'btn btn-primary menu-button btn-block' %>
-        <%= link_to 'Previous Week', root_path(params: { date: previous_week(params[:date]) } ) , class: 'btn btn-primary menu-button btn-block' %>
-    <% else %>
-        <%= link_to 'Next Week', free_rooms_path(params: { date: next_week(params[:date]) } ), class: 'btn btn-primary menu-button btn-block' %>
-        <%= link_to 'Previous Week', free_rooms_path(params: { date: previous_week(params[:date]) }), class: 'btn btn-primary menu-button btn-block' %>
-    <% end %>
+    <%= link_to 'Next Week', root_path(params: { date: next_week(params[:date]) }), class: 'btn btn-primary menu-button btn-block' %>
+    <%= link_to 'Previous Week', root_path(params: { date: previous_week(params[:date]) } ) , class: 'btn btn-primary menu-button btn-block' %>
   </aside>
   <div class="col-xs-12 col-md-8">
     <table class="calendar table table-bordered table-striped table-responsive">
