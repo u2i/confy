@@ -43,7 +43,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
+    @events = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
 
     @conference_rooms = ConferenceRoom.all
 
