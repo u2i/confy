@@ -65,6 +65,8 @@ $(function () {
     }
 
     function eventLengthInSeconds(event) {
-        return (new Date(event.end_time).getTime() - new Date(event.start_time).getTime()) / 1000 / eventTimeGranularity;
+        var startTimestamp = new Date(event.start_time).getTime(),
+            endTimestamp = new Date(event.end_time).getTime();
+        return (endTimestamp - startTimestamp) / 1000 / unitEventLength;
     }
 });

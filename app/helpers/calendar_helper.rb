@@ -1,7 +1,7 @@
 module CalendarHelper
 
   WEEK_LENGTH = 5
-  EVENT_TIME_GRANULARITY = 30.minutes
+  UNIT_EVENT_LENGTH = 30.minutes
 
   def event_at(day, time)
     return unless @events[day.wday].present?
@@ -20,7 +20,7 @@ module CalendarHelper
   end
 
   def event_span(event)
-    (event.end_time - event.start_time) / EVENT_TIME_GRANULARITY
+    (event.end_time - event.start_time) / UNIT_EVENT_LENGTH
   end
 
   def add_date_and_time(date, time)
