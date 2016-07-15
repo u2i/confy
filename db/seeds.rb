@@ -7,13 +7,15 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 day_time = Time.now.beginning_of_week
-colors = { 'Mordor' => '#cde6f4',
-           'Neverland' => '#d2d4f6',
-           'Sherwood Forest' => '#ffebd3',
-           'Valhalla' => '#ffeec0',
-           'Voyager' => '#cdf8e7',
-           'Winterfell' => '#ffd7d3',
-           'Yellow Submarine' => '#ffdddd' }
+colors = {
+  'Mordor' => '#cde6f4',
+  'Neverland' => '#d2d4f6',
+  'Sherwood Forest' => '#ffebd3',
+  'Valhalla' => '#ffeec0',
+  'Voyager' => '#cdf8e7',
+  'Winterfell' => '#ffd7d3',
+  'Yellow Submarine' => '#ffdddd'
+}
 conference_rooms = {
   'Mordor' => 'u2i.com_2d3631343934393033313035@resource.calendar.google.com',
   'Neverland' => 'u2i.com_3530363130383730383638@resource.calendar.google.com',

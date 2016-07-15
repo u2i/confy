@@ -24,7 +24,9 @@
             <small><%= time.strftime('%H:%M') %></small>
           </td>
           <% @days.each do |day| %>
-            <%= render partial: 'event_cell', locals: {current_event: event_at(day, time), day: day, time: time} %>
+            <td data-date="<%= add_date_and_time(day, time).to_i %>">
+              <div class="event-container"></div>
+            </td>
           <% end %>
         </tr>
       <% end %>
@@ -33,3 +35,9 @@
 </div>
 
 <%= render partial: 'create_event', locals: {conference_rooms: @conference_rooms}%>
+
+<%= javascript_tag do %>
+  window.blocks = <%= raw @events.to_json %>
+  window.eventUrl = '<%= events_path %>'
+  window.unitEventLength = <%= CalendarHelper::UNIT_EVENT_LENGTH %>
+<% end %>

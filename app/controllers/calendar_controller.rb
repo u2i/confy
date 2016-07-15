@@ -20,12 +20,13 @@ class CalendarController < ApplicationController
   end
 
   def index
-    @events = Event.in_week_group_by_weekday(week_start)
+    @events = EventGrouper.new(Event.in_week(week_start)).call
   end
 
   # Index for showing events from Google calendar
   def google_index
-    @events = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
+    @events = EventGrouper.new(
+      GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)).call
     render :index
   rescue ArgumentError
     session.delete(:credentials)
