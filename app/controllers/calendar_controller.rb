@@ -27,7 +27,7 @@ class CalendarController < ApplicationController
 
   # Index for showing events from Google calendar
   def google_index
-    @events = GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)
+    @events = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
     render :index
   rescue ArgumentError
     session.delete(:credentials)
