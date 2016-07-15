@@ -1,4 +1,4 @@
-$(function () {
+$(document).on('turbolinks:load', (function () {
     var DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
     var startTimePicker = $('#start_time-picker');
@@ -26,4 +26,4 @@ $(function () {
             startData.date(e.date);
         }
     });
-});
+}));

@@ -1,13 +1,15 @@
 <div class="container">
   <aside class="col-xs-12 col-md-2 sidebar">
     <button type="button"
-            class="btn btn-primary"
+            class="btn btn-primary menu_button btn-block"
             data-toggle="modal"
             data-target="#create-event-modal">
       Create Event
     </button>
+    <%= link_to 'Home', root_path(params: {date: params[:date]}), class: 'btn btn-primary menu-button btn-block' %>
+    <%= link_to 'Next Week', root_path(params: {date: next_week(params[:date])}), class: 'btn btn-primary menu-button btn-block' %>
+    <%= link_to 'Previous Week', root_path(params: {date: previous_week(params[:date])}) , class: 'btn btn-primary menu-button btn-block' %>
   </aside>
-
   <div class="col-xs-12 col-md-8">
     <table class="calendar table table-bordered table-striped table-responsive">
       <tr>

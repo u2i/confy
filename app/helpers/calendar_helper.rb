@@ -1,5 +1,4 @@
 module CalendarHelper
-
   WEEK_LENGTH = 5
   UNIT_EVENT_LENGTH = 30.minutes
 

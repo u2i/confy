@@ -12,6 +12,11 @@ html, body, .container {
   align-items: flex-end;
 }
 
+.menu-button {
+  @extend .col-md-12;
+  margin-top: 10px;
+}
+
 .calendar > tbody > tr {
 
   > td {

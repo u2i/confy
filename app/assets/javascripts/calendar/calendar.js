@@ -1,7 +1,4 @@
-$(function () {
-    fetchEvents();
-    $(window).resize(updateEvents);
-
+$(document).on('turbolinks:load', (function () {
     function fetchEventPartial(event) {
         $.ajax({
             type: 'GET',
@@ -54,13 +51,13 @@ $(function () {
 
     function setEventContainerSize(block, event) {
         var eventContainer = getEventContainer(event);
-
         var eventsInThisContainer = block.filter(function (e) {
             return e.start_time == event.start_time;
         }).length;
 
         var width = eventsInThisContainer * eventWidth(block),
             offset = (block.indexOf(event) - eventsInThisContainer + 1) * width;
+
         eventContainer.css({width: width, 'margin-left': offset});
     }
 
@@ -69,4 +66,8 @@ $(function () {
             endTimestamp = new Date(event.end_time).getTime();
         return (endTimestamp - startTimestamp) / 1000 / unitEventLength;
     }
-});
+
+    fetchEvents();
+    $(window).resize(updateEvents);
+
+}));

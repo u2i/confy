@@ -1,0 +1,9 @@
+AllCops:
+  TargetRubyVersion: 2.3
+Metrics/LineLength:
+  Max: 120
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+    - http
+    - https

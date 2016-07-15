@@ -29,13 +29,12 @@ conference_rooms = {
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
 end
 
-event_id = 0
-
-4.times do |i|
+event_id = 1
+4.times do |_i|
   day_time += 1.days
   4.times do |j|
     start_time = day_time + j.hours * 3
-    end_time = start_time + rand(1..2).hours + 30*(rand(0..1)).minutes
+    end_time = start_time + rand(1..2).hours + 30 * rand(0..1).minutes
     params = {
       start_time: start_time,
       end_time: end_time,
@@ -44,11 +43,23 @@ event_id = 0
       conference_room: conference_rooms.sample,
       user: Faker::Name.name
     }
-    if (event = Event.all[event_id])
+    if (event = Event.find_by_id(event_id))
       event.update(params)
     else
       Event.create(params)
     end
     event_id += 1
   end
+end
+
+ConferenceRoom.all.each do |conference_room|
+  params = {
+    start_time: Time.now.beginning_of_day + 6.hours,
+    end_time: Time.now.beginning_of_day + 7.hours,
+    name: Faker::Company.name,
+    description: Faker::Company.catch_phrase,
+    conference_room: conference_room,
+    user: Faker::Name.name
+  }
+  Event.create(params)
 end
