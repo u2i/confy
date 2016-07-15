@@ -5,7 +5,8 @@ include Rails.application.routes.url_helpers
 
 module GoogleOauth
   CLIENT_SECRETS = Google::APIClient::ClientSecrets.new(
-    YAML.load_file(Rails.root.join('config/google_secret.yml'))[Rails.env])
+    YAML.load_file(Rails.root.join('config/google_secret.yml'))[Rails.env]
+  )
 
   module_function
 
