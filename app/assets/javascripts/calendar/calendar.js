@@ -1,58 +1,67 @@
 $(function () {
-    console.log(events);
+    fetchEvents();
+    $(window).resize(updateEvents);
 
-   events.forEach(function (block) {
-        block.forEach(function (event) {
-            var tableCell = getEventTableCell(event);
-            var eventContainer = tableCell.children('.event-container');
-            setEventSize(eventContainer, block, event);
+    function fetchEventPartial(event) {
+        $.ajax({
+            type: 'GET',
+            dataType: 'html',
+            url: eventUrl + '/' + event.id
+        }).done(function (data) {
+            var eventContainer = getEventContainer(event);
+            eventContainer.append(data);
 
-            var length = eventLengthInSeconds(event);
-
-            $.ajax({
-                type: 'GET',
-                dataType: 'html',
-                url: eventUrl + '/' + event.id
-            }).done(function (data) {
-                eventContainer.append(data);
-                var height = length * parseInt(tableCell.css('height'));
-                getEventElement(eventContainer, event).css({height: height + 'px'});
-            });
+            getEventElement(eventContainer, event).css({height: eventHeight(event) + 'px'});
         });
-    });
+    }
 
-    $(window).resize(function () {
-        events.forEach(function (block) {
+    function fetchEvents() {
+        blocks.forEach(function (block) {
             block.forEach(function (event) {
-                var tableCell = getEventTableCell(event);
-                var eventContainer = tableCell.children('.event-container');
-                setEventSize(eventContainer, block, event);
+                fetchEventPartial(event);
+                setEventContainerSize(block, event);
             });
         });
-    });
+    }
+
+    function updateEvents() {
+        blocks.forEach(function (block) {
+            block.forEach(function (event) {
+                setEventContainerSize(block, event);
+            });
+        });
+    }
 
     function eventWidth(block) {
         return parseInt(getEventTableCell(block[0]).css('width')) / block.length;
+    }
+
+    function eventHeight(event) {
+        return eventLengthInSeconds(event) * parseInt(getEventTableCell(event).css('height'));
     }
 
     function getEventTableCell(event) {
         return $("td[data-date='" + new Date(event.start_time).getTime() / 1000 + "']");
     }
 
+    function getEventContainer(event) {
+        return getEventTableCell(event).children('.event-container');
+    }
+
     function getEventElement(eventContainer, event) {
         return eventContainer.children('.event[data-id="' + event.id + '"]');
     }
 
-    function setEventSize(eventContainer, block, event) {
-        var width = eventWidth(block);
+    function setEventContainerSize(block, event) {
+        var eventContainer = getEventContainer(event);
 
         var eventsInThisContainer = block.filter(function (e) {
             return e.start_time == event.start_time;
         }).length;
 
-        var containerWidth = eventsInThisContainer * width,
-            offset = (block.indexOf(event) - eventsInThisContainer + 1) * containerWidth;
-        eventContainer.css({width: containerWidth, 'margin-left': offset});
+        var width = eventsInThisContainer * eventWidth(block),
+            offset = (block.indexOf(event) - eventsInThisContainer + 1) * width;
+        eventContainer.css({width: width, 'margin-left': offset});
     }
 
     function eventLengthInSeconds(event) {
