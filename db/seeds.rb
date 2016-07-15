@@ -7,21 +7,23 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 day_time = Time.now.beginning_of_week
-colors = {'Mordor' => '#cde6f4',
-          'Neverland' => '#d2d4f6',
-          'Sherwood Forest' => '#ffebd3',
-          'Valhalla' => '#ffeec0',
-          'Voyager' => '#cdf8e7',
-          'Winterfell' => '#ffd7d3',
-          'Yellow Submarine' => '#ffdddd'}
+colors = {
+  'Mordor' => '#cde6f4',
+  'Neverland' => '#d2d4f6',
+  'Sherwood Forest' => '#ffebd3',
+  'Valhalla' => '#ffeec0',
+  'Voyager' => '#cdf8e7',
+  'Winterfell' => '#ffd7d3',
+  'Yellow Submarine' => '#ffdddd'
+}
 conference_rooms = {
-    "Mordor" => "u2i.com_2d3631343934393033313035@resource.calendar.google.com",
-    "Neverland" => "u2i.com_3530363130383730383638@resource.calendar.google.com",
-    "Sherwood Forest" => "u2i.com_2d33383335393438322d323331@resource.calendar.google.com",
-    "Valhalla" => "u2i.com_2d3836323435373930353536@resource.calendar.google.com",
-    "Voyager" => "u2i.com_2d39303636343933332d323732@resource.calendar.google.com",
-    "Winterfell" => "u2i.com_3331393831383634333035@resource.calendar.google.com",
-    "Yellow Submarine" => "u2i.com_3239383237392d373233@resource.calendar.google.com"
+  'Mordor' => 'u2i.com_2d3631343934393033313035@resource.calendar.google.com',
+  'Neverland' => 'u2i.com_3530363130383730383638@resource.calendar.google.com',
+  'Sherwood Forest' => 'u2i.com_2d33383335393438322d323331@resource.calendar.google.com',
+  'Valhalla' => 'u2i.com_2d3836323435373930353536@resource.calendar.google.com',
+  'Voyager' => 'u2i.com_2d39303636343933332d323732@resource.calendar.google.com',
+  'Winterfell' => 'u2i.com_3331393831383634333035@resource.calendar.google.com',
+  'Yellow Submarine' => 'u2i.com_3239383237392d373233@resource.calendar.google.com'
 }.map do |name, email|
   params = { capacity: rand(5..20), color: colors[name], email: email }
   ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }

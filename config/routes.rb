@@ -6,5 +6,5 @@ Rails.application.routes.draw do
 
   get 'google_index' => 'calendar#google_index'
 
-  resources :events, only: [:create]
+  resources :events, only: [:create, :index, :show]
 end

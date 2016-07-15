@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = Event.in_week_group_by_weekday(week_start)
+    @events = EventGrouper.new(Event.in_week(week_start)).call
 
     @conference_rooms = ConferenceRoom.all
   end
@@ -43,7 +43,8 @@ class CalendarController < ApplicationController
     step = 30.minutes
     @times = time_interval(start_time, end_time, step)
 
-    @events = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
+    @events = EventGrouper.new(
+      GoogleEvent.list_events(session[:credentials], DateTime.now, DateTime.now + 1.days)).call
 
     @conference_rooms = ConferenceRoom.all
 
@@ -67,5 +68,4 @@ class CalendarController < ApplicationController
     week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     [week_start, week_end]
   end
-
 end
