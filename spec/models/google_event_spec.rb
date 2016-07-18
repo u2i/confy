@@ -65,4 +65,100 @@ describe GoogleEvent do
       end
     end
   end
+
+  describe '.create' do
+    context 'given invalid params' do
+      it 'raises ArgumentError' do
+        allow(GoogleEvent).to receive(:params_valid?) { false }
+        expect { GoogleEvent.create({}, 0, {}) }.to raise_error ArgumentError
+      end
+    end
+  end
+
+  describe '.dates_not_empty?' do
+    context 'given appropriate values' do
+      let(:time1) { Faker::Time.forward 5 }
+      let(:time2) { Faker::Time.forward 5 }
+      let(:params){ {start: {date_time: time1}, end: {date_time: time2}} }
+      it 'returns true' do
+        expect(GoogleEvent.dates_not_empty?(params)).to eq true
+      end
+    end
+
+    context 'given not hash fields' do
+      let(:params) { { start: [], end: [] } }
+
+      it 'returns false' do
+        expect(GoogleEvent.dates_not_empty?(params)).to eq false
+      end
+    end
+
+    context 'given empty fields' do
+
+      let(:params) { { start: {}, end: {} } }
+      it 'return false' do
+        expect(GoogleEvent.dates_not_empty?(params)).to eq false
+      end
+    end
+  end
+
+  describe '.params_valid?' do
+    context 'given not hash params argument' do
+      let(:params){ [] }
+      it 'returns false' do
+        expect(GoogleEvent.params_valid?(params)).to eq false
+      end
+    end
+
+    context 'given hash params without date and start' do
+      let(:params){ {key1: Faker::Lorem.word, key2: Faker::Lorem.word} }
+      it 'returns false' do
+        expect(GoogleEvent.params_valid?(params)).to eq false
+      end
+    end
+
+    context 'given hash params' do
+      let(:params){ {start: {date_time: Faker::Time.forward(5)}, end: {date_time: Faker::Time.forward(6)}} }
+      context 'with valid date and end fields' do
+        it 'returns true' do
+          allow(GoogleEvent).to receive(:dates_not_empty?) { true }
+          expect(GoogleEvent.params_valid?(params)).to eq true
+        end
+      end
+
+      context 'with invalid date and end fields' do
+        it 'returns false' do
+          allow(GoogleEvent).to receive(:dates_not_empty?) { false }
+          expect(GoogleEvent.params_valid?(params)).to eq false
+        end
+      end
+    end
+  end
+
+  describe '.add_rooms_to_event' do
+    context 'given array of calendar room ids' do
+      let(:mordor_id){1}
+      let(:neverland_id){2}
+      let(:mordor_email){'u2i.com_2d3631343934393033313035@resource.calendar.google.com'}
+      let(:neverland_email){'u2i.com_3530363130383730383638@resource.calendar.google.com'}
+      let(:expected_result){
+        {attendees: [
+            {email: mordor_email},
+            {email: neverland_email}]}
+      }
+      let(:calendar_room_ids){[mordor_id, neverland_id]}
+      let(:params){{}}
+      let(:mordor_room){double("mordor", email: mordor_email)}
+      let(:neverland_room){double("neverland", email: neverland_email)}
+      let(:id_to_room){ {mordor_id => mordor_room, neverland_id => neverland_room} }
+      it 'adds new key in hash and assigns array of conference room emails to it' do
+
+        allow(ConferenceRoom).to receive(:find_by) do |**args|
+          id_to_room[args[:id]]
+        end
+        GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
+        expect(params).to eq expected_result
+      end
+    end
+  end
 end

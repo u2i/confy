@@ -5,8 +5,11 @@ class EventsController < ApplicationController
   end
 
   def create
-    event = Event.create!(event_params)
-    render json: event, status: :created
+    params = event_params
+    conference_room_ids = [params[:conference_room_id]]
+    params = GoogleEvent.format_params(params)
+    event = GoogleEvent.create(session[:credentials], conference_room_ids, params)
+    render json: event.to_json, status: :created
   rescue ActiveRecord::RecordInvalid => invalid
     render json: invalid.record.errors, status: :unprocessable_entity
   end
@@ -24,6 +27,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start_time, :end_time, :user, :conference_room_id)
+    params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id)
   end
 end

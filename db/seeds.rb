@@ -14,7 +14,9 @@ colors = {
   'Valhalla' => '#ffeec0',
   'Voyager' => '#cdf8e7',
   'Winterfell' => '#ffd7d3',
-  'Yellow Submarine' => '#ffdddd'
+  'Yellow Submarine' => '#ffdddd',
+  'Narnia One' => '#DFFABD',
+  'Narnia Two' => '#F8FEBF'
 }
 conference_rooms = {
   'Mordor' => 'u2i.com_2d3631343934393033313035@resource.calendar.google.com',
@@ -23,10 +25,12 @@ conference_rooms = {
   'Valhalla' => 'u2i.com_2d3836323435373930353536@resource.calendar.google.com',
   'Voyager' => 'u2i.com_2d39303636343933332d323732@resource.calendar.google.com',
   'Winterfell' => 'u2i.com_3331393831383634333035@resource.calendar.google.com',
-  'Yellow Submarine' => 'u2i.com_3239383237392d373233@resource.calendar.google.com'
+  'Yellow Submarine' => 'u2i.com_3239383237392d373233@resource.calendar.google.com',
+  'Narnia One' => 'u2i.com_32373936313132373036@resource.calendar.google.com',
+  'Narnia Two' => 'u2i.com_36333333363436353339@resource.calendar.google.com'
 }.map do |name, email|
   params = { capacity: rand(5..20), color: colors[name], email: email }
-  ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update(params) }
+  ConferenceRoom.where(title: name).first_or_create(params).tap { |cr| cr.update!(params) }
 end
 
 event_id = 1
@@ -44,7 +48,7 @@ event_id = 1
       user: Faker::Name.name
     }
     if (event = Event.find_by_id(event_id))
-      event.update(params)
+      event.update!(params)
     else
       Event.create(params)
     end

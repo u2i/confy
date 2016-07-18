@@ -29,6 +29,44 @@ class GoogleEvent
       events
     end
 
+    def format_params(params)
+      params[:start] = { date_time: DateTime.parse(params[:start_time]).rfc3339(9) }
+      params[:end] = { date_time: DateTime.parse(params[:end_time]).rfc3339(9) }
+      params.delete(:start_time)
+      params.delete(:end_time)
+      params.delete(:conference_room_id)
+      params.delete(:permitted)
+      params.to_h
+    end
+
+    def create(credentials, conference_room_ids, params = {})
+      params = params.try :deep_symbolize_keys
+      raise ArgumentError unless params_valid?(params)
+      add_rooms_to_event(params, conference_room_ids)
+      event = Google::Apis::CalendarV3::Event.new(params)
+      calendar_service(credentials).insert_event('primary', event)
+    end
+
+    def add_rooms_to_event(params, conference_room_ids)
+      params[:attendees] = []
+      conference_room_ids.map do |conference_room_id|
+        conference_room_email = ConferenceRoom.find_by(id: conference_room_id).email
+        params[:attendees] << {email: conference_room_email}
+      end
+    end
+
+    def params_valid?(params)
+      return false unless params.is_a? Hash
+      obligatory_keys = %i(start end)
+      obligatory_keys.all? { |key| params.key?(key) }
+      dates_not_empty?(params)
+    end
+
+    def dates_not_empty?(params)
+      return false unless (params[:start].is_a? Hash) || (params[:end].is_a? Hash)
+      params[:start][:date_time].present? && params[:end][:date_time].present?
+    end
+
     def calendar_service(credentials)
       Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = client(credentials) }
     end
