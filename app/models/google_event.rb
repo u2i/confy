@@ -64,7 +64,7 @@ class GoogleEvent
 
     def params_valid?(params)
       validation = EVENT_SCHEMA.call params
-      return [validation.success?, validation.messages]
+      [validation.success?, validation.messages]
     end
 
     def add_rooms_to_event(params, conference_room_ids)

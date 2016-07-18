@@ -75,33 +75,34 @@ describe GoogleEvent do
   end
 
   describe 'EVENT_SCHEMA' do
+    let(:schema) { GoogleEvent::EVENT_SCHEMA}
     let(:time1) { Faker::Time.forward 5 }
     let(:time2) { Faker::Time.forward 5 }
     let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
     context 'valid' do
       it 'is valid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call(params).success?).to eq true
+        expect(schema.call(params).success?).to eq true
       end
     end
     context 'no start' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({end: {date_time: 'asdf'}}).messages[:start]).to be_present
+        expect(schema.call({end: {date_time: 'asdf'}}).messages[:start]).to be_present
       end
     end
     context 'no end' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({start: {date_time: 'asdf'}}).messages[:end]).to be_present
+        expect(schema.call({start: {date_time: 'asdf'}}).messages[:end]).to be_present
       end
     end
 
     context 'no end datetime' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({start: {date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
+        expect(schema.call({start: {date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
       end
     end
     context 'no start datetime' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({end: {date_time: time1}, start: {test: nil}}).messages[:start]).to be_present
+        expect(schema.call(end: {date_time: time1}, start: {test: nil}).messages[:start]).to be_present
       end
     end
   end
@@ -112,11 +113,11 @@ describe GoogleEvent do
       let(:neverland_id) { 2 }
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
       let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
-      let(:expected_result) {
+      let(:expected_result) do
         {attendees: [
             {email: mordor_email},
             {email: neverland_email}]}
-      }
+      end
       let(:calendar_room_ids) { [mordor_id, neverland_id] }
       let(:params) { {} }
       let(:mordor_room) { double('mordor', email: mordor_email) }
