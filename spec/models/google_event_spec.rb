@@ -75,7 +75,7 @@ describe GoogleEvent do
   end
 
   describe 'EVENT_SCHEMA' do
-    let(:schema) { GoogleEvent::EVENT_SCHEMA}
+    let(:schema) { GoogleEvent::EVENT_SCHEMA }
     let(:time1) { Faker::Time.forward 5 }
     let(:time2) { Faker::Time.forward 5 }
     let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
@@ -86,18 +86,18 @@ describe GoogleEvent do
     end
     context 'no start' do
       it 'is invalid' do
-        expect(schema.call({end: {date_time: 'asdf'}}).messages[:start]).to be_present
+        expect(schema.call(end: {date_time: 'asdf'}).messages[:start]).to be_present
       end
     end
     context 'no end' do
       it 'is invalid' do
-        expect(schema.call({start: {date_time: 'asdf'}}).messages[:end]).to be_present
+        expect(schema.call(start: {date_time: 'asdf'}).messages[:end]).to be_present
       end
     end
 
     context 'no end datetime' do
       it 'is invalid' do
-        expect(schema.call({start: {date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
+        expect(schema.call(start: {date_time: time1}, end: {test: nil}).messages[:end]).to be_present
       end
     end
     context 'no start datetime' do
