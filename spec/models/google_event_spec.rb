@@ -124,12 +124,24 @@ describe GoogleEvent do
       let(:neverland_room) { double('neverland', email: neverland_email) }
       let(:id_to_room) { {mordor_id => mordor_room, neverland_id => neverland_room} }
       it 'adds new key in hash and assigns array of conference room emails to it' do
-
         allow(ConferenceRoom).to receive(:find_by) do |**args|
           id_to_room[args[:id]]
         end
         GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
         expect(params).to eq expected_result
+      end
+    end
+  end
+
+  describe '.insert_event_and_return_result' do
+    context 'when exception is raised' do
+      let(:service){ double('service') }
+      let(:exception){ ArgumentError }
+      let(:expected_msg){ 'Unabled to create new event' }
+      it 'returns [false, error_msg] data' do
+        allow(service).to receive(:insert_event).and_raise exception
+        allow(described_class).to receive(:calendar_service) { service }
+        expect(described_class.insert_event_and_return_result({},{})).to eq [false, expected_msg]
       end
     end
   end

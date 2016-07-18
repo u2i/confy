@@ -49,17 +49,22 @@ class GoogleEvent
       params.to_h
     end
 
-    def create(credentials, conference_room_ids, params = {})
-      params = params.try :deep_symbolize_keys
-      is_valid, errors = params_valid?(params)
+    def create(credentials, conference_room_ids, event_data = {})
+      event_data = event_data.try :deep_symbolize_keys
+      is_valid, errors = params_valid?(event_data)
       return [is_valid, errors] unless is_valid
-      add_rooms_to_event(params, conference_room_ids)
-      event = Google::Apis::CalendarV3::Event.new(params)
-      event = calendar_service(credentials).insert_event('primary', event)
-      [is_valid, event]
+      add_rooms_to_event(event_data, conference_room_ids)
+      insert_event_and_return_result(credentials, event_data)
+    end
+
+    def insert_event_and_return_result(credentials, event_data)
+      valid = true
+      new_event = Google::Apis::CalendarV3::Event.new(event_data)
+      inserted_event = calendar_service(credentials).insert_event('primary', new_event)
+      [valid, inserted_event]
     rescue
       default_error_msg = 'Unabled to create new event'
-      [!is_valid, default_error_msg]
+      [!valid, default_error_msg]
     end
 
     def params_valid?(params)
