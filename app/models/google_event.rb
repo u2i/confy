@@ -1,4 +1,14 @@
 class GoogleEvent
+  EVENT_SCHEMA = Dry::Validation.Schema do
+    required(:start).schema do
+      required(:date_time).filled
+    end
+
+    required(:end).schema do
+      required(:date_time).filled
+    end
+  end.freeze
+
   class << self
     #You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
     FIELDS = "items(start, end, summary, recurrence, creator(displayName))".freeze
@@ -41,10 +51,20 @@ class GoogleEvent
 
     def create(credentials, conference_room_ids, params = {})
       params = params.try :deep_symbolize_keys
-      raise ArgumentError unless params_valid?(params)
+      is_valid, errors = params_valid?(params)
+      return [is_valid, errors] unless is_valid
       add_rooms_to_event(params, conference_room_ids)
       event = Google::Apis::CalendarV3::Event.new(params)
-      calendar_service(credentials).insert_event('primary', event)
+      event = calendar_service(credentials).insert_event('primary', event)
+      [is_valid, event]
+    rescue
+      default_error_msg = 'Unabled to create new event'
+      [!is_valid, default_error_msg]
+    end
+
+    def params_valid?(params)
+      validation = EVENT_SCHEMA.call params
+      return [validation.success?, validation.messages]
     end
 
     def add_rooms_to_event(params, conference_room_ids)
@@ -53,18 +73,6 @@ class GoogleEvent
         conference_room_email = ConferenceRoom.find_by(id: conference_room_id).email
         params[:attendees] << {email: conference_room_email}
       end
-    end
-
-    def params_valid?(params)
-      return false unless params.is_a? Hash
-      obligatory_keys = %i(start end)
-      obligatory_keys.all? { |key| params.key?(key) }
-      dates_not_empty?(params)
-    end
-
-    def dates_not_empty?(params)
-      return false unless (params[:start].is_a? Hash) || (params[:end].is_a? Hash)
-      params[:start][:date_time].present? && params[:end][:date_time].present?
     end
 
     def calendar_service(credentials)

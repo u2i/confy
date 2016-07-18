@@ -68,69 +68,40 @@ describe GoogleEvent do
 
   describe '.create' do
     context 'given invalid params' do
-      it 'raises ArgumentError' do
-        allow(GoogleEvent).to receive(:params_valid?) { false }
-        expect { GoogleEvent.create({}, 0, {}) }.to raise_error ArgumentError
+      it 'returns error messages' do
+        expect(GoogleEvent.create({}, 0, {})).to eq([false, { start: ['is missing'], end: ['is missing']}])
       end
     end
   end
 
-  describe '.dates_not_empty?' do
-    context 'given appropriate values' do
-      let(:time1) { Faker::Time.forward 5 }
-      let(:time2) { Faker::Time.forward 5 }
-      let(:params){ {start: {date_time: time1}, end: {date_time: time2}} }
-      it 'returns true' do
-        expect(GoogleEvent.dates_not_empty?(params)).to eq true
+  describe 'EVENT_SCHEMA' do
+    let(:time1) { Faker::Time.forward 5 }
+    let(:time2) { Faker::Time.forward 5 }
+    let(:params){ {start: {date_time: time1}, end: {date_time: time2}} }
+    context 'valid' do
+      it 'is valid' do
+        expect(GoogleEvent::EVENT_SCHEMA.call(params).success?).to eq true
+      end
+    end
+    context 'no start' do
+      it 'is invalid' do
+        expect(GoogleEvent::EVENT_SCHEMA.call({end: { date_time: "asdf"}}).messages[:start]).to be_present
+      end
+    end
+    context 'no end' do
+      it 'is invalid' do
+        expect(GoogleEvent::EVENT_SCHEMA.call({start: { date_time: "asdf"}}).messages[:end]).to be_present
       end
     end
 
-    context 'given not hash fields' do
-      let(:params) { { start: [], end: [] } }
-
-      it 'returns false' do
-        expect(GoogleEvent.dates_not_empty?(params)).to eq false
+    context 'no end datetime' do
+      it 'is invalid' do
+        expect(GoogleEvent::EVENT_SCHEMA.call({start: { date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
       end
     end
-
-    context 'given empty fields' do
-
-      let(:params) { { start: {}, end: {} } }
-      it 'return false' do
-        expect(GoogleEvent.dates_not_empty?(params)).to eq false
-      end
-    end
-  end
-
-  describe '.params_valid?' do
-    context 'given not hash params argument' do
-      let(:params){ [] }
-      it 'returns false' do
-        expect(GoogleEvent.params_valid?(params)).to eq false
-      end
-    end
-
-    context 'given hash params without date and start' do
-      let(:params){ {key1: Faker::Lorem.word, key2: Faker::Lorem.word} }
-      it 'returns false' do
-        expect(GoogleEvent.params_valid?(params)).to eq false
-      end
-    end
-
-    context 'given hash params' do
-      let(:params){ {start: {date_time: Faker::Time.forward(5)}, end: {date_time: Faker::Time.forward(6)}} }
-      context 'with valid date and end fields' do
-        it 'returns true' do
-          allow(GoogleEvent).to receive(:dates_not_empty?) { true }
-          expect(GoogleEvent.params_valid?(params)).to eq true
-        end
-      end
-
-      context 'with invalid date and end fields' do
-        it 'returns false' do
-          allow(GoogleEvent).to receive(:dates_not_empty?) { false }
-          expect(GoogleEvent.params_valid?(params)).to eq false
-        end
+    context 'no start datetime' do
+      it 'is invalid' do
+        expect(GoogleEvent::EVENT_SCHEMA.call({end: { date_time: time1}, start: {test: nil}}).messages[:start]).to be_present
       end
     end
   end

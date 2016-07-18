@@ -8,10 +8,12 @@ class EventsController < ApplicationController
     params = event_params
     conference_room_ids = [params[:conference_room_id]]
     params = GoogleEvent.format_params(params)
-    event = GoogleEvent.create(session[:credentials], conference_room_ids, params)
-    render json: event.to_json, status: :created
-  rescue ActiveRecord::RecordInvalid => invalid
-    render json: invalid.record.errors, status: :unprocessable_entity
+    is_valid, data = GoogleEvent.create(session[:credentials], conference_room_ids, params)
+    if is_valid
+      render json: data.to_json, status: :created
+    else
+      render json: data.to_json, status: :unprocessable_entity
+    end
   end
 
   def show
