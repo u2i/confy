@@ -36,8 +36,8 @@ describe GoogleEvent do
 
     let(:expected_events) do
       {
-        1 => [sample_event1],
-        2 => [sample_event2]
+          1 => [sample_event1],
+          2 => [sample_event2]
       }
     end
 
@@ -69,7 +69,7 @@ describe GoogleEvent do
   describe '.create' do
     context 'given invalid params' do
       it 'returns error messages' do
-        expect(GoogleEvent.create({}, 0, {})).to eq([false, { start: ['is missing'], end: ['is missing']}])
+        expect(GoogleEvent.create({}, 0, {})).to eq([false, {start: ['is missing'], end: ['is missing']}])
       end
     end
   end
@@ -77,7 +77,7 @@ describe GoogleEvent do
   describe 'EVENT_SCHEMA' do
     let(:time1) { Faker::Time.forward 5 }
     let(:time2) { Faker::Time.forward 5 }
-    let(:params){ {start: {date_time: time1}, end: {date_time: time2}} }
+    let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
     context 'valid' do
       it 'is valid' do
         expect(GoogleEvent::EVENT_SCHEMA.call(params).success?).to eq true
@@ -85,43 +85,43 @@ describe GoogleEvent do
     end
     context 'no start' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({end: { date_time: "asdf"}}).messages[:start]).to be_present
+        expect(GoogleEvent::EVENT_SCHEMA.call({end: {date_time: 'asdf'}}).messages[:start]).to be_present
       end
     end
     context 'no end' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({start: { date_time: "asdf"}}).messages[:end]).to be_present
+        expect(GoogleEvent::EVENT_SCHEMA.call({start: {date_time: 'asdf'}}).messages[:end]).to be_present
       end
     end
 
     context 'no end datetime' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({start: { date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
+        expect(GoogleEvent::EVENT_SCHEMA.call({start: {date_time: time1}, end: {test: nil}}).messages[:end]).to be_present
       end
     end
     context 'no start datetime' do
       it 'is invalid' do
-        expect(GoogleEvent::EVENT_SCHEMA.call({end: { date_time: time1}, start: {test: nil}}).messages[:start]).to be_present
+        expect(GoogleEvent::EVENT_SCHEMA.call({end: {date_time: time1}, start: {test: nil}}).messages[:start]).to be_present
       end
     end
   end
 
   describe '.add_rooms_to_event' do
     context 'given array of calendar room ids' do
-      let(:mordor_id){1}
-      let(:neverland_id){2}
-      let(:mordor_email){'u2i.com_2d3631343934393033313035@resource.calendar.google.com'}
-      let(:neverland_email){'u2i.com_3530363130383730383638@resource.calendar.google.com'}
-      let(:expected_result){
+      let(:mordor_id) { 1 }
+      let(:neverland_id) { 2 }
+      let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
+      let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
+      let(:expected_result) {
         {attendees: [
             {email: mordor_email},
             {email: neverland_email}]}
       }
-      let(:calendar_room_ids){[mordor_id, neverland_id]}
-      let(:params){{}}
-      let(:mordor_room){double("mordor", email: mordor_email)}
-      let(:neverland_room){double("neverland", email: neverland_email)}
-      let(:id_to_room){ {mordor_id => mordor_room, neverland_id => neverland_room} }
+      let(:calendar_room_ids) { [mordor_id, neverland_id] }
+      let(:params) { {} }
+      let(:mordor_room) { double('mordor', email: mordor_email) }
+      let(:neverland_room) { double('neverland', email: neverland_email) }
+      let(:id_to_room) { {mordor_id => mordor_room, neverland_id => neverland_room} }
       it 'adds new key in hash and assigns array of conference room emails to it' do
 
         allow(ConferenceRoom).to receive(:find_by) do |**args|
