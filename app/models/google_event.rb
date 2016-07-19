@@ -1,5 +1,5 @@
 class GoogleEvent
-  class InvalidParamsException < StandardError; end
+  class InvalidParamsError < StandardError; end
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -63,7 +63,7 @@ class GoogleEvent
     def raise_exception_if_invalid(params)
       validation = EVENT_SCHEMA.call params
       unless validation.success?
-        raise InvalidParamsException, validation.messages(full: true).values.join(', ')
+        raise InvalidParamsError, validation.messages(full: true).values.join(', ')
       end
     end
 

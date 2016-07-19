@@ -4,7 +4,7 @@ class EventsController < ApplicationController
     render json: {error: 'Google Server error'}, status: :service_unavailable
   end
 
-  rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsException do |exception|
+  rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsError do |exception|
     render json: {error: exception.message}, status: :unprocessable_entity
   end
 

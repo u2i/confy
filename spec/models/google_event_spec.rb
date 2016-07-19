@@ -70,7 +70,7 @@ describe GoogleEvent do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'raises GoogleEvent::InvalidParamsException' do
-        expect { GoogleEvent.create({}, 0, {}) }.to raise_error(GoogleEvent::InvalidParamsException)
+        expect { GoogleEvent.create({}, 0, {}) }.to raise_error(GoogleEvent::InvalidParamsError)
       end
     end
   end
