@@ -64,7 +64,7 @@ class GoogleEvent
       validation = EVENT_SCHEMA.call params
       unless validation.success?
         error_msg = validation.messages(full: true).values.join(', ')
-        raise InvalidParamsException.new(error_msg)
+        raise InvalidParamsException, error_msg
       end
     end
 

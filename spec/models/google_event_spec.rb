@@ -125,5 +125,4 @@ describe GoogleEvent do
       end
     end
   end
-
 end
