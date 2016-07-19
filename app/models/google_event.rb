@@ -63,8 +63,7 @@ class GoogleEvent
     def raise_exception_if_invalid(params)
       validation = EVENT_SCHEMA.call params
       unless validation.success?
-        error_msg = validation.messages(full: true).values.join(', ')
-        raise InvalidParamsException, error_msg
+        raise InvalidParamsException, validation.messages(full: true).values.join(', ')
       end
     end
 
@@ -81,12 +80,7 @@ class GoogleEvent
     def client(credentials)
       Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
-
-    def load_emails
-      ConferenceRoom.pluck(:email)
-    end
-
   end
 
-  private_class_method :calendar_service, :client, :load_emails
+  private_class_method :calendar_service, :client
 end
