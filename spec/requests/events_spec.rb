@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Events', type: :request do
+
+  before do
+    # Disable authentication filters
+    allow_any_instance_of(EventsController).to receive(:check_authentication) { true }
+    allow_any_instance_of(EventsController).to receive(:refresh_token) { true }
+  end
+
   describe 'POST /events' do
     let!(:conference_room) { create(:conference_room) }
 

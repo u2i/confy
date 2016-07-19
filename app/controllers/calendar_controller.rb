@@ -2,21 +2,9 @@ require 'google/apis/calendar_v3'
 require 'google/api_client/client_secrets'
 
 class CalendarController < ApplicationController
-  before_action :check_authentication, except: :authenticate
-  before_action :refresh_token
+  include GoogleAuthentication
+
   before_action :load_dates_and_rooms, only: [:index, :google_index]
-
-  def authenticate
-    session[:credentials] = GoogleOauth.get_user_credentials(params[:code])
-    redirect_to action: :index
-  rescue
-    session.delete(:credentials)
-    redirect_to GoogleOauth.request_code_uri
-  end
-
-  def refresh_token
-    session[:credentials] = GoogleOauth.refresh_token(session[:credentials]) if session[:credentials]
-  end
 
   def index
     @events = EventGrouper.new(Event.in_week(week_start)).call
@@ -43,11 +31,7 @@ class CalendarController < ApplicationController
     @conference_rooms = ConferenceRoom.all
   end
 
-  def check_authentication
-    unless session[:credentials] && GoogleOauth.authenticated?(JSON.parse(session[:credentials]))
-      redirect_to action: :authenticate
-    end
-  end
+
 
   def time_interval(start_time, end_time, step)
     (start_time.to_i..end_time.to_i).step(step).collect { |time| Time.at time }

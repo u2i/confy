@@ -28,7 +28,7 @@ module GoogleOauth
     CLIENT_SECRETS.to_authorization.tap do |auth_client|
       auth_client.update!(
         scope: 'https://www.googleapis.com/auth/calendar',
-        redirect_uri: (url_for action: :authenticate, controller: :calendar, host: ENV['HOSTNAME'])
+        redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
       )
     end
   end
