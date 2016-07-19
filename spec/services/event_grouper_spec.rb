@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EventGrouper do
 
   describe '.group_into_blocks' do
-    let(:start_time) { Time.new(2016, 01, 01, 6, 0, 0) }
+    let(:start_time) { Time.new(2016, 1, 1, 6, 0, 0) }
     let!(:room1) { create(:conference_room) }
     let!(:room2) { create(:conference_room) }
 

@@ -44,7 +44,7 @@ class CalendarController < ApplicationController
   end
 
   def check_authentication
-    unless session[:credentials] && GoogleOauth.is_authenticated?(JSON.parse(session[:credentials]))
+    unless session[:credentials] && GoogleOauth.authenticated?(JSON.parse(session[:credentials]))
       redirect_to action: :authenticate
     end
   end

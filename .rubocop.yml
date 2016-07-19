@@ -2,7 +2,8 @@ require: rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.3
-  RunRailsCops: true
+  Rails:
+    Enabled: true
   Include:
     - '**/Rakefile'
     - config.ru
