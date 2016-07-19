@@ -1,5 +1,5 @@
 class GoogleEvent
-  class InvalidParamsException < Exception; end
+  class InvalidParamsException < StandardError; end
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -69,7 +69,6 @@ class GoogleEvent
     end
 
     def add_rooms_to_event(params, conference_room_ids)
-      params[:attendees] = []
       params[:attendees] = ConferenceRoom.where(id: conference_room_ids).pluck(:email).map do |email|
         {email: email}
       end

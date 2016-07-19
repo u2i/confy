@@ -1,16 +1,16 @@
 class EventsController < ApplicationController
 
   rescue_from Google::Apis::ServerError do
-    render json: 'Google Server error', status: :service_unavailable
+    render json: {error: 'Google Server error'}, status: :service_unavailable
   end
 
   rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsException do |exception|
-    render json: exception.message, status: :unprocessable_entity
+    render json: {error: exception.message}, status: :unprocessable_entity
   end
 
   rescue_from Google::Apis::AuthorizationError do
     session.delete(:credentials)
-    render json: 'Authorization error', status: :unauthorized
+    render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
 
