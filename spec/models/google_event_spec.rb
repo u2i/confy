@@ -68,8 +68,9 @@ describe GoogleEvent do
 
   describe '.create' do
     context 'given invalid params' do
+      let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'returns error messages' do
-        expect(GoogleEvent.create({}, 0, {})).to eq([false, {start: ['is missing'], end: ['is missing']}])
+        expect(GoogleEvent.create({}, 0, {})).to eq(invalid_event_response)
       end
     end
   end
@@ -80,9 +81,7 @@ describe GoogleEvent do
     let(:time2) { Faker::Time.forward 5 }
     let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
     context 'valid' do
-      it 'is valid' do
-        expect(schema.call(params).success?).to eq true
-      end
+      it { expect(schema.call(params).success?).to eq true }
     end
     context 'no start' do
       it 'is invalid' do
@@ -109,8 +108,6 @@ describe GoogleEvent do
 
   describe '.add_rooms_to_event' do
     context 'given array of calendar room ids' do
-      let(:mordor_id) { 1 }
-      let(:neverland_id) { 2 }
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
       let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
       let(:expected_result) do
@@ -118,15 +115,11 @@ describe GoogleEvent do
             {email: mordor_email},
             {email: neverland_email}]}
       end
-      let(:calendar_room_ids) { [mordor_id, neverland_id] }
       let(:params) { {} }
-      let(:mordor_room) { double('mordor', email: mordor_email) }
-      let(:neverland_room) { double('neverland', email: neverland_email) }
-      let(:id_to_room) { {mordor_id => mordor_room, neverland_id => neverland_room} }
+      let!(:first_room) { create(:conference_room, email: mordor_email)}
+      let!(:second_room) { create(:conference_room, email: neverland_email)}
+      let(:calendar_room_ids) { [first_room.id, second_room.id] }
       it 'adds new key in hash and assigns array of conference room emails to it' do
-        allow(ConferenceRoom).to receive(:find_by) do |**args|
-          id_to_room[args[:id]]
-        end
         GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
         expect(params).to eq expected_result
       end
@@ -137,7 +130,7 @@ describe GoogleEvent do
     context 'when exception is raised' do
       let(:service){ double('service') }
       let(:exception){ ArgumentError }
-      let(:expected_msg){ 'Unabled to create new event' }
+      let(:expected_msg){ 'Unabled to create a new event' }
       it 'returns [false, error_msg] data' do
         allow(service).to receive(:insert_event).and_raise exception
         allow(described_class).to receive(:calendar_service) { service }

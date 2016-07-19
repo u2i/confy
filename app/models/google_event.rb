@@ -63,8 +63,7 @@ class GoogleEvent
       inserted_event = calendar_service(credentials).insert_event('primary', new_event)
       [valid, inserted_event]
     rescue
-      default_error_msg = 'Unabled to create new event'
-      [!valid, default_error_msg]
+      [!valid, 'Unabled to create a new event']
     end
 
     def params_valid?(params)
@@ -74,9 +73,8 @@ class GoogleEvent
 
     def add_rooms_to_event(params, conference_room_ids)
       params[:attendees] = []
-      conference_room_ids.map do |conference_room_id|
-        conference_room_email = ConferenceRoom.find_by(id: conference_room_id).email
-        params[:attendees] << {email: conference_room_email}
+      params[:attendees] = ConferenceRoom.where(id: conference_room_ids).pluck(:email).map do |email|
+        {email: email}
       end
     end
 
