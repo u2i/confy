@@ -1,13 +1,10 @@
 // Run like this:
 // cd client && npm run build:client
-// Note that Foreman (Procfile.dev) has also been configured to take care of this.
 
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const config = require('./webpack.client.base.config');
-
-const devBuild = process.env.NODE_ENV !== 'production';
+const config = require('./webpack.default.config');
 
 config.output = {
   filename: '[name]-bundle.js',
@@ -15,8 +12,6 @@ config.output = {
 };
 
 config.entry.vendor.unshift(
-  'es5-shim/es5-shim',
-  'es5-shim/es5-sham',
   'jquery-ujs'
 );
 
@@ -59,11 +54,6 @@ config.plugins.push(
   new webpack.optimize.DedupePlugin()
 );
 
-if (devBuild) {
-  console.log('Webpack dev build for Rails'); // eslint-disable-line no-console
-  config.devtool = 'eval-source-map';
-} else {
-  console.log('Webpack production build for Rails'); // eslint-disable-line no-console
-}
+console.log('Webpack production build for Rails');
 
 module.exports = config;

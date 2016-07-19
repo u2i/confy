@@ -6,10 +6,12 @@
     "npm": "3.5.0"
   },
   "scripts": {
-    "build:client": "NODE_ENV=production webpack --config webpack.client.rails.config.js",
-    "build:dev:client": "webpack -w --config webpack.client.rails.config.js",
-    "build:production:client": "NODE_ENV=production webpack --config webpack.client.rails.build.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:client": "NODE_ENV=production webpack --config webpack.build.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "babel-node webpack-dev-server.js",
+    "lint": "npm run eslint && npm run jscs",
+    "eslint": "eslint --ext .js,.jsx .",
+    "jscs": "jscs --verbose ."
   },
   "dependencies": {
     "autoprefixer": "^6.3.5",
@@ -37,5 +39,8 @@
     "webpack": "^1.12.14"
   },
   "devDependencies": {
+    "webpack-dev-server": "^1.14.1",
+    "babel-plugin-react-transform": "^2.0.2",
+    "react-transform-hmr": "^1.0.4"
   }
 }

@@ -10,8 +10,7 @@ module.exports = {
   context: __dirname,
   entry: {
     vendor: [
-      'babel-polyfill',
-      'jquery'
+      'babel-polyfill'
     ],
     app: [
       './app/App.jsx'
@@ -25,14 +24,6 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(nodeEnv)
       }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      // This name 'vendor' ties into the entry definition
-      name: 'vendor',
-      filename: 'vendor-bundle.js',
-      // Passing Infinity just creates the commons chunk, but moves no modules into it.
-      // In other words, we only put what's in the vendor entry definition in vendor-bundle.js
-      minChunks: Infinity
     })
   ],
   module: {
