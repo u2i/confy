@@ -40,13 +40,10 @@ class GoogleEvent
     end
 
     def format_params(params)
-      params[:start] = { date_time: DateTime.parse(params[:start_time]).rfc3339(9) }
-      params[:end] = { date_time: DateTime.parse(params[:end_time]).rfc3339(9) }
-      params.delete(:start_time)
-      params.delete(:end_time)
-      params.delete(:conference_room_id)
-      params.delete(:permitted)
-      params.to_h
+      params.merge(
+          start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
+          end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}
+      ).except(:start_time, :end_time, :conference_room_id, :permitted).to_h
     end
 
     def create(credentials, conference_room_ids, event_data = {})
