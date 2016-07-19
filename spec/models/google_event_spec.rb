@@ -69,8 +69,8 @@ describe GoogleEvent do
   describe '.create' do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
-      it 'returns error messages' do
-        expect(GoogleEvent.create({}, 0, {})).to eq(invalid_event_response)
+      it 'raises GoogleEvent::InvalidParamsException' do
+        expect { GoogleEvent.create({}, 0, {}) }.to raise_error(GoogleEvent::InvalidParamsException)
       end
     end
   end
@@ -126,16 +126,4 @@ describe GoogleEvent do
     end
   end
 
-  describe '.insert_event_and_return_result' do
-    context 'when exception is raised' do
-      let(:service){ double('service') }
-      let(:exception){ ArgumentError }
-      let(:expected_msg){ 'Unabled to create a new event' }
-      it 'returns [false, error_msg] data' do
-        allow(service).to receive(:insert_event).and_raise exception
-        allow(described_class).to receive(:calendar_service) { service }
-        expect(described_class.insert_event_and_return_result({},{})).to eq [false, expected_msg]
-      end
-    end
-  end
 end

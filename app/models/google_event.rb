@@ -1,4 +1,6 @@
 class GoogleEvent
+  class InvalidParamsException < Exception; end
+
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
       required(:date_time).filled
@@ -48,24 +50,22 @@ class GoogleEvent
 
     def create(credentials, conference_room_ids, event_data = {})
       event_data = event_data.try :deep_symbolize_keys
-      is_valid, errors = params_valid?(event_data)
-      return [is_valid, errors] unless is_valid
+      raise_exception_if_invalid(event_data)
       add_rooms_to_event(event_data, conference_room_ids)
       insert_event_and_return_result(credentials, event_data)
     end
 
     def insert_event_and_return_result(credentials, event_data)
-      valid = true
       new_event = Google::Apis::CalendarV3::Event.new(event_data)
-      inserted_event = calendar_service(credentials).insert_event('primary', new_event)
-      [valid, inserted_event]
-    rescue
-      [!valid, 'Unabled to create a new event']
+      calendar_service(credentials).insert_event('primary', new_event)
     end
 
-    def params_valid?(params)
+    def raise_exception_if_invalid(params)
       validation = EVENT_SCHEMA.call params
-      [validation.success?, validation.messages]
+      unless validation.success?
+        error_msg = validation.messages(full: true).values.join(', ')
+        raise InvalidParamsException.new(error_msg)
+      end
     end
 
     def add_rooms_to_event(params, conference_room_ids)
@@ -90,5 +90,4 @@ class GoogleEvent
   end
 
   private_class_method :calendar_service, :client, :load_emails
-
 end
