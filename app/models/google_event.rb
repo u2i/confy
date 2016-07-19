@@ -45,11 +45,11 @@ class GoogleEvent
       params.merge(
           start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
           end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}
-      ).except(:start_time, :end_time, :conference_room_id, :permitted).to_h
+      ).except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
     def create(credentials, conference_room_ids, event_data = {})
-      event_data = event_data.try :deep_symbolize_keys
+      event_data = event_data.deep_symbolize_keys
       raise_exception_if_invalid(event_data)
       add_rooms_to_event(event_data, conference_room_ids)
       insert_event_and_return_result(credentials, event_data)
