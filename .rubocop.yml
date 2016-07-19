@@ -41,11 +41,6 @@ Style/SingleLineMethods:
 Style/NumericLiterals:
   Enabled: false
 
-#Style/TrailingComma:
-#  # If EnforcedStyleForMultiline is comma, the cop allows a comma after the
-#  # last item of a list, but only for lists where each item is on its own line.
-#  EnforcedStyleForMultiline: comma
-
 Style/TrailingUnderscoreVariable:
   Enabled: false
 
@@ -56,5 +51,5 @@ Metrics/LineLength:
     - spec/**/*
 
 Metrics/MethodLength:
-  CountComments: false  # count full line comments?
+  CountComments: false
   Max: 30
