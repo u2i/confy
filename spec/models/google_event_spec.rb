@@ -41,7 +41,7 @@ describe GoogleEvent do
       }
     end
 
-    it 'returns list of events where ints are keys and Array[Event] are values' do
+    it 'remove array of events' do
       service = double('service')
       events = double('events')
 
@@ -57,11 +57,7 @@ describe GoogleEvent do
       end
 
       expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
-        response.all? do |day, _|
-          response[day].each_with_index.all? do |event, i|
-            event.attributes == expected_events[day][i].attributes
-          end
-        end
+        response.all? { |a| a.is_a? Hash }
       end
     end
   end

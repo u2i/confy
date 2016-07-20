@@ -15,16 +15,6 @@ class EventsController < ApplicationController
     render json: invalid.record.errors, status: :unprocessable_entity
   end
 
-  def show
-    @event = Event.find(params[:id])
-
-    respond_to do |format|
-      format.js { render partial: 'event', locals: {event: @event} }
-    end
-  rescue ActiveRecord::RecordNotFound => e
-    render json: e.message, status: :not_found
-  end
-
   private
 
   def event_params

@@ -7,36 +7,35 @@ RSpec.describe EventGrouper do
     let!(:room1) { create(:conference_room) }
     let!(:room2) { create(:conference_room) }
 
-    let!(:event1) { create(:event, start_time: start_time, end_time: start_time + 1.hour, conference_room: room1) }
+    let!(:event1) {         { :start => { :date_time => start_time} ,
+                              :end => { :date_time => start_time + 1.hours } }
+    }
 
     context 'with mutually colliding events' do
       let!(:event2) do
-        create(:event,
-               start_time: start_time + 30.minutes,
-               end_time: start_time + 2.hours,
-               conference_room: room2)
+        { :start => { :date_time => start_time + 30.minutes} ,
+          :end => { :date_time => start_time + 2.hours }
+        }
       end
       let!(:event3) do
-        create(:event,
-               start_time: start_time + 1.hour,
-               end_time: start_time + 2.hours,
-               conference_room: room1)
+        {:start => {:date_time => start_time + 1.hours} ,
+         :end => {:date_time => start_time + 2.hours }
+        }
       end
       let!(:event4) do
-        create(:event, start_time: start_time + 2.hours,
-               end_time: start_time + 3.hours,
-               conference_room: room1)
+        {:start => {:date_time => start_time + 2.hours} ,
+         :end => {:date_time => start_time + 3.hours }
+        }
       end
       let!(:event5) do
-        create(:event,
-               start_time: start_time + 3.hours,
-               end_time: start_time + 5.hours,
-               conference_room: room1)
+        {:start => {:date_time => start_time + 3.hours} ,
+         :end => {:date_time => start_time + 5.hours }
+        }
       end
 
       let(:expected_events) { [[event1, event2, event3], [event4], [event5]] }
 
-      subject(:events) { described_class.new(Event.all).call }
+      subject(:events) { described_class.new([event1, event2, event3, event4, event5]).call }
       it 'groups overlapping events' do
         expect(events).to match_array(expected_events)
       end
@@ -44,24 +43,43 @@ RSpec.describe EventGrouper do
 
     context 'with pairwise colliding events' do
       let!(:event2) do
-        create(:event,
-               start_time: start_time - 1.hour,
-               end_time: start_time + 2.hours,
-               conference_room: room1)
+        {:start => {:date_time => start_time - 1.hours} ,
+         :end => {:date_time => start_time + 2.hours }
+        }
       end
       let!(:event3) do
-        create(:event,
-               start_time: start_time + 1.hour,
-               end_time: start_time + 3.hours,
-               conference_room: room2)
+        { :start => { :date_time => start_time + 1.hours} ,
+          :end => { :date_time => start_time + 3.hours }
+        }
       end
 
       let(:expected_events) { [[event2, event1, event3]] }
 
-      subject(:events) { described_class.new(Event.all).call }
+      subject(:events) { described_class.new([event1, event2, event3]).call }
       it 'groups overlapping events into one block' do
         expect(events).to match_array(expected_events)
       end
+    end
+
+    context 'colliding events seperated by another block' do
+      let!(:event2) do
+        { :start => { :date_time => start_time + 2.hours} ,
+          :end => { :date_time => start_time + 3.hours }
+        }
+      end
+      let!(:event3) do
+        { :start => { :date_time => start_time} ,
+          :end => { :date_time => start_time + 4.hours }
+        }
+      end
+      let(:expected_events) { [[event2, event1, event3]] }
+
+      subject(:events) { described_class.new([event1, event2, event3]).call }
+      it 'groups overlapping events into one block' do
+        binding.pry
+        expect(events).to match_array(expected_events)
+      end
+
     end
   end
 end

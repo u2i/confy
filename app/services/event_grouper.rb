@@ -2,11 +2,11 @@ class EventGrouper
   attr_reader :events
 
   def initialize(events)
-    @events = events.order(:end_time)
+    @events = events
   end
 
   def call
-    build_blocks.map { |block| block.sort_by!(&:start_time) }
+    build_blocks.map { |block| block.sort_by! { |n| n[:start][:date_time] } }
   end
 
   private
@@ -23,7 +23,7 @@ class EventGrouper
   end
 
   def event_not_in_block?(current_block, event)
-    current_block.any? && event.start_time >= current_block.last.end_time
+    current_block.any? && event[:start][:date_time] >= current_block.last[:end][:date_time]
   end
 
   def add_new_block
