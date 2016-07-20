@@ -7,7 +7,7 @@ RSpec.describe 'Authentications', type: :request do
 
       before do
         allow(GoogleOauth).to receive(:get_user_credentials) { google_credentials }
-        get oauth2callback_path, params: { code: 'sample_code' }
+        get oauth2callback_path, params: {code: 'sample_code'}
       end
 
       it 'redirects to root_path and sets session' do
@@ -20,7 +20,7 @@ RSpec.describe 'Authentications', type: :request do
       before do
         allow(GoogleOauth).to receive(:get_user_credentials) { raise ArgumentError, 'Test error' }
         allow(GoogleOauth).to receive(:request_code_uri) { example_page }
-        get oauth2callback_path, params: { code: 'sample_code' }
+        get oauth2callback_path, params: {code: 'sample_code'}
       end
 
       it 'redirects to root_path and sets session' do
