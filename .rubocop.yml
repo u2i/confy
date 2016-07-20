@@ -45,6 +45,9 @@ Style/NumericLiterals:
 Style/TrailingUnderscoreVariable:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 120
   Enabled: true
