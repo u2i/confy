@@ -4,6 +4,8 @@ require 'google/api_client/client_secrets'
 class CalendarController < ApplicationController
   include GoogleAuthentication
 
+  before_action :check_authentication
+  before_action :refresh_token
   before_action :load_dates_and_rooms, only: [:index, :google_index]
 
   def index

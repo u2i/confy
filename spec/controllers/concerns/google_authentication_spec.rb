@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe ApplicationController, type: :controller do
   controller do
     include GoogleAuthentication
+    before_action :check_authentication
+    before_action :refresh_token
 
     def index
       render json: 'fake controller'

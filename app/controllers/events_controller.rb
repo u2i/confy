@@ -1,6 +1,9 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
 
+  before_action :check_authentication
+  before_action :refresh_token
+
   def index
     render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
   end
