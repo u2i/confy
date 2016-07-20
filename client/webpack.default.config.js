@@ -13,7 +13,7 @@ module.exports = {
       'babel-polyfill'
     ],
     app: [
-      './app/app.jsx'
+      './app/App.jsx'
     ]
   },
   resolve: {
