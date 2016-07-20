@@ -10,9 +10,6 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  */
-@import "vendor-bundle";
-@import "app-bundle";
-
 $font-size-h1: 1.5em;
 @import "bootstrap-sprockets";
 @import "bootstrap";
