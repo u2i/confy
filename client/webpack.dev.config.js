@@ -16,7 +16,8 @@ config.entry.app.push(
 );
 
 config.entry.vendor.push(
-  'jquery-ujs'
+  'jquery-ujs',
+  'bootstrap-loader'
 );
 
 config.output = {

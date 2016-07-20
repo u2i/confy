@@ -12,5 +12,8 @@
     "lint": "(cd client && npm run lint --silent)",
     "build:client": "(cd client && npm run build:client --silent)",
     "server:dev": "(cd client && npm run server:dev)"
+  },
+  "devDependencies": {},
+  "dependencies": {
   }
 }

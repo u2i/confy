@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
@@ -10,7 +11,11 @@ module.exports = {
   context: __dirname,
   entry: {
     vendor: [
-      'babel-polyfill'
+      'babel-polyfill',
+      'es5-shim/es5-shim',
+      'es5-shim/es5-sham',
+      'jquery',
+      'turbolinks'
     ],
     app: [
       './app/App.jsx'
@@ -34,5 +39,7 @@ module.exports = {
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
       { test: require.resolve('jquery'), loader: 'expose?$' }
     ]
-  }
+  },
+  postcss: [autoprefixer],
+  sassResources: ['./app/assets/stylesheets/_variables.scss']
 };

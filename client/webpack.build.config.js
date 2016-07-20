@@ -12,7 +12,10 @@ config.output = {
 };
 
 config.entry.vendor.unshift(
-  'jquery-ujs'
+  'es5-shim/es5-shim',
+  'es5-shim/es5-sham',
+  'jquery-ujs',
+  'bootstrap-loader/extractStyles'
 );
 
 config.module.loaders.push(
