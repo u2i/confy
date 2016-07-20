@@ -116,8 +116,8 @@ describe GoogleEvent do
             {email: neverland_email}]}
       end
       let(:params) { {} }
-      let!(:first_room) { create(:conference_room, email: mordor_email)}
-      let!(:second_room) { create(:conference_room, email: neverland_email)}
+      let!(:first_room) { create(:conference_room, email: mordor_email) }
+      let!(:second_room) { create(:conference_room, email: neverland_email) }
       let(:calendar_room_ids) { [first_room.id, second_room.id] }
       it 'adds new key in hash and assigns array of conference room emails to it' do
         GoogleEvent.add_rooms_to_event(params, calendar_room_ids)

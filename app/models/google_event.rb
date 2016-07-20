@@ -1,5 +1,6 @@
 class GoogleEvent
-  class InvalidParamsError < StandardError; end
+  class InvalidParamsError < StandardError;
+  end
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -20,8 +21,8 @@ class GoogleEvent
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = { fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
-                     time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw' }
+          config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
+                    time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
@@ -62,9 +63,8 @@ class GoogleEvent
 
     def raise_exception_if_invalid(params)
       validation = EVENT_SCHEMA.call params
-      unless validation.success?
-        raise InvalidParamsError, validation.messages(full: true).values.join(', ')
-      end
+      exception_message = validation.messages(full: true).values.join(', ')
+      raise InvalidParamsError, exception_message unless validation.success?
     end
 
     def add_rooms_to_event(params, conference_room_ids)
