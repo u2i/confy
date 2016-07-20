@@ -49,16 +49,21 @@ class GoogleEvent
       ).except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
-    def create(credentials, conference_room_ids, event_data = {})
-      event_data = event_data.deep_symbolize_keys
-      raise_exception_if_invalid(event_data)
-      add_rooms_to_event(event_data, conference_room_ids)
+    def create(credentials, conference_room_ids, raw_event_data = {})
+      event_data = build_event_data(raw_event_data, conference_room_ids)
       insert_event_and_return_result(credentials, event_data)
     end
 
     def insert_event_and_return_result(credentials, event_data)
       new_event = Google::Apis::CalendarV3::Event.new(event_data)
       calendar_service(credentials).insert_event('primary', new_event)
+    end
+
+    def build_event_data(raw_event_data, conference_room_ids)
+      event_data = raw_event_data.deep_symbolize_keys
+      raise_exception_if_invalid(event_data)
+      add_rooms_to_event(event_data, conference_room_ids)
+      event_data
     end
 
     def raise_exception_if_invalid(params)
@@ -82,5 +87,7 @@ class GoogleEvent
     end
   end
 
-  private_class_method :calendar_service, :client
+  private_class_method :calendar_service,
+                       :client, :raise_exception_if_invalid,
+                       :insert_event_and_return_result, :build_event_data
 end
