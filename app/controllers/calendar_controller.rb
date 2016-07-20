@@ -19,7 +19,7 @@ class CalendarController < ApplicationController
     render :index
   rescue ArgumentError
     session.delete(:credentials)
-    redirect_to action: :authenticate
+    redirect_to oauth2callback_path
   end
 
   private
