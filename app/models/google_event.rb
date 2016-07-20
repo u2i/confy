@@ -42,7 +42,7 @@ class GoogleEvent
       events
     end
 
-    def format_params(params)
+    def process_params(params)
       params.merge(
           start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
           end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}

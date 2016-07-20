@@ -20,7 +20,7 @@ class EventsController < ApplicationController
 
   def create
     conference_room_ids = [event_params[:conference_room_id]]
-    google_event_params = GoogleEvent.format_params(event_params)
+    google_event_params = GoogleEvent.process_params(event_params)
     data = GoogleEvent.create(session[:credentials], conference_room_ids, google_event_params)
     render json: data.to_json, status: :created
   end
