@@ -17,7 +17,6 @@ class EventsController < ApplicationController
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
-
   def index
     render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
   end
@@ -40,6 +39,7 @@ class EventsController < ApplicationController
   end
 
   private
+
   def event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id)
   end

@@ -1,5 +1,5 @@
 class GoogleEvent
-  class InvalidParamsError < StandardError;
+  class InvalidParamsError < StandardError
   end
 
   EVENT_SCHEMA = Dry::Validation.Schema do
@@ -43,9 +43,8 @@ class GoogleEvent
     end
 
     def process_params(params)
-      params.merge(
-          start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
-          end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}
+      params.merge(start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
+                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}
       ).except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
