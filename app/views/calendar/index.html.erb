@@ -34,6 +34,8 @@
   </div>
 </div>
 
+<%= react_component 'Calendar', props: @events %>
+
 <%= render partial: 'create_event', locals: {conference_rooms: @conference_rooms}%>
 
 <%= javascript_tag do %>
