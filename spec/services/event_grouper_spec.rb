@@ -72,12 +72,11 @@ RSpec.describe EventGrouper do
           :end => { :date_time => start_time + 4.hours }
         }
       end
-      let(:expected_events) { [[event2, event1, event3]] }
+      let(:expected_events) { [[event1, event2, event3]] }
 
-      subject(:events) { described_class.new([event1, event2, event3]).call }
+      subject(:events) { described_class.new([event1, event3, event2]).call }
       it 'groups overlapping events into one block' do
-        binding.pry
-        expect(events).to match_array(expected_events)
+        expect(events[0]).to match_array(expected_events[0])
       end
 
     end

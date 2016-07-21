@@ -5,7 +5,7 @@ class GoogleEvent
 
     def list_events(credentials, starting, ending)
       events = []
-      rooms = ConferenceRoom.first(4)
+      rooms = ConferenceRoom.first(2)
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
           config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
