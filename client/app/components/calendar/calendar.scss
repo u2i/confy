@@ -1,0 +1,12 @@
+.container {
+  margin-top: 25px;
+}
+
+.calendar > tbody > tr {
+
+  > td {
+    overflow: visible;
+    padding: 0 0.5em 0.8em 0;
+    height: 2em;
+  }
+}
