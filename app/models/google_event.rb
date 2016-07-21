@@ -43,8 +43,9 @@ class GoogleEvent
     end
 
     def process_params(params)
-      params.merge(start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
-                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}).
+      zone = Time.now.getlocal.zone
+      params.merge(start: {date_time: DateTime.parse("#{params[:start_time]} #{zone}").rfc3339(9)},
+                   end: {date_time: DateTime.parse("#{params[:end_time]} #{zone}").rfc3339(9)}).
              except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
@@ -72,9 +73,13 @@ class GoogleEvent
     end
 
     def add_rooms_to_event(params, conference_room_ids)
-      params[:attendees] = ConferenceRoom.where(id: conference_room_ids).pluck(:email).map do |email|
-        {email: email}
+      params[:attendees] ||= []
+      titles = []
+      ConferenceRoom.where(id: conference_room_ids).pluck(:email, :title).map do |email, title|
+        params[:attendees] << {email: email}
+        titles << title
       end
+      params[:location] = titles.join(', ')
     end
 
     def calendar_service(credentials)
