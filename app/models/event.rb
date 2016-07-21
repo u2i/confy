@@ -20,6 +20,10 @@ class Event < ApplicationRecord
     in_week(week).group_by { |e| e.start_time.wday }
   }
 
+  def as_json(options = {})
+    super(include: :conference_room).merge(options)
+  end
+
   private
 
   def start_time_must_be_lower_than_end_time
