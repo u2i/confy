@@ -11,11 +11,11 @@ class EventsController < ApplicationController
   rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsError do |exception|
     case params[:action]
     when 'create'
-        render json: {error: exception.message}, status: :unprocessable_entity
+      render json: {error: exception.message}, status: :unprocessable_entity
     when 'destroy'
-        render json: {error: exception.message}, status: :forbidden
+      render json: {error: exception.message}, status: :forbidden
     else
-        render json: {error: exception.message}, status: :bad_request
+      render json: {error: exception.message}, status: :bad_request
     end
   end
 
