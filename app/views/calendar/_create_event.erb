@@ -4,7 +4,7 @@
      role="dialog"
      aria-labelledby="create-event-modal-label">
   <div class="modal-dialog" role="document">
-    <%= form_for Event.new, remote: true, html: {id: 'create-event-form'} do |e| %>
+    <%= form_for :event, url: events_path, remote: true, html: {id: 'create-event-form'} do |e| %>
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -15,8 +15,8 @@
         <div class="modal-body">
 
           <section class="form-group">
-            <%= label_tag :name, 'Name' %>
-            <%= e.text_field :name, class: 'form-control' %>
+            <%= label_tag :summary, 'Name' %>
+            <%= e.text_field :summary, class: 'form-control' %>
           </section>
 
           <section class="form-group">
@@ -32,12 +32,6 @@
             <div class="col-md-5">
               <%= render partial: 'datepicker', locals: {event: e, name: :end_time, text: 'End Time'} %>
             </div>
-          </section>
-
-          <section class="form-group">
-            <%= label_tag :user, 'Requester' %>
-            <%= e.text_field :user, required: true, class: 'form-control' %>
-            <span class="error-text text-danger"></span>
           </section>
 
           <section class="form-group">

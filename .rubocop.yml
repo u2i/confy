@@ -1,9 +1,59 @@
+require: rubocop-rspec
+
 AllCops:
   TargetRubyVersion: 2.3
+  Rails:
+    Enabled: true
+  Include:
+    - '**/Rakefile'
+    - config.ru
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - config/**/*
+    - script/**/*
+    - db/schema.rb
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Style/Documentation:
+  Enabled: false
+
+Style/WhileUntilModifier:
+  MaxLineLength: 120
+  Exclude:
+    - spec/**/*
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBraces: no_space
+
+Style/MultilineBlockChain:
+  Enabled: true
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+  Enabled: true
+
+Style/SingleLineMethods:
+  AllowIfMethodIsEmpty: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 120
-  AllowHeredoc: true
-  AllowURI: true
-  URISchemes:
-    - http
-    - https
+  Enabled: true
+  Exclude:
+    - spec/**/*
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 30

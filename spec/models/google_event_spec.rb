@@ -36,8 +36,8 @@ describe GoogleEvent do
 
     let(:expected_events) do
       {
-        1 => [sample_event1],
-        2 => [sample_event2]
+          1 => [sample_event1],
+          2 => [sample_event2]
       }
     end
 
@@ -46,7 +46,7 @@ describe GoogleEvent do
       events = double('events')
 
       allow(events).to receive(:items) { sample_events }
-      allow(GoogleEvent).to receive(:calendar_service) { service }
+      allow(described_class).to receive(:calendar_service) { service }
       allow(service).to receive(:batch).and_yield(service)
       allow(service).to receive(:list_events) do |email, &block|
         if email == ConferenceRoom.first.email
@@ -56,12 +56,72 @@ describe GoogleEvent do
         end
       end
 
-      expect(GoogleEvent.list_events('', sample_time1, sample_time1)).to satisfy do |response|
+      expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
         response.all? do |day, _|
           response[day].each_with_index.all? do |event, i|
             event.attributes == expected_events[day][i].attributes
           end
         end
+      end
+    end
+  end
+
+  describe '.create' do
+    context 'given invalid params' do
+      let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
+      it 'raises GoogleEvent::InvalidParamsException' do
+        expect { GoogleEvent.create({}, 0, {}) }.to raise_error(GoogleEvent::InvalidParamsError)
+      end
+    end
+  end
+
+  describe 'EVENT_SCHEMA' do
+    let(:schema) { GoogleEvent::EVENT_SCHEMA }
+    let(:time1) { Faker::Time.forward 5 }
+    let(:time2) { Faker::Time.forward 5 }
+    let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
+    context 'valid' do
+      it { expect(schema.call(params).success?).to eq true }
+    end
+    context 'no start' do
+      it 'is invalid' do
+        expect(schema.call(end: {date_time: 'asdf'}).messages[:start]).to be_present
+      end
+    end
+    context 'no end' do
+      it 'is invalid' do
+        expect(schema.call(start: {date_time: 'asdf'}).messages[:end]).to be_present
+      end
+    end
+
+    context 'no end datetime' do
+      it 'is invalid' do
+        expect(schema.call(start: {date_time: time1}, end: {test: nil}).messages[:end]).to be_present
+      end
+    end
+    context 'no start datetime' do
+      it 'is invalid' do
+        expect(schema.call(end: {date_time: time1}, start: {test: nil}).messages[:start]).to be_present
+      end
+    end
+  end
+
+  describe '.add_rooms_to_event' do
+    context 'given array of calendar room ids' do
+      let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
+      let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
+      let(:expected_result) do
+        {attendees: [
+            {email: mordor_email},
+            {email: neverland_email}]}
+      end
+      let(:params) { {} }
+      let!(:first_room) { create(:conference_room, email: mordor_email) }
+      let!(:second_room) { create(:conference_room, email: neverland_email) }
+      let(:calendar_room_ids) { [first_room.id, second_room.id] }
+      it 'adds new key in hash and assigns array of conference room emails to it' do
+        GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
+        expect(params).to eq expected_result
       end
     end
   end
