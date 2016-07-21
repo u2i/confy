@@ -5,13 +5,14 @@ $(document).on('turbolinks:load', (function () {
         partial.setAttribute('data-id', event.id);
         partial.setAttribute('class', 'event');
         partial.setAttribute('style', 'background-color: ' + event.conference_room.color);
-        // TEMPORARY HACK
-        partial.innerHTML =  ['<div class="event-time">', moment(event.start.date_time).format("HH:mm"), '</div>',
+        partial.innerHTML =  [
+            '<div class="event-time">', moment(event.start.date_time).format("HH:mm"), '</div>',
             '<div class="event-name">', event.summary, '</div>',
             '<div class="event-user">',
-        '<small>by</small>', event.creator.displayName, '</div>',
+            '<small>by</small>', event.creator.displayName, '</div>',
             '<div class="event-location">',
-        '<small>in</small>', event.conference_room.title, '</div>'].join('\n');
+            '<small>in</small>', event.conference_room.title, '</div>'
+        ].join('\n');
         parent.append(partial);
         getEventElement(parent, event).css({height: eventHeight(event) + 'px'});
     }

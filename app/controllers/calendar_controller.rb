@@ -8,16 +8,11 @@ class CalendarController < ApplicationController
   before_action :refresh_token
   before_action :load_dates_and_rooms, only: [:index, :google_index]
 
-  def old_index
-    @events = EventGrouper.new(Event.in_week(week_start)).call
-  end
-
   # Index for showing events from Google calendar
   def index
     @events = EventGrouper.new(
       GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
     ).call
-    render :index
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path
