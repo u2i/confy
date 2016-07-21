@@ -10,8 +10,10 @@ class CalendarController < ApplicationController
 
   # Index for showing events from Google calendar
   def index
-    @events_hash = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
-    @events = @events_hash.map do |_wday, events|
+    @events = GoogleEvent.list_events(
+      session[:credentials],
+      DateTime.now.beginning_of_week, DateTime.now.end_of_week
+    ).map do |_wday, events|
       EventGrouper.new(events.sort_by { |e| e[:end][:date_time] }).call
     end.flatten!(1)
   rescue ArgumentError
