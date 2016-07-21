@@ -6,7 +6,7 @@ $(document).on('turbolinks:load', (function () {
         partial.setAttribute('class', 'event');
         partial.setAttribute('style', 'background-color: ' + event.conference_room.color);
         // TEMPORARY HACK
-        partial.innerHTML =  ['<div class="event-time">', event.start.date_time, '</div>',
+        partial.innerHTML =  ['<div class="event-time">', moment(event.start.date_time).format("HH:mm"), '</div>',
             '<div class="event-name">', event.summary, '</div>',
             '<div class="event-user">',
         '<small>by</small>', event.creator.displayName, '</div>',
@@ -61,7 +61,7 @@ $(document).on('turbolinks:load', (function () {
         }).length;
 
         var width = eventsInThisContainer * eventWidth(block),
-            offset = (block.indexOf(event) - eventsInThisContainer + 1) * width;
+            offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth(block);
 
         eventContainer.css({width: width, 'margin-left': offset});
     }
