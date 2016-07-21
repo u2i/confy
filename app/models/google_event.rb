@@ -90,7 +90,7 @@ class GoogleEvent
         time_min: starting,
         time_max: ending
       )
-      list.items.any?
+      list && list.items.any?
     end
 
     def calendar_service(credentials)
