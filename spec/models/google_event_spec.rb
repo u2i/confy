@@ -36,8 +36,8 @@ describe GoogleEvent do
 
     let(:expected_events) do
       {
-          1 => [google_event1],
-          2 => [google_event2]
+        1 => [google_event1],
+        2 => [google_event2]
       }
     end
 
