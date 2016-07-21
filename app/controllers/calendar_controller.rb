@@ -10,9 +10,10 @@ class CalendarController < ApplicationController
 
   # Index for showing events from Google calendar
   def index
-    @events = EventGrouper.new(
-      GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
-    ).call
+    @events_hash = GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
+    @events = @events_hash.map do |_wday, events|
+      EventGrouper.new(events.sort_by { |e| e[:end][:date_time] }).call
+    end.flatten!(1)
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path

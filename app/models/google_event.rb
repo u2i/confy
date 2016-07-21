@@ -17,7 +17,7 @@ class GoogleEvent
     FIELDS = 'items(id, start, end, summary, recurrence, creator(displayName))'.freeze
 
     def list_events(credentials, starting, ending)
-      events = []
+      events = {}
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
@@ -28,12 +28,13 @@ class GoogleEvent
             result.items&.each do |event|
               event.start.date_time = new_time_low event.start.date_time
               event.end.date_time = new_time_high event.end.date_time
-              events << event.to_h.merge(conference_room: room)
+              events[event.start.date_time.wday] ||= []
+              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
             end
           end
         end
       end
-      events.sort_by! { |a| a[:end][:date_time] }
+      events
     end
 
     def process_params(params)
