@@ -10,12 +10,14 @@ class CalendarController < ApplicationController
 
   def index
     @events = EventGrouper.new(Event.in_week(week_start)).call
+    create_calendar_props
   end
 
   # Index for showing events from Google calendar
   def google_index
     @events = EventGrouper.new(
       GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)).call
+    create_calendar_props
     render :index
   rescue ArgumentError
     session.delete(:credentials)
@@ -23,6 +25,10 @@ class CalendarController < ApplicationController
   end
 
   private
+
+  def create_calendar_props
+    @props = {events: @events, days: @days, times: @times}
+  end
 
   def load_dates_and_rooms
     week_start, week_end = build_week_boundaries

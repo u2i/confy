@@ -11,30 +11,10 @@
     <%= link_to 'Previous Week', root_path(params: {date: previous_week(params[:date])}) , class: 'btn btn-primary menu-button btn-block' %>
   </aside>
   <div class="col-xs-12 col-md-8">
-    <table class="calendar table table-bordered table-striped table-responsive">
-      <tr>
-        <th class="col-md-1"></th>
-        <% @days.each do |day| %>
-          <th class="col-md-2 text-center"><%= day.strftime('%a %m/%d') %></th>
-        <% end %>
-      </tr>
-      <% @times.each do |time| %>
-        <tr>
-          <td class="text-right">
-            <small><%= time.strftime('%H:%M') %></small>
-          </td>
-          <% @days.each do |day| %>
-            <td data-date="<%= add_date_and_time(day, time).to_i %>">
-              <div class="event-container"></div>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
+    <%= react_component 'Calendar', props: @props %>
   </div>
 </div>
 
-<%= react_component 'Calendar', props: @events %>
 
 <%= render partial: 'create_event', locals: {conference_rooms: @conference_rooms}%>
 
