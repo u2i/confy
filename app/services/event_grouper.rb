@@ -14,44 +14,37 @@ class EventGrouper
   def build_blocks
     @blocks = [[]]
     events.each do |event|
-      found_block = false
-      @blocks.each do |block|
-         unless event_not_in_block?(block, event)
-           block << event
-           found_block = true
-           break
-         end
-      end
-      if found_block
-        while merge_blocks
-        end
+      if (block = find_block_for_event(event))
+        block << event
+        merge_blocks
       else
-        @blocks << [event] unless found_block
+        add_new_block(event)
       end
     end
 
     @blocks
   end
 
-  def event_not_in_block?(current_block, event)
-    current_block.any? && event[:start][:date_time] >= current_block.last[:end][:date_time]
+  def find_block_for_event(event)
+    @blocks.find do |block|
+      event_in_block?(block, event)
+    end
   end
 
-  def add_new_block
-    @blocks << []
+  def event_in_block?(current_block, event)
+    current_block.none? || event[:start][:date_time] < current_block.last[:end][:date_time]
+  end
+
+  def add_new_block(event)
+    @blocks << [event]
   end
 
   def merge_blocks
-    size = @blocks.size
-    0.upto(size - 1) do |y|
-      (y + 1).upto(size - 1) do |x|
-        range1 = block_range @blocks[y]
-        range2 = block_range @blocks[x]
-        if overlapping?(range1, range2)
-          @blocks[x] += @blocks[y]
-          @blocks.delete_at(y)
-          return true
-        end
+    (0..(@blocks.size - 1)).to_a.combination(2).each do |y, x|
+      if overlapping?(block_range(@blocks[y]), block_range(@blocks[x]))
+        @blocks[x] += @blocks[y]
+        @blocks.delete_at(y)
+        return merge_blocks
       end
     end
     false
@@ -60,13 +53,12 @@ class EventGrouper
   def block_range(block)
     min = block.min_by { |v| v[:start][:date_time] }[:start][:date_time]
     max = block.max_by { |v| v[:end][:date_time] }[:end][:date_time]
-    [min, max]
+    min..max
   end
 
   def overlapping?(left, right)
-    lower = left[0] < right[0] ? left : right
-    upper = left[0] < right[0] ? right : left
+    left, right = right, left if left.min > right.min
 
-    upper[0] < lower[1]
+    right.min < left.max
   end
 end
