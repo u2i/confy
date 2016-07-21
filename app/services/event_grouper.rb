@@ -41,11 +41,10 @@ class EventGrouper
 
   def merge_blocks
     (0..(@blocks.size - 1)).to_a.combination(2).each do |y, x|
-      if overlapping?(block_range(@blocks[y]), block_range(@blocks[x]))
-        @blocks[x] += @blocks[y]
-        @blocks.delete_at(y)
-        return merge_blocks
-      end
+      next unless overlapping?(block_range(@blocks[y]), block_range(@blocks[x]))
+      @blocks[x] += @blocks[y]
+      @blocks.delete_at(y)
+      return merge_blocks
     end
     false
   end

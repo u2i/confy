@@ -15,7 +15,7 @@ class CalendarController < ApplicationController
   # Index for showing events from Google calendar
   def index
     @events = EventGrouper.new(
-        GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
+      GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)
     ).call
     render :index
   rescue ArgumentError
