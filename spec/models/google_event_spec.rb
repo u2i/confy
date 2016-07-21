@@ -125,8 +125,4 @@ describe GoogleEvent do
       end
     end
   end
-
-  describe '.delete' do
-
-  end
 end
