@@ -36,8 +36,8 @@ describe GoogleEvent do
 
     let(:expected_events) do
       {
-          1 => [sample_event1],
-          2 => [sample_event2]
+          1 => [google_event1],
+          2 => [google_event2]
       }
     end
 
@@ -57,7 +57,11 @@ describe GoogleEvent do
       end
 
       expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
-        response.all? { |a| a.is_a? Hash }
+        response.all? do |day, _|
+          response[day].each_with_index.all? do |event, i|
+            event[:summary] == expected_events[day][i].summary
+          end
+        end
       end
     end
   end
