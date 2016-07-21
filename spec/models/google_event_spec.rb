@@ -111,16 +111,17 @@ describe GoogleEvent do
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
       let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
       let(:expected_result) do
-        {attendees: [
-            {email: mordor_email},
-            {email: neverland_email}]}
+        {
+          attendees: [
+            {email: mordor_email}
+          ],
+          location: first_room.title
+        }
       end
       let(:params) { {} }
       let!(:first_room) { create(:conference_room, email: mordor_email) }
-      let!(:second_room) { create(:conference_room, email: neverland_email) }
-      let(:calendar_room_ids) { [first_room.id, second_room.id] }
       it 'adds new key in hash and assigns array of conference room emails to it' do
-        GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
+        GoogleEvent.add_room_to_event(params, first_room.id)
         expect(params).to eq expected_result
       end
     end
