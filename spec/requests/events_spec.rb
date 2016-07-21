@@ -55,4 +55,18 @@ RSpec.describe 'Events', type: :request do
       end
     end
   end
+
+  describe 'DELETE /event' do
+    context 'request is forbidden' do
+      let(:exception){ Google::Apis::ClientError.new('forbidden error') }
+      let(:event_id){ 'test_event_id' }
+      let(:session){ {credentials: 'test_credentials'} }
+      it 'responds with 403' do
+        allow(GoogleEvent).to receive(:delete).and_raise(exception)
+        allow_any_instance_of(EventsController).to receive(:session){ session }
+        delete event_path(id: event_id)
+        expect(response).to have_http_status :forbidden
+      end
+    end
+  end
 end

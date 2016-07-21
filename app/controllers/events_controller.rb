@@ -9,7 +9,14 @@ class EventsController < ApplicationController
   end
 
   rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsError do |exception|
-    render json: {error: exception.message}, status: :unprocessable_entity
+    case params[:action]
+      when 'create'
+        render json: {error: exception.message}, status: :unprocessable_entity
+      when 'destroy'
+        render json: {error: exception.message}, status: :forbidden
+      else
+        render json: {error: exception.message}, status: :bad_request
+    end
   end
 
   rescue_from Google::Apis::AuthorizationError do
@@ -39,7 +46,7 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    event_id = params[:event_id]
+    event_id = params[:id]
     GoogleEvent.delete(session[:credentials], event_id)
   end
 

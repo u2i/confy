@@ -14,7 +14,7 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
-    FIELDS = 'items(start, end, summary, recurrence, creator(displayName))'.freeze
+    FIELDS = 'items(id, start, end, summary, recurrence, creator(displayName))'.freeze
 
     def list_events(credentials, starting, ending)
       events = {}
