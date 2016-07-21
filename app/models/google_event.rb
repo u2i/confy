@@ -73,7 +73,7 @@ class GoogleEvent
     end
 
     def add_room_to_event(params, conference_room_id)
-      room = ConferenceRoom.find_by_id(conference_room_id)
+      room = ConferenceRoom.find_by(id: conference_room_id)
       params[:attendees] = [{email: room.email}]
       params[:location] = room.title
     end

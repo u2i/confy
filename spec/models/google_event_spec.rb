@@ -111,10 +111,11 @@ describe GoogleEvent do
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
       let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
       let(:expected_result) do
-        {attendees: [
+        {
+          attendees: [
             {email: mordor_email}
-        ],
-        location: first_room.title
+          ],
+          location: first_room.title
         }
       end
       let(:params) { {} }
