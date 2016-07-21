@@ -2,7 +2,8 @@ require: rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.3
-  RunRailsCops: true
+  Rails:
+    Enabled: true
   Include:
     - '**/Rakefile'
     - config.ru
@@ -42,6 +43,9 @@ Style/NumericLiterals:
   Enabled: false
 
 Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Metrics/LineLength:

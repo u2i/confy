@@ -1,4 +1,8 @@
 class EventsController < ApplicationController
+  include GoogleAuthentication
+
+  before_action :check_authentication
+  before_action :refresh_token
 
   rescue_from Google::Apis::ServerError do
     render json: {error: 'Google Server error'}, status: :service_unavailable

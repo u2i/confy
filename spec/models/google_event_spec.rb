@@ -46,7 +46,7 @@ describe GoogleEvent do
       events = double('events')
 
       allow(events).to receive(:items) { sample_events }
-      allow(GoogleEvent).to receive(:calendar_service) { service }
+      allow(described_class).to receive(:calendar_service) { service }
       allow(service).to receive(:batch).and_yield(service)
       allow(service).to receive(:list_events) do |email, &block|
         if email == ConferenceRoom.first.email
@@ -56,7 +56,7 @@ describe GoogleEvent do
         end
       end
 
-      expect(GoogleEvent.list_events('', sample_time1, sample_time1)).to satisfy do |response|
+      expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
         response.all? do |day, _|
           response[day].each_with_index.all? do |event, i|
             event.attributes == expected_events[day][i].attributes

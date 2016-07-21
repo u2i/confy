@@ -10,7 +10,7 @@ module GoogleOauth
 
   module_function
 
-  def is_authenticated?(credentials = {})
+  def authenticated?(credentials = {})
     return false unless credentials.is_a?(Hash)
     credentials.key?('client_id') && credentials.key?('client_secret')
   end
@@ -28,7 +28,7 @@ module GoogleOauth
     CLIENT_SECRETS.to_authorization.tap do |auth_client|
       auth_client.update!(
         scope: 'https://www.googleapis.com/auth/calendar',
-        redirect_uri: (url_for action: :authenticate, controller: :calendar, host: ENV['HOSTNAME'])
+        redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
       )
     end
   end
