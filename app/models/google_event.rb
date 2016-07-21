@@ -1,6 +1,8 @@
 class GoogleEvent
   class InvalidParamsError < StandardError
   end
+  class EventInTimeSpanError < StandardError
+  end
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -55,6 +57,10 @@ class GoogleEvent
     end
 
     def insert_event_and_return_result(credentials, event_data)
+      if any_events_in_timespan?(credentials, event_data[:attendees].first,
+                                 event_data[:start][:date_time], event_data[:end][:date_time])
+        raise EventInTimeSpanError, 'Invalid time span'
+      end
       new_event = Google::Apis::CalendarV3::Event.new(event_data)
       calendar_service(credentials).insert_event('primary', new_event)
     end
@@ -76,6 +82,15 @@ class GoogleEvent
       room = ConferenceRoom.find_by(id: conference_room_id)
       params[:attendees] = [{email: room.email}]
       params[:location] = room.title
+    end
+
+    def any_events_in_timespan?(credentials, conference_room, starting, ending)
+      list = calendar_service(credentials).list_events(
+        conference_room[:email],
+        time_min: starting,
+        time_max: ending
+      )
+      list.items.any?
     end
 
     def calendar_service(credentials)
