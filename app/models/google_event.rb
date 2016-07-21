@@ -49,8 +49,8 @@ class GoogleEvent
              except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
-    def create(credentials, conference_room_ids, raw_event_data = {})
-      event_data = build_event_data(raw_event_data, conference_room_ids)
+    def create(credentials, conference_room_id, raw_event_data = {})
+      event_data = build_event_data(raw_event_data, conference_room_id)
       insert_event_and_return_result(credentials, event_data)
     end
 
@@ -59,10 +59,10 @@ class GoogleEvent
       calendar_service(credentials).insert_event('primary', new_event)
     end
 
-    def build_event_data(raw_event_data, conference_room_ids)
+    def build_event_data(raw_event_data, conference_room_id)
       event_data = raw_event_data.deep_symbolize_keys
       raise_exception_if_invalid(event_data)
-      add_rooms_to_event(event_data, conference_room_ids)
+      add_room_to_event(event_data, conference_room_id)
       event_data
     end
 
@@ -72,14 +72,10 @@ class GoogleEvent
       raise InvalidParamsError, exception_message unless validation.success?
     end
 
-    def add_rooms_to_event(params, conference_room_ids)
-      params[:attendees] ||= []
-      titles = []
-      ConferenceRoom.where(id: conference_room_ids).pluck(:email, :title).map do |email, title|
-        params[:attendees] << {email: email}
-        titles << title
-      end
-      params[:location] = titles.join(', ')
+    def add_room_to_event(params, conference_room_id)
+      room = ConferenceRoom.find_by_id(conference_room_id)
+      params[:attendees] = [{email: room.email}]
+      params[:location] = room.title
     end
 
     def calendar_service(credentials)
