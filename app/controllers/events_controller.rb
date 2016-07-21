@@ -38,6 +38,11 @@ class EventsController < ApplicationController
     render json: e.message, status: :not_found
   end
 
+  def destroy
+    event_id = params[:event_id]
+    GoogleEvent.delete(session[:credentials], event_id)
+  end
+
   private
 
   def event_params
