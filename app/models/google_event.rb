@@ -1,4 +1,17 @@
 class GoogleEvent
+  class InvalidParamsError < StandardError
+  end
+
+  EVENT_SCHEMA = Dry::Validation.Schema do
+    required(:start).schema do
+      required(:date_time).filled
+    end
+
+    required(:end).schema do
+      required(:date_time).filled
+    end
+  end.freeze
+
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
     FIELDS = 'items(id, start, end, summary, recurrence, creator(displayName))'.freeze
@@ -9,7 +22,7 @@ class GoogleEvent
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
           config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
-                     time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
+                    time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
@@ -21,6 +34,41 @@ class GoogleEvent
         end
       end
       events.sort_by! { |a| a[:end][:date_time] }
+    end
+
+    def process_params(params)
+      params.merge(start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
+                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}).
+             except(:start_time, :end_time, :conference_room_id, :permitted)
+    end
+
+    def create(credentials, conference_room_ids, raw_event_data = {})
+      event_data = build_event_data(raw_event_data, conference_room_ids)
+      insert_event_and_return_result(credentials, event_data)
+    end
+
+    def insert_event_and_return_result(credentials, event_data)
+      new_event = Google::Apis::CalendarV3::Event.new(event_data)
+      calendar_service(credentials).insert_event('primary', new_event)
+    end
+
+    def build_event_data(raw_event_data, conference_room_ids)
+      event_data = raw_event_data.deep_symbolize_keys
+      raise_exception_if_invalid(event_data)
+      add_rooms_to_event(event_data, conference_room_ids)
+      event_data
+    end
+
+    def raise_exception_if_invalid(params)
+      validation = EVENT_SCHEMA.call params
+      exception_message = validation.messages(full: true).values.join(', ')
+      raise InvalidParamsError, exception_message unless validation.success?
+    end
+
+    def add_rooms_to_event(params, conference_room_ids)
+      params[:attendees] = ConferenceRoom.where(id: conference_room_ids).pluck(:email).map do |email|
+        {email: email}
+      end
     end
 
     def calendar_service(credentials)
@@ -52,9 +100,10 @@ class GoogleEvent
         time.beginning_of_hour
       end
     end
-
+    
   end
 
-  private_class_method :calendar_service, :client, :load_emails
-
+  private_class_method :calendar_service,
+                       :client, :raise_exception_if_invalid,
+                       :insert_event_and_return_result, :build_event_data
 end
