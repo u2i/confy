@@ -44,8 +44,8 @@ class GoogleEvent
 
     def process_params(params)
       params.merge(start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
-                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}
-      ).except(:start_time, :end_time, :conference_room_id, :permitted)
+                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)})
+          .except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
     def create(credentials, conference_room_ids, raw_event_data = {})
