@@ -28,7 +28,7 @@ class GoogleEvent
             result.items&.each do |event|
               event.start.date_time = new_time_low event.start.date_time
               event.end.date_time = new_time_high event.end.date_time
-              events << event.to_h.merge({ conference_room: room })
+              events << event.to_h.merge(conference_room: room)
             end
           end
         end
@@ -100,7 +100,6 @@ class GoogleEvent
         time.beginning_of_hour
       end
     end
-
   end
 
   private_class_method :calendar_service,
