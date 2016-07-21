@@ -43,8 +43,9 @@ class GoogleEvent
     end
 
     def process_params(params)
-      params.merge(start: {date_time: DateTime.parse(params[:start_time]).rfc3339(9)},
-                   end: {date_time: DateTime.parse(params[:end_time]).rfc3339(9)}).
+      zone = Time.now.getlocal.zone
+      params.merge(start: {date_time: DateTime.parse("#{params[:start_time]} #{zone}").rfc3339(9)},
+                   end: {date_time: DateTime.parse("#{params[:end_time]} #{zone}").rfc3339(9)}).
              except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
@@ -52,8 +53,8 @@ class GoogleEvent
       calendar_service(credentials).delete_event('primary', event_id)
     end
 
-    def create(credentials, conference_room_ids, raw_event_data = {})
-      event_data = build_event_data(raw_event_data, conference_room_ids)
+    def create(credentials, conference_room_id, raw_event_data = {})
+      event_data = build_event_data(raw_event_data, conference_room_id)
       insert_event_and_return_result(credentials, event_data)
     end
 
@@ -62,10 +63,10 @@ class GoogleEvent
       calendar_service(credentials).insert_event('primary', new_event)
     end
 
-    def build_event_data(raw_event_data, conference_room_ids)
+    def build_event_data(raw_event_data, conference_room_id)
       event_data = raw_event_data.deep_symbolize_keys
       raise_exception_if_invalid(event_data)
-      add_rooms_to_event(event_data, conference_room_ids)
+      add_room_to_event(event_data, conference_room_id)
       event_data
     end
 
@@ -75,10 +76,10 @@ class GoogleEvent
       raise InvalidParamsError, exception_message unless validation.success?
     end
 
-    def add_rooms_to_event(params, conference_room_ids)
-      params[:attendees] = ConferenceRoom.where(id: conference_room_ids).pluck(:email).map do |email|
-        {email: email}
-      end
+    def add_room_to_event(params, conference_room_id)
+      room = ConferenceRoom.find_by(id: conference_room_id)
+      params[:attendees] = [{email: room.email}]
+      params[:location] = room.title
     end
 
     def calendar_service(credentials)
