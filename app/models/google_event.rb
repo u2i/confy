@@ -14,15 +14,19 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
-    FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
+
+    def listing_options(fields, starting, ending)
+      {fields: fields, single_events: true, time_min: starting.rfc3339(9),
+       time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
+    end
 
     def list_events(credentials, starting, ending)
+      fields = 'items(id, start, end, summary, recurrence, creator)'.freeze
       events = {}
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
-                    time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
+          config = listing_options(fields, starting, ending)
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
@@ -35,6 +39,22 @@ class GoogleEvent
         end
       end
       events
+    end
+
+    def list_user_reservations(credentials, starting, ending)
+      fields = 'items(id, start, end, summary, recurrence, creator, attendees(email))'.freeze
+      request_options = listing_options(fields, starting, ending)
+      all_user_events = calendar_service(credentials).list_events('primary', request_options)
+      only_reservation_events(all_user_events)
+    end
+
+    def only_reservation_events(all_events)
+      return [] if all_events.nil? || all_events.items.nil?
+      conference_room_emails = load_emails
+      all_events.items.select do |event|
+        attendee_emails = event.attendees.map { |attendee| attendee.email }
+        (attendee_emails & conference_room_emails != []) && event.creator.self
+      end
     end
 
     def process_params(params)
