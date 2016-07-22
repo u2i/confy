@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe GoogleEvent do
-
   describe '.list_events' do
     let!(:sample_conference_room1) { create :conference_room }
     let!(:sample_conference_room2) { create :conference_room }
@@ -67,9 +66,9 @@ describe GoogleEvent do
 
     context 'events start or end not in granularity' do
       let(:start_time1) { DateTime.now.beginning_of_week + 10.minutes }
-      let(:start_time2) { DateTime.now.beginning_of_week + 1.days + 40.minutes}
+      let(:start_time2) { DateTime.now.beginning_of_week + 1.days + 40.minutes }
       let(:end_time1) { start_time1.beginning_of_hour + 2.hours + 40.minutes }
-      let(:end_time2) { start_time2.beginning_of_hour + 2.hours + 10.minutes}
+      let(:end_time2) { start_time2.beginning_of_hour + 2.hours + 10.minutes }
 
       it 'normalizes events' do
         response = described_class.list_events('', start_time1, start_time2)
