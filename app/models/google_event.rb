@@ -44,6 +44,10 @@ class GoogleEvent
         except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
+    def delete(credentials, event_id)
+      calendar_service(credentials).delete_event('primary', event_id)
+    end
+
     def create(credentials, conference_room_id, raw_event_data = {})
       event_data = build_event_data(raw_event_data, conference_room_id)
       insert_event_and_return_result(credentials, event_data)
