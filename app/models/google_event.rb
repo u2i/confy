@@ -41,7 +41,7 @@ class GoogleEvent
       zone = Time.now.getlocal.zone
       params.merge(start: {date_time: DateTime.parse("#{params[:start_time]} #{zone}").rfc3339(9)},
                    end: {date_time: DateTime.parse("#{params[:end_time]} #{zone}").rfc3339(9)}).
-             except(:start_time, :end_time, :conference_room_id, :permitted)
+        except(:start_time, :end_time, :conference_room_id, :permitted)
     end
 
     def create(credentials, conference_room_id, raw_event_data = {})
@@ -85,19 +85,20 @@ class GoogleEvent
       ConferenceRoom.pluck(:email)
     end
 
+    GRANULARITY = 30.minutes.freeze
     def new_time_low(time)
-      if time > time.beginning_of_hour + 30.minutes
-        time.beginning_of_hour + 30.minutes
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY
       else
         time.beginning_of_hour
       end
     end
 
     def new_time_high(time)
-      if time > time.beginning_of_hour + 30.minutes
-        time.beginning_of_hour + 1.hour
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + 2 * GRANULARITY
       elsif time > time.beginning_of_hour
-        time.beginning_of_hour + 30.minutes
+        time.beginning_of_hour + GRANULARITY
       else
         time.beginning_of_hour
       end
