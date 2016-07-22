@@ -1,15 +1,20 @@
 $(document).on('turbolinks:load', (function () {
     function fetchEventPartial(event) {
-        $.ajax({
-            type: 'GET',
-            dataType: 'html',
-            url: eventUrl + '/' + event.id
-        }).done(function (data) {
-            var eventContainer = getEventContainer(event);
-            eventContainer.append(data);
-
-            getEventElement(eventContainer, event).css({height: eventHeight(event) + 'px'});
-        });
+        var parent = getEventContainer(event);
+        var partial = document.createElement("div");
+        partial.setAttribute('data-id', event.id);
+        partial.setAttribute('class', 'event');
+        partial.setAttribute('style', 'background-color: ' + event.conference_room.color);
+        partial.innerHTML =  [
+            '<div class="event-time">', moment(event.start.date_time).format("HH:mm"), '</div>',
+            '<div class="event-name">', event.summary, '</div>',
+            '<div class="event-user">',
+            '<small>by</small>', event.creator ? event.creator.displayName : 'Tworca', '</div>',
+            '<div class="event-location">',
+            '<small>in</small>', event.conference_room.title, '</div>'
+        ].join('\n');
+        parent.append(partial);
+        getEventElement(parent, event).css({height: eventHeight(event) + 'px'});
     }
 
     function fetchEvents() {
@@ -38,7 +43,8 @@ $(document).on('turbolinks:load', (function () {
     }
 
     function getEventTableCell(event) {
-        return $("td[data-date='" + new Date(event.start_time).getTime() / 1000 + "']");
+        time = new Date(event.start.date_time).getTime() / 1000;
+        return $("td[data-date='" + time + "']");
     }
 
     function getEventContainer(event) {
@@ -52,18 +58,18 @@ $(document).on('turbolinks:load', (function () {
     function setEventContainerSize(block, event) {
         var eventContainer = getEventContainer(event);
         var eventsInThisContainer = block.filter(function (e) {
-            return e.start_time == event.start_time;
+            return e.start.date_time == event.start.date_time;
         }).length;
 
         var width = eventsInThisContainer * eventWidth(block),
-            offset = (block.indexOf(event) - eventsInThisContainer + 1) * width;
+            offset = (block.indexOf(event) - eventsInThisContainer + 1) * eventWidth(block);
 
         eventContainer.css({width: width, 'margin-left': offset});
     }
 
     function eventLengthInSeconds(event) {
-        var startTimestamp = new Date(event.start_time).getTime(),
-            endTimestamp = new Date(event.end_time).getTime();
+        var startTimestamp = new Date(event.start.date_time).getTime(),
+            endTimestamp = new Date(event.end.date_time).getTime();
         return (endTimestamp - startTimestamp) / 1000 / unitEventLength;
     }
 

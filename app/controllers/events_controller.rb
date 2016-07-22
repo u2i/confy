@@ -36,22 +36,12 @@ class EventsController < ApplicationController
     render json: data.to_json, status: :created
   end
 
-  def show
-    @event = Event.find(params[:id])
-
-    respond_to do |format|
-      format.js { render partial: 'event', locals: {event: @event} }
-    end
-  rescue ActiveRecord::RecordNotFound => e
-    render json: e.message, status: :not_found
-  end
-
   def destroy
     event_id = params[:id]
     GoogleEvent.delete(session[:credentials], event_id)
     redirect_to root_path
   end
-
+  
   private
 
   def event_params
