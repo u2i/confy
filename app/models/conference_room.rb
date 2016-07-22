@@ -1,5 +1,4 @@
 class ConferenceRoom < ApplicationRecord
-
   HEX_COLOR_FORMAT = /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/i
 
   before_validation { color&.downcase! }
@@ -8,5 +7,4 @@ class ConferenceRoom < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   has_many :events, dependent: :destroy
-
 end

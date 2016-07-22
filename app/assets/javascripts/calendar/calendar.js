@@ -35,11 +35,11 @@ $(document).on('turbolinks:load', (function () {
     }
 
     function eventWidth(block) {
-        return parseInt(getEventTableCell(block[0]).css('width')) / block.length;
+        return parseInt(getEventTableCell(block[0]).css('width'), 10) / block.length;
     }
 
     function eventHeight(event) {
-        return eventLengthInSeconds(event) * parseInt(getEventTableCell(event).css('height'));
+        return eventLengthInSeconds(event) * parseInt(getEventTableCell(event).css('height'), 10);
     }
 
     function getEventTableCell(event) {
