@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', (function () {
             '<div class="event-time">', moment(event.start.date_time).format("HH:mm"), '</div>',
             '<div class="event-name">', event.summary, '</div>',
             '<div class="event-user">',
-            '<small>by</small>', event.creator.displayName, '</div>',
+            '<small>by</small>', event.creator ? event.creator.displayName : 'Tworca', '</div>',
             '<div class="event-location">',
             '<small>in</small>', event.conference_room.title, '</div>'
         ].join('\n');
