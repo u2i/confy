@@ -41,7 +41,7 @@ class EventsController < ApplicationController
     GoogleEvent.delete(session[:credentials], event_id)
     redirect_to root_path
   end
-  
+
   private
 
   def event_params
