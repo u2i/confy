@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Col, Table } from 'react-bootstrap'
 
+const {string, array, arrayOf, oneOfType, instanceOf} = PropTypes;
+
 import { formatDate, formatTime } from 'helpers/dateHelper'
 
 import CalendarRow from './CalendarRow'
@@ -15,11 +17,11 @@ const CalendarHeader = (props) => (
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events: PropTypes.array,
-    days: PropTypes.arrayOf(PropTypes.string).isRequired,
-    times: PropTypes.arrayOf(PropTypes.string).isRequired,
-    timeFormat: PropTypes.string,
-    dateFormat: PropTypes.string
+    events:     array,
+    days:       arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    times:      arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    timeFormat: string,
+    dateFormat: string
   };
 
   static defaultProps = {
@@ -34,7 +36,7 @@ export default class Calendar extends React.Component {
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
                    days={this.props.days}
-                   timeFormat={this.props.timeFormat} 
+                   timeFormat={this.props.timeFormat}
                    events={this.props.events}
                    key={time} />
     ));
@@ -43,7 +45,7 @@ export default class Calendar extends React.Component {
       <Table bordered striped responsive className="calendar">
         <thead>
         <tr>
-          <th className="col-md-1"/>
+          <th className="col-md-1" />
           {headerNodes}
         </tr>
         </thead>

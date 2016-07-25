@@ -1,21 +1,23 @@
 import React, { PropTypes } from 'react'
+const {string, shape, oneOfType, instanceOf} = PropTypes;
+
 import { formatTime } from 'helpers/dateHelper'
 
 import './event.scss'
 
 export default class Event extends React.Component {
   static propTypes = {
-    event: PropTypes.shape({
-      name: PropTypes.string,
-      start_time: PropTypes.string.isRequired,
-      end_time: PropTypes.string.isRequired,
-      user: PropTypes.string.isRequired,
-      conference_room: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        color: PropTypes.string.isRequired
+    event:      shape({
+      name:            string,
+      start_time:      oneOfType([instanceOf(Date), string]).isRequired,
+      end_time:        oneOfType([instanceOf(Date), string]).isRequired,
+      user:            string.isRequired,
+      conference_room: shape({
+        title: string.isRequired,
+        color: string.isRequired
       }).isRequired
     }).isRequired,
-    timeFormat: PropTypes.string
+    timeFormat: string
   };
 
   render() {
