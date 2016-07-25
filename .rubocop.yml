@@ -14,6 +14,9 @@ AllCops:
     - script/**/*
     - db/schema.rb
 
+Style/Lambda:
+  enabled: false
+
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 

@@ -14,7 +14,7 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
-    FIELDS = 'items(start, end, summary, recurrence, creator(displayName))'.freeze
+    FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
 
     def list_events(credentials, starting, ending)
       events = {}
@@ -26,15 +26,10 @@ class GoogleEvent
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
+              event.start.date_time = new_time_low event.start.date_time
+              event.end.date_time = new_time_high event.end.date_time
               events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << Event.new(
-                  user: event.creator.display_name,
-                  end_time: event.end.date_time,
-                  start_time: event.start.date_time,
-                  conference_room: room,
-                  description: event.description,
-                  name: event.summary
-              )
+              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
             end
           end
         end
@@ -46,7 +41,11 @@ class GoogleEvent
       zone = Time.now.getlocal.zone
       params.merge(start: {date_time: DateTime.parse("#{params[:start_time]} #{zone}").rfc3339(9)},
                    end: {date_time: DateTime.parse("#{params[:end_time]} #{zone}").rfc3339(9)}).
-             except(:start_time, :end_time, :conference_room_id, :permitted)
+        except(:start_time, :end_time, :conference_room_id, :permitted)
+    end
+
+    def delete(credentials, event_id)
+      calendar_service(credentials).delete_event('primary', event_id)
     end
 
     def create(credentials, conference_room_id, raw_event_data = {})
@@ -107,6 +106,29 @@ class GoogleEvent
 
     def client(credentials)
       Signet::OAuth2::Client.new(JSON.parse(credentials))
+    end
+
+    def load_emails
+      ConferenceRoom.pluck(:email)
+    end
+
+    GRANULARITY = 30.minutes.freeze
+    def new_time_low(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
+    end
+
+    def new_time_high(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + 2 * GRANULARITY
+      elsif time > time.beginning_of_hour
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
     end
   end
 
