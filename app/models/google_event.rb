@@ -46,7 +46,7 @@ class GoogleEvent
       all_events.values.each do |events|
         events.each do |event|
           creator_email = event[:creator][:email]
-          event[:creator][:self] = (user_email == creator_email) ? true : false
+          event[:creator][:self] = (user_email == creator_email)
         end
       end
     end
