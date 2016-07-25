@@ -37,7 +37,7 @@ class GoogleEvent
     end
 
     def daily_events_container
-      Hash[(1..7).map { |i| [i,[]] }]
+      Hash[(1..7).map { |i| [i, []] }]
     end
 
     def merge_events(new_events, room, all_events)
@@ -115,6 +115,7 @@ class GoogleEvent
     end
 
     GRANULARITY = 30.minutes.freeze
+
     def new_time_low(time)
       if time > time.beginning_of_hour + GRANULARITY
         time.beginning_of_hour + GRANULARITY
