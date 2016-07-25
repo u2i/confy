@@ -36,12 +36,12 @@ describe GoogleEvent do
 
     let(:expected_events) do
       {
-          1 => [sample_event1],
-          2 => [sample_event2]
+        1 => [google_event1],
+        2 => [google_event2]
       }
     end
 
-    it 'returns list of events where ints are keys and Array[Event] are values' do
+    it 'remove array of events' do
       service = double('service')
       events = double('events')
 
@@ -59,7 +59,7 @@ describe GoogleEvent do
       expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
         response.all? do |day, _|
           response[day].each_with_index.all? do |event, i|
-            event.attributes == expected_events[day][i].attributes
+            event[:summary] == expected_events[day][i].summary
           end
         end
       end
@@ -111,16 +111,17 @@ describe GoogleEvent do
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
       let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
       let(:expected_result) do
-        {attendees: [
-            {email: mordor_email},
-            {email: neverland_email}]}
+        {
+          attendees: [
+            {email: mordor_email}
+          ],
+          location: first_room.title
+        }
       end
       let(:params) { {} }
       let!(:first_room) { create(:conference_room, email: mordor_email) }
-      let!(:second_room) { create(:conference_room, email: neverland_email) }
-      let(:calendar_room_ids) { [first_room.id, second_room.id] }
       it 'adds new key in hash and assigns array of conference room emails to it' do
-        GoogleEvent.add_rooms_to_event(params, calendar_room_ids)
+        GoogleEvent.add_room_to_event(params, first_room.id)
         expect(params).to eq expected_result
       end
     end

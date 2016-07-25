@@ -9,7 +9,15 @@ class EventsController < ApplicationController
   end
 
   rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsError do |exception|
-    render json: {error: exception.message}, status: :unprocessable_entity
+    error_data = {error: exception.message}
+    case params[:action]
+    when 'create'
+      render json: error_data, status: :unprocessable_entity
+    when 'destroy'
+      render json: error_data, status: :forbidden
+    else
+      render json: error_data, status: :bad_request
+    end
   end
 
   rescue_from Google::Apis::AuthorizationError do
@@ -22,20 +30,16 @@ class EventsController < ApplicationController
   end
 
   def create
-    conference_room_ids = [event_params[:conference_room_id]]
+    conference_room_id = event_params[:conference_room_id]
     google_event_params = GoogleEvent.process_params(event_params)
-    data = GoogleEvent.create(session[:credentials], conference_room_ids, google_event_params)
+    data = GoogleEvent.create(session[:credentials], conference_room_id, google_event_params)
     render json: data.to_json, status: :created
   end
 
-  def show
-    @event = Event.find(params[:id])
-
-    respond_to do |format|
-      format.js { render partial: 'event', locals: {event: @event} }
-    end
-  rescue ActiveRecord::RecordNotFound => e
-    render json: e.message, status: :not_found
+  def destroy
+    event_id = params[:id]
+    GoogleEvent.delete(session[:credentials], event_id)
+    redirect_to root_path
   end
 
   private

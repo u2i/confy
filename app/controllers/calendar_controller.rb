@@ -6,19 +6,19 @@ class CalendarController < ApplicationController
 
   before_action :check_authentication
   before_action :refresh_token
-  before_action :load_dates_and_rooms, only: [:index, :google_index]
-
-  def index
-    @events = EventGrouper.new(Event.in_week(week_start)).call
-    create_calendar_props
-  end
+  before_action :load_dates_and_rooms, only: [:index]
 
   # Index for showing events from Google calendar
-  def google_index
-    @events = EventGrouper.new(
-      GoogleEvent.list_events(session[:credentials], DateTime.now.beginning_of_week, DateTime.now.end_of_week)).call
+  def index
+    @events = GoogleEvent.list_events(
+      session[:credentials],
+      @week_start.beginning_of_day.to_datetime,
+      @week_end.end_of_day.to_datetime
+    ).map do |_wday, events|
+      build_blocks(events)
+    end.flatten!(1)
+
     create_calendar_props
-    render :index
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path
@@ -31,25 +31,28 @@ class CalendarController < ApplicationController
   end
 
   def load_dates_and_rooms
-    week_start, week_end = build_week_boundaries
-    @days = (week_start..week_end).to_a
+    @week_start, @week_end = build_week_boundaries
+    @days = (@week_start..@week_end).to_a
     start_time = Time.now.at_beginning_of_day
     end_time = Time.now.at_end_of_day
     @times = time_interval(start_time, end_time, 30.minutes)
     @conference_rooms = ConferenceRoom.all
   end
 
-
   def time_interval(start_time, end_time, step)
     (start_time.to_i..end_time.to_i).step(step).collect { |time| Time.at time }
   end
 
   def week_start
-    params[:date].present? ? Date.parse(params[:date]).at_beginning_of_week : Date.today.beginning_of_week
+    params[:date].present? ? Date.parse(params[:date]).beginning_of_week : Date.today.beginning_of_week
   end
 
   def build_week_boundaries
     week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
     [week_start, week_end]
+  end
+
+  def build_blocks(events)
+    EventGrouper.new(events.sort_by! { |e| e[:end][:date_time] }).call
   end
 end
