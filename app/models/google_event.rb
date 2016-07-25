@@ -14,19 +14,19 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
+    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
 
     def listing_options(fields, starting, ending)
       {fields: fields, single_events: true, time_min: starting.rfc3339(9),
-       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TIMEZONE')}
+       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TZ')}
     end
 
     def list_events(credentials, user_email, starting, ending)
-      fields = 'items(id, start, end, summary, recurrence, creator)'.freeze
       events = {}
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = listing_options(fields, starting, ending)
+          config = listing_options(LISTING_FIELDS, starting, ending)
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
