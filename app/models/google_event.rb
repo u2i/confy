@@ -112,6 +112,6 @@ class GoogleEvent
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
-                       :insert_event_and_return_result, :build_event_data
+                       :insert_event_and_return_result, :build_event_data,
                        :items_list
 end
