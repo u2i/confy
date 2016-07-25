@@ -25,6 +25,10 @@ class EventsController < ApplicationController
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
+  rescue_from GoogleEvent::EventInTimeSpanError do |message|
+    render json: {conference_room_id: [message]}, status: :unprocessable_entity
+  end
+
   def index
     render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
   end
