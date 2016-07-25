@@ -57,7 +57,7 @@ describe GoogleEvent do
         end
       end
 
-      expect(described_class.list_events('', sample_time1, sample_time1)).to satisfy do |response|
+      expect(described_class.list_events('', '', sample_time1, sample_time1)).to satisfy do |response|
         response.all? do |day, _|
           response[day].each_with_index.all? do |event, i|
             event[:summary] == expected_events[day][i].summary
@@ -138,7 +138,7 @@ describe GoogleEvent do
 
     it 'sets event[:creator][:self] flag to true if user is creator of the event' do
       allow(GoogleOauth).to receive(:user_email) { user_email }
-      GoogleEvent.mark_user_events(credentials, all_events)
+      GoogleEvent.mark_user_events(user_email, all_events)
       expect(event1[:creator][:self]).to eq true
       expect(event2[:creator][:self]).to eq false
     end

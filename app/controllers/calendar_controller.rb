@@ -12,6 +12,7 @@ class CalendarController < ApplicationController
   def index
     @events = GoogleEvent.list_events(
       session[:credentials],
+      session[:email],
       @week_start.beginning_of_day.to_datetime,
       @week_end.end_of_day.to_datetime
     ).map do |_wday, events|

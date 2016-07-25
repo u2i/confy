@@ -10,7 +10,6 @@ class GoogleOauth
   )
 
   class << self
-
     def authenticated?(credentials = {})
       return false unless credentials.is_a?(Hash)
       credentials.key?('client_id') && credentials.key?('client_secret')
@@ -18,17 +17,19 @@ class GoogleOauth
 
     def refresh_token(credentials = {})
       auth_client = Signet::OAuth2::Client.new(JSON.parse(credentials))
-      if auth_client.refresh_token && auth_client.expired?
-        auth_client.fetch_access_token!
-        credentials = auth_client.to_json
-      end
-      credentials
+      auth_client.fetch_access_token!
+      auth_client.to_json
+    end
+
+    def need_to_refresh_token?(credentials = {})
+      auth_client = Signet::OAuth2::Client.new(JSON.parse(credentials))
+      auth_client.refresh_token && auth_client.expired?
     end
 
     def default_client
       CLIENT_SECRETS.to_authorization.tap do |auth_client|
         auth_client.update!(
-          scope: ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/userinfo.email'],
+          scope: %w(https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email),
           redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
         )
       end

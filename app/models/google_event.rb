@@ -20,7 +20,7 @@ class GoogleEvent
        time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
     end
 
-    def list_events(credentials, starting, ending)
+    def list_events(credentials, user_email, starting, ending)
       fields = 'items(id, start, end, summary, recurrence, creator)'.freeze
       events = {}
       rooms = ConferenceRoom.all
@@ -38,12 +38,11 @@ class GoogleEvent
           end
         end
       end
-      mark_user_events(credentials, events)
+      mark_user_events(user_email, events)
       events
     end
 
-    def mark_user_events(credentials, all_events)
-      user_email = GoogleOauth.user_email(credentials)
+    def mark_user_events(user_email, all_events)
       all_events.values.each do |events|
         events.each do |event|
           creator_email = event[:creator][:email]
