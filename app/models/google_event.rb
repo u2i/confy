@@ -1,8 +1,6 @@
 class GoogleEvent
-  class InvalidParamsError < StandardError
-  end
-  class EventInTimeSpanError < StandardError
-  end
+  InvalidParamsError = Class.new(StandardError)
+  EventInTimeSpanError = Class.new(StandardError)
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -57,12 +55,23 @@ class GoogleEvent
     end
 
     def insert_event_and_return_result(credentials, event_data)
-      if any_events_in_timespan?(credentials, event_data[:attendees].first,
-                                 event_data[:start][:date_time], event_data[:end][:date_time])
-        raise EventInTimeSpanError, 'Invalid time span'
+      events = events_in_span(credentials, event_data[:attendees].first,
+                              event_data[:start][:date_time], event_data[:end][:date_time])
+      if events && events.items.any?
+        count = events.items.size
+        raise(
+          EventInTimeSpanError,
+          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(event.items)})."
+        )
       end
-      new_event = Google::Apis::CalendarV3::Event.new(event_data)
-      calendar_service(credentials).insert_event('primary', new_event)
+      calendar_service(credentials).insert_event(
+        'primary',
+        Google::Apis::CalendarV3::Event.new(event_data)
+      )
+    end
+
+    def items_list(items)
+      items.map(&:summary).join(','.freeze)
     end
 
     def build_event_data(raw_event_data, conference_room_id)
@@ -84,13 +93,12 @@ class GoogleEvent
       params[:location] = room.title
     end
 
-    def any_events_in_timespan?(credentials, conference_room, starting, ending)
-      list = calendar_service(credentials).list_events(
+    def events_in_span(credentials, conference_room, starting, ending)
+      calendar_service(credentials).list_events(
         conference_room[:email],
         time_min: starting,
         time_max: ending
       )
-      list && list.items.any?
     end
 
     def calendar_service(credentials)
@@ -105,4 +113,5 @@ class GoogleEvent
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data
+                       :items_list
 end

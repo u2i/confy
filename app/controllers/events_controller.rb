@@ -17,8 +17,8 @@ class EventsController < ApplicationController
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
-  rescue_from GoogleEvent::EventInTimeSpanError do
-    render json: {conference_room_id: ['Another event in time span for chosen room']}, status: :unprocessable_entity
+  rescue_from GoogleEvent::EventInTimeSpanError do |message|
+    render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 
   def index
