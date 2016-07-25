@@ -17,7 +17,7 @@ class GoogleEvent
 
     def listing_options(fields, starting, ending)
       {fields: fields, single_events: true, time_min: starting.rfc3339(9),
-       time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
+       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TIMEZONE')}
     end
 
     def list_events(credentials, user_email, starting, ending)
