@@ -38,22 +38,17 @@ class GoogleEvent
           end
         end
       end
+      mark_user_events(credentials, events)
       events
     end
 
-    def list_user_reservations(credentials, starting, ending)
-      fields = 'items(id, start, end, summary, recurrence, creator, attendees(email))'.freeze
-      request_options = listing_options(fields, starting, ending)
-      all_user_events = calendar_service(credentials).list_events('primary', request_options)
-      only_reservation_events(all_user_events)
-    end
-
-    def only_reservation_events(all_events)
-      return [] if all_events.nil? || all_events.items.nil?
-      conference_room_emails = load_emails
-      all_events.items.select do |event|
-        attendee_emails = event.attendees.map { |attendee| attendee.email }
-        (attendee_emails & conference_room_emails != []) && event.creator.self
+    def mark_user_events(credentials, all_events)
+      user_email = GoogleOauth.user_email(credentials)
+      all_events.values.each do |events|
+        events.each do |event|
+          creator_email = event[:creator][:email]
+          event[:creator][:self] = (user_email == creator_email) ? true : false
+        end
       end
     end
 

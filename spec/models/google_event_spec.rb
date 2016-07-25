@@ -45,6 +45,7 @@ describe GoogleEvent do
       service = double('service')
       events = double('events')
 
+      allow(GoogleOauth).to receive(:user_email) { 'example@com' }
       allow(events).to receive(:items) { sample_events }
       allow(described_class).to receive(:calendar_service) { service }
       allow(service).to receive(:batch).and_yield(service)
@@ -127,64 +128,19 @@ describe GoogleEvent do
     end
   end
 
-  describe '.only_reservation_events' do
-    context 'given nil object' do
-      let(:all_events) { nil }
-      let(:expected_result) { [] }
+  describe '.mark_user_events' do
+    let(:credentials) { {} }
+    let(:user_email) { 'user@example.com' }
+    let(:not_user_email) { 'not_user@example.com' }
+    let(:event1) { {creator: {email: user_email}} }
+    let(:event2) { {creator: {email: not_user_email}} }
+    let(:all_events) { {1 => [event1, event2]} }
 
-      it 'returns an empty array' do
-        expect(GoogleEvent.only_reservation_events(all_events)).to eq expected_result
-      end
-    end
-
-    context 'given empty Events object' do
-      let(:all_events) { double('all_events', items: nil) }
-      let(:expected_result) { [] }
-
-      it 'returns an empty array' do
-        expect(GoogleEvent.only_reservation_events(all_events)).to eq expected_result
-      end
-    end
-
-    context 'given Events object' do
-      let(:conference_room1_email) { 'example1@example.com' }
-      let(:conference_room2_email) { 'example2@example.com' }
-      let(:conference_room_emails) { [conference_room1_email, conference_room2_email] }
-      let(:attendee1) { double('attendee1', email: 'sample@example.com') }
-      let(:attendee2) { double('attendee2', email: conference_room1_email) }
-
-      before do
-        allow(GoogleEvent).to receive(:load_emails) { conference_room_emails }
-      end
-
-      context 'where some of them are not made by user' do
-        let(:event1_creator) { double('event1_creator', self: true) }
-        let(:event1) { double('event1', attendees: [attendee1, attendee2], creator: event1_creator) }
-        let(:event2_creator) { double('event2_creator', self: false) }
-        let(:event2) { double('event2', attendees: [attendee1, attendee2], creator: event2_creator) }
-        let(:all_events) { double('all_events', items: [event1, event2]) }
-        let(:expected_result) { [event1] }
-
-        it 'returns only reservations that are made by user' do
-          expect(GoogleEvent.only_reservation_events(all_events)).to eq expected_result
-        end
-      end
-
-      context 'where some of them are not reservations' do
-        let(:attendee3) { double('attendee3', email: conference_room2_email) }
-        let(:event1_creator) { double('event1_creator', self: true) }
-        let(:event1) { double('event1', attendees: [attendee1], creator: event1_creator) }
-        let(:event2_creator) { double('event2_creator', self: true) }
-        let(:event2) { double('event2', attendees: [attendee2], creator: event2_creator) }
-        let(:event3_creator) { double('event3_creator', self: true) }
-        let(:event3) { double('event3', attendees: [attendee2, attendee3], creator: event2_creator) }
-        let(:all_events) { double('all_events', items: [event1, event2, event3]) }
-        let(:expected_result) { [event2, event3] }
-
-        it 'returns only events that are reservations' do
-          expect(GoogleEvent.only_reservation_events(all_events)).to eq expected_result
-        end
-      end
+    it 'sets event[:creator][:self] flag to true if user is creator of the event' do
+      allow(GoogleOauth).to receive(:user_email) { user_email }
+      GoogleEvent.mark_user_events(credentials, all_events)
+      expect(event1[:creator][:self]).to eq true
+      expect(event2[:creator][:self]).to eq false
     end
   end
 end
