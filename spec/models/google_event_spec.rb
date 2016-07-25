@@ -96,7 +96,7 @@ describe GoogleEvent do
           end
         end
 
-        it 'Raises EventInTimeSpanError' do
+        it 'raises EventInTimeSpanError' do
           expect do
             described_class.create(credentials,
                                    room.id,
