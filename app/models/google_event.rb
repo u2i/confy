@@ -26,8 +26,7 @@ class GoogleEvent
           service.list_events(room.email, config) do |result, _|
             next unless result
             result.items&.each do |event|
-              event.start.date_time = new_time_low event.start.date_time
-              event.end.date_time = new_time_high event.end.date_time
+              normalize_dates(event)
               events[event.start.date_time.wday] ||= []
               events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
             end
@@ -112,8 +111,13 @@ class GoogleEvent
       ConferenceRoom.pluck(:email)
     end
 
+    def normalize_dates(event)
+      event.start.date_time = floor_time(event.start.date_time)
+      event.end.date_time = ceil_time(event.end.date_time)
+    end
+
     GRANULARITY = 30.minutes.freeze
-    def new_time_low(time)
+    def floor_time(time)
       if time > time.beginning_of_hour + GRANULARITY
         time.beginning_of_hour + GRANULARITY
       else
@@ -121,9 +125,9 @@ class GoogleEvent
       end
     end
 
-    def new_time_high(time)
+    def ceil_time(time)
       if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + 2 * GRANULARITY
+        time.beginning_of_hour + GRANULARITY + GRANULARITY
       elsif time > time.beginning_of_hour
         time.beginning_of_hour + GRANULARITY
       else
@@ -135,5 +139,5 @@ class GoogleEvent
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
-                       :items_list
+                       :items_list, :ceil_time, :floor_time
 end
