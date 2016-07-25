@@ -89,8 +89,8 @@ class GoogleEvent
     end
 
     def normalize_dates(event)
-      event.start.date_time = new_time_low event.start.date_time
-      event.end.date_time = new_time_high event.end.date_time
+      event.start.date_time = new_time_low(event.start.date_time)
+      event.end.date_time = new_time_high(event.end.date_time)
     end
 
     GRANULARITY = 30.minutes.freeze
