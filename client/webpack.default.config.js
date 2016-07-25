@@ -41,7 +41,7 @@ module.exports = {
       { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'url?limit=10000' },
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
       { test: require.resolve('jquery'), loader: 'expose?$' },
-      { test: require.resolve('turbolinks'), loader: 'imports?this=>window' },
+      { test: require.resolve('turbolinks'), loader: 'imports?this=>window' }
     ]
   },
   postcss: [autoprefixer],
