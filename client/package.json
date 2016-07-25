@@ -9,9 +9,7 @@
     "build:client": "NODE_ENV=production webpack --config webpack.build.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server:dev": "babel-node webpack-dev-server.js",
-    "lint": "npm run eslint && npm run jscs",
-    "eslint": "eslint --ext .js,.jsx .",
-    "jscs": "jscs --verbose ."
+    "lint": "eslint --ext .js,.jsx ."
   },
   "dependencies": {
     "autoprefixer": "^6.3.5",
@@ -55,8 +53,14 @@
     "webpack": "^1.12.14"
   },
   "devDependencies": {
-    "webpack-dev-server": "^1.14.1",
+    "babel-eslint": "^6.1.2",
     "babel-plugin-react-transform": "^2.0.2",
-    "react-transform-hmr": "^1.0.4"
+    "eslint": "^3.1.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.11.1",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "react-transform-hmr": "^1.0.4",
+    "webpack-dev-server": "^1.14.1"
   }
 }
