@@ -1,46 +1,73 @@
 import React, { PropTypes } from 'react'
-const {string, shape, oneOfType, instanceOf} = PropTypes;
+const { string, number, shape, oneOfType, instanceOf } = PropTypes;
 
-import { formatTime } from 'helpers/dateHelper'
+import { formatTime, timestamp } from 'helpers/DateHelper'
 
 import './event.scss'
 
 export default class Event extends React.Component {
   static propTypes = {
-    event:      shape({
+    event:           shape({
       name:            string,
-      start_time:      oneOfType([instanceOf(Date), string]).isRequired,
-      end_time:        oneOfType([instanceOf(Date), string]).isRequired,
-      user:            string.isRequired,
+      summary:         string,
+      start:           shape({
+        date_time: oneOfType([instanceOf(Date), string]).isRequired
+      }).isRequired,
+      end:             shape({
+        date_time: oneOfType([instanceOf(Date), string]).isRequired
+      }).isRequired,
+      creator:         shape({
+        email:        string.isRequired,
+        display_name: string
+      }).isRequired,
       conference_room: shape({
         title: string.isRequired,
         color: string.isRequired
       }).isRequired
     }).isRequired,
-    timeFormat: string
+    containerHeight: number.isRequired,
+    unitEventLength: number,
+    timeFormat:      string
+  };
+
+  static defaultProps = {
+    unitEventLength: 60 // seconds
   };
 
   render() {
-    let timeStr = formatTime(this.props.event.start_time, this.props.timeFormat);
+    let event = this.props.event;
+    let creator = event.creator;
+    let timeStr = formatTime(event.start.date_time, this.props.timeFormat);
 
     return (<div className="event" style={this._eventStyle()}>
         <div className="event-time">{timeStr}</div>
-        <div className="event-name">{this.props.event.name}</div>
+        <div className="event-name">{event.name}</div>
         <div className="event-user">
-          <small>by</small>
-          {this.props.event.user}
+          <small>by </small>
+          {creator.display_name || creator.email}
         </div>
         <div className="event-location">
-          <small>in</small>
-          {this.props.event.conference_room.title}
+          <small>in </small>
+          {event.conference_room.title}
         </div>
       </div>
     );
   }
 
+  _eventHeight() {
+    return this._eventLengthInSeconds() * this.props.containerHeight;
+  }
+
+  _eventLengthInSeconds() {
+    let startTimestamp = timestamp(this.props.event.start.date_time),
+        endTimestamp = timestamp(this.props.event.end.date_time);
+    return (endTimestamp - startTimestamp) / this.props.unitEventLength;
+  }
+
   _eventStyle() {
     return {
-      backgroundColor: this.props.event.conference_room.color
+      backgroundColor: this.props.event.conference_room.color,
+      height:          this._eventHeight()
     };
   }
 }

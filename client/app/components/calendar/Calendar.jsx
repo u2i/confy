@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react'
 import { Col, Table } from 'react-bootstrap'
-
-const {string, array, arrayOf, oneOfType, instanceOf} = PropTypes;
-
-import { formatDate, formatTime } from 'helpers/dateHelper'
+import { formatDate, formatTime } from 'helpers/DateHelper'
 
 import CalendarRow from './CalendarRow'
 
 import './calendar.scss'
+
+const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
 const CalendarHeader = (props) => (
   <th className="col-md-2 text-center">
@@ -17,11 +16,12 @@ const CalendarHeader = (props) => (
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:     array,
-    days:       arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:      arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    timeFormat: string,
-    dateFormat: string
+    events:          array,
+    days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    times:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    unitEventLenght: number,
+    timeFormat:      string,
+    dateFormat:      string
   };
 
   static defaultProps = {
@@ -30,15 +30,13 @@ export default class Calendar extends React.Component {
 
   render() {
     let headerNodes = this.props.days.map(day => (
-      <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
+      <CalendarHeader day={day} dateFormat={this.props.date_format} key={day} />
     ));
 
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
-                   days={this.props.days}
-                   timeFormat={this.props.timeFormat}
-                   events={this.props.events}
-                   key={time} />
+                   key={time}
+                   {...this.props} />
     ));
 
     return (

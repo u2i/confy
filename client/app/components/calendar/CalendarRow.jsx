@@ -1,23 +1,24 @@
 import React, { PropTypes } from 'react'
-const {string, bool, array, arrayOf, oneOfType, instanceOf} = PropTypes;
+import * as DateHelper from 'helpers/DateHelper'
 
-import * as DateHelper from 'helpers/dateHelper'
+import EventWrapper from './event/EventDimensions'
 
-import EventGroup from './event/EventGroup'
+const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
 const TimeCell = (props) => (
-  <td className="text-right">
+  <td className="text-right time-cell">
     <small>{props.visible ? DateHelper.formatTime(props.time, props.timeFormat) : ''}</small>
   </td>
 );
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:         array.isRequired,
-    time:           oneOfType([instanceOf(Date), string]).isRequired,
-    days:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    timeFormat:     string,
-    displayMinutes: bool
+    events:          array.isRequired,
+    time:            oneOfType([instanceOf(Date), string]).isRequired,
+    days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    unitEventLength: number,
+    timeFormat:      string,
+    displayMinutes:  bool
   };
 
   static defaultProps = {
@@ -33,13 +34,17 @@ export default class CalendarRow extends React.Component {
                   timeFormat={this.props.timeFormat} />
         {this._tableCellNodes()}
       </tr>
-    )
+    );
   }
 
-  _eventsStartingAt(timestamp) {
+  _eventGroupContaining(timestamp) {
     return this.props.events.find(group =>
-      group.some(event => DateHelper.timestamp(event.start_time) == timestamp)
+      group.some(event => DateHelper.timestamp(event.start.date_time) == timestamp)
     );
+  }
+
+  _eventsStartingAt(timestamp, group) {
+    return group.filter(event => DateHelper.timestamp(event.start.date_time) == timestamp);
   }
 
   _displayTime() {
@@ -49,11 +54,17 @@ export default class CalendarRow extends React.Component {
   _tableCellNodes() {
     return this.props.days.map(day => {
       let timestamp = DateHelper.timestamp(day, this.props.time);
-      let events = this._eventsStartingAt(timestamp);
+      let eventGroup = this._eventGroupContaining(timestamp) || [];
+      let events = this._eventsStartingAt(timestamp, eventGroup);
+      let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 
       return (
         <td key={timestamp}>
-          { events ? <EventGroup date={day} time={this.props.time} events={events} /> : '' }
+          <EventWrapper timestamp={timestamp}
+                        unitEventLength={this.props.unitEventLength}
+                        events={events}
+                        eventsInGroup={eventGroup.length}
+                        offset={offset} />
         </td>
       );
     })
