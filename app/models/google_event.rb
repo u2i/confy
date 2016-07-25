@@ -22,24 +22,28 @@ class GoogleEvent
     end
 
     def list_events(credentials, user_email, starting, ending)
-      events = {}
+      all_events = {}
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
           config = listing_options(LISTING_FIELDS, starting, ending)
-          service.list_events(room.email, config) do |result, _|
-            next unless result
-            result.items&.each do |event|
-              event.start.date_time = new_time_low event.start.date_time
-              event.end.date_time = new_time_high event.end.date_time
-              events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
-            end
+          service.list_events(room.email, config) do |new_events, _|
+            merge_events(new_events, room, all_events)
           end
         end
       end
-      mark_user_events(user_email, events)
-      events
+      mark_user_events(user_email, all_events)
+      all_events
+    end
+
+    def merge_events(new_events, room, all_events)
+      return unless new_events
+      new_events.items&.each do |event|
+        event.start.date_time = new_time_low event.start.date_time
+        event.end.date_time = new_time_high event.end.date_time
+        all_events[event.start.date_time.wday] ||= []
+        all_events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+      end
     end
 
     def mark_user_events(user_email, all_events)
