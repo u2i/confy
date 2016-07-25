@@ -22,7 +22,7 @@ class GoogleEvent
     end
 
     def list_events(credentials, user_email, starting, ending)
-      all_events = {}
+      all_events = daily_events_container
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
@@ -36,14 +36,21 @@ class GoogleEvent
       all_events
     end
 
+    def daily_events_container
+      Hash[(1..7).map { |i| [i,[]] }]
+    end
+
     def merge_events(new_events, room, all_events)
       return unless new_events
       new_events.items&.each do |event|
-        event.start.date_time = new_time_low event.start.date_time
-        event.end.date_time = new_time_high event.end.date_time
-        all_events[event.start.date_time.wday] ||= []
+        normalize_event_datetime(event)
         all_events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
       end
+    end
+
+    def normalize_event_datetime(event)
+      event.start.date_time = new_time_low event.start.date_time
+      event.end.date_time = new_time_high event.end.date_time
     end
 
     def mark_user_events(user_email, all_events)
@@ -129,5 +136,6 @@ class GoogleEvent
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
-                       :insert_event_and_return_result, :build_event_data
+                       :insert_event_and_return_result, :build_event_data,
+                       :daily_events_container, :merge_events, :normalize_event_datetime
 end
