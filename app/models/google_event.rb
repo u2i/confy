@@ -60,7 +60,7 @@ class GoogleEvent
         count = events.items.size
         raise(
           EventInTimeSpanError,
-          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(event.items)})."
+          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
         )
       end
       calendar_service(credentials).insert_event(
@@ -70,7 +70,7 @@ class GoogleEvent
     end
 
     def items_list(items)
-      items.map(&:summary).join(','.freeze)
+      items.map(&:summary).join(', '.freeze)
     end
 
     def build_event_data(raw_event_data, conference_room_id)

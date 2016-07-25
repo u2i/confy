@@ -73,6 +73,77 @@ describe GoogleEvent do
         expect { GoogleEvent.create({}, 0, {}) }.to raise_error(GoogleEvent::InvalidParamsError)
       end
     end
+
+    context 'valid params' do
+      context 'other events exitis' do
+        let(:credentials) { :credentials }
+        let(:first_event) { double('Event', summary: 'Summary') }
+        let(:second_event) { double('Event', summary: 'Meeting') }
+        let(:start_time) { Time.now }
+        let(:end_time) { Time.now + 3.hour }
+        let(:event_data) do
+          {
+            attendees: [],
+            start: {date_time: start_time},
+            end: {date_time: end_time},
+          }
+        end
+        let!(:room) { create :conference_room }
+
+        before do
+          allow(GoogleEvent).to receive(:events_in_span) do
+            double('EventList', items: [first_event, second_event])
+          end
+        end
+
+        it "Raises EventInTimeSpanError" do
+          expect do
+            GoogleEvent.create(credentials,
+                               room.id,
+                               start: {date_time: start_time},
+                               end: { date_time: end_time }
+                              )
+          end.to raise_error(
+            GoogleEvent::EventInTimeSpanError,
+            'Already 2 events in time span(Summary, Meeting).'
+            )
+        end
+      end
+      context 'no other events' do
+        let(:credentials) { :credentials }
+        let(:service) { double(:calendar_service) }
+        let(:start_time) { Time.now }
+        let(:end_time) { Time.now + 3.hour }
+        let(:event_data) do
+          {
+            attendees: [],
+            start: {date_time: start_time},
+            end: {date_time: end_time},
+          }
+        end
+        let!(:room) { create :conference_room }
+
+        before do
+          allow(GoogleEvent).to receive(:events_in_span) do
+            double('EventList', items: [])
+          end
+          allow(GoogleEvent).to receive(:calendar_service) { service }
+          allow(service).to receive(:insert_event) { true }
+
+        end
+        it 'creates event' do
+          expect(service).to receive(:insert_event).with(
+            'primary',
+            Google::Apis::CalendarV3::Event
+          )
+          GoogleEvent.create(credentials,
+                             room.id,
+                             start: {date_time: start_time},
+                             end: { date_time: end_time }
+                            )
+        end
+      end
+    end
   end
 
   describe 'EVENT_SCHEMA' do
@@ -125,5 +196,29 @@ describe GoogleEvent do
         expect(params).to eq expected_result
       end
     end
+  end
+
+  describe '.event_in_span' do
+    let(:service) { double(:calendar_service) }
+    let(:credentials) { :credentials }
+    let(:conference_room) { {email: 'email@sample.com'.freeze, key: :value} }
+    let(:start_time) { Time.now }
+    let(:end_time) { Time.now + 3.hour }
+
+    before do
+      allow(GoogleEvent).to receive(:calendar_service) { service }
+    end
+
+    it 'calls calendar_service' do
+      expect(GoogleEvent).to receive(:calendar_service).with(credentials)
+      expect(service).to receive(:list_events).with(conference_room[:email],
+                                                    time_min: start_time,
+                                                    time_max: end_time)
+      GoogleEvent.events_in_span(credentials, conference_room, start_time, end_time)
+    end
+  end
+
+  describe '.insert_event_and_return_result' do
+
   end
 end
