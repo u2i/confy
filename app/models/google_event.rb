@@ -49,8 +49,8 @@ class GoogleEvent
     end
 
     def normalize_event_datetime(event)
-      event.start.date_time = new_time_low event.start.date_time
-      event.end.date_time = new_time_high event.end.date_time
+      event.start.date_time = EventGrouper.new_time_low event.start.date_time
+      event.end.date_time = EventGrouper.new_time_high event.end.date_time
     end
 
     def mark_user_events(user_email, all_events)
@@ -112,26 +112,6 @@ class GoogleEvent
 
     def load_emails
       ConferenceRoom.pluck(:email)
-    end
-
-    GRANULARITY = 30.minutes.freeze
-
-    def new_time_low(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
-    end
-
-    def new_time_high(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + 2 * GRANULARITY
-      elsif time > time.beginning_of_hour
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
     end
   end
 

@@ -10,14 +10,7 @@ class CalendarController < ApplicationController
 
   # Index for showing events from Google calendar
   def index
-    @events = GoogleEvent.list_events(
-      session[:credentials],
-      session[:email],
-      @week_start.beginning_of_day.to_datetime,
-      @week_end.end_of_day.to_datetime
-    ).map do |_wday, events|
-      build_blocks(events)
-    end.flatten!(1)
+    load_events
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path
@@ -40,6 +33,17 @@ class CalendarController < ApplicationController
 
   def week_start
     params[:date].present? ? Date.parse(params[:date]).beginning_of_week : Date.today.beginning_of_week
+  end
+
+  def load_events
+    @events = GoogleEvent.list_events(
+      session[:credentials],
+      session[:email],
+      @week_start.beginning_of_day.to_datetime,
+      @week_end.end_of_day.to_datetime
+    ).map do |_wday, events|
+      build_blocks(events)
+    end.flatten!(1)
   end
 
   def build_week_boundaries
