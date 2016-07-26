@@ -4,7 +4,7 @@ import Schema from './Schema'
 import UserSchema from './UserSchema'
 import ConferenceRoomSchema from './ConferenceRoomSchema'
 
-const { string, number, shape, oneOfType, instanceOf } = PropTypes;
+const { string, number, shape, oneOfType, instanceOf, bool } = PropTypes;
 
 const time = shape({
   date_time: oneOfType([
@@ -20,7 +20,8 @@ const EventShema = {
   end:             time.isRequired,
   conference_room: ConferenceRoomSchema.isRequired,
   name:            string,
-  summary:         string
+  summary:         string,
+  hidden:          bool
 };
 
 export default Schema(EventShema);

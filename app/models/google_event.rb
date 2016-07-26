@@ -100,7 +100,7 @@ class GoogleEvent
 
     def new_time_high(time)
       if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + 2 * GRANULARITY
+        time.beginning_of_hour + GRANULARITY + GRANULARITY
       elsif time > time.beginning_of_hour
         time.beginning_of_hour + GRANULARITY
       else

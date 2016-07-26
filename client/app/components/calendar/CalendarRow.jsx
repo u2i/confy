@@ -15,6 +15,7 @@ const TimeCell = (props) => (
 export default class CalendarRow extends React.Component {
   static propTypes = {
     events:          arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
+    filtered_rooms:  arrayOf(number),
     time:            oneOfType([instanceOf(Date), string]).isRequired,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLength: number,
@@ -38,14 +39,18 @@ export default class CalendarRow extends React.Component {
     );
   }
 
+  _eventIsFiltered(event){
+    return this.props.filtered_rooms.indexOf(event.conference_room.id) != -1;
+  }
+
   _eventGroupContaining(timestamp) {
     return this.props.events.find(group =>
-      group.some(event => DateHelper.timestamp(event.start.date_time) == timestamp)
+      group.some(event => DateHelper.timestamp(event.start.date_time) == timestamp && !this._eventIsFiltered(event))
     );
   }
 
   _eventsStartingAt(timestamp, group) {
-    return group.filter(event => DateHelper.timestamp(event.start.date_time) == timestamp);
+    return group.filter(event => DateHelper.timestamp(event.start.date_time) == timestamp && !this._eventIsFiltered(event));
   }
 
   _displayTime() {
