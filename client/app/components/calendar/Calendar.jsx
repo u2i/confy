@@ -48,7 +48,7 @@ export default class Calendar extends React.Component {
         </tr>
         </thead>
         <tbody>
-        {rowNodes}
+          {rowNodes}
         </tbody>
       </Table>
     );
