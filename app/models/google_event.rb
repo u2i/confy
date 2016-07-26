@@ -19,20 +19,12 @@ class GoogleEvent
     def list_events(credentials, starting, ending)
       events = {}
       rooms = ConferenceRoom.all
+      config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
+                time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw',
+                always_include_email: true}.freeze
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
-                    time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw',
-                    always_include_email: true}
-          service.list_events(room.email, config) do |result, _|
-            next unless result
-            result.items&.each do |event|
-              normalize_dates(event)
-              next if event.attendees.find(&:self).response_status == 'declined'.freeze
-              events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
-            end
-          end
+          add_events_from_room(room, service, events, config)
         end
       end
       events
@@ -111,6 +103,20 @@ class GoogleEvent
 
     def load_emails
       ConferenceRoom.pluck(:email)
+    end
+
+    GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
+    def add_events_from_room(room, service, events, config)
+      service.list_events(room.email, config) do |result, _|
+        if result
+          result.items.each do |event|
+            next if event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
+            normalize_dates(event)
+            events[event.start.date_time.wday] ||= []
+            events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+          end
+        end
+      end
     end
 
     def normalize_dates(event)
