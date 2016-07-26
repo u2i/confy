@@ -58,7 +58,7 @@ describe GoogleEvent do
 
       context 'room rejected event' do
         before do
-          google_event1.attendees.first.response_status = 'declined'
+          google_event1.attendees.first.response_status = GoogleEvent.singleton_class::GOOGLE_EVENT_DECLINED_RESPONSE
         end
         it 'ignores event' do
           expect(described_class.list_events('', start_time1, start_time2)).to satisfy do |response|
@@ -68,7 +68,11 @@ describe GoogleEvent do
       end
       context 'someone else rejected event' do
         before do
-          google_event1.attendees << Google::Apis::CalendarV3::EventAttendee.new(response_status: 'declined')
+          google_event1.attendees.push(
+            Google::Apis::CalendarV3::EventAttendee.new(
+              response_status: GoogleEvent.singleton_class::GOOGLE_EVENT_DECLINED_RESPONSE
+            )
+          )
         end
         it 'adds event' do
           expect(described_class.list_events('', start_time1, start_time2)).to satisfy do |response|
