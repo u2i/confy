@@ -10,14 +10,17 @@ describe GoogleEvent do
       Google::Apis::CalendarV3::Event.new(start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time1),
                                           creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
                                           end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time1),
-                                          summary: 'Event1', description: sample_summary)
+                                          summary: 'Event1', description: sample_summary,
+                                          attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')])
     end
 
     let(:google_event2) do
       Google::Apis::CalendarV3::Event.new(start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time2),
                                           creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
                                           end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time2),
-                                          summary: 'Event2', description: sample_summary)
+                                          summary: 'Event2', description: sample_summary,
+                                          attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')]
+                                         )
     end
 
     let(:sample_events) do
@@ -43,6 +46,38 @@ describe GoogleEvent do
           block.call [double('EventList', items: [google_event1]), nil]
         else
           block.call [double('EventList', items: [google_event2]), nil]
+        end
+      end
+    end
+
+    context 'rejected event' do
+      let(:start_time1) { DateTime.now.beginning_of_week }
+      let(:start_time2) { DateTime.now.beginning_of_week + 1.days }
+      let(:end_time1) { start_time1 + 2.hours }
+      let(:end_time2) { start_time2 + 2.hours }
+
+      context 'room rejected event' do
+        before do
+          google_event1.attendees.first.response_status = 'declined'
+        end
+        it 'ignores event' do
+          expect(described_class.list_events('', start_time1, start_time2)).to satisfy do |response|
+            !response.key?(1)
+          end
+        end
+      end
+      context 'someone else rejected event' do
+        before do
+          google_event1.attendees << Google::Apis::CalendarV3::EventAttendee.new(response_status: 'declined')
+        end
+        it 'adds event' do
+          expect(described_class.list_events('', start_time1, start_time2)).to satisfy do |response|
+            response.all? do |day, _|
+              response[day].each_with_index.all? do |event, i|
+                event[:summary] == expected_events[day][i].summary
+              end
+            end
+          end
         end
       end
     end
