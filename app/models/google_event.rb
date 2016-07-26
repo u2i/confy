@@ -110,13 +110,18 @@ class GoogleEvent
       service.list_events(room.email, config) do |result, _|
         if result
           result.items.each do |event|
-            next if event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
+            next if event_declined?(event)
             normalize_dates(event)
             events[event.start.date_time.wday] ||= []
             events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
           end
         end
       end
+    end
+
+    # self is a field from Google::Apis::CalendarV3::EventAttendee
+    def event_declined?(event)
+      event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
 
     def normalize_dates(event)
