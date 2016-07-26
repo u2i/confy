@@ -1,4 +1,5 @@
 import React  from 'react'
+import { If } from 'react-if'
 import * as DateHelper from 'helpers/DateHelper'
 import EventSchema from 'schemas/EventSchema'
 
@@ -8,7 +9,9 @@ const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.Pr
 
 const TimeCell = (props) => (
   <td className="text-right time-cell">
-    <small>{props.visible ? DateHelper.formatTime(props.time, props.timeFormat) : ''}</small>
+    <If condition={props.visible}>
+      <small>{DateHelper.formatTime(props.time, props.timeFormat)}</small>
+    </If>
   </td>
 );
 
