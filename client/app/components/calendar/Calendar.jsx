@@ -1,10 +1,10 @@
-import React, { PropTypes } from 'react'
-import { Col, Table } from 'react-bootstrap'
-import { formatDate, formatTime } from 'helpers/DateHelper'
+import React, { PropTypes } from 'react';
+import { Table } from 'react-bootstrap';
+import { formatDate } from 'helpers/DateHelper';
 
-import CalendarRow from './CalendarRow'
+import CalendarRow from './CalendarRow';
 
-import './calendar.scss'
+import './calendar.scss';
 
 const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
@@ -14,12 +14,17 @@ const CalendarHeader = (props) => (
   </th>
 );
 
+CalendarHeader.propTypes = {
+  day:        string.isRequired,
+  dateFormat: string
+};
+
 export default class Calendar extends React.Component {
   static propTypes = {
     events:          array,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     times:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    unitEventLenght: number,
+    unitEventLength: number,
     timeFormat:      string,
     dateFormat:      string
   };
@@ -30,7 +35,7 @@ export default class Calendar extends React.Component {
 
   render() {
     let headerNodes = this.props.days.map(day => (
-      <CalendarHeader day={day} dateFormat={this.props.date_format} key={day} />
+      <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
     ));
 
     let rowNodes = this.props.times.map(time => (
@@ -42,10 +47,10 @@ export default class Calendar extends React.Component {
     return (
       <Table bordered striped responsive className="calendar">
         <thead>
-        <tr>
-          <th className="col-md-1" />
-          {headerNodes}
-        </tr>
+          <tr>
+            <th className="col-md-1" />
+            {headerNodes}
+          </tr>
         </thead>
         <tbody>
           {rowNodes}
@@ -53,5 +58,5 @@ export default class Calendar extends React.Component {
       </Table>
     );
   }
-};
+}
 

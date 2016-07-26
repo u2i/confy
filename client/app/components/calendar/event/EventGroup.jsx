@@ -1,10 +1,9 @@
-import React from 'react'
-import { timestamp } from 'helpers/DateHelper'
-import EventSchema from 'schemas/EventSchema'
+import React from 'react';
+import EventSchema from 'schemas/EventSchema';
 
-import Event from './Event'
+import Event from './Event';
 
-import './event_group.scss'
+import './event_group.scss';
 
 const { number, arrayOf } = React.PropTypes;
 
@@ -33,7 +32,7 @@ export default class EventGroup extends React.Component {
   }
 
   _eventWidth() {
-    return this.props.eventsInGroup != 0 ? this.props.containerWidth / this.props.eventsInGroup : 0;
+    return this.props.eventsInGroup !== 0 ? this.props.containerWidth / this.props.eventsInGroup : 0;
   }
 
   _containerWidth() {
@@ -48,6 +47,6 @@ export default class EventGroup extends React.Component {
     return {
       width:      this._containerWidth(),
       marginLeft: this._containerOffset()
-    }
+    };
   }
 }

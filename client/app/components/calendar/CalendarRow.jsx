@@ -1,19 +1,11 @@
-import React  from 'react'
-import { If } from 'react-if'
-import * as DateHelper from 'helpers/DateHelper'
-import EventSchema from 'schemas/EventSchema'
+import React from 'react';
+import { If } from 'react-if';
+import * as DateHelper from 'helpers/DateHelper';
+import EventSchema from 'schemas/EventSchema';
 
-import EventWrapper from './event/EventWrapper'
+import EventWrapper from './event/EventWrapper';
 
-const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.PropTypes;
-
-const TimeCell = (props) => (
-  <td className="text-right time-cell">
-    <If condition={props.visible}>
-      <small>{DateHelper.formatTime(props.time, props.timeFormat)}</small>
-    </If>
-  </td>
-);
+const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
@@ -60,7 +52,7 @@ export default class CalendarRow extends React.Component {
   _tableCellNodes() {
     return this.props.days.map(day => {
       let timestamp = DateHelper.timestamp(day, this.props.time);
-      let eventGroup = this._eventGroupContaining(timestamp) || [];
+      const eventGroup = this._eventGroupContaining(timestamp) || [];
       let events = this._eventsStartingAt(timestamp, eventGroup);
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 
@@ -73,7 +65,24 @@ export default class CalendarRow extends React.Component {
                         offset={offset} />
         </td>
       );
-    })
+    });
   }
 }
 
+const TimeCell = (props) => (
+  <td className="text-right time-cell">
+    <If condition={props.visible}>
+      <small>{DateHelper.formatTime(props.time, props.timeFormat)}</small>
+    </If>
+  </td>
+);
+
+TimeCell.propTypes = {
+  time:       oneOfType([instanceOf(Date), string]).isRequired,
+  visible:    bool,
+  timeFormat: string
+};
+
+TimeCell.defaultProps = {
+  visible: true
+};

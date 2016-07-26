@@ -1,23 +1,19 @@
-import React from 'react'
-import Dimension from 'react-dimensions'
-import { If, Then } from 'react-if'
+import React from 'react';
+import dimension from 'react-dimensions';
+import { If, Then } from 'react-if';
 
-import EventGroup from './EventGroup'
+import EventGroup from './EventGroup';
 
-class EventWrapper extends React.Component {
-  static propTypes = {
-    events: React.PropTypes.array,
-  };
+const EventWrapper = (props) => (
+  <If condition={props.events != null}>
+    <Then>{() =>
+      <EventGroup {...props} />}
+    </Then>
+  </If>
+);
 
-  render() {
-    return (
-      <If condition={this.props.events != null}>
-        <Then>{() =>
-          <EventGroup {...this.props} />}
-        </Then>
-      </If>
-    );
-  }
-}
+EventWrapper.propTypes = {
+  events: React.PropTypes.array
+};
 
-export default Dimension()(EventWrapper);
+export default dimension()(EventWrapper);

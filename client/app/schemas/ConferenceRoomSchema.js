@@ -1,5 +1,5 @@
-import { PropTypes } from 'react'
-import Schema from './Schema'
+import { PropTypes } from 'react';
+import schema from './Schema';
 
 const ConferenceRoomSchema = {
   id:       PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -8,4 +8,4 @@ const ConferenceRoomSchema = {
   capacity: PropTypes.number
 };
 
-export default Schema(ConferenceRoomSchema);
+export default schema(ConferenceRoomSchema);
