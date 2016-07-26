@@ -1,19 +1,22 @@
 import React from 'react'
 import { timestamp } from 'helpers/DateHelper'
+import EventSchema from 'schemas/EventSchema'
 
 import Event from './Event'
 
 import './event_container.scss'
 
+const { number, arrayOf } = React.PropTypes;
+
 export default class EventContainer extends React.Component {
   static propTypes = {
-    events:          React.PropTypes.array.isRequired,
-    eventsInGroup:   React.PropTypes.number.isRequired,
-    offset:          React.PropTypes.number.isRequired,
-    timestamp:       React.PropTypes.number.isRequired,
-    containerWidth:  React.PropTypes.number.isRequired,
-    containerHeight: React.PropTypes.number.isRequired,
-    unitEventLength: React.PropTypes.number
+    events:          arrayOf(EventSchema.only('id')).isRequired,
+    eventsInGroup:   number.isRequired,
+    offset:          number.isRequired,
+    timestamp:       number.isRequired,
+    containerWidth:  number.isRequired,
+    containerHeight: number.isRequired,
+    unitEventLength: number
   };
 
   render() {

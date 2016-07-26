@@ -1,10 +1,11 @@
 import { PropTypes } from 'react'
+import Schema from './Schema'
 
 const ConferenceRoomSchema = {
-  _id:      PropTypes.string.isRequired,
+  id:       PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title:    PropTypes.string.isRequired,
   color:    PropTypes.string,
   capacity: PropTypes.number
 };
 
-export default PropTypes.shape(ConferenceRoomSchema);
+export default Schema(ConferenceRoomSchema);

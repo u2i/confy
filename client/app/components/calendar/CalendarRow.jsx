@@ -1,9 +1,10 @@
-import React, { PropTypes } from 'react'
+import React  from 'react'
 import * as DateHelper from 'helpers/DateHelper'
+import EventSchema from 'schemas/EventSchema'
 
 import EventWrapper from './event/EventDimensions'
 
-const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
+const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 
 const TimeCell = (props) => (
   <td className="text-right time-cell">
@@ -13,7 +14,7 @@ const TimeCell = (props) => (
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:          array.isRequired,
+    events:          arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
     time:            oneOfType([instanceOf(Date), string]).isRequired,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLength: number,

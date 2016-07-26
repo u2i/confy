@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-const { string, number, shape, oneOfType, instanceOf } = PropTypes;
+import EventSchema from 'schemas/EventSchema'
 
 import { formatTime, timestamp } from 'helpers/DateHelper'
 
@@ -7,27 +7,10 @@ import './event.scss'
 
 export default class Event extends React.Component {
   static propTypes = {
-    event:           shape({
-      name:            string,
-      summary:         string,
-      start:           shape({
-        date_time: oneOfType([instanceOf(Date), string]).isRequired
-      }).isRequired,
-      end:             shape({
-        date_time: oneOfType([instanceOf(Date), string]).isRequired
-      }).isRequired,
-      creator:         shape({
-        email:        string.isRequired,
-        display_name: string
-      }).isRequired,
-      conference_room: shape({
-        title: string.isRequired,
-        color: string.isRequired
-      }).isRequired
-    }).isRequired,
-    containerHeight: number.isRequired,
-    unitEventLength: number,
-    timeFormat:      string
+    event:           EventSchema.isRequired,
+    containerHeight: PropTypes.number.isRequired,
+    unitEventLength: PropTypes.number,
+    timeFormat:      PropTypes.string
   };
 
   static defaultProps = {

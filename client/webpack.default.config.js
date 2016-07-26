@@ -24,7 +24,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
     alias: {
-      helpers: path.join(__dirname, 'app', 'helpers')
+      helpers: path.join(__dirname, 'app', 'helpers'),
+      schemas: path.join(__dirname, 'app', 'schemas')
     }
   },
   plugins: [

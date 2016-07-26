@@ -36,7 +36,7 @@
     "jquery": "^2.2.2",
     "jquery-ujs": "^1.2.1",
     "loader-utils": "^0.2.13",
-    "lodash": "^4.7.0",
+    "lodash": "^4.14.0",
     "moment": "^2.14.1",
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.9.1",

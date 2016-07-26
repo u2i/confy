@@ -6,7 +6,7 @@ import EventContainer from './EventContainer'
 
 class EventDimensions extends React.Component {
   static propTypes = {
-    events:          React.PropTypes.array,
+    events: React.PropTypes.array,
   };
 
   render() {
