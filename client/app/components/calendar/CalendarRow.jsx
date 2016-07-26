@@ -2,7 +2,7 @@ import React  from 'react'
 import * as DateHelper from 'helpers/DateHelper'
 import EventSchema from 'schemas/EventSchema'
 
-import EventWrapper from './event/EventDimensions'
+import EventWrapper from './event/EventWrapper'
 
 const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 

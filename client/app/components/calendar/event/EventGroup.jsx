@@ -4,11 +4,11 @@ import EventSchema from 'schemas/EventSchema'
 
 import Event from './Event'
 
-import './event_container.scss'
+import './event_group.scss'
 
 const { number, arrayOf } = React.PropTypes;
 
-export default class EventContainer extends React.Component {
+export default class EventGroup extends React.Component {
   static propTypes = {
     events:          arrayOf(EventSchema.only('id')).isRequired,
     eventsInGroup:   number.isRequired,
@@ -29,7 +29,7 @@ export default class EventContainer extends React.Component {
              key={event.id} />
     );
 
-    return <div className="event-container" style={this._containerStyle()}>{eventNodes}</div>;
+    return <div className="event-group" style={this._containerStyle()}>{eventNodes}</div>;
   }
 
   _eventWidth() {
