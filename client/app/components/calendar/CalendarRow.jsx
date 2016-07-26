@@ -1,8 +1,8 @@
 import React  from 'react'
 import * as DateHelper from 'helpers/DateHelper'
 import EventSchema from 'schemas/EventSchema'
-
 import EventWrapper from './event/EventDimensions'
+import * as Immutable from 'immutable'
 
 const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 
@@ -15,7 +15,7 @@ const TimeCell = (props) => (
 export default class CalendarRow extends React.Component {
   static propTypes = {
     events:          arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
-    filtered_rooms:  arrayOf(number),
+    filtered_rooms:  instanceOf(Immutable.Set),
     time:            oneOfType([instanceOf(Date), string]).isRequired,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLength: number,
@@ -40,13 +40,15 @@ export default class CalendarRow extends React.Component {
   }
 
   _eventIsFiltered(event){
-    return this.props.filtered_rooms.indexOf(event.conference_room.id) != -1;
+    return this.props.filtered_rooms.has(event.conference_room.id);
   }
 
   _eventGroupContaining(timestamp) {
-    return this.props.events.find(group =>
+    var group = this.props.events.find(group =>
       group.some(event => DateHelper.timestamp(event.start.date_time) == timestamp && !this._eventIsFiltered(event))
     );
+    if(group) return group.filter(event => !this._eventIsFiltered(event))
+    return group
   }
 
   _eventsStartingAt(timestamp, group) {

@@ -22,4 +22,4 @@ class EventDimensions extends React.Component {
   }
 }
 
-export default Dimension()(EventDimensions);
+export default Dimension({elementResize: true})(EventDimensions);

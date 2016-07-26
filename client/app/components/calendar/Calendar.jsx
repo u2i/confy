@@ -3,6 +3,7 @@ import { Col, Table } from 'react-bootstrap'
 import { formatDate, formatTime } from 'helpers/DateHelper'
 import  RoomsContainer from './RoomsContainer'
 import CalendarRow from './CalendarRow'
+import * as Immutable from 'immutable'
 
 import './calendar.scss'
 
@@ -17,6 +18,7 @@ const CalendarHeader = (props) => (
 export default class Calendar extends React.Component {
   static propTypes = {
     events:          array,
+    conference_rooms: array,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     times:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLenght: number,
@@ -30,12 +32,20 @@ export default class Calendar extends React.Component {
     
     constructor(){
         super();
-        this.state = {filtered_rooms: []}
+        this.state = {filtered_rooms: new Immutable.Set()}
     }
 
-    _onChange(conference_room_id) {
-        let new_filter = this.state.filtered_rooms.concat(conference_room_id);
-        this.setState({filtered_rooms: new_filter})
+    _addFilter(conference_room_id) {
+        console.log('adding ' + conference_room_id);
+        let filters = this.state.filtered_rooms.add(conference_room_id);
+        console.log(filters.toArray());
+        this.setState({filtered_rooms: filters});
+    }
+
+    _removeFilter(conference_room_id) {
+        console.log('removing ' + conference_room_id);
+        let filters = this.state.filtered_rooms.delete(conference_room_id);
+        this.setState({filtered_rooms: filters});
     }
 
   render() {
@@ -52,7 +62,7 @@ export default class Calendar extends React.Component {
 
     return (
         <div>
-            <RoomsContainer changing={this._onChange.bind(this)}/>
+            <RoomsContainer add={this._addFilter.bind(this)} delete={this._removeFilter.bind(this)} conferenceRooms={this.props.conference_rooms}/>
             <Table bordered striped responsive className="calendar">
                 <thead>
                 <tr>

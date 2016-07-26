@@ -1,21 +1,32 @@
 import React  from 'react'
 
 export default class RoomsContainer extends React.Component {
-
-    _room_changed(){
-        this.props.changing(1);
-    }
-
-    _list_filters(){
-        return [1,2,3,4,5,6,7,8].map((i) => <li onClick={() => this.props.changing(i)}>Click</li>);
+    _handle_checkbox(event){
+        if(event.target.checked){
+            this.props.add(parseInt(event.target.value));
+        }
+        else{
+            this.props.delete(parseInt(event.target.value));
+        }
     }
 
     render(){
-        let lists = this._list_filters();
+        let filters = this.props.conferenceRooms.map(
+            (conference_room) => {
+                return (
+                    <div>
+                        <label htmlFor={conference_room.id}>{conference_room.title}</label>
+                        <input key={conference_room.id} type="checkbox" value={conference_room.id}
+                               onChange={this._handle_checkbox.bind(this)}/>
+                    </div>
+
+                )
+            }
+        );
         return (
-            <ul>
-                {lists}
-            </ul>
+            <form>
+                {filters}
+            </form>
         );
     }
 }
