@@ -2,7 +2,7 @@ import React  from 'react'
 
 export default class RoomsContainer extends React.Component {
     _handle_checkbox(event){
-        if(event.target.checked){
+        if(!event.target.checked){
             this.props.add(parseInt(event.target.value));
         }
         else{
@@ -17,7 +17,7 @@ export default class RoomsContainer extends React.Component {
                     <div>
                         <label htmlFor={conference_room.id}>{conference_room.title}</label>
                         <input key={conference_room.id} type="checkbox" value={conference_room.id}
-                               onChange={this._handle_checkbox.bind(this)}/>
+                               onChange={this._handle_checkbox.bind(this)} defaultChecked={true}/>
                     </div>
 
                 )

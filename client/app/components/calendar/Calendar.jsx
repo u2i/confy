@@ -36,14 +36,11 @@ export default class Calendar extends React.Component {
     }
 
     _addFilter(conference_room_id) {
-        console.log('adding ' + conference_room_id);
         let filters = this.state.filtered_rooms.add(conference_room_id);
-        console.log(filters.toArray());
         this.setState({filtered_rooms: filters});
     }
 
     _removeFilter(conference_room_id) {
-        console.log('removing ' + conference_room_id);
         let filters = this.state.filtered_rooms.delete(conference_room_id);
         this.setState({filtered_rooms: filters});
     }
