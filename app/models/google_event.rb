@@ -136,30 +136,11 @@ class GoogleEvent
     def load_emails
       ConferenceRoom.pluck(:email)
     end
-
-    GRANULARITY = 30.minutes.freeze
-    def floor_time(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
-    end
-
-    def ceil_time(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + GRANULARITY + GRANULARITY
-      elsif time > time.beginning_of_hour
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
-    end
   end
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
                        :daily_events_container, :merge_events, :normalize_event_datetime,
-                       :items_list, :ceil_time, :floor_time
+                       :items_list
 end
