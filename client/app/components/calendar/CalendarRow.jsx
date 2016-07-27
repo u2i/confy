@@ -41,6 +41,7 @@ export default class CalendarRow extends React.Component {
 
   _eventGroupContaining(timestamp) {
     return this.props.events.find(group =>
+      group.length &&
       Math.abs(group[group.length - 1].timestamp - timestamp) < SECONDS_IN_DAY &&
       group.some(event => event.timestamp == timestamp)
     );
