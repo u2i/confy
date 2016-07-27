@@ -35,7 +35,7 @@ class GoogleEvent
     end
 
     def daily_events_container
-      Hash[(1..5).map { |i| [i, []] }]
+      Hash[(1..CalendarHelper::WEEK_LENGTH).map { |i| [i, []] }]
     end
 
     def mark_user_events(user_email, all_events)
