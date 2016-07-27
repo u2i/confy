@@ -9,7 +9,7 @@ module TimeInterval
     date ? Date.parse(date).beginning_of_week : Date.today.beginning_of_week
   end
 
-  def build_week_boundaries(date=nil)
+  def build_week_boundaries(date = nil)
     week_start = week_start(date)
     week_end = (week_start + CalendarHelper::WEEK_LENGTH - 1).end_of_day
     [week_start, week_end]

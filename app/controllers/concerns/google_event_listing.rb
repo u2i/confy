@@ -3,12 +3,12 @@ module GoogleEventListing
 
   def list_events(starting, ending)
     events = GoogleEvent.list_events(
-        session[:credentials],
-        session[:email],
-        starting.to_datetime,
-        ending.to_datetime)
-    grouped_events = events.map do |_wday, events|
-      build_groups(events)
+      session[:credentials],
+      session[:email],
+      starting.to_datetime,
+      ending.to_datetime)
+    grouped_events = events.map do |_wday, day_events|
+      build_groups(day_events)
     end
     grouped_events.flatten!(1)
   end
