@@ -6,8 +6,8 @@ class CalendarController < ApplicationController
   include GoogleEventListing
   include TimeInterval
 
-  before_action :check_authentication
   before_action :refresh_token
+  before_action :check_authentication
   before_action :load_dates_and_rooms, only: [:index]
 
   # Index for showing events from Google calendar
@@ -22,7 +22,11 @@ class CalendarController < ApplicationController
   private
 
   def create_calendar_props
-    @props = {initialEvents: @events, days: @days, times: @times, unitEventLength: CalendarHelper::UNIT_EVENT_LENGTH}
+    @props = {conferenceRooms: @conference_rooms,
+              initialEvents: @events,
+              days: @days,
+              times: @times,
+              unitEventLength: EventGrouper::GRANULARITY}
   end
 
   def load_dates_and_rooms

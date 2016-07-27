@@ -25,7 +25,7 @@ export default class Event extends React.Component {
     return (
       <div className="event" style={this._eventStyle()}>
         <div className="event-time">{timeStr}</div>
-        <div className="event-name">{event.name}</div>
+        <div className="event-name">{event.summary}</div>
         <div className="event-user">
           <small>by&nbsp;</small>
           {creator.display_name || creator.email}

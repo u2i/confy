@@ -2,7 +2,11 @@ module GoogleAuthentication
   extend ActiveSupport::Concern
 
   def refresh_token
-    session[:credentials] = GoogleOauth.refresh_token(session[:credentials]) if session[:credentials]
+    credentials = session[:credentials]
+    if credentials && GoogleOauth.need_to_refresh_token?(credentials)
+      session[:credentials] = GoogleOauth.refresh_token(credentials)
+      session[:email] = GoogleOauth.user_email(session[:credentials])
+    end
   end
 
   def check_authentication

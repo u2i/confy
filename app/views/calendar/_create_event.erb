@@ -34,7 +34,7 @@
             </div>
           </section>
 
-          <section class="form-group">
+          <section class="form-group" id="conference_room_id-field-group">
             <%= label_tag :location, 'Location' %>
             <%= e.collection_select :conference_room_id, conference_rooms, :id, :title, {}, {class: 'form-control'} %>
             <span class="error-text text-danger"></span>
