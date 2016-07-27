@@ -7,6 +7,8 @@ const autoprefixer = require('autoprefixer');
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
+const APP_PATH = path.join(__dirname, 'app');
+
 module.exports = {
   context: __dirname,
   entry:   {
@@ -24,8 +26,9 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
     alias:      {
-      helpers: path.join(__dirname, 'app', 'helpers'),
-      schemas: path.join(__dirname, 'app', 'schemas')
+      helpers: `${APP_PATH}/helpers`,
+      schemas: `${APP_PATH}/schemas`,
+      sources: `${APP_PATH}/sources`
     }
   },
   plugins: [
