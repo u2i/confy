@@ -17,9 +17,6 @@ env:
   mocha: true
 
 settings:
-  import/resolver:
-    webpack:
-      config: webpack.dev.config.js
   import/extensions: [.js, .jsx]
 
 rules:
