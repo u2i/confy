@@ -70,7 +70,6 @@ rules:
   react/self-closing-comp: 2
   react/wrap-multilines: 2
   react/jsx-closing-bracket-location: [2, after-props]
-  react/jsx-first-prop-new-line: [2, never]
   react/jsx-indent-props: 0
   react/sort-comp:
     - warn
