@@ -78,6 +78,12 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+staging:
+  <<: *default
+  database: <%= ENV['CONFY_DATABASE'] %>
+  username: <%= ENV['CONFY_DATABASE_USER'] %>
+  password: <%= ENV['CONFY_DATABASE_PASSWORD'] %>
+
 production:
   <<: *default
   database: <%= ENV['CONFY_DATABASE'] %>

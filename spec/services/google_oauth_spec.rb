@@ -43,4 +43,15 @@ describe GoogleOauth do
       expect(described_class.authenticated?(param)).to eq false
     end
   end
+
+  describe '.user_email' do
+    let(:sample_email) { 'example@com' }
+    let(:user_info) { double('user_info', email: sample_email) }
+    let(:sample_service) { double('sample_service', get_userinfo: user_info) }
+    let(:sample_credentials) { {} }
+    it 'returns logged user email address' do
+      allow(GoogleOauth).to receive(:user_info_service) { sample_service }
+      expect(GoogleOauth.user_email(sample_credentials)).to eq sample_email
+    end
+  end
 end

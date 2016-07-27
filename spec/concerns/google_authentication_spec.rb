@@ -32,6 +32,8 @@ RSpec.describe ApplicationController, type: :controller do
         allow(controller).to receive(:check_authentication) { true }
         allow(controller).to receive(:session) { credentials }
         allow(GoogleOauth).to receive(:refresh_token) {}
+        allow(GoogleOauth).to receive(:need_to_refresh_token?) { true }
+        allow(GoogleOauth).to receive(:user_email)
         get :index
         expect(GoogleOauth).to have_received(:refresh_token)
       end

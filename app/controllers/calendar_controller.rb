@@ -4,20 +4,13 @@ require 'google/api_client/client_secrets'
 class CalendarController < ApplicationController
   include GoogleAuthentication
 
-  before_action :check_authentication
   before_action :refresh_token
+  before_action :check_authentication
   before_action :load_dates_and_rooms, only: [:index]
 
   # Index for showing events from Google calendar
   def index
-    @events = GoogleEvent.list_events(
-      session[:credentials],
-      @week_start.beginning_of_day.to_datetime,
-      @week_end.end_of_day.to_datetime
-    ).map do |_wday, events|
-      build_blocks(events)
-    end.flatten!(1)
-
+    load_events
     create_calendar_props
   rescue ArgumentError
     session.delete(:credentials)
@@ -47,6 +40,17 @@ class CalendarController < ApplicationController
 
   def week_start
     params[:date].present? ? Date.parse(params[:date]).beginning_of_week : Date.today.beginning_of_week
+  end
+
+  def load_events
+    @events = GoogleEvent.list_events(
+      session[:credentials],
+      session[:email],
+      @week_start.beginning_of_day.to_datetime,
+      @week_end.end_of_day.to_datetime
+    ).map do |_wday, events|
+      build_blocks(events)
+    end.flatten!(1)
   end
 
   def build_week_boundaries
