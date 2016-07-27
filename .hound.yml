@@ -9,3 +9,4 @@ jshint:
 eslint:
   enabled: true
   config_file: client/.eslintrc.yml
+  ignore_file: client/.eslintignore

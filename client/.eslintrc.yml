@@ -1,7 +1,7 @@
 ---
 parser: babel-eslint
 
-extends: shakacode
+extends: airbnb
 
 plugins:
   - react
@@ -32,3 +32,9 @@ rules:
   react/jsx-closing-bracket-location: [2, after-props]
   react/jsx-first-prop-new-line: [2, never]
   react/jsx-indent-props: 0
+  react/sort-comp:
+    - warn
+    -
+      order: [statics, static-methods, lifecycle, everything-else, render, /^_.+$/]
+      groups:
+        statics: []
