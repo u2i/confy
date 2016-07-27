@@ -1,5 +1,7 @@
 import React  from 'react'
 
+import { Checkbox, Label } from 'react-bootstrap'
+
 import './filters.scss'
 
 export default class RoomFilters extends React.Component {
@@ -18,13 +20,10 @@ export default class RoomFilters extends React.Component {
             (conferenceRoom) => {
                 return (
                     <div className="filter-box" style={{backgroundColor: conferenceRoom.color}}>
-                        <label htmlFor={conferenceRoom.id}>{conferenceRoom.title}</label>
-                        <input key={conferenceRoom.id} type="checkbox" value={conferenceRoom.id}
-                               onChange={this._handleCheckbox.bind(this)} defaultChecked={true}/>
+                        <Checkbox value={conferenceRoom.id} onChange={this._handleCheckbox.bind(this)}
+                                  defaultChecked inline>{conferenceRoom.title}</Checkbox>
                     </div>
-
-                )
-            }
+                )}
         );
         return (
             <div className="filter-container">

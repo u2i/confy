@@ -4,7 +4,7 @@ import Schema from './Schema'
 import UserSchema from './UserSchema'
 import ConferenceRoomSchema from './ConferenceRoomSchema'
 
-const { string, number, shape, oneOfType, instanceOf, bool } = PropTypes;
+const { string, number, shape, oneOfType, instanceOf } = PropTypes;
 
 const time = shape({
   date_time: oneOfType([
