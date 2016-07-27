@@ -39,5 +39,5 @@
 <%= javascript_tag do %>
   window.blocks = <%= raw @events.to_json %>
   window.eventUrl = '<%= events_path %>'
-  window.unitEventLength = <%= CalendarHelper::UNIT_EVENT_LENGTH %>
+  window.unitEventLength = <%= EventGrouper::GRANULARITY %>
 <% end %>
