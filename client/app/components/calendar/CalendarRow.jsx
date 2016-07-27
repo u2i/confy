@@ -56,10 +56,10 @@ export default class CalendarRow extends React.Component {
   }
 
   _tableCellNodes() {
-    let current_time_stamp = DateHelper.timestamp(this.props.days[0], this.props.time) - SECONDS_IN_DAY;
-    return this.props.days.map(day => {
-      current_time_stamp += SECONDS_IN_DAY;
-      let timestamp = current_time_stamp;
+    let currentTimeStamp = DateHelper.timestamp(this.props.days[0], this.props.time) - SECONDS_IN_DAY;
+    return this.props.days.map(() => {
+      currentTimeStamp += SECONDS_IN_DAY;
+      let timestamp = currentTimeStamp;
       let eventGroup = this._eventGroupContaining(timestamp) || [];
       let events = this._eventsStartingAt(timestamp, eventGroup);
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;

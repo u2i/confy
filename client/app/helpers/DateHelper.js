@@ -1,6 +1,5 @@
 import moment from 'moment'
 
-
 export function addDateAndTime(date, time) {
   time = moment(time);
   let [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];

@@ -2,7 +2,7 @@ import React  from 'react'
 
 import './filters.scss'
 
-export default class RoomsContainer extends React.Component {
+export default class RoomFilters extends React.Component {
     
     _handleCheckbox(event){
         if(!event.target.checked){

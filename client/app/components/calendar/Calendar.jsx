@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Col, Table } from 'react-bootstrap'
 import { formatDate, formatTime } from 'helpers/DateHelper'
-import  RoomsContainer from './RoomsContainer'
+import  RoomFilters from './RoomFilters'
 import CalendarRow from './CalendarRow'
 import * as Immutable from 'immutable'
 
@@ -70,7 +70,7 @@ export default class Calendar extends React.Component {
 
     return (
         <div>
-            <RoomsContainer add={this._addFilter.bind(this)}
+            <RoomFilters add={this._addFilter.bind(this)}
                             delete={this._removeFilter.bind(this)}
                             conferenceRooms={this.props.conferenceRooms} />
             <Table bordered striped responsive className="calendar">
