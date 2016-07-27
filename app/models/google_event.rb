@@ -125,7 +125,9 @@ class GoogleEvent
             next if event_declined?(event)
             normalize_event_datetime(event)
             events[event.start.date_time.wday].push(
-              event.to_h.merge(conference_room: room, timestamp: event.start.date_time.to_i)
+              event.to_h.merge(conference_room: room,
+                               start_timestamp: event.start.date_time.to_i,
+                               end_timestamp:   event.end.date_time.to_i)
             )
           end
         end

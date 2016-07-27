@@ -42,13 +42,13 @@ export default class CalendarRow extends React.Component {
   _eventGroupContaining(timestamp) {
     return this.props.events.find(group =>
       group.length &&
-      Math.abs(group[group.length - 1].timestamp - timestamp) < SECONDS_IN_DAY &&
-      group.some(event => event.timestamp == timestamp)
+      Math.abs(group[group.length - 1].start_timestamp - timestamp) < SECONDS_IN_DAY &&
+      group.some(event => event.start_timestamp == timestamp)
     );
   }
 
   _eventsStartingAt(timestamp, group) {
-    return group.filter(event => event.timestamp == timestamp);
+    return group.filter(event => event.start_timestamp == timestamp);
   }
 
   _displayTime() {

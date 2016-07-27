@@ -43,9 +43,7 @@ export default class Event extends React.Component {
   }
 
   _eventLengthInSeconds() {
-    const startTimestamp = timestamp(this.props.event.start.date_time),
-      endTimestamp = timestamp(this.props.event.end.date_time);
-    return (endTimestamp - startTimestamp) / this.props.unitEventLength;
+    return (this.props.event.end_timestamp - this.props.event.start_timestamp) / this.props.unitEventLength;
   }
 
   _eventStyle() {
