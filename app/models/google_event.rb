@@ -14,26 +14,52 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
-    FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
+    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
 
-    def list_events(credentials, starting, ending)
-      events = {}
+    def listing_options(fields, starting, ending)
+      {fields: fields, single_events: true, time_min: starting.rfc3339(9),
+       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TZ')}
+    end
+
+    def list_events(credentials, user_email, starting, ending)
+      all_events = daily_events_container
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = {fields: FIELDS, single_events: true, time_min: starting.rfc3339(9),
-                    time_max: ending.rfc3339(9), time_zone: 'Europe/Warsaw'}
-          service.list_events(room.email, config) do |result, _|
-            next unless result
-            result.items&.each do |event|
-              normalize_dates(event)
-              events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
-            end
+          config = listing_options(LISTING_FIELDS, starting, ending)
+          service.list_events(room.email, config) do |new_events, _|
+            merge_events(new_events, room, all_events)
           end
         end
       end
-      events
+      mark_user_events(user_email, all_events)
+      all_events
+    end
+
+    def daily_events_container
+      Hash[(1..7).map { |i| [i, []] }]
+    end
+
+    def merge_events(new_events, room, all_events)
+      return unless new_events
+      new_events.items.each do |event|
+        normalize_event_datetime(event)
+        all_events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+      end
+    end
+
+    def normalize_event_datetime(event)
+      event.start.date_time = EventGrouper.floor_time event.start.date_time
+      event.end.date_time = EventGrouper.ceil_time event.end.date_time
+    end
+
+    def mark_user_events(user_email, all_events)
+      all_events.values.each do |events|
+        events.each do |event|
+          creator_email = event[:creator][:email]
+          event[:creator][:self] = (user_email == creator_email)
+        end
+      end
     end
 
     def process_params(params)
@@ -110,34 +136,11 @@ class GoogleEvent
     def load_emails
       ConferenceRoom.pluck(:email)
     end
-
-    def normalize_dates(event)
-      event.start.date_time = floor_time(event.start.date_time)
-      event.end.date_time = ceil_time(event.end.date_time)
-    end
-
-    GRANULARITY = 30.minutes.freeze
-    def floor_time(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
-    end
-
-    def ceil_time(time)
-      if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + GRANULARITY + GRANULARITY
-      elsif time > time.beginning_of_hour
-        time.beginning_of_hour + GRANULARITY
-      else
-        time.beginning_of_hour
-      end
-    end
   end
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
-                       :items_list, :ceil_time, :floor_time
+                       :daily_events_container, :merge_events, :normalize_event_datetime,
+                       :items_list
 end
