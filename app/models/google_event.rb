@@ -29,7 +29,8 @@ class GoogleEvent
               event.start.date_time = new_time_low event.start.date_time
               event.end.date_time = new_time_high event.end.date_time
               events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+              additional_properties = {conference_room: room, timestamp: event.start.date_time.to_i}
+              events[event.start.date_time.wday] << event.to_h.merge(additional_properties)
             end
           end
         end
@@ -100,7 +101,7 @@ class GoogleEvent
 
     def new_time_high(time)
       if time > time.beginning_of_hour + GRANULARITY
-        time.beginning_of_hour + 2 * GRANULARITY
+        time.beginning_of_hour + GRANULARITY + GRANULARITY
       elsif time > time.beginning_of_hour
         time.beginning_of_hour + GRANULARITY
       else

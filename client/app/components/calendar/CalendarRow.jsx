@@ -5,6 +5,8 @@ import EventSchema from 'schemas/EventSchema';
 
 import EventWrapper from './event/EventWrapper';
 
+const SECONDS_IN_DAY = 24 * 60 * 60;
+
 const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
@@ -38,11 +40,15 @@ export default class CalendarRow extends React.Component {
   }
 
   _eventGroupContaining(timestamp) {
-    return this.props.events.find(group => group.some(this._eventStartsAt(timestamp)));
+    return this.props.events.find(group =>
+      group.length &&
+      Math.abs(group[group.length - 1].timestamp - timestamp) < SECONDS_IN_DAY &&
+      group.some(event => event.timestamp == timestamp)
+    );
   }
 
   _eventsStartingAt(timestamp, group) {
-    return group.filter(this._eventStartsAt(timestamp));
+    return group.filter(event => event.timestamp == timestamp);
   }
 
   _displayTime() {
@@ -50,9 +56,11 @@ export default class CalendarRow extends React.Component {
   }
 
   _tableCellNodes() {
-    return this.props.days.map(day => {
-      let timestamp = DateHelper.timestamp(day, this.props.time);
-      const eventGroup = this._eventGroupContaining(timestamp) || [];
+    let currentTimeStamp = DateHelper.timestamp(this.props.days[0], this.props.time) - SECONDS_IN_DAY;
+    return this.props.days.map(() => {
+      currentTimeStamp += SECONDS_IN_DAY;
+      let timestamp = currentTimeStamp;
+      let eventGroup = this._eventGroupContaining(timestamp) || [];
       let events = this._eventsStartingAt(timestamp, eventGroup);
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 
