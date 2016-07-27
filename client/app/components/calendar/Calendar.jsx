@@ -29,21 +29,21 @@ export default class Calendar extends React.Component {
   static defaultProps = {
     events: []
   };
-    
-    constructor(){
-        super();
-        this.state = {filtered_rooms: new Immutable.Set()}
-    }
 
-    _addFilter(conference_room_id) {
-        let filters = this.state.filtered_rooms.add(conference_room_id);
-        this.setState({filtered_rooms: filters});
-    }
+  constructor(){
+      super();
+      this.state = {filtered_rooms: new Immutable.Set()}
+  };
 
-    _removeFilter(conference_room_id) {
-        let filters = this.state.filtered_rooms.delete(conference_room_id);
-        this.setState({filtered_rooms: filters});
-    }
+  _addFilter(conference_room_id) {
+      let filters = this.state.filtered_rooms.add(conference_room_id);
+      this.setState({filtered_rooms: filters});
+  };
+
+  _removeFilter(conference_room_id) {
+      let filters = this.state.filtered_rooms.delete(conference_room_id);
+      this.setState({filtered_rooms: filters});
+  };
 
   render() {
     let headerNodes = this.props.days.map(day => (

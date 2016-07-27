@@ -29,7 +29,7 @@ class GoogleEvent
               event.start.date_time = new_time_low event.start.date_time
               event.end.date_time = new_time_high event.end.date_time
               events[event.start.date_time.wday] ||= []
-              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+              events[event.start.date_time.wday] << event.to_h.merge(conference_room: room, timestamp: event.start.date_time.to_i)
             end
           end
         end
