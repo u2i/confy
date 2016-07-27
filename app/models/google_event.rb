@@ -14,11 +14,12 @@ class GoogleEvent
 
   class << self
     # You can specify custom fields: https://developers.google.com/google-apps/calendar/v3/reference/events
-    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator)'.freeze
+    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator, attendees(self, responseStatus))'.freeze
 
-    def listing_options(fields, starting, ending)
-      {fields: fields, single_events: true, time_min: starting.rfc3339(9),
-       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TZ')}
+    def listing_options(starting, ending)
+      {fields: LISTING_FIELDS, single_events: true, time_min: starting.rfc3339(9),
+       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TZ'),
+       always_include_email: true}.freeze
     end
 
     def list_events(credentials, user_email, starting, ending)
@@ -26,10 +27,7 @@ class GoogleEvent
       rooms = ConferenceRoom.all
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          config = listing_options(LISTING_FIELDS, starting, ending)
-          service.list_events(room.email, config) do |new_events, _|
-            merge_events(new_events, room, all_events)
-          end
+          add_events_from_room(room, service, all_events, listing_options(starting, ending))
         end
       end
       mark_user_events(user_email, all_events)
@@ -37,20 +35,7 @@ class GoogleEvent
     end
 
     def daily_events_container
-      Hash[(1..7).map { |i| [i, []] }]
-    end
-
-    def merge_events(new_events, room, all_events)
-      return unless new_events
-      new_events.items.each do |event|
-        normalize_event_datetime(event)
-        all_events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
-      end
-    end
-
-    def normalize_event_datetime(event)
-      event.start.date_time = EventGrouper.floor_time event.start.date_time
-      event.end.date_time = EventGrouper.ceil_time event.end.date_time
+      Hash[(1..5).map { |i| [i, []] }]
     end
 
     def mark_user_events(user_email, all_events)
@@ -133,14 +118,32 @@ class GoogleEvent
       Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
 
-    def load_emails
-      ConferenceRoom.pluck(:email)
+    GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
+    def add_events_from_room(room, service, events, config)
+      service.list_events(room.email, config) do |result, _|
+        if result
+          result.items.each do |event|
+            next if event_declined?(event)
+            normalize_event_datetime(event)
+            events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+          end
+        end
+      end
+    end
+
+    # self is a field from Google::Apis::CalendarV3::EventAttendee
+    def event_declined?(event)
+      event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
+    end
+
+    def normalize_event_datetime(event)
+      event.start.date_time = EventGrouper.floor_time(event.start.date_time)
+      event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
     end
   end
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
-                       :daily_events_container, :merge_events, :normalize_event_datetime,
-                       :items_list
+                       :daily_events_container, :items_list
 end
