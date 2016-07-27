@@ -4,9 +4,11 @@ RSpec.describe 'Authentications', type: :request do
   describe 'GET /oauth2callback' do
     context 'valid credentials' do
       let(:google_credentials) { 'sample string' }
+      let(:sample_email) { 'example@com' }
 
       before do
         allow(GoogleOauth).to receive(:get_user_credentials) { google_credentials }
+        allow(GoogleOauth).to receive(:user_email) { sample_email }
         get oauth2callback_path, params: {code: 'sample_code'}
       end
 
