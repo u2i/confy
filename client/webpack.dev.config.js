@@ -21,27 +21,27 @@ config.entry.vendor.push(
 );
 
 config.output = {
-  filename: '[name]-bundle.js',
-  path: path.join(__dirname, 'public'),
+  filename:   '[name]-bundle.js',
+  path:       path.join(__dirname, 'public'),
   publicPath: `http://localhost:${hotRailsPort}/`
 };
 
 config.module.loaders.push(
   {
-    test: /\.jsx?$/,
-    loader: 'babel',
+    test:    /\.jsx?$/,
+    loader:  'babel',
     exclude: /node_modules/,
-    query: {
+    query:   {
       plugins: [
         [
           'react-transform',
           {
             superClasses: ['React.Component', 'BaseComponent', 'Component'],
-            transforms: [
+            transforms:   [
               {
                 transform: 'react-transform-hmr',
-                imports: ['react'],
-                locals: ['module']
+                imports:   ['react'],
+                locals:    ['module']
               }
             ]
           }
@@ -50,15 +50,15 @@ config.module.loaders.push(
     }
   },
   {
-    test: /\.css$/,
+    test:    /\.css$/,
     loaders: ['style', 'css', 'postcss']
   },
   {
-    test: /\.scss$/,
+    test:    /\.scss$/,
     loaders: ['style', 'css', 'postcss', 'sass', 'sass-resources']
   },
   {
-    test: require.resolve('jquery-ujs'),
+    test:   require.resolve('jquery-ujs'),
     loader: 'imports?jQuery=jquery'
   }
 );

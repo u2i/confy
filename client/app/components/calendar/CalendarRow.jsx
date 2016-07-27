@@ -1,17 +1,13 @@
-import React  from 'react'
-import * as DateHelper from 'helpers/DateHelper'
-import EventSchema from 'schemas/EventSchema'
-import EventWrapper from './event/EventDimensions'
+import React from 'react';
+import { If } from 'react-if';
+import * as DateHelper from 'helpers/DateHelper';
+import EventSchema from 'schemas/EventSchema';
+
+import EventWrapper from './event/EventWrapper';
 
 const SECONDS_IN_DAY = 24 * 60 * 60;
 
-const { string, bool, number, array, arrayOf, oneOfType, instanceOf } = React.PropTypes;
-
-const TimeCell = (props) => (
-  <td className="text-right time-cell">
-    <small>{props.visible ? DateHelper.formatTime(props.time, props.timeFormat) : ''}</small>
-  </td>
-);
+const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
@@ -37,6 +33,10 @@ export default class CalendarRow extends React.Component {
         {this._tableCellNodes()}
       </tr>
     );
+  }
+
+  _eventStartsAt(timestamp) {
+    return (event) => DateHelper.timestamp(event.start.date_time) === timestamp;
   }
 
   _eventGroupContaining(timestamp) {
@@ -73,7 +73,24 @@ export default class CalendarRow extends React.Component {
                         offset={offset} />
         </td>
       );
-    })
+    });
   }
 }
 
+const TimeCell = (props) => (
+  <td className="text-right time-cell">
+    <If condition={props.visible}>
+      <small>{DateHelper.formatTime(props.time, props.timeFormat)}</small>
+    </If>
+  </td>
+);
+
+TimeCell.propTypes = {
+  time:       oneOfType([instanceOf(Date), string]).isRequired,
+  visible:    bool,
+  timeFormat: string
+};
+
+TimeCell.defaultProps = {
+  visible: true
+};

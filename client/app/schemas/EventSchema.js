@@ -1,8 +1,8 @@
-import { PropTypes } from 'react'
-import Schema from './Schema'
+import { PropTypes } from 'react';
+import schema from './Schema';
 
-import UserSchema from './UserSchema'
-import ConferenceRoomSchema from './ConferenceRoomSchema'
+import UserSchema from './UserSchema';
+import ConferenceRoomSchema from './ConferenceRoomSchema';
 
 const { string, number, shape, oneOfType, instanceOf } = PropTypes;
 
@@ -24,4 +24,4 @@ const EventShema = {
   timestamp:       number
 };
 
-export default Schema(EventShema);
+export default schema(EventShema);

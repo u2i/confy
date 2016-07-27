@@ -10,19 +10,19 @@ const hotRailsPort = process.env.HOT_RAILS_PORT || 3500;
 const compiler = webpack(webpackConfig);
 
 const devServer = new WebpackDevServer(compiler, {
-  contentBase: `http://lvh.me:${hotRailsPort}`,
-  publicPath: webpackConfig.output.publicPath,
-  hot: true,
-  inline: true,
+  contentBase:        `http://lvh.me:${hotRailsPort}`,
+  publicPath:         webpackConfig.output.publicPath,
+  hot:                true,
+  inline:             true,
   historyApiFallback: true,
-  quiet: false,
-  noInfo: false,
-  lazy: false,
-  stats: {
-    colors: true,
-    hash: false,
-    version: false,
-    chunks: false,
+  quiet:              false,
+  noInfo:             false,
+  lazy:               false,
+  stats:              {
+    colors:   true,
+    hash:     false,
+    version:  false,
+    chunks:   false,
     children: false
   }
 });

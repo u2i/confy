@@ -1,9 +1,12 @@
-import moment from 'moment'
+import moment from 'moment';
 
 export function addDateAndTime(date, time) {
   time = moment(time);
-  let [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
-  return moment(date).hours(hours).minutes(minutes).seconds(seconds);
+  const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
+  return moment(date)
+    .hours(hours)
+    .minutes(minutes)
+    .seconds(seconds);
 }
 
 export function timestamp(date, time) {

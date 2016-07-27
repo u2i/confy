@@ -9,7 +9,7 @@ const nodeEnv = devBuild ? 'development' : 'production';
 
 module.exports = {
   context: __dirname,
-  entry: {
+  entry:   {
     vendor: [
       'babel-polyfill',
       'es5-shim/es5-shim',
@@ -23,7 +23,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
-    alias: {
+    alias:      {
       helpers: path.join(__dirname, 'app', 'helpers'),
       schemas: path.join(__dirname, 'app', 'schemas')
     }
@@ -45,6 +45,6 @@ module.exports = {
       { test: require.resolve('turbolinks'), loader: 'imports?this=>window' }
     ]
   },
-  postcss: [autoprefixer],
+  postcss:       [autoprefixer],
   sassResources: ['./app/assets/stylesheets/_variables.scss']
 };

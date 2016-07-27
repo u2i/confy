@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react'
-import { Col, Table } from 'react-bootstrap'
-import { formatDate, formatTime } from 'helpers/DateHelper'
-import  RoomFilters from './RoomFilters'
-import CalendarRow from './CalendarRow'
+import { Table } from 'react-bootstrap'
+import { formatDate } from 'helpers/DateHelper'
 import * as Immutable from 'immutable'
 
-import './calendar.scss'
+import RoomFilters from './RoomFilters'
+import CalendarRow from './CalendarRow'
+
+
+import './calendar.scss';
 
 const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
@@ -14,6 +16,11 @@ const CalendarHeader = (props) => (
     {formatDate(props.day, props.dateFormat)}
   </th>
 );
+
+CalendarHeader.propTypes = {
+  day:        string.isRequired,
+  dateFormat: string
+};
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -29,7 +36,7 @@ export default class Calendar extends React.Component {
   static defaultProps = {
     events: []
   };
-    
+
     constructor(){
         super();
         this.state = {filteredRooms: new Immutable.Set()}
@@ -57,7 +64,7 @@ export default class Calendar extends React.Component {
 
   render() {
     let headerNodes = this.props.days.map(day => (
-      <CalendarHeader day={day} dateFormat={this.props.date_format} key={day} />
+      <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
     ));
 
     let rowNodes = this.props.times.map(time => (
@@ -69,23 +76,23 @@ export default class Calendar extends React.Component {
     ));
 
     return (
-        <div>
-            <RoomFilters add={this._addFilter.bind(this)}
-                            delete={this._removeFilter.bind(this)}
-                            conferenceRooms={this.props.conferenceRooms} />
-            <Table bordered striped responsive className="calendar">
-                <thead>
-                <tr>
-                    <th className="col-md-1" />
-                    {headerNodes}
-                </tr>
-                </thead>
-                <tbody>
-                {rowNodes}
-                </tbody>
-            </Table>
-        </div>
+      <div>
+        <RoomFilters add={this._addFilter.bind(this)}
+                        delete={this._removeFilter.bind(this)}
+                        conferenceRooms={this.props.conferenceRooms} />
+        <Table bordered striped responsive className="calendar">
+            <thead>
+            <tr>
+                <th className="col-md-1" />
+                {headerNodes}
+            </tr>
+            </thead>
+            <tbody>
+            {rowNodes}
+            </tbody>
+        </Table>
+      </div>
     );
   }
-};
+}
 

@@ -8,7 +8,7 @@ const config = require('./webpack.default.config');
 
 config.output = {
   filename: '[name]-bundle.js',
-  path: '../app/assets/webpack'
+  path:     '../app/assets/webpack'
 };
 
 config.entry.vendor.unshift(
@@ -20,12 +20,12 @@ config.entry.vendor.unshift(
 
 config.module.loaders.push(
   {
-    test: /\.jsx?$/,
-    loader: 'babel-loader',
+    test:    /\.jsx?$/,
+    loader:  'babel-loader',
     exclude: /node_modules/
   },
   {
-    test: /\.css$/,
+    test:   /\.css$/,
     loader: ExtractTextPlugin.extract(
       'style',
       'css?minimize&modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]' +
@@ -33,7 +33,7 @@ config.module.loaders.push(
     )
   },
   {
-    test: /\.scss$/,
+    test:   /\.scss$/,
     loader: ExtractTextPlugin.extract(
       'style',
       'css?minimize&modules&importLoaders=3&localIdentName=[name]__[local]__[hash:base64:5]' +
@@ -43,11 +43,11 @@ config.module.loaders.push(
     )
   },
   {
-    test: require.resolve('react'),
+    test:   require.resolve('react'),
     loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham'
   },
   {
-    test: require.resolve('jquery-ujs'),
+    test:   require.resolve('jquery-ujs'),
     loader: 'imports?jQuery=jquery'
   }
 );
@@ -57,6 +57,6 @@ config.plugins.push(
   new webpack.optimize.DedupePlugin()
 );
 
-console.log('Webpack production build for Rails');
+console.log('Webpack production build for Rails'); // eslint-disable-line no-console
 
 module.exports = config;
