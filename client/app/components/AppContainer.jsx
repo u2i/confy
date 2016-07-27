@@ -1,4 +1,6 @@
 import React from 'react'
+import { Grid, Col } from 'react-bootstrap'
+import { queryParam } from 'helpers/UrlHelper'
 import EventSource from 'sources/EventSource';
 
 import Calendar from './calendar/Calendar'
@@ -29,16 +31,18 @@ export default class AppContainer extends React.Component {
   render() {
     const { initialEvents, ...calendarProps } = this.props;
     return (
-      <div className="container">
-        <div className="col-xs-12 col-md-10">
-          <SideNav onRefresh={this.handleCalendarRefresh}/>
+      <Grid>
+        <Col xs={12} md={10}>
+          <SideNav onRefresh={this.handleCalendarRefresh} />
           <Calendar {...calendarProps} events={this.state.events} />
-        </div>
-      </div>
+        </Col>
+      </Grid>
     )
   }
 
   _fetchEvents() {
-    this.setState({ events: EventSource.fetch() });
+    EventSource.fetch({ date: queryParam('date') })
+      .then(({ data }) =>
+        this.setState({ events: data }));
   }
 }

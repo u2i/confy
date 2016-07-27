@@ -3,8 +3,8 @@ import axios from 'axios';
 const EVENT_PATH = '/events';
 
 const EventSource = {
-  fetch() {
-    return axios.get(EVENT_PATH);
+  fetch(params) {
+    return axios.get(EVENT_PATH, { params });
   }
 };
 
