@@ -1,6 +1,6 @@
 class GoogleEvent
-  class InvalidParamsError < StandardError
-  end
+  InvalidParamsError = Class.new(StandardError)
+  EventInTimeSpanError = Class.new(StandardError)
 
   EVENT_SCHEMA = Dry::Validation.Schema do
     required(:start).schema do
@@ -42,15 +42,15 @@ class GoogleEvent
 
     def merge_events(new_events, room, all_events)
       return unless new_events
-      new_events.items&.each do |event|
+      new_events.items.each do |event|
         normalize_event_datetime(event)
         all_events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
       end
     end
 
     def normalize_event_datetime(event)
-      event.start.date_time = EventGrouper.new_time_low event.start.date_time
-      event.end.date_time = EventGrouper.new_time_high event.end.date_time
+      event.start.date_time = EventGrouper.floor_time event.start.date_time
+      event.end.date_time = EventGrouper.ceil_time event.end.date_time
     end
 
     def mark_user_events(user_email, all_events)
@@ -79,8 +79,23 @@ class GoogleEvent
     end
 
     def insert_event_and_return_result(credentials, event_data)
-      new_event = Google::Apis::CalendarV3::Event.new(event_data)
-      calendar_service(credentials).insert_event('primary', new_event)
+      events = events_in_span(credentials, event_data[:attendees].first,
+                              event_data[:start][:date_time], event_data[:end][:date_time])
+      if events && events.items.any?
+        count = events.items.size
+        raise(
+          EventInTimeSpanError,
+          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
+        )
+      end
+      calendar_service(credentials).insert_event(
+        'primary',
+        Google::Apis::CalendarV3::Event.new(event_data)
+      )
+    end
+
+    def items_list(items)
+      items.map(&:summary).join(', '.freeze)
     end
 
     def build_event_data(raw_event_data, conference_room_id)
@@ -102,6 +117,14 @@ class GoogleEvent
       params[:location] = room.title
     end
 
+    def events_in_span(credentials, conference_room, starting, ending)
+      calendar_service(credentials).list_events(
+        conference_room[:email],
+        time_min: starting,
+        time_max: ending
+      )
+    end
+
     def calendar_service(credentials)
       Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = client(credentials) }
     end
@@ -113,10 +136,30 @@ class GoogleEvent
     def load_emails
       ConferenceRoom.pluck(:email)
     end
+
+    GRANULARITY = 30.minutes.freeze
+    def floor_time(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
+    end
+
+    def ceil_time(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY + GRANULARITY
+      elsif time > time.beginning_of_hour
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
+    end
   end
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
-                       :daily_events_container, :merge_events, :normalize_event_datetime
+                       :daily_events_container, :merge_events, :normalize_event_datetime,
+                       :items_list, :ceil_time, :floor_time
 end

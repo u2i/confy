@@ -1,4 +1,25 @@
 class EventGrouper
+  GRANULARITY = 30.minutes.freeze
+  class << self
+    def floor_time(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
+    end
+
+    def ceil_time(time)
+      if time > time.beginning_of_hour + GRANULARITY
+        time.beginning_of_hour + GRANULARITY + GRANULARITY
+      elsif time > time.beginning_of_hour
+        time.beginning_of_hour + GRANULARITY
+      else
+        time.beginning_of_hour
+      end
+    end
+  end
+
   attr_reader :events
 
   def initialize(events)
@@ -7,26 +28,6 @@ class EventGrouper
 
   def call
     build_blocks.map { |block| block.sort_by! { |n| n[:start][:date_time] } }
-  end
-
-  GRANULARITY = 30.minutes.freeze
-
-  def self.new_time_low(time)
-    if time > time.beginning_of_hour + GRANULARITY
-      time.beginning_of_hour + GRANULARITY
-    else
-      time.beginning_of_hour
-    end
-  end
-
-  def self.new_time_high(time)
-    if time > time.beginning_of_hour + GRANULARITY
-      time.beginning_of_hour + 2 * GRANULARITY
-    elsif time > time.beginning_of_hour
-      time.beginning_of_hour + GRANULARITY
-    else
-      time.beginning_of_hour
-    end
   end
 
   private
