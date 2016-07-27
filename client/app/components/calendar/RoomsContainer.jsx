@@ -3,7 +3,8 @@ import React  from 'react'
 import './filters.scss'
 
 export default class RoomsContainer extends React.Component {
-    _handle_checkbox(event){
+    
+    _handleCheckbox(event){
         if(!event.target.checked){
             this.props.add(parseInt(event.target.value));
         }
@@ -14,12 +15,12 @@ export default class RoomsContainer extends React.Component {
 
     render(){
         let filters = this.props.conferenceRooms.map(
-            (conference_room) => {
+            (conferenceRoom) => {
                 return (
-                    <div className="filter-box" style={{backgroundColor: conference_room.color}}>
-                        <label htmlFor={conference_room.id}>{conference_room.title}</label>
-                        <input key={conference_room.id} type="checkbox" value={conference_room.id}
-                               onChange={this._handle_checkbox.bind(this)} defaultChecked={true}/>
+                    <div className="filter-box" style={{backgroundColor: conferenceRoom.color}}>
+                        <label htmlFor={conferenceRoom.id}>{conferenceRoom.title}</label>
+                        <input key={conferenceRoom.id} type="checkbox" value={conferenceRoom.id}
+                               onChange={this._handleCheckbox.bind(this)} defaultChecked={true}/>
                     </div>
 
                 )

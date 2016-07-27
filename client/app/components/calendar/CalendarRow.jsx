@@ -2,7 +2,6 @@ import React  from 'react'
 import * as DateHelper from 'helpers/DateHelper'
 import EventSchema from 'schemas/EventSchema'
 import EventWrapper from './event/EventDimensions'
-import * as Immutable from 'immutable'
 
 const SECONDS_IN_DAY = 24 * 60 * 60;
 
@@ -17,7 +16,6 @@ const TimeCell = (props) => (
 export default class CalendarRow extends React.Component {
   static propTypes = {
     events:          arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
-    filtered_rooms:  instanceOf(Immutable.Set),
     time:            oneOfType([instanceOf(Date), string]).isRequired,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLength: number,
@@ -41,20 +39,14 @@ export default class CalendarRow extends React.Component {
     );
   }
 
-  _eventIsFiltered(event){
-    return this.props.filtered_rooms.has(event.conference_room.id);
-  }
-
   _eventGroupContaining(timestamp) {
-    var group = this.props.events.find(group =>
-      group.some(event => event.timestamp == timestamp && !this._eventIsFiltered(event))
+    return this.props.events.find(group =>
+      group.some(event => event.timestamp == timestamp)
     );
-    if(group) return group.filter(event => !this._eventIsFiltered(event))
-    return group
   }
 
   _eventsStartingAt(timestamp, group) {
-    return group.filter(event => event.timestamp == timestamp && !this._eventIsFiltered(event));
+    return group.filter(event => event.timestamp == timestamp);
   }
 
   _displayTime() {

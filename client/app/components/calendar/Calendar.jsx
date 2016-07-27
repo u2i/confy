@@ -18,10 +18,10 @@ const CalendarHeader = (props) => (
 export default class Calendar extends React.Component {
   static propTypes = {
     events:          array,
-    conference_rooms: array,
+    conferenceRooms: array,
     days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     times:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    unitEventLenght: number,
+    unitEventLength: number,
     timeFormat:      string,
     dateFormat:      string
   };
@@ -29,21 +29,31 @@ export default class Calendar extends React.Component {
   static defaultProps = {
     events: []
   };
+    
+    constructor(){
+        super();
+        this.state = {filteredRooms: new Immutable.Set()}
+    }
 
-  constructor(){
-      super();
-      this.state = {filtered_rooms: new Immutable.Set()}
-  };
+    _addFilter(conferenceRoomId) {
+        let filters = this.state.filteredRooms.add(conferenceRoomId);
+        this.setState({filteredRooms: filters});
+    }
 
-  _addFilter(conference_room_id) {
-      let filters = this.state.filtered_rooms.add(conference_room_id);
-      this.setState({filtered_rooms: filters});
-  };
+    _removeFilter(conferenceRoomId) {
+        let filters = this.state.filteredRooms.delete(conferenceRoomId);
+        this.setState({filteredRooms: filters});
+    }
 
-  _removeFilter(conference_room_id) {
-      let filters = this.state.filtered_rooms.delete(conference_room_id);
-      this.setState({filtered_rooms: filters});
-  };
+    _filterEvents(){
+        return this.props.events.map((group) =>{
+            return group.filter((event) => !this._eventIsFiltered(event));
+        });
+    }
+
+    _eventIsFiltered(event){
+        return this.state.filteredRooms.has(event.conference_room.id);
+    }
 
   render() {
     let headerNodes = this.props.days.map(day => (
@@ -53,13 +63,16 @@ export default class Calendar extends React.Component {
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
                    key={time}
-                   filtered_rooms={this.state.filtered_rooms}
-                   {...this.props} />
+                   events={this._filterEvents()}
+                   days={this.props.days}
+                   unitEventLength={this.props.unitEventLength} />
     ));
 
     return (
         <div>
-            <RoomsContainer add={this._addFilter.bind(this)} delete={this._removeFilter.bind(this)} conferenceRooms={this.props.conference_rooms}/>
+            <RoomsContainer add={this._addFilter.bind(this)}
+                            delete={this._removeFilter.bind(this)}
+                            conferenceRooms={this.props.conferenceRooms} />
             <Table bordered striped responsive className="calendar">
                 <thead>
                 <tr>
