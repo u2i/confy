@@ -38,11 +38,6 @@ class GoogleEvent
       Hash[(1..5).map { |i| [i, []] }]
     end
 
-    def normalize_event_datetime(event)
-      event.start.date_time = EventGrouper.floor_time event.start.date_time
-      event.end.date_time = EventGrouper.ceil_time event.end.date_time
-    end
-
     def mark_user_events(user_email, all_events)
       all_events.values.each do |events|
         events.each do |event|
@@ -145,11 +140,10 @@ class GoogleEvent
       event.start.date_time = EventGrouper.floor_time(event.start.date_time)
       event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
     end
-
   end
 
   private_class_method :calendar_service,
                        :client, :raise_exception_if_invalid,
                        :insert_event_and_return_result, :build_event_data,
-                       :daily_events_container,:items_list
+                       :daily_events_container, :items_list
 end
