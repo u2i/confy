@@ -58,7 +58,8 @@
     "mocha-webpack": "*",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
-    "ignore-styles": "*"
+    "ignore-styles": "*",
+    "mocha-jsdom": "*"
 
   },
   "devDependencies": {
