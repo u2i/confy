@@ -36,19 +36,19 @@ export default class CalendarRow extends React.Component {
   }
 
   _eventStartsAt(timestamp) {
-    return (event) => DateHelper.timestamp(event.start.date_time) === timestamp;
+    return (event) => event.start_timestamp === timestamp;
   }
 
   _eventGroupContaining(timestamp) {
     return this.props.events.find(group =>
       group.length &&
       Math.abs(group[group.length - 1].start_timestamp - timestamp) < SECONDS_IN_DAY &&
-      group.some(event => event.start_timestamp == timestamp)
+      group.some(this._eventStartsAt(timestamp))
     );
   }
 
   _eventsStartingAt(timestamp, group) {
-    return group.filter(event => event.start_timestamp == timestamp);
+    return group.filter(this._eventStartsAt(timestamp));
   }
 
   _displayTime() {

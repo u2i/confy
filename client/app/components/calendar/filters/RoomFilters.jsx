@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
-import { Checkbox } from 'react-bootstrap';
 import Filter from './Filter';
-import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema'
+import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 import './filters.scss';
 
@@ -19,11 +18,11 @@ export default class RoomFilters extends React.Component {
 
   render() {
     let filters = this.props.conferenceRooms.map(conferenceRoom => (
-        <Filter conferenceRoom={conferenceRoom}
-                enabled={this._filterEnabled(conferenceRoom)}
-                onEnabled={this.props.onEnabled}
-                onDisabled={this.props.onDisabled}
-                key={conferenceRoom.id} />
+      <Filter conferenceRoom={conferenceRoom}
+              enabled={this._filterEnabled(conferenceRoom)}
+              onEnabled={this.props.onEnabled}
+              onDisabled={this.props.onDisabled}
+              key={conferenceRoom.id} />
     ));
     return (
       <div className="filter-container">

@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
-import { formatDate } from 'helpers/DateHelper';
 import * as Immutable from 'immutable';
 
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
-import CalendarHeader from './CalendarHeader'
+import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
@@ -26,29 +25,12 @@ export default class Calendar extends React.Component {
     events: []
   };
 
-  constructor() {
-    super();
+  constructor(...args) {
+    super(...args);
     this.state = { filteredRooms: new Immutable.Set() };
-  }
 
-  _addFilter(conferenceRoomId) {
-    const filters = this.state.filteredRooms.add(conferenceRoomId);
-    this.setState({ filteredRooms: filters });
-  }
-
-  _removeFilter(conferenceRoomId) {
-    const filters = this.state.filteredRooms.delete(conferenceRoomId);
-    this.setState({ filteredRooms: filters });
-  }
-
-  _filterEvents() {
-    return this.props.events.map((group) => {
-      return group.filter((event) => !this._eventIsFiltered(event));
-    });
-  }
-
-  _eventIsFiltered(event) {
-    return this.state.filteredRooms.has(event.conference_room.id);
+    this._addFilter = this._addFilter.bind(this);
+    this._removeFilter = this._removeFilter.bind(this);
   }
 
   render() {
@@ -66,8 +48,8 @@ export default class Calendar extends React.Component {
 
     return (
       <div>
-        <RoomFilters onEnabled={this._addFilter.bind(this)}
-                     onDisabled={this._removeFilter.bind(this)}
+        <RoomFilters onEnabled={this._addFilter}
+                     onDisabled={this._removeFilter}
                      conferenceRooms={this.props.conferenceRooms}
                      filters={this.state.filteredRooms.toArray()} />
         <Table bordered striped responsive className="calendar">
@@ -83,6 +65,24 @@ export default class Calendar extends React.Component {
         </Table>
       </div>
     );
+  }
+
+  _addFilter(conferenceRoomId) {
+    const filters = this.state.filteredRooms.add(conferenceRoomId);
+    this.setState({ filteredRooms: filters });
+  }
+
+  _removeFilter(conferenceRoomId) {
+    const filters = this.state.filteredRooms.delete(conferenceRoomId);
+    this.setState({ filteredRooms: filters });
+  }
+
+  _filterEvents() {
+    return this.props.events.map((group) => group.filter((event) => !this._eventIsFiltered(event)));
+  }
+
+  _eventIsFiltered(event) {
+    return this.state.filteredRooms.has(event.conference_room.id);
   }
 }
 

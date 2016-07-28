@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
 
-import { formatTime, timestamp } from 'helpers/DateHelper';
+import { formatTime } from 'helpers/DateHelper';
 
 import './event.scss';
 

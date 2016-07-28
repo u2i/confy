@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
-import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema'
+import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 import './filters.scss';
 

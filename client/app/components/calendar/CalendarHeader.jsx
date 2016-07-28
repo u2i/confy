@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { formatDate } from 'helpers/DateHelper';
 
 const CalendarHeader = (props) => (
