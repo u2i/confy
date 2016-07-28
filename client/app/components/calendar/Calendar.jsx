@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 import { formatDate } from 'helpers/DateHelper';
 import * as Immutable from 'immutable';
 
-import RoomFilters from './RoomFilters';
+import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 
 

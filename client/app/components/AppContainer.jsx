@@ -1,6 +1,6 @@
 import React from 'react';
 import Calendar from './calendar/Calendar';
-import SideNav from './SideNav';
+import SideNav from './layout/SideNav';
 
 export default class AppContainer extends React.Component {
   render() {
