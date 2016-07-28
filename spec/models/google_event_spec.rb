@@ -54,7 +54,7 @@ describe GoogleEvent do
 
     context 'rejected event' do
       let(:start_time1) { DateTime.now.beginning_of_week }
-      let(:start_time2) { DateTime.now.beginning_of_week + 1.days }
+      let(:start_time2) { DateTime.now.beginning_of_week + 1.day }
       let(:end_time1) { start_time1 + 2.hours }
       let(:end_time2) { start_time2 + 2.hours }
 
