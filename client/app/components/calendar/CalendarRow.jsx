@@ -60,7 +60,7 @@ export default class CalendarRow extends React.Component {
     return this.props.days.map(() => {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
-      let eventGroup = this._eventGroupContaining(timestamp) || [];
+      const eventGroup = this._eventGroupContaining(timestamp) || [];
       let events = this._eventsStartingAt(timestamp, eventGroup);
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 

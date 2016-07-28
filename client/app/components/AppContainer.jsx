@@ -1,6 +1,6 @@
-import React from 'react'
-import Calendar from './calendar/Calendar'
-import SideNav from './SideNav'
+import React from 'react';
+import Calendar from './calendar/Calendar';
+import SideNav from './SideNav';
 
 export default class AppContainer extends React.Component {
   render() {
@@ -11,6 +11,6 @@ export default class AppContainer extends React.Component {
           <Calendar {...this.props} />
         </div>
       </div>
-    )
+    );
   }
 }
