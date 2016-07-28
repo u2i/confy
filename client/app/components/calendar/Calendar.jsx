@@ -77,9 +77,10 @@ export default class Calendar extends React.Component {
 
     return (
       <div>
-        <RoomFilters add={this._addFilter.bind(this)}
-                     delete={this._removeFilter.bind(this)}
-                     conferenceRooms={this.props.conferenceRooms} />
+        <RoomFilters onEnabled={this._addFilter.bind(this)}
+                     onDisabled={this._removeFilter.bind(this)}
+                     conferenceRooms={this.props.conferenceRooms}
+                     filters={this.state.filteredRooms.toArray()} />
         <Table bordered striped responsive className="calendar">
           <thead>
             <tr>
