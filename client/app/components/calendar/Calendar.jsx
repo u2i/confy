@@ -5,22 +5,11 @@ import * as Immutable from 'immutable';
 
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
-
+import CalendarHeader from './CalendarHeader'
 
 import './calendar.scss';
 
 const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
-
-const CalendarHeader = (props) => (
-  <th className="col-md-2 text-center">
-    {formatDate(props.day, props.dateFormat)}
-  </th>
-);
-
-CalendarHeader.propTypes = {
-  day:        string.isRequired,
-  dateFormat: string
-};
 
 export default class Calendar extends React.Component {
   static propTypes = {
