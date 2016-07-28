@@ -27,7 +27,9 @@ class CalendarController < ApplicationController
   private
 
   def create_calendar_props
-    @props = {events: @events, days: @days, times: @times, unitEventLength: CalendarHelper::UNIT_EVENT_LENGTH}
+    @props = {events: @events, days: @days, times: @times,
+              unitEventLength: CalendarHelper::UNIT_EVENT_LENGTH,
+              conferenceRooms: ConferenceRoom.all.map { |room| {id: room.id, title: room.title}} }
   end
 
   def load_dates_and_rooms

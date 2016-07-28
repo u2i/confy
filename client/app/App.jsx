@@ -1,6 +1,6 @@
 import ReactOnRails from 'react-on-rails';
-import Calendar from './components/calendar/Calendar';
+import AppContainer from './components/AppContainer'
 
 import './app.scss';
 
-ReactOnRails.register({ Calendar });
+ReactOnRails.register({AppContainer});
