@@ -65,13 +65,12 @@ export default class CalendarRow extends React.Component {
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 
       return (
-        <td key={timestamp}>
-          <EventWrapper timestamp={timestamp}
-                        unitEventLength={this.props.unitEventLength}
-                        events={events}
-                        eventsInGroup={eventGroup.length}
-                        offset={offset} />
-        </td>
+        <EventWrapper timestamp={timestamp}
+                      unitEventLength={this.props.unitEventLength}
+                      events={events}
+                      eventsInGroup={eventGroup.length}
+                      offset={offset}
+                      key={timestamp} />
       );
     });
   }
