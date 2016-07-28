@@ -9,12 +9,8 @@ export default class Event extends React.Component {
   static propTypes = {
     event:                    EventSchema.isRequired,
     containerHeight:          PropTypes.number.isRequired,
-    unitEventLengthInSeconds: PropTypes.number,
+    unitEventLengthInSeconds: PropTypes.number.isRequired,
     timeFormat:               PropTypes.string
-  };
-
-  static defaultProps = {
-    unitEventLengthInSeconds: 60
   };
 
   render() {
