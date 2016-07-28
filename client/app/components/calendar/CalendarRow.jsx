@@ -1,8 +1,8 @@
 import React from 'react';
-import { If } from 'react-if';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 
+import TimeCell from './TimeCell';
 import EventWrapper from './event/EventWrapper';
 
 const SECONDS_IN_DAY = 24 * 60 * 60;
@@ -76,21 +76,3 @@ export default class CalendarRow extends React.Component {
     });
   }
 }
-
-const TimeCell = (props) => (
-  <td className="text-right time-cell">
-    <If condition={props.visible}>
-      <small>{DateHelper.formatTime(props.time, props.timeFormat)}</small>
-    </If>
-  </td>
-);
-
-TimeCell.propTypes = {
-  time:       oneOfType([instanceOf(Date), string]).isRequired,
-  visible:    bool,
-  timeFormat: string
-};
-
-TimeCell.defaultProps = {
-  visible: true
-};
