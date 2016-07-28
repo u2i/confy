@@ -16,7 +16,6 @@ describe('<RoomFilters />', () => {
         let conferenceRooms = [{id: 12, title: "ala", color:"#000000"}];
         const wrapper = shallow(<RoomFilters onEnabled={a => a+2} onDisabled={b => b-2} conferenceRooms={conferenceRooms}/>);
         expect(wrapper.find(Filter)).to.have.length(1);
-        expect(wrapper.is('div')).to.eq(true);
     });
 
 });
