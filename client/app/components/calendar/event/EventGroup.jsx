@@ -9,22 +9,22 @@ const { number, arrayOf } = React.PropTypes;
 
 export default class EventGroup extends React.Component {
   static propTypes = {
-    events:          arrayOf(EventSchema.only('id')).isRequired,
-    eventsInGroup:   number.isRequired,
-    offset:          number.isRequired,
-    timestamp:       number.isRequired,
-    containerWidth:  number.isRequired,
-    containerHeight: number.isRequired,
-    unitEventLength: number
+    events:                   arrayOf(EventSchema.only('id')).isRequired,
+    eventsInGroup:            number.isRequired,
+    offset:                   number.isRequired,
+    timestamp:                number.isRequired,
+    containerWidth:           number.isRequired,
+    containerHeight:          number.isRequired,
+    unitEventLengthInSeconds: number.isRequired
   };
 
   render() {
-    let { containerHeight, unitEventLength } = this.props;
+    let { containerHeight, unitEventLengthInSeconds } = this.props;
 
     let eventNodes = this.props.events.map(event =>
       <Event event={event}
              containerHeight={containerHeight}
-             unitEventLength={unitEventLength}
+             unitEventLengthInSeconds={unitEventLengthInSeconds}
              key={event.id} />
     );
 
