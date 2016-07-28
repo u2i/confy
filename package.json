@@ -13,8 +13,6 @@
     "build:client": "(cd client && npm run build:client --silent)",
     "server:dev": "(cd client && npm run server:dev)"
   },
-  "devDependencies": {
-    "eslint-config-shakacode": "^5.0.0"
-  },
+  "devDependencies": {},
   "dependencies": {}
 }

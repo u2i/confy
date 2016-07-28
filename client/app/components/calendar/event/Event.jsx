@@ -25,7 +25,7 @@ export default class Event extends React.Component {
     return (
       <div className="event" style={this._eventStyle()}>
         <div className="event-time">{timeStr}</div>
-        <div className="event-name">{event.name}</div>
+        <div className="event-name">{event.summary}</div>
         <div className="event-user">
           <small>by&nbsp;</small>
           {creator.display_name || creator.email}
@@ -43,9 +43,7 @@ export default class Event extends React.Component {
   }
 
   _eventLengthInSeconds() {
-    const startTimestamp = timestamp(this.props.event.start.date_time),
-      endTimestamp = timestamp(this.props.event.end.date_time);
-    return (endTimestamp - startTimestamp) / this.props.unitEventLength;
+    return (this.props.event.end_timestamp - this.props.event.start_timestamp) / this.props.unitEventLength;
   }
 
   _eventStyle() {

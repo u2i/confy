@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
 
-  before_action :check_authentication
   before_action :refresh_token
+  before_action :check_authentication
 
   rescue_from Google::Apis::ServerError do
     render json: {error: 'Google Server error'}, status: :service_unavailable
@@ -23,6 +23,10 @@ class EventsController < ApplicationController
   rescue_from Google::Apis::AuthorizationError do
     session.delete(:credentials)
     render json: {error: 'Authorization error'}, status: :unauthorized
+  end
+
+  rescue_from GoogleEvent::EventInTimeSpanError do |message|
+    render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 
   def index

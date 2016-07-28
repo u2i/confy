@@ -51,13 +51,15 @@
     "style-loader": "^0.13.1",
     "turbolinks": "^5.0.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "immutable": "3.8.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "babel-plugin-react-transform": "^2.0.2",
     "eslint": "^3.1.1",
     "eslint-import-resolver-webpack": "^0.4.0",
+    "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-react": "^5.2.2",
     "react-transform-hmr": "^1.0.4",
     "webpack-dev-server": "^1.14.1"

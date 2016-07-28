@@ -20,7 +20,9 @@ const EventShema = {
   end:             time.isRequired,
   conference_room: ConferenceRoomSchema.isRequired,
   name:            string,
-  summary:         string
+  summary:         string,
+  start_timestamp: number,
+  end_timestamp:   number
 };
 
 export default schema(EventShema);

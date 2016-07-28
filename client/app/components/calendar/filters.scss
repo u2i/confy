@@ -1,0 +1,17 @@
+.filter-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.filter-box {
+  font-size: 10px;
+  display: inline;
+  margin: 3px 3px;
+  padding: 3px 5px;
+  border-radius: 4px;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  line-height: normal;
+}
