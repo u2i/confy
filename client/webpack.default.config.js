@@ -4,8 +4,18 @@ const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 
-const devBuild = process.env.NODE_ENV !== 'production';
-const nodeEnv = devBuild ? 'development' : 'production';
+function getEnv(){
+  switch (process.env.NODE_ENV){
+    case 'test':
+      return 'test';
+    case 'production':
+      return 'production';
+    default:
+      return 'development'
+  }
+}
+
+const nodeEnv = getEnv();
 
 module.exports = {
   context: __dirname,
