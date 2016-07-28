@@ -119,6 +119,22 @@ describe GoogleEvent do
         expect(response[2].first[:end][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 2.hours + 30.minutes
       end
     end
+
+    context 'event for whole day' do
+      let(:start_time1) { DateTime.now.beginning_of_week }
+      let(:end_time1) { start_time1 + 1.day }
+      let(:start_time2) { DateTime.now.beginning_of_week + 1.days }
+      let(:end_time2) { start_time2 + 2.hours }
+      before do
+        google_event1.start = Google::Apis::CalendarV3::EventDateTime.new(date: start_time1.to_date.to_s)
+        google_event1.end = Google::Apis::CalendarV3::EventDateTime.new(date: end_time1.to_date.to_s)
+      end
+      it 'normalizes event' do
+        response = described_class.list_events('', '', start_time1, end_time1)
+        expect(response[1].first[:start][:date_time]).to eq start_time1
+        expect(response[1].first[:end][:date_time]).to eq end_time1
+      end
+    end
   end
 
   describe '.create' do
