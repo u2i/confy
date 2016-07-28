@@ -118,19 +118,23 @@ class GoogleEvent
       Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
 
-    GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     def add_events_from_room(room, service, events, config)
       service.list_events(room.email, config) do |result, _|
         if result
           result.items.each do |event|
             next if event_declined?(event)
             normalize_event_datetime(event)
-            events[event.start.date_time.wday] << event.to_h.merge(conference_room: room)
+            events[event.start.date_time.wday].push(
+              event.to_h.merge(conference_room: room,
+                               start_timestamp: event.start.date_time.to_i,
+                               end_timestamp:   event.end.date_time.to_i)
+            )
           end
         end
       end
     end
 
+    GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     # self is a field from Google::Apis::CalendarV3::EventAttendee
     def event_declined?(event)
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE

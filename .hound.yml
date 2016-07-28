@@ -3,3 +3,10 @@ ruby:
 
 scss:
   enabled: false
+
+jshint:
+  enabled: false
+eslint:
+  enabled: true
+  config_file: client/.eslintrc.yml
+  ignore_file: client/.eslintignore

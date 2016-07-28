@@ -11,12 +11,19 @@ class CalendarController < ApplicationController
   # Index for showing events from Google calendar
   def index
     load_events
+    create_calendar_props
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path
   end
 
   private
+
+  def create_calendar_props
+    @props = {conferenceRooms: @conference_rooms, events: @events,
+              days: @days, times: @times,
+              unitEventLengthInSeconds: EventGrouper::GRANULARITY}
+  end
 
   def load_dates_and_rooms
     @week_start, @week_end = build_week_boundaries
