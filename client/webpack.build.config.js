@@ -1,6 +1,3 @@
-// Run like this:
-// cd client && npm run build:client
-
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
