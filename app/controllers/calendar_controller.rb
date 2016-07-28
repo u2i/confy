@@ -22,7 +22,7 @@ class CalendarController < ApplicationController
   def create_calendar_props
     @props = {conferenceRooms: @conference_rooms, events: @events,
               days: @days, times: @times,
-              unitEventLength: EventGrouper::GRANULARITY}
+              unitEventLengthInSeconds: EventGrouper::GRANULARITY}
   end
 
   def load_dates_and_rooms
