@@ -10,6 +10,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_2862f5971073_key -iv $encrypted_2862f5971073_iv
   -in client_secrets.json.enc -out client_secrets.json -d
 install:
+- bundle install
 - npm install
 script:
 - rake test:client
