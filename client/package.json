@@ -59,8 +59,8 @@
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
     "ignore-styles": "*",
-    "mocha-jsdom": "*"
-
+    "mocha-jsdom": "*",
+    "sinon": "*"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
