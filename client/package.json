@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build:client": "NODE_ENV=production webpack --config webpack.build.config.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel-core/register --require ignore-styles test/*.jsx",
+    "test": "NODE_ENV=test mocha test/*.jsx",
     "server:dev": "babel-node webpack-dev-server.js",
     "lint": "eslint --ext .js,.jsx ."
   },
