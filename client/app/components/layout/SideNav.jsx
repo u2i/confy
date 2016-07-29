@@ -8,13 +8,6 @@ export default class SideNav extends React.Component {
     date: React.PropTypes.string
   };
 
-  constructor(...args) {
-    super(...args);
-
-    _.bindAll(this,
-      '_startingDate', '_nextWeek', '_previousWeek', '_dateParam');
-  }
-
   render() {
     return (
       <aside className="sidebar">
