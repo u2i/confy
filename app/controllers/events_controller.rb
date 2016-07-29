@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
+  include GoogleEventListing
+  include TimeInterval
 
   before_action :refresh_token
   before_action :check_authentication
@@ -30,7 +32,8 @@ class EventsController < ApplicationController
   end
 
   def index
-    render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
+    week_start, week_end = build_week_boundaries(params[:date])
+    render json: list_events(week_start, week_end)
   end
 
   def create
