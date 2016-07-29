@@ -1,19 +1,11 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
-import _ from 'lodash';
 
 export default class SideNav extends React.Component {
   static propTypes = {
     date: React.PropTypes.string
   };
-
-  constructor(...args) {
-    super(...args);
-
-    _.bindAll(this,
-      '_startingDate', '_nextWeek', '_previousWeek', '_dateParam');
-  }
 
   render() {
     return (
