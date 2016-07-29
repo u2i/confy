@@ -3,7 +3,7 @@ import { Grid, Col } from 'react-bootstrap';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 
-export default (props) => (
+const AppContainer = (props) => (
   <Grid>
     <Col xs={12} md={2}>
       <SideNav date={props.date} />
@@ -13,3 +13,9 @@ export default (props) => (
     </Col>
   </Grid>
 );
+
+AppContainer.propTypes = {
+  date: React.PropTypes.string
+};
+
+export default AppContainer;

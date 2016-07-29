@@ -1,13 +1,11 @@
-import React, { PropTypes } from 'react';
-import {Button} from 'react-bootstrap';
+import React  from 'react';
+import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import _ from 'lodash';
 
-const { string } = PropTypes;
-
 export default class SideNav extends React.Component {
   static propTypes = {
-    date: string
+    date: React.PropTypes.string
   };
 
   constructor(...args) {
@@ -44,6 +42,6 @@ export default class SideNav extends React.Component {
   }
 
   _dateParam(date) {
-    return "/?date=" + date.format('YYYY-MM-DD');
+    return `/?date=${date.format("YYYY-MM-DD")}`;
   }
 }
