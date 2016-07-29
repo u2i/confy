@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
-import Filter from '../app/components/calendar/filters/Filter';
+import Filter from '../../app/components/calendar/filters/Filter';
 import chai from 'chai';
 import jsdom from 'mocha-jsdom';
 import sinon from 'sinon';
