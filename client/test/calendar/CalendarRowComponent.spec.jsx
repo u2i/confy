@@ -39,20 +39,20 @@ describe('<CalendarRow />', () => {
   const unitEventLengthInSeconds = 1800;
   const time = new Date();
   const props = { events, days, unitEventLengthInSeconds };
-  let wrapper = shallow(<CalendarRow time={time} {...props} />);
-  const wrapperInstance = wrapper.instance();
+  const wrapper1 = shallow(<CalendarRow time={time} {...props} />);
+  const wrapperInstance = wrapper1.instance();
 
   describe('#render()', () => {
     it('renders exactly one <tr />', () => {
-      expect(wrapper.find('tr')).to.have.length(1);
+      expect(wrapper1.find('tr')).to.have.length(1);
     });
 
     it('renders exactly one <TimeCell /> inside <tr />', () => {
-      expect(wrapper.find('tr').find(TimeCell)).to.have.length(1);
+      expect(wrapper1.find('tr').find(TimeCell)).to.have.length(1);
     });
 
     it('renders <EventWrapper /> inside <tr /> for each day in days array', () => {
-      expect(wrapper.find('tr').find(EventWrapper)).to.have.length(days.length);
+      expect(wrapper1.find('tr').find(EventWrapper)).to.have.length(days.length);
     });
   });
 
@@ -85,9 +85,9 @@ describe('<CalendarRow />', () => {
 
   describe('#_displayTime()', () => {
     describe('displayMinutes prop is true', () => {
-      let wrapper = shallow(<CalendarRow displayMinutes time={time} {...props} />);
+      const wrapper2 = shallow(<CalendarRow displayMinutes time={time} {...props} />);
       it('returns true', () => {
-        expect(wrapper.instance()._displayTime()).to.eq(true);
+        expect(wrapper2.instance()._displayTime()).to.eq(true);
       });
     });
 
@@ -95,20 +95,20 @@ describe('<CalendarRow />', () => {
       describe('minutes of time prop equals 0', () => {
         const newTime = new Date(time.getTime());
         newTime.setMinutes(0);
-        const wrapper = shallow(<CalendarRow time={newTime} {...props} />);
+        const wrapper3 = shallow(<CalendarRow time={newTime} {...props} />);
 
         it('returns true', () => {
-          expect(wrapper.instance()._displayTime()).to.eq(true);
+          expect(wrapper3.instance()._displayTime()).to.eq(true);
         });
       });
 
       describe('minutes of time prop doest not equal 0', () => {
         const newTime = new Date(time.getTime());
         newTime.setMinutes(1);
-        const wrapper = shallow(<CalendarRow time={newTime} {...props} />);
+        const wrapper4 = shallow(<CalendarRow time={newTime} {...props} />);
 
         it('returns false', () => {
-          expect(wrapper.instance()._displayTime()).to.eq(false);
+          expect(wrapper4.instance()._displayTime()).to.eq(false);
         });
       });
     });
