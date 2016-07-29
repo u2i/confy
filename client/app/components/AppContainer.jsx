@@ -44,7 +44,7 @@ export default class AppContainer extends React.Component {
           <Calendar {...calendarProps} events={this.state.events} />
         </Col>
       </Grid>
-    )
+    );
   }
 
   _fetchEvents() {
