@@ -9,7 +9,6 @@ import sinon from 'sinon';
 const expect = chai.expect;
 
 describe('<Filter />', () => {
-
   jsdom();
 
   const color = '#000000';
@@ -32,7 +31,7 @@ describe('<Filter />', () => {
   };
   const defaultWrapper = shallow(<Filter {...defaultProps} />);
 
-  it('renders Checkbox component', () => {
+  it('renders <Checbkox />', () => {
     expect(defaultWrapper.find(Checkbox)).to.have.length(1);
   });
 
