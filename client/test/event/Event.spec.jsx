@@ -37,7 +37,7 @@ describe('<Event />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat} />
     );
-    expect(wrapper.find('div')).to.have.length(5);
+    expect(wrapper.find('div')).to.have.lengthOf(5);
     expect(wrapper.find('.event').props().style.height).to.eq(150);
     expect(wrapper.find('.event').props().style.backgroundColor).to.eq(sampleRoom.color);
     expect(wrapper.find('.event-time').text()).to.include('00:30');

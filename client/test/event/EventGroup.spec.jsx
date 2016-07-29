@@ -41,7 +41,7 @@ describe('<EventGroup />', () => {
         offset={0}
         eventsInGroup={2} />
     );
-    expect(wrapper.find('.event-group').length).to.equal(1);
+    expect(wrapper.find('.event-group')).to.have.lengthOf(1);
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(0);
     expect(wrapper.find('.event-group').props().style.width).to.equal(60);
     expect(wrapper.find('Event').length).to.equal(1);
@@ -61,7 +61,7 @@ describe('<EventGroup />', () => {
         eventsInGroup={3} />
     );
     expect(wrapper.find('.event-group').props().style.width).to.equal(80);
-    expect(wrapper.find('Event').length).to.equal(2);
+    expect(wrapper.find('Event')).to.have.lengthOf(2);
   });
 
   it('sets correct offset', () => {
