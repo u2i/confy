@@ -15,8 +15,8 @@ describe('<EventGroup />', () => {
     email: 'email@resource.calendar.google.com'
   };
   const sampleEvent = {
-    attendees: [{ response_status: 'needsAction', self: true }],
     creator,
+    attendees: [{ response_status: 'needsAction', self: true }],
     end: { date_time: '2016-07-25T02:30:00.000+02:00' },
     id: '7utc9k4fds8kf2734q72dsoq8c',
     start: { date_time: '2016-07-25T00:30:00.000+02:00' },
