@@ -1,10 +1,10 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap'
+import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
-import Event from '../../app/components/calendar/event/Event'
-import chai from 'chai'
-import jsdom from 'mocha-jsdom'
-import { _ } from 'lodash'
+import Event from '../../app/components/calendar/event/Event';
+import chai from 'chai';
+import jsdom from 'mocha-jsdom';
+import { _ } from 'lodash';
 
 const expect = chai.expect;
 
@@ -31,7 +31,7 @@ describe('<Event />', () => {
   };
   const containerHeight = 30;
   const unitEventLengthInSeconds = 30 * 60;
-  const timeFormat = 'HH:mm'
+  const timeFormat = 'HH:mm';
 
   jsdom();
 
