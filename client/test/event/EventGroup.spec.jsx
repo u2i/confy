@@ -38,18 +38,18 @@ describe('<EventGroup />', () => {
         containerWidth={containerWidth}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={sampleEvent.start_timestamp}
-        offset = {0}
+        offset={0}
         eventsInGroup={2} />
     );
-    expect(wrapper.find(".event-group").length).to.equal(1);
-    expect(wrapper.find(".event-group").props().style.marginLeft).to.equal(0);
-    expect(wrapper.find(".event-group").props().style.width).to.equal(60);
-    expect(wrapper.find("Event").length).to.equal(1);
+    expect(wrapper.find('.event-group').length).to.equal(1);
+    expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(0);
+    expect(wrapper.find('.event-group').props().style.width).to.equal(60);
+    expect(wrapper.find('Event').length).to.equal(1);
   });
 
   it('renders multiple events', () => {
     let eventClone = _.cloneDeep(sampleEvent);
-    eventClone.id += "1";
+    eventClone.id += '1';
     const wrapper = shallow(
       <EventGroup
         events={[sampleEvent, eventClone]}
@@ -57,11 +57,11 @@ describe('<EventGroup />', () => {
         containerWidth={containerWidth}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={sampleEvent.start_timestamp}
-        offset = {0}
+        offset={0}
         eventsInGroup={3} />
     );
-    expect(wrapper.find(".event-group").props().style.width).to.equal(80);
-    expect(wrapper.find("Event").length).to.equal(2);
+    expect(wrapper.find('.event-group').props().style.width).to.equal(80);
+    expect(wrapper.find('Event').length).to.equal(2);
   });
 
   it('sets correct offset', () => {
@@ -72,9 +72,9 @@ describe('<EventGroup />', () => {
         containerWidth={containerWidth}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={sampleEvent.start_timestamp}
-        offset = {2}
+        offset={2}
         eventsInGroup={2} />
     );
-    expect(wrapper.find(".event-group").props().style.marginLeft).to.equal(120);
+    expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(120);
   });
 });
