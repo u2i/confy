@@ -6,7 +6,7 @@ import SideNav from './layout/SideNav';
 export default (props) => (
   <Grid>
     <Col xs={12} md={2}>
-      <SideNav />
+      <SideNav date={props.date} />
     </Col>
     <Col xs={12} md={10}>
       <Calendar {...props} />
