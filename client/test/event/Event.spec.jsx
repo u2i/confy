@@ -32,10 +32,10 @@ describe('<Event />', () => {
   it('renders correctly', () => {
     const wrapper = shallow(
       <Event
-      event={sampleEvent}
-      containerHeight={containerHeight}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timeFormat={timeFormat} />
+        event={sampleEvent}
+        containerHeight={containerHeight}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timeFormat={timeFormat} />
     );
     expect(wrapper.find('div')).to.have.length(5);
     expect(wrapper.find('.event').props().style.height).to.eq(150);
@@ -52,10 +52,10 @@ describe('<Event />', () => {
     eventClone.end.date_time = '2016-07-25T03:30:00.000+02:00';
     const wrapper = shallow(
       <Event
-      event={eventClone}
-      containerHeight={containerHeight}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timeFormat={timeFormat} />
+        event={eventClone}
+        containerHeight={containerHeight}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timeFormat={timeFormat} />
     );
     expect(wrapper.find('.event').props().style.height).to.eq(210);
   });
@@ -67,10 +67,10 @@ describe('<Event />', () => {
     eventClone.creator = creatorClone;
     const wrapper = shallow(
       <Event
-      event={eventClone}
-      containerHeight={containerHeight}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timeFormat={timeFormat} />
+        event={eventClone}
+        containerHeight={containerHeight}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timeFormat={timeFormat} />
     );
     expect(wrapper.find('.event-user').text()).to.include(creatorClone.display_name);
   });

@@ -34,13 +34,13 @@ describe('<EventGroup />', () => {
   it('renders correctly', () => {
     const wrapper = shallow(
       <EventGroup
-      events={[sampleEvent]}
-      containerHeight={containerHeight}
-      containerWidth={containerWidth}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timestamp={sampleEvent.start_timestamp}
-      offset = {0}
-      eventsInGroup={2} />
+        events={[sampleEvent]}
+        containerHeight={containerHeight}
+        containerWidth={containerWidth}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timestamp={sampleEvent.start_timestamp}
+        offset = {0}
+        eventsInGroup={2} />
     );
     expect(wrapper.find(".event-group").length).to.equal(1);
     expect(wrapper.find(".event-group").props().style.marginLeft).to.equal(0);
@@ -53,13 +53,13 @@ describe('<EventGroup />', () => {
     eventClone.id += "1";
     const wrapper = shallow(
       <EventGroup
-      events={[sampleEvent, eventClone]}
-      containerHeight={containerHeight}
-      containerWidth={containerWidth}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timestamp={sampleEvent.start_timestamp}
-      offset = {0}
-      eventsInGroup={3} />
+        events={[sampleEvent, eventClone]}
+        containerHeight={containerHeight}
+        containerWidth={containerWidth}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timestamp={sampleEvent.start_timestamp}
+        offset = {0}
+        eventsInGroup={3} />
     );
     expect(wrapper.find(".event-group").props().style.width).to.equal(80);
     expect(wrapper.find("Event").length).to.equal(2);
@@ -68,13 +68,13 @@ describe('<EventGroup />', () => {
   it('sets correct offset', () => {
     const wrapper = shallow(
       <EventGroup
-      events={[sampleEvent]}
-      containerHeight={containerHeight}
-      containerWidth={containerWidth}
-      unitEventLengthInSeconds={unitEventLengthInSeconds}
-      timestamp={sampleEvent.start_timestamp}
-      offset = {2}
-      eventsInGroup={2} />
+        events={[sampleEvent]}
+        containerHeight={containerHeight}
+        containerWidth={containerWidth}
+        unitEventLengthInSeconds={unitEventLengthInSeconds}
+        timestamp={sampleEvent.start_timestamp}
+        offset = {2}
+        eventsInGroup={2} />
     );
     expect(wrapper.find(".event-group").props().style.marginLeft).to.equal(120);
   });
