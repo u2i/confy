@@ -53,6 +53,7 @@
     "react-if": "^2.1.0",
     "react-on-rails": "5.2.0",
     "resolve-url-loader": "^1.6.0",
+    "rosie": "^1.6.0",
     "sass-loader": "^4.0.0",
     "sass-resources-loader": "^1.0.2",
     "sinon": "*",
