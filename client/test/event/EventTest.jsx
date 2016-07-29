@@ -1,11 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event';
-import chai from 'chai';
+import { expect } from 'chai';
 import jsdom from 'mocha-jsdom';
 import { _ } from 'lodash';
-
-const expect = chai.expect;
 
 describe('<Event />', () => {
   const eventSummary = 'Sample Event';
@@ -32,8 +30,6 @@ describe('<Event />', () => {
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
 
-  jsdom();
-
   it('renders correctly', () => {
     const wrapper = shallow(
       <Event
@@ -54,7 +50,7 @@ describe('<Event />', () => {
     let eventClone = _.cloneDeep(sampleEvent);
     eventClone.end_timestamp += 60 * 60; // 1 hour
     eventClone.end.date_time = '2016-07-25T03:30:00.000+02:00';
-    const wrapper = mount(
+    const wrapper = shallow(
       <Event
       event={eventClone}
       containerHeight={containerHeight}
