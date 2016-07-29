@@ -1,6 +1,6 @@
 import React from 'react';
+import moment from 'moment';
 import { Grid, Col } from 'react-bootstrap';
-import { queryParam } from 'helpers/UrlHelper';
 import EventSource from 'sources/EventSource';
 
 import Calendar from './calendar/Calendar';
@@ -8,7 +8,12 @@ import SideNav from './layout/SideNav';
 
 export default class AppContainer extends React.Component {
   static propTypes = {
-    initialEvents: React.PropTypes.array
+    initialEvents: React.PropTypes.array,
+    date:          React.PropTypes.string
+  };
+
+  static defaultProps = {
+    date: moment().format('YYYY-MM-DD')
   };
 
   constructor(...args) {
@@ -43,7 +48,7 @@ export default class AppContainer extends React.Component {
   }
 
   _fetchEvents() {
-    EventSource.fetch({ date: queryParam('date') })
+    EventSource.fetch({ date: this.props.date })
       .then(({ data }) =>
         this.setState({ events: data }));
   }
