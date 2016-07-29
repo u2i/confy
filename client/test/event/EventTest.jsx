@@ -1,8 +1,7 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event';
 import { expect } from 'chai';
-import jsdom from 'mocha-jsdom';
 import { _ } from 'lodash';
 
 describe('<Event />', () => {
@@ -40,6 +39,7 @@ describe('<Event />', () => {
     );
     expect(wrapper.find('div')).to.have.length(5);
     expect(wrapper.find('.event').props().style.height).to.eq(150);
+    expect(wrapper.find('.event').props().style.backgroundColor).to.eq(sampleRoom.color);
     expect(wrapper.find('.event-time').text()).to.include('00:30');
     expect(wrapper.find('.event-name').text()).to.include(eventSummary);
     expect(wrapper.find('.event-user').text()).to.include(creator.email);
