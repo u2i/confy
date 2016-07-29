@@ -11,13 +11,10 @@ $event-border-color: #f7f7f7;
 
   > * {
     margin-left: 5%;
-
-    &:first-child {
-      margin-top: 5%;
-    }
   }
 
   .event-time {
+    margin-top: 5%;
     font-size: 0.8em;
     font-weight: bold;
   }
@@ -35,4 +32,15 @@ $event-border-color: #f7f7f7;
       font-style: italic;
     }
   }
+
+  &.own {
+    cursor: pointer;
+  }
+}
+
+.delete {
+  float: left;
+  display: block;
+  color: red;
+  margin: 0;
 }
