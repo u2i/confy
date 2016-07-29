@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event'
 import chai from 'chai'
 import jsdom from 'mocha-jsdom'
+import { _ } from 'lodash'
 
 var expect = chai.expect;
 
@@ -47,7 +48,7 @@ describe('<Event />', () => {
     });
 
     it('renders correctly with other length', () => {
-        let eventClone = JSON.parse(JSON.stringify(sampleEvent));
+        let eventClone = _.cloneDeep(sampleEvent);
         eventClone.end_timestamp += 60 * 60; // 1 hour
         eventClone.end.date_time = "2016-07-25T03:30:00.000+02:00";
         const wrapper = mount(<Event event={eventClone} containerHeight={containerHeight} unitEventLengthInSeconds={unitEventLengthInSeconds} timeFormat={timeFormat}/>);
