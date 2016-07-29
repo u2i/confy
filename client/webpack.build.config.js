@@ -25,7 +25,7 @@ config.module.loaders.push(
     test:   /\.css$/,
     loader: ExtractTextPlugin.extract(
       'style',
-      'css?minimize&modules&importLoaders=1' +
+      'css' +
       '!postcss'
     )
   },
@@ -33,7 +33,7 @@ config.module.loaders.push(
     test:   /\.scss$/,
     loader: ExtractTextPlugin.extract(
       'style',
-      'css?minimize&modules&importLoaders=3' +
+      'css' +
       '!postcss' +
       '!sass' +
       '!sass-resources'
