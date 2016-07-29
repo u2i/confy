@@ -12,13 +12,13 @@ const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:          array,
-    conferenceRooms: array,
-    days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:           arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    unitEventLength: number,
-    timeFormat:      string,
-    dateFormat:      string
+    events:                   array,
+    conferenceRooms:          array,
+    days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    unitEventLengthInSeconds: number.isRequired,
+    timeFormat:               string,
+    dateFormat:               string
   };
 
   static defaultProps = {
@@ -43,7 +43,7 @@ export default class Calendar extends React.Component {
                    key={time}
                    events={this._filterEvents()}
                    days={this.props.days}
-                   unitEventLength={this.props.unitEventLength} />
+                   unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
     ));
 
     return (

@@ -11,12 +11,12 @@ const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:          arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
-    time:            oneOfType([instanceOf(Date), string]).isRequired,
-    days:            arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    unitEventLength: number,
-    timeFormat:      string,
-    displayMinutes:  bool
+    events:                   arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
+    time:                     oneOfType([instanceOf(Date), string]).isRequired,
+    days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    unitEventLengthInSeconds: number.isRequired,
+    timeFormat:               string,
+    displayMinutes:           bool
   };
 
   static defaultProps = {
@@ -70,7 +70,7 @@ export default class CalendarRow extends React.Component {
 
       return (
         <EventWrapper timestamp={timestamp}
-                      unitEventLength={this.props.unitEventLength}
+                      unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       eventsInGroup={eventGroup.length}
                       offset={offset}
