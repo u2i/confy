@@ -19,7 +19,7 @@ describe('<Event />', () => {
   };
   const sampleEvent = {
     attendees: [{ response_status: 'needsAction', self: true }],
-    creator: creator,
+    creator,
     end: { date_time: '2016-07-25T02:30:00.000+02:00' },
     id: '7utc9k4fds8kf2734q72dsoq8c',
     start: { date_time: '2016-07-25T00:30:00.000+02:00' },
@@ -62,5 +62,20 @@ describe('<Event />', () => {
       timeFormat={timeFormat} />
     );
     expect(wrapper.find('.event').props().style.height).to.eq(210);
+  });
+
+  it('renders display_name when present', () => {
+    let eventClone = _.cloneDeep(sampleEvent);
+    let creatorClone = _.cloneDeep(creator);
+    creatorClone.display_name = 'Display name';
+    eventClone.creator = creatorClone;
+    const wrapper = shallow(
+      <Event
+      event={eventClone}
+      containerHeight={containerHeight}
+      unitEventLengthInSeconds={unitEventLengthInSeconds}
+      timeFormat={timeFormat} />
+    );
+    expect(wrapper.find('.event-user').text()).to.include(creatorClone.display_name);
   });
 });
