@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import _ from 'lodash';
@@ -42,6 +42,6 @@ export default class SideNav extends React.Component {
   }
 
   _dateParam(date) {
-    return `/?date=${date.format("YYYY-MM-DD")}`;
+    return `/?date=${date.format('YYYY-MM-DD')}`;
   }
 }
