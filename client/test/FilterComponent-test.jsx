@@ -1,18 +1,18 @@
 import React from 'react';
-import {Checkbox} from 'react-bootstrap'
-import {mount, shallow} from 'enzyme';
-import Filter from '../app/components/calendar/filters/Filter'
-import chai from 'chai'
-import jsdom from 'mocha-jsdom'
-import sinon from 'sinon'
+import { Checkbox } from 'react-bootstrap';
+import { mount, shallow } from 'enzyme';
+import Filter from '../app/components/calendar/filters/Filter';
+import chai from 'chai';
+import jsdom from 'mocha-jsdom';
+import sinon from 'sinon';
 
-var expect = chai.expect;
+const expect = chai.expect;
 
 describe('<Filter />', () => {
 
   jsdom();
 
-  const color = "#000000";
+  const color = '#000000';
   const title = 'sample_title';
   const id = 1;
   const capacity = 1;
@@ -36,7 +36,7 @@ describe('<Filter />', () => {
     expect(defaultWrapper.find(Checkbox)).to.have.length(1);
   });
 
-  it("sets .filter-box backgroundColor", () => {
+  it('sets .filter-box backgroundColor', () => {
     expect(defaultWrapper.find('.filter-box').props().style.backgroundColor).to.eq(color);
   });
 
@@ -59,7 +59,7 @@ describe('<Filter />', () => {
     expect(onDisabled).to.have.property('callCount', 1);
     expect(onDisabled.calledWith(id)).to.eq(true);
 
-    wrapper.setProps({enabled: true});
+    wrapper.setProps({ enabled: true });
 
     wrapper.find('input').simulate('change');
     expect(onEnabled).to.have.property('callCount', 1);
