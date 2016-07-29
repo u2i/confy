@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import Filter from '../../app/components/calendar/filters/Filter';
 import RoomFilters from '../../app/components/calendar/filters/RoomFilters';
 import chai from 'chai';
@@ -7,7 +7,7 @@ import chai from 'chai';
 const expect = chai.expect;
 
 describe('<RoomFilters />', () => {
-  const [id1, id2, id3] = [1,2,3];
+  const [id1, id2, id3] = [1, 2, 3];
   const [title1, title2, title3] = ['title1', 'title2', 'title3'];
   const conferenceRoom1 = {
     id:    id1,
