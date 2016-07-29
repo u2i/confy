@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import EventGroup from '../../app/components/calendar/event/EventGroup';
 import { expect } from 'chai';
-import jsdom from 'mocha-jsdom'
 import { _ } from 'lodash';
 
 describe('<EventGroup />', () => {
