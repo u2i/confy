@@ -125,7 +125,9 @@ class GoogleEvent
             next if event_declined?(event)
             normalize_event_datetime(event)
             events[event.start.date_time.wday].push(
-              event.to_h.merge(conference_room: room, timestamp: event.start.date_time.to_i)
+              event.to_h.merge(conference_room: room,
+                               start_timestamp: event.start.date_time.to_i,
+                               end_timestamp:   event.end.date_time.to_i)
             )
           end
         end
@@ -139,8 +141,17 @@ class GoogleEvent
     end
 
     def normalize_event_datetime(event)
-      event.start.date_time = EventGrouper.floor_time(event.start.date_time)
-      event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
+      if whole_day_event?(event)
+        event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
+        event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
+      else
+        event.start.date_time = EventGrouper.floor_time(event.start.date_time)
+        event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
+      end
+    end
+
+    def whole_day_event?(event)
+      event.start.date.present?
     end
   end
 

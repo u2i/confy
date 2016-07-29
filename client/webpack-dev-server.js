@@ -1,4 +1,4 @@
-/* eslint no-var: 0, no-console: 0 */
+/* eslint no-var: 0, no-console: 0 import/default: 0 */
 
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
