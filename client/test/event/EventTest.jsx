@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event';
 import chai from 'chai';
