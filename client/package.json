@@ -56,6 +56,7 @@
     "sass-loader": "^4.0.0",
     "sass-resources-loader": "^1.0.2",
     "sinon": "*",
+    "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",
     "turbolinks": "^5.0.0",
     "url-loader": "^0.5.7",
