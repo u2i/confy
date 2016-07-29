@@ -6,11 +6,11 @@ import chai from 'chai'
 import jsdom from 'mocha-jsdom'
 import { _ } from 'lodash'
 
-var expect = chai.expect;
+const expect = chai.expect;
 
 describe('<Event />', () => {
   const eventSummary = 'Sample Event';
-  const creator = { email: 'creator@example.com',self: true };
+  const creator = { email: 'creator@example.com', self: true };
   const sampleRoom = {
     id: 8,
     capacity: 10,
@@ -64,5 +64,4 @@ describe('<Event />', () => {
     );
     expect(wrapper.find('.event').props().style.height).to.eq(210);
   });
-
 });
