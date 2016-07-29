@@ -21,7 +21,7 @@ describe('<Calendar />', () => {
   describe('#render', () => {
     it('renders calendar <Table />', () => {
       const table = wrapper.find(Table);
-      expect(table).to.have.length(1);
+      expect(table).to.have.lengthOf(1);
       expect(table.hasClass('calendar')).to.be.true;
     });
 
