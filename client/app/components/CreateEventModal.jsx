@@ -1,13 +1,22 @@
-import React from 'react';
-import { Button, Modal, FormGroup, ControlLabel, FormControl, Alert } from 'react-bootstrap';
+import React, {PropTypes} from 'react';
+import {Button, Modal, FormGroup, ControlLabel, FormControl, Alert} from 'react-bootstrap';
 import DateTimeField from "react-bootstrap-datetimepicker";
 import moment from 'moment';
 import axios from 'axios';
 import _ from 'lodash';
 
+const {func, bool, array} = PropTypes;
+
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default class CreateEventModal extends React.Component {
+  static propTypes = {
+    openModal: func,
+    closeModal: func,
+    showModal: bool,
+    conferenceRooms: array
+  };
+
   constructor() {
     super();
 
@@ -22,72 +31,7 @@ export default class CreateEventModal extends React.Component {
 
     _.bindAll(this,
       ['_saveChanges', '_handleTextFieldChange', '_handleLocationChange',
-       '_handleStartTimeChange', '_handleEndTimeChange', '_showError']);
-  }
-
-  _handleTextFieldChange(e) {
-    var value = e.target.value;
-    var name = e.target.name;
-
-    this.setState({[name]: value});
-  }
-
-  _handleLocationChange(e) {
-    let conferenceRoomId = e.target.value;
-
-    // only temporary, waiting for event API improvement
-    let conferenceRoomName = this.props.conferenceRooms.find(function(room) {
-      return room.id == parseInt(conferenceRoomId);
-    }).title;
-
-    this.setState({
-      location: conferenceRoomName,
-      conferenceRoomId: conferenceRoomId
-    });
-  }
-
-  _handleStartTimeChange(e) {
-    if (e != 'Invalid date') {
-      this.setState({startTime: e});
-    }
-  }
-
-  _handleEndTimeChange(e) {
-    if (e != 'Invalid date') {
-      this.setState({endTime: e});
-    }
-  }
-
-  _showError() {
-    this.setState({showErrorMessage: true})
-  }
-
-  _saveChanges() {
-    let eventParams = {
-      summary: this.state.summary ? this.state.summary : "",
-      description: this.state.description ? this.state.description : "",
-      start_time: this.state.startTime,
-      end_time: this.state.endTime,
-      conference_room_id: this.state.conferenceRoomId,
-      location: this.state.location
-    };
-
-    let token = document.querySelector('meta[name="csrf-token"]').content;
-
-    axios({
-      method: 'post',
-      url: '/events',
-      data: eventParams,
-      headers: {
-        'X-CSRF-Token': token
-      }
-    })
-    .then(() => {
-      this.props.closeModal();
-    })
-    .catch(() => {
-      this._showError();
-    })
+        '_handleStartTimeChange', '_handleEndTimeChange']);
   }
 
   render() {
@@ -109,7 +53,7 @@ export default class CreateEventModal extends React.Component {
             <Alert bsStyle="danger">
               Error occured while trying to save event.
             </Alert>
-          : null}
+            : null}
 
           <form>
             <FormGroup>
@@ -118,7 +62,7 @@ export default class CreateEventModal extends React.Component {
                 type="text"
                 value={this.state.summary}
                 onChange={this._handleTextFieldChange}
-                name="summary"/>
+                name="summary" />
             </FormGroup>
             <FormGroup>
               <ControlLabel>Description:</ControlLabel>
@@ -126,7 +70,7 @@ export default class CreateEventModal extends React.Component {
                 type="text"
                 value={this.state.description}
                 onChange={this._handleTextFieldChange}
-                name="description"/>
+                name="description" />
             </FormGroup>
             <FormGroup>
               <ControlLabel>Start time:</ControlLabel>
@@ -134,7 +78,7 @@ export default class CreateEventModal extends React.Component {
                 dateTime={this.state.startTime}
                 format={DATE_FORMAT}
                 inputFormat={DATE_FORMAT}
-                onChange={this._handleStartTimeChange}/>
+                onChange={this._handleStartTimeChange} />
             </FormGroup>
             <FormGroup>
               <ControlLabel>End time:</ControlLabel>
@@ -142,7 +86,7 @@ export default class CreateEventModal extends React.Component {
                 dateTime={this.state.endTime}
                 format={DATE_FORMAT}
                 inputFormat={DATE_FORMAT}
-                onChange={this._handleEndTimeChange}/>
+                onChange={this._handleEndTimeChange} />
             </FormGroup>
             <FormGroup>
               <ControlLabel>Location:</ControlLabel>
@@ -165,6 +109,73 @@ export default class CreateEventModal extends React.Component {
           </Button>
         </Modal.Footer>
       </Modal>
-    )
+    );
   }
+
+
+  _handleTextFieldChange(e) {
+    var value = e.target.value;
+    var name = e.target.name;
+
+    this.setState({[name]: value});
+  }
+
+  _handleLocationChange(e) {
+    let conferenceRoomId = e.target.value;
+
+    // only temporary, waiting for event API improvement
+    let conferenceRoomName = this.props.conferenceRooms.find(function (room) {
+      return room.id == parseInt(conferenceRoomId);
+    }).title;
+
+    this.setState({
+      location: conferenceRoomName,
+      conferenceRoomId: conferenceRoomId
+    });
+  }
+
+  _handleStartTimeChange(e) {
+    if (e != 'Invalid date') {
+      this.setState({startTime: e});
+    }
+  }
+
+  _handleEndTimeChange(e) {
+    if (e != 'Invalid date') {
+      this.setState({endTime: e});
+    }
+  }
+
+  _showError() {
+    this.setState({showErrorMessage: true});
+  }
+
+  _saveChanges() {
+    let eventParams = {
+      summary: this.state.summary ? this.state.summary : "",
+      description: this.state.description ? this.state.description : "",
+      start_time: this.state.startTime,
+      end_time: this.state.endTime,
+      conference_room_id: this.state.conferenceRoomId,
+      location: this.state.location
+    };
+
+    let token = document.querySelector('meta[name="csrf-token"]').content;
+
+    axios({
+      method: 'post',
+      url: '/events',
+      data: eventParams,
+      headers: {
+        'X-CSRF-Token': token
+      }
+    })
+      .then(() => {
+        this.props.closeModal();
+      })
+      .catch(() => {
+        this._showError();
+      });
+  }
+
 }
