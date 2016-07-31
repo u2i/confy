@@ -11,16 +11,16 @@ const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
-    openModal:        func,
-    closeModal:       func,
-    showModal:        bool,
-    conferenceRooms:  array
+    openModal: func,
+    closeModal: func,
+    showModal: bool,
+    conferenceRooms: array
   };
 
   constructor() {
     super();
 
-    let initialDate = moment().format(DATE_FORMAT);
+    const initialDate = moment().format(DATE_FORMAT);
 
     this.state = {
       showErrorMessage: false,
@@ -114,23 +114,23 @@ export default class CreateEventModal extends React.Component {
 
 
   _handleTextFieldChange(e) {
-    var value = e.target.value;
-    var name = e.target.name;
+    const value = e.target.value;
+    const name = e.target.name;
 
     this.setState({ [name]: value });
   }
 
   _handleLocationChange(e) {
-    let conferenceRoomId = e.target.value;
+    const conferenceRoomId = e.target.value;
 
     // only temporary, waiting for event API improvement
-    let conferenceRoomName = this.props.conferenceRooms.find(function (room) {
-      return room.id == parseInt(conferenceRoomId);
+    const conferenceRoomName = this.props.conferenceRooms.find(room => {
+      return room.id === parseInt(conferenceRoomId, 10);
     }).title;
 
     this.setState({
       location:         conferenceRoomName,
-      conferenceRoomId: conferenceRoomId
+      conferenceRoomId
     });
   }
 
@@ -163,10 +163,10 @@ export default class CreateEventModal extends React.Component {
     const token = document.querySelector('meta[name="csrf-token"]').content;
 
     axios({
-      method: 'post',
-      url: '/events',
-      data: eventParams,
-      headers: {
+      method:   'post',
+      url:      '/events',
+      data:     eventParams,
+      headers:  {
         'X-CSRF-Token': token
       }
     })
