@@ -11,10 +11,10 @@ const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
-    openModal: func,
-    closeModal: func,
-    showModal: bool,
-    conferenceRooms: array
+    openModal:        func,
+    closeModal:       func,
+    showModal:        bool,
+    conferenceRooms:  array
   };
 
   constructor() {
@@ -25,8 +25,8 @@ export default class CreateEventModal extends React.Component {
     this.state = {
       showErrorMessage: false,
       conferenceRoomId: 1,
-      startTime: initialDate,
-      endTime: initialDate
+      startTime:        initialDate,
+      endTime:          initialDate
     };
 
     _.bindAll(this,
@@ -117,7 +117,7 @@ export default class CreateEventModal extends React.Component {
     var value = e.target.value;
     var name = e.target.name;
 
-    this.setState({[name]: value});
+    this.setState({ [name]: value });
   }
 
   _handleLocationChange(e) {
@@ -129,38 +129,38 @@ export default class CreateEventModal extends React.Component {
     }).title;
 
     this.setState({
-      location: conferenceRoomName,
+      location:         conferenceRoomName,
       conferenceRoomId: conferenceRoomId
     });
   }
 
   _handleStartTimeChange(e) {
-    if (e != 'Invalid date') {
-      this.setState({startTime: e});
+    if (e !== 'Invalid date') {
+      this.setState({ startTime: e });
     }
   }
 
   _handleEndTimeChange(e) {
-    if (e != 'Invalid date') {
-      this.setState({endTime: e});
+    if (e !== 'Invalid date') {
+      this.setState({ endTime: e });
     }
   }
 
   _showError() {
-    this.setState({showErrorMessage: true});
+    this.setState({ showErrorMessage: true });
   }
 
   _saveChanges() {
-    let eventParams = {
-      summary: this.state.summary ? this.state.summary : "",
-      description: this.state.description ? this.state.description : "",
-      start_time: this.state.startTime,
-      end_time: this.state.endTime,
+    const eventParams = {
+      summary:            this.state.summary ? this.state.summary : '',
+      description:        this.state.description ? this.state.description : '',
+      start_time:         this.state.startTime,
+      end_time:           this.state.endTime,
       conference_room_id: this.state.conferenceRoomId,
-      location: this.state.location
+      location:           this.state.location
     };
 
-    let token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
 
     axios({
       method: 'post',
