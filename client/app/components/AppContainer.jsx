@@ -34,8 +34,7 @@ export default class AppContainer extends React.Component {
         <CreateEventModal
           showModal={this.state.showModal}
           closeModal={this.closeModal}
-          conferenceRooms={this.props.conferenceRooms}
-        />
+          conferenceRooms={this.props.conferenceRooms} />
       </div>
     )
   }
