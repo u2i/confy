@@ -30,9 +30,8 @@ export default class DeleteButton extends React.Component {
 
   render() {
     return (
-      <a href={this._path()} onClick={this._processDelete.bind(this)} className="delete">
-        x
-      </a>
+      <span onClick={this._processDelete.bind(this)} className="delete glyphicon glyphicon-remove">
+      </span>
     );
   }
 }
