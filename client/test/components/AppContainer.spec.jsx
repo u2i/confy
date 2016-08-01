@@ -11,8 +11,6 @@ import SideNav from '../../app/components/layout/SideNav';
 
 describe('<AppContainer />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
-  const stateSpy = sinon.spy(AppContainer.prototype, 'setState');
-
   const props = DefaultProps.build();
 
   before(() => {
@@ -25,7 +23,6 @@ describe('<AppContainer />', () => {
 
   afterEach(() => {
     EventSource.fetch.reset();
-    stateSpy.reset();
   });
 
   it('prefetches events', () => {
