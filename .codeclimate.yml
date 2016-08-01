@@ -1,0 +1,45 @@
+engines:
+  rubocop:
+    enabled: true
+  golint:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+  eslint:
+    enabled: true
+    config:
+      config: client/.eslintrc.yml
+    checks:
+      import/named:
+        enabled: false
+      import/namespace:
+        enabled: false
+      import/default:
+        enabled: false
+      import/export:
+        enabled: false
+      import/newline-after-import:
+        enabled: false
+      import/prefer-default-export:
+        enabled: false
+      import/no-named-as-default:
+        enabled: false
+      import/no-named-as-default-member:
+        enabled: false
+      import/no-duplicates:
+        enabled: false
+ratings:
+  paths:
+  - app/**
+  - lib/**
+  - "**.rb"
+  - "**.go"
+exclude_paths:
+- spec/**/*
+- "**/vendor/**/*"engines:
