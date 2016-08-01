@@ -5,6 +5,8 @@ import moment from 'moment';
 import axios from 'axios';
 import _ from 'lodash';
 
+import 'react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
+
 const { func, bool, array } = PropTypes;
 
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
