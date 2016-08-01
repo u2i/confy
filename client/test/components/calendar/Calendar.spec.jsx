@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
+import DefaultProps from '../../factories/DefaultProps';
 
 import { Table } from 'react-bootstrap';
 import Calendar from '../../../app/components/calendar/Calendar';
@@ -9,13 +10,14 @@ import CalendarRow from '../../../app/components/calendar/CalendarRow';
 import RoomFilters from '../../../app/components/calendar/filters/RoomFilters';
 
 describe('<Calendar />', () => {
-  const days = ['2016-07-28', '2016-07-29'];
-  const times = ['8:00', '9:00'];
-  const unitEventLength = 0;
+  const props = DefaultProps.build({
+    days:  ['2016-07-28', '2016-07-29'],
+    times: ['8:00', '9:00']
+  });
 
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<Calendar days={days} times={times} unitEventLengthInSeconds={unitEventLength} />);
+    wrapper = shallow(<Calendar {...props} />);
   });
 
   describe('#render', () => {
@@ -30,11 +32,11 @@ describe('<Calendar />', () => {
     });
 
     it('renders a table column for each day', () => {
-      expect(wrapper.find(CalendarHeader)).to.have.lengthOf(days.length);
+      expect(wrapper.find(CalendarHeader)).to.have.lengthOf(props.days.length);
     });
 
     it('renders a table row for each time', () => {
-      expect(wrapper.find(CalendarRow)).to.have.lengthOf(times.length);
+      expect(wrapper.find(CalendarRow)).to.have.lengthOf(props.times.length);
     });
   });
 
