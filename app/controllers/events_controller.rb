@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
-  include GoogleEventListing
   include TimeInterval
 
   before_action :refresh_token
@@ -33,7 +32,7 @@ class EventsController < ApplicationController
 
   def index
     week_start, week_end = build_week_boundaries(params[:date])
-    render json: list_events(week_start, week_end)
+    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(week_start, week_end)
   end
 
   def create

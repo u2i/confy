@@ -3,12 +3,10 @@ require 'google/api_client/client_secrets'
 
 class CalendarController < ApplicationController
   include GoogleAuthentication
-  include GoogleEventListing
   include TimeInterval
 
   before_action :refresh_token
   before_action :check_authentication
-  before_action :create_calendar_props, only: [:index]
 
   # Index for showing events from Google calendar
   def index
@@ -31,7 +29,7 @@ class CalendarController < ApplicationController
 
   def events
     week_start, week_end = build_week_boundaries(params[:date])
-    list_events(week_start, week_end)
+    GoogleEventLister.new(session[:credentials], session[:email]).call(week_start, week_end)
   end
 
   def calendar_days
