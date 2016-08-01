@@ -3,6 +3,7 @@ import { Grid, Col } from 'react-bootstrap';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import CreateEventModal from './CreateEventModal';
+import _ from 'lodash';
 
 
 export default class AppContainer extends React.Component {
@@ -12,8 +13,7 @@ export default class AppContainer extends React.Component {
       showModal: false
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    _.bindAll(this, ['openModal', 'closeModal']);
   }
 
   openModal() {

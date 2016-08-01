@@ -4,36 +4,39 @@ import DateTimeField from 'react-bootstrap-datetimepicker';
 import moment from 'moment';
 import axios from 'axios';
 import _ from 'lodash';
+import EventSource from 'sources/EventSource';
 
 import 'react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
 
-const { func, bool, array } = PropTypes;
+const { func, bool, array, string } = PropTypes;
 
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
-    openModal:       func,
-    closeModal:      func,
-    showModal:       bool,
-    conferenceRooms: array
+    closeModal:      func.isRequired,
+    showModal:       bool.isRequired,
+    conferenceRooms: array.isRequired,
+    initialDate:     string
   };
 
-  constructor() {
-    super();
+  static defaultProps = {
+    initialDate: moment().format(DATE_FORMAT)
+  };
 
-    const initialDate = moment().format(DATE_FORMAT);
+  constructor(props) {
+    super(props);
 
     this.state = {
       showErrorMessage: false,
-      conferenceRoomId: 1,
-      startTime:        initialDate,
-      endTime:          initialDate
+      conferenceRoomId: this.props.conferenceRooms[0].id,
+      startTime:        this.props.initialDate,
+      endTime:          this.props.initialDate
     };
 
     _.bindAll(this,
-      ['_saveChanges', '_handleTextFieldChange', '_handleLocationChange',
-        '_handleStartTimeChange', '_handleEndTimeChange']);
+      ['saveChanges', 'handleTextFieldChange', 'handleLocationChange',
+        'handleStartTimeChange', 'handleEndTimeChange']);
   }
 
   render() {
@@ -63,7 +66,7 @@ export default class CreateEventModal extends React.Component {
               <FormControl
                 type="text"
                 value={this.state.summary}
-                onChange={this._handleTextFieldChange}
+                onChange={this.handleTextFieldChange}
                 name="summary" />
             </FormGroup>
             <FormGroup>
@@ -71,7 +74,7 @@ export default class CreateEventModal extends React.Component {
               <FormControl
                 type="text"
                 value={this.state.description}
-                onChange={this._handleTextFieldChange}
+                onChange={this.handleTextFieldChange}
                 name="description" />
             </FormGroup>
             <FormGroup>
@@ -80,7 +83,7 @@ export default class CreateEventModal extends React.Component {
                 dateTime={this.state.startTime}
                 format={DATE_FORMAT}
                 inputFormat={DATE_FORMAT}
-                onChange={this._handleStartTimeChange} />
+                onChange={this.handleStartTimeChange} />
             </FormGroup>
             <FormGroup>
               <ControlLabel>End time:</ControlLabel>
@@ -88,13 +91,13 @@ export default class CreateEventModal extends React.Component {
                 dateTime={this.state.endTime}
                 format={DATE_FORMAT}
                 inputFormat={DATE_FORMAT}
-                onChange={this._handleEndTimeChange} />
+                onChange={this.handleEndTimeChange} />
             </FormGroup>
             <FormGroup>
               <ControlLabel>Location:</ControlLabel>
               <FormControl
                 componentClass="select"
-                onChange={this._handleLocationChange}
+                onChange={this.handleLocationChange}
                 name="location">
                 {conferenceRoomsOptions}
               </FormControl>
@@ -106,7 +109,7 @@ export default class CreateEventModal extends React.Component {
           <Button onClick={this.props.closeModal}>Close</Button>
           <Button
             bsStyle="primary"
-            onClick={this._saveChanges}>
+            onClick={this.saveChanges}>
             Save changes
           </Button>
         </Modal.Footer>
@@ -115,34 +118,25 @@ export default class CreateEventModal extends React.Component {
   }
 
 
-  _handleTextFieldChange(e) {
+  handleTextFieldChange(e) {
     const value = e.target.value;
     const name = e.target.name;
 
     this.setState({ [name]: value });
   }
 
-  _handleLocationChange(e) {
+  handleLocationChange(e) {
     const conferenceRoomId = e.target.value;
-
-    // only temporary, waiting for event API improvement
-    const conferenceRoomName = this.props.conferenceRooms.find(room =>
-      room.id === parseInt(conferenceRoomId, 10)
-    ).title;
-
-    this.setState({
-      location: conferenceRoomName,
-      conferenceRoomId
-    });
+    this.setState({ conferenceRoomId });
   }
 
-  _handleStartTimeChange(e) {
+  handleStartTimeChange(e) {
     if (e !== 'Invalid date') {
       this.setState({ startTime: e });
     }
   }
 
-  _handleEndTimeChange(e) {
+  handleEndTimeChange(e) {
     if (e !== 'Invalid date') {
       this.setState({ endTime: e });
     }
@@ -152,26 +146,16 @@ export default class CreateEventModal extends React.Component {
     this.setState({ showErrorMessage: true });
   }
 
-  _saveChanges() {
+  saveChanges() {
     const eventParams = {
       summary:            this.state.summary ? this.state.summary : '',
       description:        this.state.description ? this.state.description : '',
       start_time:         this.state.startTime,
       end_time:           this.state.endTime,
-      conference_room_id: this.state.conferenceRoomId,
-      location:           this.state.location
+      conference_room_id: this.state.conferenceRoomId
     };
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-
-    axios({
-      method:  'post',
-      url:     '/events',
-      data:    eventParams,
-      headers: {
-        'X-CSRF-Token': token
-      }
-    })
+    EventSource.create(eventParams)
       .then(() => {
         this.props.closeModal();
       })

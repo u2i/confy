@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 
+const { func } = PropTypes;
+
 export default class SideNav extends React.Component {
+  static propTypes = {
+    openModal: func.isRequired
+  };
+
   constructor() {
     super();
 
@@ -23,6 +29,6 @@ export default class SideNav extends React.Component {
         <Button bsStyle="primary" className="btn-block">Next Week</Button>
         <Button bsStyle="primary" className="btn-block">Previous Week</Button>
       </div>
-    )
+    );
   }
 }

@@ -2,7 +2,9 @@ const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 
-const nodeEnv = process.env.NODE_ENV || 'development'
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+const APP_PATH = path.join(__dirname, 'app');
 
 module.exports = {
   context: __dirname,
@@ -22,7 +24,8 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.json'],
     alias:      {
       helpers: path.join(__dirname, 'app', 'helpers'),
-      schemas: path.join(__dirname, 'app', 'schemas')
+      schemas: path.join(__dirname, 'app', 'schemas'),
+      sources: `${APP_PATH}/sources`
     }
   },
   plugins: [
