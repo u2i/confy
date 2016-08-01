@@ -13,7 +13,7 @@ describe('<AppContainer />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
   const stateSpy = sinon.spy(AppContainer.prototype, 'setState');
 
-  let props = DefaultProps.build();
+  const props = DefaultProps.build();
 
   before(() => {
     proxyquire('../../app/sources/EventSource', EventSource);
