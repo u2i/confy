@@ -6,7 +6,6 @@ export default class DeleteButton extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired
   };
-  
   constructor(...args) {
     super(...args);
     this._handleDelete = this._handleDelete.bind(this);
@@ -37,6 +36,6 @@ export default class DeleteButton extends React.Component {
       window.location.reload(true); // Reload Events here
     }).catch(() => {
       alert('Server error'); // Yep
-    })
+    });
   }
 }
