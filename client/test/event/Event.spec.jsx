@@ -3,75 +3,54 @@ import { shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event';
 import { expect } from 'chai';
 import { _ } from 'lodash';
+import EventFactory from '../factories/Event';
 
 describe('<Event />', () => {
-  const eventSummary = 'Sample Event';
-  const creator = { email: 'creator@example.com', self: true };
-  const sampleRoom = {
-    id: 8,
-    capacity: 10,
-    title: 'Narnia One',
-    color: '#dffabd',
-    email: 'email@resource.calendar.google.com'
-  };
-  const sampleEvent = {
-    creator,
-    attendees: [{ response_status: 'needsAction', self: true }],
-    end: { date_time: '2016-07-25T02:30:00.000+02:00' },
-    id: '7utc9k4fds8kf2734q72dsoq8c',
-    start: { date_time: '2016-07-25T00:30:00.000+02:00' },
-    conference_room: sampleRoom,
-    start_timestamp: 1469397600,
-    end_timestamp: 1469406600,
-    summary: eventSummary
-  };
   const containerHeight = 30;
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
 
   it('renders correctly', () => {
+    const event = EventFactory.build();
     const wrapper = shallow(
       <Event
-        event={sampleEvent}
+        event={event}
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat} />
     );
     expect(wrapper.find('div')).to.have.lengthOf(5);
-    expect(wrapper.find('.event').props().style.height).to.eq(150);
-    expect(wrapper.find('.event').props().style.backgroundColor).to.eq(sampleRoom.color);
-    expect(wrapper.find('.event-time').text()).to.include('00:30');
-    expect(wrapper.find('.event-name').text()).to.include(eventSummary);
-    expect(wrapper.find('.event-user').text()).to.include(creator.email);
-    expect(wrapper.find('.event-location').text()).to.include(sampleRoom.title);
+    expect(wrapper.find('.event').props().style.height).to.eq(120);
+    expect(wrapper.find('.event').props().style.backgroundColor).to.eq(event.conference_room.color);
+    expect(wrapper.find('.event-time').text()).to.include('0:00');
+    expect(wrapper.find('.event-name').text()).to.include(event.summary);
+    expect(wrapper.find('.event-user').text()).to.include(event.creator.display_name);
+    expect(wrapper.find('.event-location').text()).to.include(event.conference_room.title);
   });
 
   it('renders correctly with other length', () => {
-    let eventClone = _.cloneDeep(sampleEvent);
-    eventClone.end_timestamp += 60 * 60; // 1 hour
-    eventClone.end.date_time = '2016-07-25T03:30:00.000+02:00';
+    const event = EventFactory.build();
+    event.end_timestamp += 60 * 60; // 1 hour
     const wrapper = shallow(
       <Event
-        event={eventClone}
+        event={event}
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat} />
     );
-    expect(wrapper.find('.event').props().style.height).to.eq(210);
+    expect(wrapper.find('.event').props().style.height).to.eq(180);
   });
 
-  it('renders display_name when present', () => {
-    let eventClone = _.cloneDeep(sampleEvent);
-    let creatorClone = _.cloneDeep(creator);
-    creatorClone.display_name = 'Display name';
-    eventClone.creator = creatorClone;
+  it('renders email when no display_name', () => {
+    const event = EventFactory.build();
+    event.creator.display_name = undefined;
     const wrapper = shallow(
       <Event
-        event={eventClone}
+        event={event}
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat} />
     );
-    expect(wrapper.find('.event-user').text()).to.include(creatorClone.display_name);
+    expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
   });
 });
