@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Filter from '../../app/components/calendar/filters/Filter';
 import chai from 'chai';
 import sinon from 'sinon';
+import ConferenceRoom from '../factories/ConferenceRoom';
 
 const expect = chai.expect;
 
@@ -12,18 +13,11 @@ describe('<Filter />', () => {
   const title = 'sample_title';
   const id = 1;
   const capacity = 1;
-  const conferenceRoom = {
-    id,
-    title,
-    color,
-    capacity
-  };
+  const conferenceRoom = ConferenceRoom.build({ id, title, color, capacity });
   const defaultProps = {
     conferenceRoom,
-    onEnabled: () => {
-    },
-    onDisabled: () => {
-    },
+    onEnabled: () => {},
+    onDisabled: () => {},
     enabled: false
   };
   const defaultWrapper = shallow(<Filter {...defaultProps} />);
