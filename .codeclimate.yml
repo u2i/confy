@@ -42,4 +42,4 @@ ratings:
   - "**.go"
 exclude_paths:
 - spec/**/*
-- "**/vendor/**/*"engines:
+- "**/vendor/**/*"
