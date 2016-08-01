@@ -6,12 +6,12 @@ class GoogleEventLister
     @email = email
   end
 
-  def call(starting, ending)
+  def call(time_interval)
     events = GoogleEvent.list_events(
       @credentials,
       @email,
-      starting.to_datetime,
-      ending.to_datetime
+      time_interval.start.to_datetime,
+      time_interval.end.to_datetime
     )
     events.flat_map do |_wday, day_events|
       build_groups(day_events)

@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
-  include TimeInterval
 
   before_action :refresh_token
   before_action :check_authentication
@@ -31,8 +30,7 @@ class EventsController < ApplicationController
   end
 
   def index
-    week_start, week_end = build_week_boundaries(params[:date])
-    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(week_start, week_end)
+    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
   end
 
   def create
@@ -52,5 +50,9 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id)
+  end
+
+  def date_param
+    params[:date] ? Date.parse(params[:date]) : Date.today
   end
 end

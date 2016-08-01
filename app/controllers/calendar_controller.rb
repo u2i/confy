@@ -3,7 +3,6 @@ require 'google/api_client/client_secrets'
 
 class CalendarController < ApplicationController
   include GoogleAuthentication
-  include TimeInterval
 
   before_action :refresh_token
   before_action :check_authentication
@@ -27,19 +26,19 @@ class CalendarController < ApplicationController
               date: params[:date]}
   end
 
+  def date_param
+    params[:date] ? Date.parse(params[:date]) : Date.today
+  end
+
   def events
-    week_start, week_end = build_week_boundaries(params[:date])
-    GoogleEventLister.new(session[:credentials], session[:email]).call(week_start, week_end)
+    GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
   end
 
   def calendar_days
-    week_start, week_end = build_week_boundaries(params[:date])
-    (week_start..week_end).to_a
+    TimeInterval.week(date_param).collect_steps(1.day)
   end
 
   def calendar_times
-    start_time = Time.now.at_beginning_of_day
-    end_time = Time.now.at_end_of_day
-    time_interval(start_time, end_time, EventGrouper::GRANULARITY)
+    TimeInterval.day.collect_steps(EventGrouper::GRANULARITY)
   end
 end
