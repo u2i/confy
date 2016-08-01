@@ -32,7 +32,7 @@ RSpec.describe TimeInterval do
     let(:expected_steps) { [Time.new(2016, 8, 1), Time.new(2016, 8, 2), Time.new(2016, 8, 3)] }
 
     subject(:time_interval) { described_class.week(interval_start, 3) }
-    it 'creates an array containing ' do
+    it 'returns dates within interval spaced by step' do
       expect(time_interval.collect_steps(step)).to eq(expected_steps)
     end
   end
