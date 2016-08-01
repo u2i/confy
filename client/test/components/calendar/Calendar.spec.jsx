@@ -22,7 +22,7 @@ describe('<Calendar />', () => {
     it('renders calendar <Table />', () => {
       const table = wrapper.find(Table);
       expect(table).to.have.lengthOf(1);
-      expect(table.hasClass('calendar')).to.be.true;
+      expect(table.hasClass('calendar')).to.be.true();
     });
 
     it('renders <RoomFilters /> components', () => {
@@ -46,14 +46,14 @@ describe('<Calendar />', () => {
     it('updates filter set after enabling a filter', () => {
       wrapper.find(RoomFilters).simulate('enabled', 1);
       expect(wrapper.state('filteredRooms').size).to.equal(1);
-      expect(wrapper.state('filteredRooms').includes(1)).to.be.true;
+      expect(wrapper.state('filteredRooms').includes(1)).to.be.true();
     });
 
     it('updates filter set after disabling a filter', () => {
       wrapper.find(RoomFilters).simulate('enabled', 1);
       wrapper.find(RoomFilters).simulate('disabled', 1);
       expect(wrapper.state('filteredRooms').size).to.equal(0);
-      expect(wrapper.state('filteredRooms').includes(1)).to.be.false;
+      expect(wrapper.state('filteredRooms').includes(1)).to.be.false();
     });
   });
 });
