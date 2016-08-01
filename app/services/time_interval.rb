@@ -1,12 +1,12 @@
 class TimeInterval
   class << self
-    def week(date, length=5)
+    def week(date, length = 5)
       week_start = week_start(date)
       week_end = week_end(week_start, length)
       TimeInterval.new(week_start, week_end)
     end
 
-    def day(date=Time.now)
+    def day(date = Time.now)
       TimeInterval.new(date.at_beginning_of_day, date.at_end_of_day)
     end
 

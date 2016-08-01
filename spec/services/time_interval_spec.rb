@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe TimeInterval do
-
   describe '.week' do
     let(:date) { Time.new(2016, 8, 2) }
     let(:week_start) { Time.new(2016, 8, 1) }
