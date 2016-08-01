@@ -8,11 +8,10 @@ class CalendarController < ApplicationController
 
   before_action :refresh_token
   before_action :check_authentication
-  before_action :load_dates_and_rooms, only: [:index]
+  before_action :create_calendar_props, only: [:index]
 
   # Index for showing events from Google calendar
   def index
-    @events = list_events(@week_start, @week_end)
     create_calendar_props
   rescue ArgumentError
     session.delete(:credentials)
@@ -22,20 +21,27 @@ class CalendarController < ApplicationController
   private
 
   def create_calendar_props
-    @props = {conferenceRooms: @conference_rooms,
-              initialEvents: @events,
-              days: @days,
-              times: @times,
+    @props = {conferenceRooms: ConferenceRoom.all,
+              initialEvents: events,
+              days: calendar_days,
+              times: calendar_times,
               unitEventLengthInSeconds: EventGrouper::GRANULARITY,
               date: params[:date]}
   end
 
-  def load_dates_and_rooms
-    @week_start, @week_end = build_week_boundaries(params[:date])
-    @days = (@week_start..@week_end).to_a
+  def events
+    week_start, week_end = build_week_boundaries(params[:date])
+    list_events(week_start, week_end)
+  end
+
+  def calendar_days
+    week_start, week_end = build_week_boundaries(params[:date])
+    (week_start..week_end).to_a
+  end
+
+  def calendar_times
     start_time = Time.now.at_beginning_of_day
     end_time = Time.now.at_end_of_day
-    @times = time_interval(start_time, end_time, 30.minutes)
-    @conference_rooms = ConferenceRoom.all
+    time_interval(start_time, end_time, EventGrouper::GRANULARITY)
   end
 end
