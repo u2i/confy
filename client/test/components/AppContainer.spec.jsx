@@ -27,14 +27,14 @@ describe('<AppContainer />', () => {
 
   it('prefetches events', () => {
     mount(<AppContainer {...props} />);
-    expect(EventSource.fetch).to.have.been.calledOnce;
+    expect(EventSource.fetch).to.have.been.calledOnce();
   });
 
   describe('refresh', () => {
     it('updates events', () => {
       const wrapper = shallow(<AppContainer {...props} />);
       wrapper.find(SideNav).simulate('refresh');
-      expect(EventSource.fetch).to.have.been.calledOnce;
+      expect(EventSource.fetch).to.have.been.calledOnce();
     });
   });
 });

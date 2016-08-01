@@ -12,6 +12,6 @@ describe('<SideNav />', () => {
   it('invokes callback on refresh', () => {
     const wrapper = shallow(<SideNav onRefresh={refreshSpy} />);
     wrapper.find(Button).forEach(button => button.simulate('click'));
-    expect(refreshSpy).to.have.been.calledOnce;
+    expect(refreshSpy).to.have.been.calledOnce();
   });
 });
