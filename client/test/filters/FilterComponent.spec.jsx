@@ -3,14 +3,11 @@ import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
 import Filter from '../../app/components/calendar/filters/Filter';
 import chai from 'chai';
-import jsdom from 'mocha-jsdom';
 import sinon from 'sinon';
 
 const expect = chai.expect;
 
 describe('<Filter />', () => {
-  jsdom();
-
   const color = '#000000';
   const title = 'sample_title';
   const id = 1;
