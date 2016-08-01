@@ -22,7 +22,7 @@ export default class DeleteButton extends React.Component {
         'X-CSRF-Token': token
       }
     }).then(() => {
-      window.location.reload(true); // Reloal Events here
+      window.location.reload(true); // Reload Events here
     }).catch(() => {
       alert("Server error"); // Yep
     })

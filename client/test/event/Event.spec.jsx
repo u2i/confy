@@ -30,31 +30,36 @@ describe('<Event />', () => {
     const unitEventLengthInSeconds = 30 * 60;
     const timeFormat = 'HH:mm';
     
-    it('renders delete button when self correctly', () => {
-        const wrapper = mount(
-            <Event
-                event={sampleEvent}
-                containerHeight={containerHeight}
-                unitEventLengthInSeconds={unitEventLengthInSeconds}
-                timeFormat={timeFormat} />
-        );
-        expect(wrapper.find(DeleteButton)).to.have.lengthOf(1);
+    describe('creator.self', () => {
+        it('renders delete button when self correctly', () => {
+            const wrapper = mount(
+                <Event
+                    event={sampleEvent}
+                    containerHeight={containerHeight}
+                    unitEventLengthInSeconds={unitEventLengthInSeconds}
+                    timeFormat={timeFormat} />
+            );
+            expect(wrapper.find(DeleteButton)).to.have.lengthOf(1);
+        });
+
     });
-    
-    it('does not render delete button when not self', () => {
-        let creatorClone = _.cloneDeep(creator);
-        creatorClone.self = undefined;
-        let eventClone = _.cloneDeep(sampleEvent);
-        eventClone.creator = creatorClone;
-        const wrapper = mount(
-            <Event
-                event={eventClone}
-                containerHeight={containerHeight}
-                unitEventLengthInSeconds={unitEventLengthInSeconds}
-                timeFormat={timeFormat} />
-        );
-        expect(wrapper.find(DeleteButton)).to.have.lengthOf(0);
-        
+
+
+    describe('undefined creator.self', () => {
+        it('does not render delete button when not self', () => {
+            let creatorClone = _.cloneDeep(creator);
+            creatorClone.self = undefined;
+            let eventClone = _.cloneDeep(sampleEvent);
+            eventClone.creator = creatorClone;
+            const wrapper = mount(
+                <Event
+                    event={eventClone}
+                    containerHeight={containerHeight}
+                    unitEventLengthInSeconds={unitEventLengthInSeconds}
+                    timeFormat={timeFormat} />
+            );
+            expect(wrapper.find(DeleteButton)).to.have.lengthOf(0);
+        });
     });
 
 });
