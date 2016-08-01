@@ -3,7 +3,7 @@ import User from './User';
 import ConferenceRoom from './ConferenceRoom';
 
 export default new Factory()
-  .sequence('id',  i => `id${i}`)
+  .sequence('id', i => `id${i}`)
   .option('start_time', new Date(2016, 7, 25, 0, 0, 0))
   .option('end_time', new Date(2016, 7, 25, 2, 0, 0))
   .attr('start_timestamp', ['start_time'], startTime => startTime.getTime() / 1000)
