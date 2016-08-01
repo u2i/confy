@@ -2,5 +2,4 @@
 --require jsdom-global/register
 --require ignore-styles
 --require test/common
---reporter nyan
 --recursive

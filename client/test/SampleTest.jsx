@@ -13,5 +13,6 @@ describe('<RoomFilters />', () => {
         const wrapper = mount(<RoomFilters onEnabled={a => a+2} onDisabled={b => b-2} conferenceRooms={conferenceRooms}/>);
         expect(wrapper.find(Filter)).to.have.length(1);
         expect(wrapper.is('div')).to.eq(false);
+        expect(true).to.be.true();
     });
 });
