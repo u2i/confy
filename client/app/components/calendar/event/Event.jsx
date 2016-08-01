@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
-import DeleteButton from './DeleteButton'
+import DeleteButton from './DeleteButton';
 import { If, Then } from 'react-if';
 
 import { formatTime } from 'helpers/DateHelper';

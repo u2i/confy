@@ -7,13 +7,20 @@ export default class DeleteButton extends React.Component {
     id: PropTypes.string.isRequired
   };
 
+  render() {
+    return (
+      <span onClick={this._handleDelete.bind(this)} className="delete-button glyphicon glyphicon-remove">
+      </span>
+    );
+  }
+
   _path() {
     return `/events/${this.props.id}`;
   }
 
-  _processDelete(event) {
+  _handleDelete(event) {
     event.preventDefault();
-    let token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
 
     axios({
       method: 'DELETE',
@@ -26,12 +33,5 @@ export default class DeleteButton extends React.Component {
     }).catch(() => {
       alert("Server error"); // Yep
     })
-  }
-
-  render() {
-    return (
-      <span onClick={this._processDelete.bind(this)} className="delete glyphicon glyphicon-remove">
-      </span>
-    );
   }
 }
