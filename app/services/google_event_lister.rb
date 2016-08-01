@@ -8,8 +8,8 @@ class GoogleEventLister
 
   def call(time_interval)
     events = GoogleEvent.list_events(
-      @credentials,
-      @email,
+      credentials,
+      email,
       time_interval.start.to_datetime,
       time_interval.end.to_datetime
     )
