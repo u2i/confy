@@ -47,14 +47,14 @@ describe('<EventWrapper />', () => {
     wrapper.unmount();
     wrapper.mount();
 
-    expect(spy).to.have.been.called;
+    expect(spy).to.have.been.called();
     expect(spy.getCall(0).args[0]).to.include.all.keys('width', 'height');
   });
 
   it('updates on window resize', () => {
     window.dispatchEvent(new window.Event('resize'));
 
-    expect(spy).to.have.been.called;
+    expect(spy).to.have.been.called();
     expect(spy.getCall(0).args[0]).to.include.all.keys('width', 'height');
   });
 });
