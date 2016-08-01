@@ -22,7 +22,7 @@ export default class Event extends React.Component {
 
     return (
       <div className="event" style={this._eventStyle()}>
-        <If condition={creator.self}>
+        <If condition={creator.self === true}>
           <Then>{() =>
             <DeleteButton id={event.id} />}
           </Then>
