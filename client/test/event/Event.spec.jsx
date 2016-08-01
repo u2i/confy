@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Event from '../../app/components/calendar/event/Event';
 import { expect } from 'chai';
-import { _ } from 'lodash';
 import EventFactory from '../factories/Event';
 
 describe('<Event />', () => {

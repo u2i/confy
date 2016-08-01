@@ -29,7 +29,7 @@ describe('<EventGroup />', () => {
   });
 
   it('renders multiple events', () => {
-    const events = [EventFactory.build(), EventFactory.build()]
+    const events = [EventFactory.build(), EventFactory.build()];
     const wrapper = shallow(
       <EventGroup
         events={events}
