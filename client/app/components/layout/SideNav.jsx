@@ -14,10 +14,6 @@ export default class SideNav extends React.Component {
     this._handleCreateEvent = this._handleCreateEvent.bind(this);
   }
 
-  _handleCreateEvent() {
-    this.props.openModal();
-  }
-
   render() {
     return (
       <div>
@@ -30,5 +26,9 @@ export default class SideNav extends React.Component {
         <Button bsStyle="primary" className="btn-block">Previous Week</Button>
       </div>
     );
+  }
+
+  _handleCreateEvent() {
+    this.props.openModal();
   }
 }

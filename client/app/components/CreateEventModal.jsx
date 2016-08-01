@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Button, Modal, FormGroup, ControlLabel, FormControl, Alert } from 'react-bootstrap';
 import DateTimeField from 'react-bootstrap-datetimepicker';
 import moment from 'moment';
-import axios from 'axios';
 import _ from 'lodash';
 import EventSource from 'sources/EventSource';
 
@@ -37,6 +36,48 @@ export default class CreateEventModal extends React.Component {
     _.bindAll(this,
       ['saveChanges', 'handleTextFieldChange', 'handleLocationChange',
         'handleStartTimeChange', 'handleEndTimeChange']);
+  }
+
+  handleTextFieldChange(e) {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    this.setState({ [name]: value });
+  }
+
+  handleLocationChange(e) {
+    const conferenceRoomId = e.target.value;
+    this.setState({ conferenceRoomId });
+  }
+
+  handleStartTimeChange(e) {
+    if (e !== 'Invalid date') {
+      this.setState({ startTime: e });
+    }
+  }
+
+  handleEndTimeChange(e) {
+    if (e !== 'Invalid date') {
+      this.setState({ endTime: e });
+    }
+  }
+
+  saveChanges() {
+    const eventParams = {
+      summary:            this.state.summary ? this.state.summary : '',
+      description:        this.state.description ? this.state.description : '',
+      start_time:         this.state.startTime,
+      end_time:           this.state.endTime,
+      conference_room_id: this.state.conferenceRoomId
+    };
+
+    EventSource.create(eventParams)
+      .then(() => {
+        this.props.closeModal();
+      })
+      .catch(() => {
+        this._showError();
+      });
   }
 
   render() {
@@ -117,51 +158,7 @@ export default class CreateEventModal extends React.Component {
     );
   }
 
-
-  handleTextFieldChange(e) {
-    const value = e.target.value;
-    const name = e.target.name;
-
-    this.setState({ [name]: value });
-  }
-
-  handleLocationChange(e) {
-    const conferenceRoomId = e.target.value;
-    this.setState({ conferenceRoomId });
-  }
-
-  handleStartTimeChange(e) {
-    if (e !== 'Invalid date') {
-      this.setState({ startTime: e });
-    }
-  }
-
-  handleEndTimeChange(e) {
-    if (e !== 'Invalid date') {
-      this.setState({ endTime: e });
-    }
-  }
-
   _showError() {
     this.setState({ showErrorMessage: true });
   }
-
-  saveChanges() {
-    const eventParams = {
-      summary:            this.state.summary ? this.state.summary : '',
-      description:        this.state.description ? this.state.description : '',
-      start_time:         this.state.startTime,
-      end_time:           this.state.endTime,
-      conference_room_id: this.state.conferenceRoomId
-    };
-
-    EventSource.create(eventParams)
-      .then(() => {
-        this.props.closeModal();
-      })
-      .catch(() => {
-        this._showError();
-      });
-  }
-
 }
