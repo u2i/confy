@@ -1,7 +1,9 @@
-import React from 'react'
-import Calendar from './calendar/Calendar'
-import SideNav from './SideNav'
-import CreateEventModal from './CreateEventModal'
+import React from 'react';
+import { Grid, Col } from 'react-bootstrap';
+import Calendar from './calendar/Calendar';
+import SideNav from './layout/SideNav';
+import CreateEventModal from './CreateEventModal';
+
 
 export default class AppContainer extends React.Component {
   constructor() {
@@ -24,13 +26,15 @@ export default class AppContainer extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="col-xs-12 col-md-10">
-          <SideNav
-            openModal={this.openModal}
-          />
-          <Calendar {...this.props} />
-        </div>
+      <div>
+        <Grid>
+          <Col xs={12} md={2}>
+            <SideNav openModal={this.openModal} />
+          </Col>
+          <Col xs={12} md={10}>
+            <Calendar {...this.props} />
+          </Col>
+        </Grid>
         <CreateEventModal
           showModal={this.state.showModal}
           closeModal={this.closeModal}

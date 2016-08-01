@@ -141,8 +141,17 @@ class GoogleEvent
     end
 
     def normalize_event_datetime(event)
-      event.start.date_time = EventGrouper.floor_time(event.start.date_time)
-      event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
+      if whole_day_event?(event)
+        event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
+        event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
+      else
+        event.start.date_time = EventGrouper.floor_time(event.start.date_time)
+        event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
+      end
+    end
+
+    def whole_day_event?(event)
+      event.start.date.present?
     end
   end
 

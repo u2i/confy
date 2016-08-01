@@ -1,20 +1,16 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
 
-import { formatTime, timestamp } from 'helpers/DateHelper';
+import { formatTime } from 'helpers/DateHelper';
 
 import './event.scss';
 
 export default class Event extends React.Component {
   static propTypes = {
-    event:           EventSchema.isRequired,
-    containerHeight: PropTypes.number.isRequired,
-    unitEventLength: PropTypes.number,
-    timeFormat:      PropTypes.string
-  };
-
-  static defaultProps = {
-    unitEventLength: 60 // seconds
+    event:                    EventSchema.isRequired,
+    containerHeight:          PropTypes.number.isRequired,
+    unitEventLengthInSeconds: PropTypes.number.isRequired,
+    timeFormat:               PropTypes.string
   };
 
   render() {
@@ -43,7 +39,7 @@ export default class Event extends React.Component {
   }
 
   _eventLengthInSeconds() {
-    return (this.props.event.end_timestamp - this.props.event.start_timestamp) / this.props.unitEventLength;
+    return (this.props.event.end_timestamp - this.props.event.start_timestamp) / this.props.unitEventLengthInSeconds;
   }
 
   _eventStyle() {

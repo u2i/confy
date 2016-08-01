@@ -1,11 +1,8 @@
-// Common client-side webpack configuration used by webpack.hot.config and webpack.rails.config.
-
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 
-const devBuild = process.env.NODE_ENV !== 'production';
-const nodeEnv = devBuild ? 'development' : 'production';
+const nodeEnv = process.env.NODE_ENV || 'development'
 
 module.exports = {
   context: __dirname,
