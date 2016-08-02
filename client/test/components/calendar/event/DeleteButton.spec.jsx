@@ -7,11 +7,11 @@ import sinon from 'sinon';
 describe('<DeleteButton />', () => {
   const id = '123';
   it('renders', () => {
-    const wrapper = shallow(<DeleteButton id={id} onDelete={(id) => {}}/>);
+    const wrapper = shallow(<DeleteButton id={id} onDelete={(_id) => {}} />);
     expect(wrapper.props().className).to.contain('delete-button');
     expect(wrapper.props().className).to.contain('glyphicon');
   });
-  
+
   describe('click', () => {
     const spy = sinon.spy();
     const wrapper = mount(<DeleteButton id={id} onDelete={spy} />);

@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import EventSource from '../../app/sources/EventSource';
 import DefaultProps from '../factories/DefaultProps';
-import EventFactory from '../factories/Event'
+import EventFactory from '../factories/Event';
 
 import AppContainer from '../../app/components/AppContainer';
 import SideNav from '../../app/components/layout/SideNav';
@@ -18,10 +18,10 @@ describe('<AppContainer />', () => {
   before(() => {
     proxyquire('../../app/sources/EventSource', EventSource);
   });
-  
+
   beforeEach(() => {
     props = DefaultProps.build();
-  })
+  });
 
   after(() => {
     EventSource.fetch.restore();
@@ -45,17 +45,17 @@ describe('<AppContainer />', () => {
       expect(EventSource.fetch).to.have.been.calledOnce();
     });
   });
-  
+
   describe('delete', () => {
     before(() => {
-      document.querySelector = function(_e) {
-        return { content: 'xxx' }
+      document.querySelector = function querySelector(_e) {
+        return { content: 'xxx' };
       };
     });
-    
+
     it('deletes event', () => {
-      const event = EventFactory.build({creator: { self: true, email: 'user@example.com' } });
-      props = DefaultProps.build({initialEvents: [[event]]});
+      const event = EventFactory.build({ creator: { self: true, email: 'user@example.com' } });
+      props = DefaultProps.build({ initialEvents: [[event]] });
       const wrapper = mount(<AppContainer {...props} />);
       wrapper.find('.delete-button').simulate('click');
       expect(EventSource.remove).to.have.been.calledWith(event.id);

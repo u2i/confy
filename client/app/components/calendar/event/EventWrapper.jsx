@@ -41,7 +41,7 @@ class EventWrapper extends React.Component {
             <EventGroup {...this.props}
                         containerWidth={this.state.width}
                         containerHeight={this.state.height}
-                        onDelete = {this.props.onDelete} />}
+                        onDelete={this.props.onDelete} />}
           </Then>
         </If>
       </td>
