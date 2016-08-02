@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import EventGroup from '../../app/components/calendar/event/EventGroup';
+import EventGroup from '../../../app/components/calendar/event/EventGroup';
 import { expect } from 'chai';
-import EventFactory from '../factories/Event';
+import EventFactory from '../../factories/Event';
 
 describe('<EventGroup />', () => {
   const containerHeight = 30;
