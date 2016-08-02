@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import moment from 'moment';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 export default class SideNav extends React.Component {
   static propTypes = {
-    date: React.PropTypes.string
+    date:      React.PropTypes.string,
+    onRefresh: React.PropTypes.func
   };
 
   render() {
@@ -17,6 +18,9 @@ export default class SideNav extends React.Component {
                 bsStyle="primary" className="btn-block">Next Week</Button>
         <Button href={this._dateParam(this._previousWeek())}
                 bsStyle="primary" className="btn-block">Previous Week</Button>
+        <Button onClick={this.props.onRefresh} className="btn-block">
+          <Glyphicon glyph="refresh" />&nbsp;Sync
+        </Button>
       </aside>
     );
   }

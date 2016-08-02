@@ -1,3 +1,5 @@
 --compilers js:babel-core/register
+--require jsdom-global/register
 --require ignore-styles
---reporter nyan
+--require test/common
+--recursive
