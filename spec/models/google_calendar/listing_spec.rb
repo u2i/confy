@@ -20,12 +20,12 @@ describe Listing do
     end
 
     let(:google_event2) do
-      Google::Apis::CalendarV3::Event.new(start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time2),
-                                          creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
-                                          end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time2),
-                                          summary: 'Event2', description: sample_summary,
-                                          attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')]
-      )
+      Google::Apis::CalendarV3::Event.new(
+        start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time2),
+        creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
+        end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time2),
+        summary: 'Event2', description: sample_summary,
+        attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')])
     end
 
     let(:sample_events) do

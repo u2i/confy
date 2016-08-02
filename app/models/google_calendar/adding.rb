@@ -21,19 +21,28 @@ module GoogleCalendar
     end
 
     def insert_event_and_return_result(credentials, event_data)
-      events = events_in_span(credentials, event_data[:attendees].first,
-                              event_data[:start][:date_time], event_data[:end][:date_time])
-      if events && events.items.any?
-        count = events.items.size
-        raise(
-          EventInTimeSpanError,
-          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
-        )
-      end
+      raise_exception_if_occupied(credentials, event_data)
       calendar_service(credentials).insert_event(
         'primary',
         Google::Apis::CalendarV3::Event.new(event_data)
       )
+    end
+
+    def raise_exception_if_occupied(credentials, event_data)
+      events = events_in_span(credentials, event_data[:attendees].first,
+                              event_data[:start][:date_time], event_data[:end][:date_time])
+      if events && events.items.any?
+        exception_message = occupied_exception_message(events)
+        raise(
+          EventInTimeSpanError,
+          exception_message
+        )
+      end
+    end
+
+    def occupied_exception_message(events)
+      count = events.items.size
+      "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
     end
 
     def items_list(items)

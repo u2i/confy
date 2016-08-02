@@ -113,10 +113,8 @@ describe Adding do
                                    room.id,
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
-          end.to raise_error(
-                   GoogleCalendar::Adding::EventInTimeSpanError,
-                   'Already 2 events in time span(Summary, Meeting).'
-                 )
+          end.to raise_error(GoogleCalendar::Adding::EventInTimeSpanError,
+                             'Already 2 events in time span(Summary, Meeting).')
         end
       end
       context 'no other events' do
