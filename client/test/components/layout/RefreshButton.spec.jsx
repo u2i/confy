@@ -11,7 +11,7 @@ describe('<RefreshButton />', () => {
 
   it('invokes callback on refresh', () => {
     const wrapper = shallow(<RefreshButton onRefresh={refreshSpy} />);
-    wrapper.find(Button).forEach(button => button.simulate('click'));
+    wrapper.find(Button).simulate('click');
     expect(refreshSpy).to.have.been.calledOnce();
   });
 
