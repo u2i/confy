@@ -8,7 +8,7 @@ describe('EventHelper', () => {
     const event = Event.build();
 
     it('returns a function', () => {
-      expect(EventHelper.eventStartsAt(timestamp)).to.be.an('function');
+      expect(EventHelper.eventStartsAt(timestamp)).to.be.a('function');
     });
 
     it('returns function that checks if event starts at the specific time', () => {
