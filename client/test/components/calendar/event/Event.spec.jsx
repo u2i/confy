@@ -19,8 +19,9 @@ describe('<Event />', () => {
         timeFormat={timeFormat} />
     );
     expect(wrapper.find('div')).to.have.lengthOf(5);
-    expect(wrapper.find('.event').props().style.height).to.eq(120);
-    expect(wrapper.find('.event').props().style.backgroundColor).to.eq(event.conference_room.color);
+    const eventStyle = wrapper.find('.event').props().style;
+    expect(eventStyle.height).to.eq(120);
+    expect(eventStyle.backgroundColor).to.eq(event.conference_room.color);
     expect(wrapper.find('.event-time').text()).to.include('0:00');
     expect(wrapper.find('.event-name').text()).to.include(event.summary);
     expect(wrapper.find('.event-user').text()).to.include(event.creator.display_name);
