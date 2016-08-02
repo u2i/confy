@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 
-const nodeEnv = process.env.NODE_ENV || 'development'
+const nodeEnv = process.env.NODE_ENV || 'development';
 
 const APP_PATH = path.join(__dirname, 'app');
 
@@ -14,7 +14,9 @@ module.exports = {
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'jquery',
-      'turbolinks'
+      'jquery-ujs',
+      'turbolinks',
+      'bootstrap-loader'
     ],
     app: [
       './app/App.jsx'

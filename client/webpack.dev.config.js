@@ -10,11 +10,6 @@ config.entry.app.push(
   'webpack/hot/only-dev-server'
 );
 
-config.entry.vendor.push(
-  'jquery-ujs',
-  'bootstrap-loader'
-);
-
 config.output = {
   filename:   '[name]-bundle.js',
   path:       path.join(__dirname, 'public'),
