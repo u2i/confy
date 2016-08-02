@@ -1,7 +1,10 @@
 sudo: false
 language: ruby
 
-cache: bundler
+cache:
+  bundler: true
+  directories:
+    - client/node_modules
 rvm:
   - 2.3.0
 before_script:
@@ -12,7 +15,7 @@ before_install:
     -in client_secrets.json.enc -out client_secrets.json -d
   - nvm install v5.10.0
 install:
-  - bundle install
+  - bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
   - npm install
 script:
   - bundle exec rake test:all
