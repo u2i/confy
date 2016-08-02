@@ -12,9 +12,9 @@ describe('<CalendarRow />', () => {
   const events = [group1, group2];
   const days = [new Date(), new Date(), new Date()];
   const unitEventLengthInSeconds = 1800;
-  const time = new Date();
+  let time = new Date();
   const props = { events, days, unitEventLengthInSeconds };
-  const wrapper = shallow(<CalendarRow time={time} {...props} />);
+  let wrapper = shallow(<CalendarRow time={time} {...props} />);
 
   describe('#render()', () => {
     it('renders exactly one <tr />', () => {
@@ -31,7 +31,7 @@ describe('<CalendarRow />', () => {
 
     describe('displayMinutes prop equals true', () => {
       it('renders <TimeCell /> with visible prop set to true', () => {
-        let wrapper = shallow(<CalendarRow displayMinutes time={time} {...props} />);
+        wrapper = shallow(<CalendarRow displayMinutes time={time} {...props} />);
 
         expect(wrapper.find(TimeCell).props().visible).to.eq(true);
       });
@@ -40,9 +40,9 @@ describe('<CalendarRow />', () => {
     describe('displayMinutes prop equals false', () => {
       describe('time minutes field equals 0', () => {
         it('renders <TimeCell /> with visible prop set to true', () => {
-          let time = new Date();
+          time = new Date();
           time.setMinutes(0);
-          let wrapper = shallow(<CalendarRow time={time} {...props} />);
+          wrapper = shallow(<CalendarRow time={time} {...props} />);
 
           expect(wrapper.find(TimeCell).props().visible).to.eq(true);
         });
@@ -50,9 +50,9 @@ describe('<CalendarRow />', () => {
 
       describe('time minutes field doest not equal 0', () => {
         it('renders <TimeCell /> with visible prop set to false', () => {
-          let time = new Date();
+          time = new Date();
           time.setMinutes(1);
-          let wrapper = shallow(<CalendarRow time={time} {...props} />);
+          wrapper = shallow(<CalendarRow time={time} {...props} />);
 
           expect(wrapper.find(TimeCell).props().visible).to.eq(false);
         });
