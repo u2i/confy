@@ -10,7 +10,7 @@ describe('<Event />', () => {
   const timeFormat = 'HH:mm';
 
   it('renders correctly', () => {
-    const event = EventFactory.build();
+    const event = EventFactory.build({ summary: 'Summary' });
     const wrapper = shallow(
       <Event
         event={event}
