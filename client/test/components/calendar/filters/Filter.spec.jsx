@@ -1,10 +1,10 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
-import Filter from '../../app/components/calendar/filters/Filter';
+import Filter from '../../../../app/components/calendar/filters/Filter';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import ConferenceRoom from '../factories/ConferenceRoom';
+import ConferenceRoom from '../../../factories/ConferenceRoom';
 
 
 describe('<Filter />', () => {
@@ -61,8 +61,6 @@ describe('<Filter />', () => {
       wrapper.find('input').simulate('change');
       expect(onEnabled).to.have.been.calledOnce();
       expect(onEnabled).to.have.been.calledWith(conferenceRoom.id);
-
     });
   });
-
 });
