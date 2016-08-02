@@ -7,7 +7,7 @@ class GoogleEventLister
   end
 
   def call(time_interval)
-    events = GoogleEvent.list_events(
+    events = GoogleCalendar::GoogleEvent.list_events(
       credentials,
       email,
       time_interval.start.to_datetime,
