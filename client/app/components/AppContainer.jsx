@@ -34,7 +34,7 @@ export default class AppContainer extends React.Component {
   }
 
   render() {
-    const { initialEvents, ...calendarProps } = this.props;
+    const { initialEvents: _, ...calendarProps } = this.props;
     return (
       <Grid>
         <Col xs={12} md={2}>
