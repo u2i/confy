@@ -8,7 +8,7 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
+const { string, number, array, arrayOf, oneOfType, instanceOf, func } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -18,7 +18,8 @@ export default class Calendar extends React.Component {
     times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
-    dateFormat:               string
+    dateFormat:               string,
+    onDelete:                 func.isRequired
   };
 
   static defaultProps = {
@@ -43,7 +44,8 @@ export default class Calendar extends React.Component {
                    key={time}
                    events={this._filterEvents()}
                    days={this.props.days}
-                   unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
+                   unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
+                   onDelete={this.props.onDelete} />
     ));
 
     return (

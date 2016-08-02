@@ -1,41 +1,18 @@
 import React, { PropTypes } from 'react';
 import axios from 'axios';
 import './event.scss';
+import EventSource from 'sources/EventSource';
 
 export default class DeleteButton extends React.Component {
   static propTypes = {
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired
   };
-  constructor(...args) {
-    super(...args);
-    this._handleDelete = this._handleDelete.bind(this);
-  }
 
   render() {
     return (
-      <span onClick={this._handleDelete} className="delete-button glyphicon glyphicon-remove">
+      <span onClick={() => this.props.onDelete(this.props.id)} className="delete-button glyphicon glyphicon-remove">
       </span>
     );
-  }
-
-  _path() {
-    return `/events/${this.props.id}`;
-  }
-
-  _handleDelete(event) {
-    event.preventDefault();
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-
-    axios({
-      method: 'DELETE',
-      url: this._path(),
-      headers: {
-        'X-CSRF-Token': token
-      }
-    }).then(() => {
-      window.location.reload(true); // Reload Events here
-    }).catch(() => {
-      alert('Server error'); // Yep
-    });
   }
 }

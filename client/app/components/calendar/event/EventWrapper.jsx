@@ -5,7 +5,8 @@ import EventGroup from './EventGroup';
 
 class EventWrapper extends React.Component {
   static propTypes = {
-    events: React.PropTypes.array
+    events:   React.PropTypes.array,
+    onDelete: React.PropTypes.func.isRequired
   };
 
   constructor(...args) {
@@ -39,7 +40,8 @@ class EventWrapper extends React.Component {
           <Then>{() =>
             <EventGroup {...this.props}
                         containerWidth={this.state.width}
-                        containerHeight={this.state.height} />}
+                        containerHeight={this.state.height}
+                        onDelete = {this.props.onDelete} />}
           </Then>
         </If>
       </td>

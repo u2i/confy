@@ -21,6 +21,7 @@ export default class AppContainer extends React.Component {
 
     this.state = { events: this.props.initialEvents };
     this.handleCalendarRefresh = this.handleCalendarRefresh.bind(this);
+    this._deleteEvent = this._deleteEvent.bind(this);
   }
 
   componentDidMount() {
@@ -41,7 +42,7 @@ export default class AppContainer extends React.Component {
           <SideNav onRefresh={this.handleCalendarRefresh} />
         </Col>
         <Col xs={12} md={10}>
-          <Calendar {...calendarProps} events={this.state.events} />
+          <Calendar {...calendarProps} events={this.state.events} onDelete={this._deleteEvent} />
         </Col>
       </Grid>
     );
@@ -51,5 +52,19 @@ export default class AppContainer extends React.Component {
     EventSource.fetch({ date: this.props.date })
       .then(({ data }) =>
         this.setState({ events: data }));
+  }
+
+  _deleteEvent(id) {
+    EventSource.remove(id);
+    let events = this.state.events;
+    for(let i = 0; i < events.length; i ++) {
+      let row = events[i];
+      const index = row.findIndex(event => event.id === id);
+      if(index >= 0) {
+        row.splice(index, 1);
+        break;
+      }
+    }
+    this.setState({events});
   }
 }

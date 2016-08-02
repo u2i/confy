@@ -12,7 +12,8 @@ export default class Event extends React.Component {
     event:                    EventSchema.isRequired,
     containerHeight:          PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
-    timeFormat:               PropTypes.string
+    timeFormat:               PropTypes.string,
+    onDelete:                 PropTypes.func.isRequired
   };
 
   render() {
@@ -24,7 +25,7 @@ export default class Event extends React.Component {
       <div className="event" style={this._eventStyle()}>
         <If condition={creator.self === true}>
           <Then>{() =>
-            <DeleteButton id={event.id} />}
+            <DeleteButton id={event.id} onDelete={this.props.onDelete}/>}
           </Then>
         </If>
         <div className="event-time">{timeStr}</div>
