@@ -2,18 +2,13 @@ import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
 import Filter from '../../app/components/calendar/filters/Filter';
-import chai from 'chai';
+import { expect } from 'chai';
 import sinon from 'sinon';
 import ConferenceRoom from '../factories/ConferenceRoom';
 
-const expect = chai.expect;
 
 describe('<Filter />', () => {
-  const color = '#000000';
-  const title = 'sample_title';
-  const id = 1;
-  const capacity = 1;
-  const conferenceRoom = ConferenceRoom.build({ id, title, color, capacity });
+  const conferenceRoom = ConferenceRoom.build();
   const defaultProps = {
     conferenceRoom,
     onEnabled: () => {},
@@ -23,15 +18,15 @@ describe('<Filter />', () => {
   const defaultWrapper = shallow(<Filter {...defaultProps} />);
 
   it('renders <Checbkox />', () => {
-    expect(defaultWrapper.find(Checkbox)).to.have.length(1);
+    expect(defaultWrapper.find(Checkbox)).to.have.lengthOf(1);
   });
 
   it('sets .filter-box backgroundColor', () => {
-    expect(defaultWrapper.find('.filter-box').props().style.backgroundColor).to.eq(color);
+    expect(defaultWrapper.find('.filter-box').props().style.backgroundColor).to.eq(conferenceRoom.color);
   });
 
   it('puts conference room title inside Checkbox component', () => {
-    expect(defaultWrapper.find(Checkbox).children().text()).to.eq(title);
+    expect(defaultWrapper.find(Checkbox).children().text()).to.eq(conferenceRoom.title);
   });
 
   it("triggers appropriate handler based on 'enabled' prop", () => {
@@ -46,13 +41,13 @@ describe('<Filter />', () => {
     const wrapper = mount(<Filter {...props} />);
 
     wrapper.find('input').simulate('change');
-    expect(onDisabled).to.have.property('callCount', 1);
-    expect(onDisabled.calledWith(id)).to.eq(true);
+    expect(onDisabled).to.have.been.calledOnce;
+    expect(onDisabled.calledWith(conferenceRoom.id)).to.eq(true);
 
     wrapper.setProps({ enabled: true });
 
     wrapper.find('input').simulate('change');
-    expect(onEnabled).to.have.property('callCount', 1);
-    expect(onEnabled.calledWith(id)).to.eq(true);
+    expect(onEnabled).to.have.been.calledOnce;
+    expect(onEnabled.calledWith(conferenceRoom.id)).to.eq(true);
   });
 });
