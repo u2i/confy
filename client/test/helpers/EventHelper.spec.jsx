@@ -24,8 +24,7 @@ describe('EventHelper', () => {
     const group = [event1, event2, event3];
     const timestamp = (new Date(2016, 7, 25, 0, 0, 0)).getTime() / 1000;
     it('returns events that starts at the specific time', () => {
-      expect(EventHelper.eventsStartingAt(timestamp, group)).to.include(event1, event2);
-      expect(EventHelper.eventsStartingAt(timestamp, group)).not.to.include(event3);
+      expect(EventHelper.eventsStartingAt(timestamp, group)).to.eql([event1, event2]);
     });
   });
 });
