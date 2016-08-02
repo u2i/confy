@@ -19,7 +19,7 @@ export default class AppContainer extends React.Component {
   constructor(...args) {
     super(...args);
 
-    this.state = { events: this.props.initialEvents };
+    this.state = { events: this.props.initialEvents, updating: false };
     this.handleCalendarRefresh = this.handleCalendarRefresh.bind(this);
   }
 
@@ -38,7 +38,7 @@ export default class AppContainer extends React.Component {
     return (
       <Grid>
         <Col xs={12} md={2}>
-          <SideNav onRefresh={this.handleCalendarRefresh} />
+          <SideNav onRefresh={this.handleCalendarRefresh} updating={this.state.updating} />
         </Col>
         <Col xs={12} md={10}>
           <Calendar {...calendarProps} events={this.state.events} />
@@ -48,8 +48,14 @@ export default class AppContainer extends React.Component {
   }
 
   _fetchEvents() {
-    EventSource.fetch({ date: this.props.date })
-      .then(({ data }) =>
-        this.setState({ events: data }));
+    this.setState({ updating: true });
+    EventSource
+      .fetch({ date: this.props.date })
+      .then(({ data }) => {
+        this.setState({ events: data, updating: false });
+      })
+      .catch(() =>
+        this.setState({ updating: false })
+      );
   }
 }
