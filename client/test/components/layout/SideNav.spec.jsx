@@ -15,10 +15,4 @@ describe('<SideNav />', () => {
     const wrapper = shallow(<SideNav onRefresh={refreshSpy} date={date} />);
     expect(wrapper.find(Button)).to.have.lengthOf(5);
   });
-
-  it('invokes callback on refresh', () => {
-    const wrapper = shallow(<SideNav onRefresh={refreshSpy} date={date} />);
-    wrapper.find(Button).forEach(button => button.simulate('click'));
-    expect(refreshSpy).to.have.been.calledOnce();
-  });
 });
