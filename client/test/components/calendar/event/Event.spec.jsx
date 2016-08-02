@@ -16,7 +16,8 @@ describe('<Event />', () => {
         event={event}
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
-        timeFormat={timeFormat} />
+        timeFormat={timeFormat}
+        onDelete={(_id) => {}} />
     );
     expect(wrapper.find('div')).to.have.lengthOf(5);
     const eventStyle = wrapper.find('.event').props().style;
@@ -36,7 +37,8 @@ describe('<Event />', () => {
         event={event}
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
-        timeFormat={timeFormat} />
+        timeFormat={timeFormat}
+        onDelete={(_id) => {}} />
     );
     expect(wrapper.find('.event').props().style.height).to.eq(180);
   });
@@ -64,7 +66,7 @@ describe('<Event />', () => {
           containerHeight={containerHeight}
           unitEventLengthInSeconds={unitEventLengthInSeconds}
           timeFormat={timeFormat}
-          onDelete={(id) => {}} />
+          onDelete={(_id) => {}} />
       );
       expect(wrapper.find(DeleteButton)).to.have.lengthOf(1);
     });
