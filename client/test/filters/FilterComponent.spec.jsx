@@ -41,13 +41,13 @@ describe('<Filter />', () => {
     const wrapper = mount(<Filter {...props} />);
 
     wrapper.find('input').simulate('change');
-    expect(onDisabled).to.have.been.calledOnce;
-    expect(onDisabled.calledWith(conferenceRoom.id)).to.eq(true);
+    expect(onDisabled).to.have.been.calledOnce();
+    expect(onDisabled).to.have.been.calledWith(conferenceRoom.id);
 
     wrapper.setProps({ enabled: true });
 
     wrapper.find('input').simulate('change');
-    expect(onEnabled).to.have.been.calledOnce;
-    expect(onEnabled.calledWith(conferenceRoom.id)).to.eq(true);
+    expect(onEnabled).to.have.been.calledOnce();
+    expect(onEnabled).to.have.been.calledWith(conferenceRoom.id);
   });
 });
