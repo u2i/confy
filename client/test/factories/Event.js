@@ -10,7 +10,6 @@ export default new Factory()
   .attr('end_timestamp', ['end_time'], endTime => endTime.getTime() / 1000)
   .attr('start', ['start_time'], startTime => ({ date_time: startTime.toISOString() }))
   .attr('end', ['end_time'], endTime => ({ date_time: endTime.toISOString() }))
-  .attr('summary', 'Conference')
   .attrs({
     creator:         User.build(),
     conference_room: ConferenceRoom.build()
