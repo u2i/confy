@@ -28,26 +28,41 @@ describe('<Filter />', () => {
   it('puts conference room title inside Checkbox component', () => {
     expect(defaultWrapper.find(Checkbox).children().text()).to.eq(conferenceRoom.title);
   });
+  
+  describe('props.enabled === true', () => {
+    it('triggers onDisabled on change', () => {
+      const onEnabled = sinon.spy();
+      const onDisabled = sinon.spy();
+      const props = {
+        conferenceRoom,
+        onEnabled,
+        onDisabled,
+        enabled: false
+      };
+      const wrapper = mount(<Filter {...props} />);
 
-  it("triggers appropriate handler based on 'enabled' prop", () => {
-    const onEnabled = sinon.spy();
-    const onDisabled = sinon.spy();
-    const props = {
-      conferenceRoom,
-      onEnabled,
-      onDisabled,
-      enabled: false
-    };
-    const wrapper = mount(<Filter {...props} />);
-
-    wrapper.find('input').simulate('change');
-    expect(onDisabled).to.have.been.calledOnce();
-    expect(onDisabled).to.have.been.calledWith(conferenceRoom.id);
-
-    wrapper.setProps({ enabled: true });
-
-    wrapper.find('input').simulate('change');
-    expect(onEnabled).to.have.been.calledOnce();
-    expect(onEnabled).to.have.been.calledWith(conferenceRoom.id);
+      wrapper.find('input').simulate('change');
+      expect(onDisabled).to.have.been.calledOnce();
+      expect(onDisabled).to.have.been.calledWith(conferenceRoom.id);
+    });
   });
+  
+  describe('probs.enabled === false', () => {
+    it('triggers onEnabled on change', () => {
+      const onEnabled = sinon.spy();
+      const onDisabled = sinon.spy();
+      const props = {
+        conferenceRoom,
+        onEnabled,
+        onDisabled,
+        enabled: true
+      };
+      const wrapper = mount(<Filter {...props} />);
+      wrapper.find('input').simulate('change');
+      expect(onEnabled).to.have.been.calledOnce();
+      expect(onEnabled).to.have.been.calledWith(conferenceRoom.id);
+      
+    });
+  });
+
 });

@@ -6,10 +6,7 @@ import { expect } from 'chai';
 import ConferenceRoom from '../factories/ConferenceRoom';
 
 describe('<RoomFilters />', () => {
-  const conferenceRoom1 = ConferenceRoom.build();
-  const conferenceRoom2 = ConferenceRoom.build();
-  const conferenceRoom3 = ConferenceRoom.build();
-  const conferenceRooms = [conferenceRoom1, conferenceRoom2, conferenceRoom3];
+  const conferenceRooms = ConferenceRoom.buildList(3);
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
@@ -27,7 +24,7 @@ describe('<RoomFilters />', () => {
     });
 
     it('renders <Filter /> with appropriate enabled prop', () => {
-      const wrapper = shallow(<RoomFilters filters={[conferenceRoom1.id]} {...props} />);
+      const wrapper = shallow(<RoomFilters filters={[conferenceRooms[0].id]} {...props} />);
       expect(wrapper.find(Filter).filterWhere(node => node.props().enabled)).to.have.lengthOf(1);
     });
   });
