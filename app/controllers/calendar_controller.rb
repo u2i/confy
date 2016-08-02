@@ -23,7 +23,7 @@ class CalendarController < ApplicationController
               days: calendar_days,
               times: calendar_times,
               unitEventLengthInSeconds: EventGrouper::GRANULARITY,
-              date: params[:date]}
+              date: params[:date]}.compact
   end
 
   def date_param

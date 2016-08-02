@@ -39,7 +39,9 @@ export default class AppContainer extends React.Component {
     return (
       <Grid>
         <Col xs={12} md={2}>
-          <SideNav onRefresh={this.handleCalendarRefresh} />
+          <SideNav
+            onRefresh={this.handleCalendarRefresh}
+            date={this.props.date} />
         </Col>
         <Col xs={12} md={10}>
           <Calendar {...calendarProps} events={this.state.events} onDelete={this._deleteEvent} />
