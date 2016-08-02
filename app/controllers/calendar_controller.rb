@@ -6,11 +6,9 @@ class CalendarController < ApplicationController
 
   before_action :refresh_token
   before_action :check_authentication
-  before_action :load_dates_and_rooms, only: [:index]
 
   # Index for showing events from Google calendar
   def index
-    load_events
     create_calendar_props
   rescue ArgumentError
     session.delete(:credentials)
@@ -20,45 +18,27 @@ class CalendarController < ApplicationController
   private
 
   def create_calendar_props
-    @props = {conferenceRooms: @conference_rooms, events: @events,
-              days: @days, times: @times,
-              unitEventLengthInSeconds: EventGrouper::GRANULARITY}
+    @props = {conferenceRooms: ConferenceRoom.all,
+              initialEvents: events,
+              days: calendar_days,
+              times: calendar_times,
+              unitEventLengthInSeconds: EventGrouper::GRANULARITY,
+              date: params[:date]}
   end
 
-  def load_dates_and_rooms
-    @week_start, @week_end = build_week_boundaries
-    @days = (@week_start..@week_end).to_a
-    start_time = Time.now.at_beginning_of_day
-    end_time = Time.now.at_end_of_day
-    @times = time_interval(start_time, end_time, 30.minutes)
-    @conference_rooms = ConferenceRoom.all
+  def date_param
+    params[:date] ? Date.parse(params[:date]) : Date.today
   end
 
-  def time_interval(start_time, end_time, step)
-    (start_time.to_i..end_time.to_i).step(step).collect { |time| Time.at time }
+  def events
+    GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
   end
 
-  def week_start
-    params[:date].present? ? Date.parse(params[:date]).beginning_of_week : Date.today.beginning_of_week
+  def calendar_days
+    TimeInterval.week(date_param).collect_steps(1.day)
   end
 
-  def load_events
-    @events = GoogleEvent.list_events(
-      session[:credentials],
-      session[:email],
-      @week_start.beginning_of_day.to_datetime,
-      @week_end.end_of_day.to_datetime
-    ).map do |_wday, events|
-      build_blocks(events)
-    end.flatten!(1)
-  end
-
-  def build_week_boundaries
-    week_end = week_start + CalendarHelper::WEEK_LENGTH - 1
-    [week_start, week_end]
-  end
-
-  def build_blocks(events)
-    EventGrouper.new(events.sort_by! { |e| e[:end][:date_time] }).call
+  def calendar_times
+    TimeInterval.day.collect_steps(EventGrouper::GRANULARITY)
   end
 end
