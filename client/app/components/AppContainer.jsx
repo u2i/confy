@@ -56,15 +56,15 @@ export default class AppContainer extends React.Component {
 
   _deleteEvent(id) {
     EventSource.remove(id);
-    let events = this.state.events;
-    for(let i = 0; i < events.length; i ++) {
-      let row = events[i];
+    const events = this.state.events;
+    for (let i = 0; i < events.length; i ++) {
+      const row = events[i];
       const index = row.findIndex(event => event.id === id);
-      if(index >= 0) {
+      if (index >= 0) {
         row.splice(index, 1);
         break;
       }
     }
-    this.setState({events});
+    this.setState({ events });
   }
 }

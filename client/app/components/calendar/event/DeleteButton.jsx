@@ -1,18 +1,14 @@
 import React, { PropTypes } from 'react';
-import axios from 'axios';
 import './event.scss';
-import EventSource from 'sources/EventSource';
 
-export default class DeleteButton extends React.Component {
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired
-  };
+const DeleteButton = ({ id, onDelete }) => (
+  <span onClick={() => onDelete(id)} className="delete-button glyphicon glyphicon-remove">
+  </span>
+);
 
-  render() {
-    return (
-      <span onClick={() => this.props.onDelete(this.props.id)} className="delete-button glyphicon glyphicon-remove">
-      </span>
-    );
-  }
-}
+DeleteButton.propTypes = {
+  id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired
+};
+
+export default DeleteButton;
