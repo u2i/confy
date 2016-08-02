@@ -10,9 +10,7 @@ config.output = {
 
 config.entry.vendor.unshift(
   'es5-shim/es5-shim',
-  'es5-shim/es5-sham',
-  'jquery-ujs',
-  'bootstrap-loader/extractStyles'
+  'es5-shim/es5-sham'
 );
 
 config.module.loaders.push(
