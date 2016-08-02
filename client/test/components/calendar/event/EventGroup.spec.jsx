@@ -19,7 +19,8 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={event.start_timestamp}
         offset={0}
-        eventsInGroup={2} />
+        eventsInGroup={2}
+        onDelete={(_id) => {}} />
     );
     expect(wrapper.find('.event-group')).to.have.lengthOf(1);
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(0);
@@ -37,7 +38,8 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={events[0].start_timestamp}
         offset={0}
-        eventsInGroup={3} />
+        eventsInGroup={3}
+        onDelete={(_id) => {}} />
     );
     expect(wrapper.find('.event-group').props().style.width).to.equal(80);
     expect(wrapper.find('Event')).to.have.lengthOf(2);
@@ -53,7 +55,8 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={event.start_timestamp}
         offset={2}
-        eventsInGroup={2} />
+        eventsInGroup={2}
+        onDelete={(_id) => {}} />
     );
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(120);
   });
