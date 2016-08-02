@@ -5,7 +5,7 @@ import ConferenceRoom from './ConferenceRoom';
 export default new Factory()
   .sequence('id')
   .option('start_time', new Date(2016, 7, 25, 0, 0, 0))
-  .option('end_time', new Date(2016, 7, 25, 2, 0, 0))
+  .option('end_time', ['start_time'], startTime => new Date((new Date()).setHours(startTime.getHours() + 4)))
   .attr('start_timestamp', ['start_time'], startTime => startTime.getTime() / 1000)
   .attr('end_timestamp', ['end_time'], endTime => endTime.getTime() / 1000)
   .attr('start', ['start_time'], startTime => ({ date_time: startTime.toISOString() }))
