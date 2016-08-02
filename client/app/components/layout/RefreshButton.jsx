@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Glyphicon} from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 
 import './refresh_button.scss';
 
@@ -12,7 +12,7 @@ const RefreshButton = ({ onRefresh, animate }) => (
 
 RefreshButton.propTypes = {
   onRefresh: React.PropTypes.func,
-  animate: React.PropTypes.bool
+  animate:   React.PropTypes.bool
 };
 
 export default RefreshButton;

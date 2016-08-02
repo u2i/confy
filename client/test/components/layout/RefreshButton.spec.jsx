@@ -18,5 +18,5 @@ describe('<RefreshButton />', () => {
   it('renders icon with .spin class when animated', () => {
     const wrapper = shallow(<RefreshButton animate />);
     expect(wrapper.find(Glyphicon)).to.have.className('spin');
-  })
+  });
 });
