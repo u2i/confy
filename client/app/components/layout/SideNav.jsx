@@ -4,7 +4,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 export default class SideNav extends React.Component {
   static propTypes = {
-    date:      React.PropTypes.string,
+    date:      React.PropTypes.string.isRequired,
     onRefresh: React.PropTypes.func
   };
 
@@ -13,11 +13,11 @@ export default class SideNav extends React.Component {
       <aside className="sidebar">
         <Button bsStyle="primary" className="btn-block">Create Event</Button>
         <Button href={"/"}
-                bsStyle="primary" className="btn-block">Home</Button>
+                className="btn-block">Home</Button>
         <Button href={this._dateParam(this._nextWeek())}
-                bsStyle="primary" className="btn-block">Next Week</Button>
+                className="btn-block">Next Week</Button>
         <Button href={this._dateParam(this._previousWeek())}
-                bsStyle="primary" className="btn-block">Previous Week</Button>
+                className="btn-block">Previous Week</Button>
         <Button onClick={this.props.onRefresh} className="btn-block">
           <Glyphicon glyph="refresh" />&nbsp;Sync
         </Button>
@@ -25,16 +25,12 @@ export default class SideNav extends React.Component {
     );
   }
 
-  _startingDate() {
-    return this.props.date ? moment(this.props.date) : moment();
-  }
-
   _nextWeek() {
-    return this._startingDate().add(1, 'weeks');
+    return moment(this.props.date).add(1, 'weeks');
   }
 
   _previousWeek() {
-    return this._startingDate().subtract(1, 'weeks');
+    return moment(this.props.date).subtract(1, 'weeks');
   }
 
   _dateParam(date) {
