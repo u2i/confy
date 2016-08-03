@@ -49,8 +49,8 @@ describe Adding do
       let(:params) { {} }
       it 'raises GoogleCalendar::AddEventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
-        expect { described_class.add_room_to_event(params, invalid_id) }
-          .to raise_error(GoogleCalendar::AddEventInvalidRoom)
+        expect { described_class.add_room_to_event(params, invalid_id) }.
+          to raise_error(GoogleCalendar::AddEventInvalidRoom)
       end
     end
   end
