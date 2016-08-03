@@ -29,7 +29,7 @@ export default class ModalBody extends React.Component {
   }
 
   handleLocationChange(e) {
-    this.props.updateParam("conferenceRoomId", e.target.value);
+    this.props.updateParam('conferenceRoomId', e.target.value);
   }
 
   handleStartTimeChange(e) {
@@ -50,10 +50,10 @@ export default class ModalBody extends React.Component {
         <form>
           <FormTextField
             name={"summary"}
-            onChange={this.handleTextFieldChange}/>
+            onChange={this.handleTextFieldChange} />
           <FormTextField
             name={"description"}
-            onChange={this.handleTextFieldChange}/>
+            onChange={this.handleTextFieldChange} />
           <FormDateField
             label={"Start time"}
             onChange={this.handleStartTimeChange} />

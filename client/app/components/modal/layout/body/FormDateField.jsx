@@ -6,7 +6,7 @@ import DateTimeField from 'react-bootstrap-datetimepicker';
 import 'react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
 
 const { string, func } = React.PropTypes;
-const DATE_FORMAT = "DD/MM/YYYY HH:mm";
+const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 const FormDateField = (props) => (
   <FormGroup>

@@ -19,6 +19,6 @@ const FormTextField = (props) => (
 FormTextField.propTypes = {
   name:     string.isRequired,
   onChange: func.isRequired
-}
+};
 
 export default FormTextField;

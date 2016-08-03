@@ -14,7 +14,7 @@ export default class FormLocationField extends React.Component {
       <option value={room.id} key={room.id}>{room.title}</option>
     ));
 
-    return(
+    return (
       <FormGroup>
         <ControlLabel>Location:</ControlLabel>
         <FormControl componentClass="select"
