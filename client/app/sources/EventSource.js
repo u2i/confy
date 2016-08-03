@@ -23,7 +23,6 @@ const EventSource = {
     axios({
       method: 'DELETE',
       url: `${EVENT_PATH}/${id}`
-    }).catch(() => {
     });
   },
   create(params) {
