@@ -23,7 +23,7 @@ const EventSource = {
     axios({
       method: 'DELETE',
       url: `${EVENT_PATH}/${id}`
-    }).then(() => {}).catch(() => {
+    }).catch(() => {
       alert('Server error');
     });
   }
