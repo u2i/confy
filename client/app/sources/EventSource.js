@@ -2,11 +2,13 @@ import axios from 'axios';
 
 const EVENT_PATH = '/events';
 
-const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
 const EventSource = {
   fetch(params) {
     return axios.get(EVENT_PATH, { params });
+  },
+
+  csrfToken() {
+    return document.querySelector('meta[name="csrf-token"]').content
   },
 
   create(params) {
@@ -15,7 +17,7 @@ const EventSource = {
       url: EVENT_PATH,
       data: params,
       headers: {
-        'X-CSRF-Token': csrfToken
+        'X-CSRF-Token': csrfToken()
       }
     });
   }
