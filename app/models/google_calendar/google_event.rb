@@ -12,7 +12,7 @@ module GoogleCalendar
     end
 
     def self.datetime_parse(time, zone)
-      ("#{time} #{zone}").rfc3339 9
+      "#{time} #{zone}".rfc3339(9)
     end
   end
 end
