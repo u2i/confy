@@ -8,8 +8,6 @@ import EventWrapper from 'components/calendar/event/EventWrapper';
 import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventWrapper />', () => {
-  const event = Event.build();
-  const events = [event];
   const eventProps = {
     eventsInGroup:            1,
     offset:                   0,
@@ -17,44 +15,57 @@ describe('<EventWrapper />', () => {
     unitEventLengthInSeconds: 60
   };
 
-  const spy = sinon.spy(EventWrapper.prototype, 'setState');
+  const mountEventWrapper = (events) => mount(<EventWrapper events={events} {...eventProps} />);
 
-  let wrapper;
-  beforeEach(() => {
-    wrapper = mount(<EventWrapper {...eventProps} />);
+  const events = Event.buildList(1);
+
+  context('when events prop is not empty', () => {
+    it('renders <EventGroup />', () => {
+      const wrapper = mountEventWrapper(events);
+      expect(wrapper).to.have.exactly(1).descendants(EventGroup);
+    });
   });
 
-  afterEach(() => {
-    spy.reset();
+  context('when events prop is empty', () => {
+    it('should not render <EventGroup />', () => {
+      const wrapper = mountEventWrapper([]);
+      expect(wrapper).to.not.have.descendants(EventGroup);
+    });
   });
 
-  it('renders <EventGroup /> when event prop is not empty', () => {
-    wrapper.setProps({ events });
-    expect(wrapper.find(EventGroup)).to.have.lengthOf(1);
+  context('when not passed in events', () => {
+    it('should not render <EventGroup />', () => {
+      const wrapper = mountEventWrapper();
+      expect(wrapper).to.not.have.descendants(EventGroup);
+    });
   });
 
-  it('should not render <EventGroup /> when not passed in events', () => {
-    expect(wrapper.find(EventGroup)).to.have.lengthOf(0);
-  });
+  context('component dimensions', () => {
+    const spy = sinon.spy(EventWrapper.prototype, 'setState');
 
-  it('should not render <EventGroup /> when passed in empty event array', () => {
-    wrapper.setProps({ events: [] });
-    expect(wrapper.find(EventGroup)).to.have.lengthOf(0);
-  });
+    afterEach(() => {
+      spy.reset();
+    });
 
-  it('sets width and height', () => {
-    wrapper.setProps({ events });
-    wrapper.unmount();
-    wrapper.mount();
+    after(() => {
+      spy.restore();
+    });
 
-    expect(spy).to.have.been.called();
-    expect(spy.getCall(0).args[0]).to.include.all.keys('width', 'height');
-  });
+    const spyArg = (index) => spy.getCall(0).args[index];
 
-  it('updates on window resize', () => {
-    window.dispatchEvent(new window.Event('resize'));
+    it('sets width and height', () => {
+      mountEventWrapper(events);
+      expect(spy).to.have.been.called();
+      expect(spyArg(0)).to.include.all.keys('width', 'height');
+    });
 
-    expect(spy).to.have.been.called();
-    expect(spy.getCall(0).args[0]).to.include.all.keys('width', 'height');
+    it('updates on window resize', () => {
+      mountEventWrapper(events);
+      spy.reset();
+      window.dispatchEvent(new window.Event('resize'));
+
+      expect(spy).to.have.been.called();
+      expect(spyArg(0)).to.include.all.keys('width', 'height');
+    });
   });
 });
