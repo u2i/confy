@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import EventSource from 'sources/EventSource';
@@ -7,12 +7,13 @@ import moment from 'moment';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import CreateEventModal from './modal/CreateEventModal';
+import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 export default class AppContainer extends React.Component {
   static propTypes = {
     initialEvents:   React.PropTypes.array,
     date:            React.PropTypes.string,
-    conferenceRooms: React.PropTypes.array.isRequired
+    conferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema)
   };
 
   static defaultProps = {

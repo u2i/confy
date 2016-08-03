@@ -4,8 +4,6 @@ import { Button } from 'react-bootstrap';
 
 import RefreshButton from './RefreshButton';
 
-const { func } = PropTypes;
-
 export default class SideNav extends React.Component {
   static propTypes = {
     date:      React.PropTypes.string.isRequired,
