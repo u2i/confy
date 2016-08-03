@@ -3,11 +3,11 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
-import EventSource from '../../app/sources/EventSource';
-import DefaultProps from '../factories/DefaultProps';
+import EventSource from 'sources/EventSource';
+import DefaultProps from 'test/factories/DefaultProps';
 
-import AppContainer from '../../app/components/AppContainer';
-import SideNav from '../../app/components/layout/SideNav';
+import AppContainer from 'components/AppContainer';
+import SideNav from 'components/layout/SideNav';
 
 describe('<AppContainer />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
