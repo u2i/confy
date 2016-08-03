@@ -16,7 +16,8 @@ export default class CreateEventModal extends React.Component {
     closeModal:      func.isRequired,
     showModal:       bool.isRequired,
     conferenceRooms: array.isRequired,
-    initialDate:     string
+    initialDate:     string,
+    refresh:         func.isRequired
   };
 
   static defaultProps = {
@@ -49,6 +50,7 @@ export default class CreateEventModal extends React.Component {
     EventSource.create(eventParams)
       .then(() => {
         this.props.closeModal();
+        this.props.refresh();
       })
       .catch(() => {
         this._showError();

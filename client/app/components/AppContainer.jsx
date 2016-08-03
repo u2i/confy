@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import EventSource from 'sources/EventSource';
+import moment from 'moment';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
@@ -62,6 +63,10 @@ export default class AppContainer extends React.Component {
         <Col xs={12} md={10}>
           <Calendar {...calendarProps} events={this.state.events} />
         </Col>
+        <CreateEventModal closeModal={this.closeModal}
+                          showModal={this.state.showModal}
+                          conferenceRooms={this.props.conferenceRooms}
+                          refresh={this.handleCalendarRefresh} />
       </Grid>
     );
   }
