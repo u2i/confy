@@ -8,7 +8,7 @@ class EventsController < ApplicationController
     render json: {error: 'Google Server error'}, status: :service_unavailable
   end
 
-  rescue_from Google::Apis::ClientError, GoogleCalendar::Adding::InvalidParamsError do |exception|
+  rescue_from Google::Apis::ClientError, GoogleCalendar::AddEventInvalidParamsError do |exception|
     error_data = {error: exception.message}
     case params[:action]
     when 'create'
@@ -20,12 +20,16 @@ class EventsController < ApplicationController
     end
   end
 
+  rescue_from GoogleCalendar::AddEventInvalidRoom do |exception|
+    render json: exception.message, status: :unprocessable_entity
+  end
+
   rescue_from Google::Apis::AuthorizationError do
     session.delete(:credentials)
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
-  rescue_from GoogleCalendar::Adding::EventInTimeSpanError do |message|
+  rescue_from GoogleCalendar::AddEventInTimeSpanError do |message|
     render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 

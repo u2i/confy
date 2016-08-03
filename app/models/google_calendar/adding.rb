@@ -1,9 +1,10 @@
 module GoogleCalendar
+  AddEventInvalidParamsError = Class.new(StandardError)
+  AddEventInTimeSpanError = Class.new(StandardError)
+  AddEventInvalidRoom = Class.new(StandardError)
+
   module Adding
     include Client
-
-    InvalidParamsError = Class.new(StandardError)
-    EventInTimeSpanError = Class.new(StandardError)
 
     EVENT_SCHEMA = Dry::Validation.Schema do
       required(:start).schema do
@@ -34,15 +35,15 @@ module GoogleCalendar
       if events && events.items.any?
         exception_message = occupied_exception_message(events)
         raise(
-          EventInTimeSpanError,
+          AddEventInTimeSpanError,
           exception_message
         )
       end
     end
 
     def occupied_exception_message(events)
-      count = events.items.size
-      "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
+      items = events.items
+      "Already #{items.count} #{'event'.pluralize(items.count)} in time span(#{items_list(items)})."
     end
 
     def items_list(items)
@@ -57,13 +58,14 @@ module GoogleCalendar
     end
 
     def raise_exception_if_invalid(params)
-      validation = EVENT_SCHEMA.call params
+      validation = EVENT_SCHEMA.call(params)
       exception_message = validation.messages(full: true).values.join(', ')
-      raise InvalidParamsError, exception_message unless validation.success?
+      raise AddEventInvalidParamsError, exception_message unless validation.success?
     end
 
     def add_room_to_event(params, conference_room_id)
       room = ConferenceRoom.find_by(id: conference_room_id)
+      raise AddEventInvalidRoom, 'Undefined conference room' if room.nil?
       params[:attendees] = [{email: room.email}]
       params[:location] = room.title
     end

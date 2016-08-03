@@ -26,9 +26,9 @@ describe Adding do
   end
 
   describe '.add_room_to_event' do
-    context 'given array of calendar room ids' do
+    context 'given valid conference room id' do
       let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
-      let(:neverland_email) { 'u2i.com_3530363130383730383638@resource.calendar.google.com' }
+      let!(:first_room) { create(:conference_room, email: mordor_email) }
       let(:expected_result) do
         {
           attendees: [
@@ -38,10 +38,19 @@ describe Adding do
         }
       end
       let(:params) { {} }
-      let!(:first_room) { create(:conference_room, email: mordor_email) }
-      it 'adds new key in hash and assigns array of conference room emails to it' do
+      it 'adds attendess and location keys with appropriate values' do
         described_class.add_room_to_event(params, first_room.id)
         expect(params).to eq expected_result
+      end
+    end
+
+    context 'given invalid conference room id' do
+      let(:invalid_id) { 1 }
+      let(:params) { {} }
+      it 'raises GoogleCalendar::AddEventInvalidRoom error' do
+        allow(ConferenceRoom).to receive(:find_by) { nil }
+        expect { described_class.add_room_to_event(params, invalid_id) }
+          .to raise_error(GoogleCalendar::AddEventInvalidRoom)
       end
     end
   end
@@ -80,8 +89,8 @@ describe Adding do
   describe '.create' do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
-      it 'raises GoogleEvent::InvalidParamsException' do
-        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::Adding::InvalidParamsError)
+      it 'raises GoogleCalendar::AddEventInvalidParamsError' do
+        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::AddEventInvalidParamsError)
       end
     end
 
@@ -107,13 +116,13 @@ describe Adding do
           end
         end
 
-        it 'raises EventInTimeSpanError' do
+        it 'raises AddEventInTimeSpanError' do
           expect do
             described_class.create(credentials,
                                    room.id,
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
-          end.to raise_error(GoogleCalendar::Adding::EventInTimeSpanError,
+          end.to raise_error(GoogleCalendar::AddEventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
       end
