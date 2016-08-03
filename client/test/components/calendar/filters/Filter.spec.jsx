@@ -1,10 +1,10 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
-import Filter from '../../../../app/components/calendar/filters/Filter';
+import Filter from 'components/calendar/filters/Filter';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import ConferenceRoom from '../../../factories/ConferenceRoom';
+import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 
 describe('<Filter />', () => {

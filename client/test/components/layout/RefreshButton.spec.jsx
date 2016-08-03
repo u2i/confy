@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { Button, Glyphicon } from 'react-bootstrap';
-import RefreshButton from '../../../app/components/layout/RefreshButton';
+import RefreshButton from 'components/layout/RefreshButton';
 
 describe('<RefreshButton />', () => {
   const refreshSpy = sinon.spy();
