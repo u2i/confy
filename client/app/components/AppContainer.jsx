@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Grid, Col } from 'react-bootstrap';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
-import CreateEventModal from './CreateEventModal';
+import CreateEventModal from './modal/CreateEventModal';
 import _ from 'lodash';
 
 const { array } = PropTypes;
