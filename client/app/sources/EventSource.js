@@ -14,18 +14,12 @@ const getCSRFToken = (config) => {
 
 axios.interceptors.request.use(getCSRFToken, (error) => Promise.reject(error));
 
-
 const EventSource = {
   fetch(params) {
     return axios.get(EVENT_PATH, { params });
   },
   remove(id) {
-    axios({
-      method: 'DELETE',
-      url: `${EVENT_PATH}/${id}`
-    }).catch(() => {
-      alert('Server error');
-    });
+    return axios.delete(`${EVENT_PATH}/${id}`);
   }
 };
 

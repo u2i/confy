@@ -1,0 +1,13 @@
+
+.notification-stack {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .alert {
+    margin-bottom: 10px;
+    width: 15vw;
+  }
+}

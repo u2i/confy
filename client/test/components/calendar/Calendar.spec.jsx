@@ -12,7 +12,8 @@ import RoomFilters from '../../../app/components/calendar/filters/RoomFilters';
 describe('<Calendar />', () => {
   const props = DefaultProps.build({
     days:  ['2016-07-28', '2016-07-29'],
-    times: ['8:00', '9:00']
+    times: ['8:00', '9:00'],
+    onDelete: (_id) => {}
   });
 
   let wrapper;
