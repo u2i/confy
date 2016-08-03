@@ -1,12 +1,11 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import {If, Then} from 'react-if';
 import _ from 'lodash';
 import FormTextField from './body/FormTextField';
 import FormDateField from './body/FormDateField';
 import FormLocationField from './body/FormLocationField';
 
-const {func, array} = React.PropTypes;
+const { func, array } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {

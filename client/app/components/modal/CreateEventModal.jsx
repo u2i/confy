@@ -1,5 +1,5 @@
-import React, {PropTypes} from 'react';
-import {Button, Modal, FormGroup, ControlLabel, FormControl, Alert} from 'react-bootstrap';
+import React, { PropTypes } from 'react';
+import { Modal } from 'react-bootstrap';
 import moment from 'moment';
 import _ from 'lodash';
 import EventSource from 'sources/EventSource';
@@ -9,14 +9,14 @@ import ModalBody from './layout/ModalBody';
 import ErrorField from './layout/ErrorField';
 
 const { func, bool, array, string } = PropTypes;
-const DATE_FORMAT = "DD/MM/YYYY HH:mm";
+const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
-    closeModal: func.isRequired,
-    showModal: bool.isRequired,
+    closeModal:      func.isRequired,
+    showModal:       bool.isRequired,
     conferenceRooms: array.isRequired,
-    initialDate: string
+    initialDate:     string
   };
 
   static defaultProps = {
@@ -29,8 +29,8 @@ export default class CreateEventModal extends React.Component {
     this.state = {
       showErrorMessage: false,
       conferenceRoomId: this.props.conferenceRooms[0].id,
-      startTime: this.props.initialDate,
-      endTime: this.props.initialDate
+      startTime:        this.props.initialDate,
+      endTime:          this.props.initialDate
     };
 
     _.bindAll(this,
@@ -39,10 +39,10 @@ export default class CreateEventModal extends React.Component {
 
   saveChanges() {
     const eventParams = {
-      summary: this.state.summary ? this.state.summary : '',
-      description: this.state.description ? this.state.description : '',
-      start_time: this.state.startTime,
-      end_time: this.state.endTime,
+      summary:            this.state.summary ? this.state.summary : '',
+      description:        this.state.description ? this.state.description : '',
+      start_time:         this.state.startTime,
+      end_time:           this.state.endTime,
       conference_room_id: this.state.conferenceRoomId
     };
 
@@ -79,6 +79,6 @@ export default class CreateEventModal extends React.Component {
   }
 
   _showError() {
-    this.setState({showErrorMessage: true});
+    this.setState({ showErrorMessage: true });
   }
 }

@@ -6,7 +6,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
 const EventSource = {
   fetch(params) {
-    return axios.get(EVENT_PATH, {params});
+    return axios.get(EVENT_PATH, { params });
   },
 
   create(params) {
