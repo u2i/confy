@@ -1,10 +1,7 @@
 const webpack = require('webpack');
-const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
-
-const APP_PATH = path.join(__dirname, 'app');
 
 module.exports = {
   context: __dirname,
@@ -14,19 +11,16 @@ module.exports = {
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'jquery',
-      'turbolinks'
+      'jquery-ujs',
+      'turbolinks',
+      'bootstrap-loader'
     ],
     app: [
       './app/App.jsx'
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json'],
-    alias:      {
-      helpers: path.join(__dirname, 'app', 'helpers'),
-      schemas: path.join(__dirname, 'app', 'schemas'),
-      sources: `${APP_PATH}/sources`
-    }
+    extensions: ['', '.js', '.jsx', '.json']
   },
   plugins: [
     new webpack.DefinePlugin({

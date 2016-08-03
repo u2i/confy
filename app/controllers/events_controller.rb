@@ -30,7 +30,7 @@ class EventsController < ApplicationController
   end
 
   def index
-    render json: Event.in_week_group_by_weekday(Date.parse(params[:date]))
+    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
   end
 
   def create
@@ -50,5 +50,9 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id)
+  end
+
+  def date_param
+    params[:date] ? Date.parse(params[:date]) : Date.today
   end
 end

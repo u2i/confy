@@ -22,7 +22,7 @@ settings:
 rules:
 # Variables
   no-undef: 2
-  no-unused-vars: [2, { vars: all, args: none }]
+  no-unused-vars: [2, { vars: all, args: none, varsIgnorePattern: "^_" }]
 
 # Stylistic issues
   indent: [1, 2, { SwitchCase: 1, VariableDeclarator: 2 }]
@@ -69,5 +69,5 @@ rules:
   react/jsx-indent-props: 0
   react/jsx-first-prop-new-line: 0
   react/sort-comp:
-    - warn
+    - 1
     - { order: [statics, static-methods, lifecycle, /^(on|handle).+$/, everything-else, render, /^_.+$/] }
