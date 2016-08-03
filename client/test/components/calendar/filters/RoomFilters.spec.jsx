@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Filter from '../../../../app/components/calendar/filters/Filter';
-import RoomFilters from '../../../../app/components/calendar/filters/RoomFilters';
+import Filter from 'components/calendar/filters/Filter';
+import RoomFilters from 'components/calendar/filters/RoomFilters';
 import { expect } from 'chai';
-import ConferenceRoom from '../../../factories/ConferenceRoom';
+import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<RoomFilters />', () => {
   const conferenceRooms = ConferenceRoom.buildList(3);
