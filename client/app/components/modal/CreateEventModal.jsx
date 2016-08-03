@@ -56,7 +56,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   updateParam(key, value) {
-    this.setState({[key]: value});
+    this.setState({ [key]: value });
   }
 
   render() {
