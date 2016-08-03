@@ -74,6 +74,7 @@ module GoogleCalendar
 
     # self is a field from Google::Apis::CalendarV3::EventAttendee
     def event_declined?(event)
+      return false unless event.attendees.present?
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
   end
