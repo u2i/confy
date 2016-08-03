@@ -1,9 +1,9 @@
 module GoogleCalendar
-  AddEventInvalidParamsError = Class.new(StandardError)
-  AddEventInTimeSpanError = Class.new(StandardError)
-  AddEventInvalidRoom = Class.new(StandardError)
-
   module Adding
+    AddEventInvalidParamsError = Class.new(StandardError)
+    AddEventInTimeSpanError = Class.new(StandardError)
+    AddEventInvalidRoom = Class.new(StandardError)
+
     include Client
 
     EVENT_SCHEMA = Dry::Validation.Schema do

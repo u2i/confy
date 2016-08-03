@@ -50,7 +50,7 @@ describe Adding do
       it 'raises GoogleCalendar::AddEventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
         expect { described_class.add_room_to_event(params, invalid_id) }.
-          to raise_error(GoogleCalendar::AddEventInvalidRoom)
+          to raise_error(GoogleCalendar::Adding::AddEventInvalidRoom)
       end
     end
   end
@@ -90,7 +90,7 @@ describe Adding do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'raises GoogleCalendar::AddEventInvalidParamsError' do
-        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::AddEventInvalidParamsError)
+        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::Adding::AddEventInvalidParamsError)
       end
     end
 
@@ -122,7 +122,7 @@ describe Adding do
                                    room.id,
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
-          end.to raise_error(GoogleCalendar::AddEventInTimeSpanError,
+          end.to raise_error(GoogleCalendar::Adding::AddEventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
       end

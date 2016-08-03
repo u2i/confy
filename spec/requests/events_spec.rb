@@ -8,13 +8,25 @@ RSpec.describe 'Events', type: :request do
   end
 
   describe 'POST /events' do
+    before do
+      allow(GoogleCalendar::GoogleEvent).to receive(:process_params) { |arg| arg }
+      allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
+      allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
+    end
+
     context 'given invalid event attributes' do
       let(:exception) { Google::Apis::ClientError.new('error') }
       it 'responds with 422' do
         allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
-        allow(GoogleCalendar::GoogleEvent).to receive(:process_params) { |arg| arg }
-        allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
-        allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
+        post events_path
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context 'given invalid conference room id' do
+      let(:exception) { GoogleCalendar::Adding::AddEventInvalidRoom.new('error') }
+      it 'responds with 422' do
+        allow(GoogleCalendar::GoogleEvent).to receive(:create).and_raise(exception)
         post events_path
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -24,9 +36,6 @@ RSpec.describe 'Events', type: :request do
       let(:exception) { Google::Apis::ServerError.new('error') }
       it 'responds with 503' do
         allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
-        allow(GoogleCalendar::GoogleEvent).to receive(:process_params) { |arg| arg }
-        allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
-        allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
         post events_path
         expect(response).to have_http_status(:service_unavailable)
       end
@@ -36,9 +45,6 @@ RSpec.describe 'Events', type: :request do
       let(:exception) { Google::Apis::AuthorizationError.new('error') }
       it 'responds with 401' do
         allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
-        allow(GoogleCalendar::GoogleEvent).to receive(:process_params) { |arg| arg }
-        allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
-        allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
         post events_path
         expect(response).to have_http_status(:unauthorized)
       end
@@ -47,9 +53,6 @@ RSpec.describe 'Events', type: :request do
     context 'successfully added new event' do
       it 'repond with 200' do
         allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { {} }
-        allow(GoogleCalendar::GoogleEvent).to receive(:process_params) { |arg| arg }
-        allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
-        allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
         post events_path
         expect(response).to have_http_status(:created)
       end
