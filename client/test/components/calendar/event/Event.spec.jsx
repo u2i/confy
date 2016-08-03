@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Event from '../../../../app/components/calendar/event/Event';
-import DeleteButton from '../../../../app/components/calendar/event/DeleteButton';
+import Event from 'components/calendar/event/Event';
+import DeleteButton from 'components/calendar/event/DeleteButton';
 import { expect } from 'chai';
-import EventFactory from '../../../factories/Event';
+import EventFactory from 'test/factories/Event';
 
 describe('<Event />', () => {
   const containerHeight = 30;
