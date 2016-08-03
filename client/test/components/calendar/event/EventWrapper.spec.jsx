@@ -2,10 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import Event from '../../../factories/Event';
+import Event from 'test/factories/Event';
 
-import EventWrapper from '../../../../app/components/calendar/event/EventWrapper';
-import EventGroup from '../../../../app/components/calendar/event/EventGroup';
+import EventWrapper from 'components/calendar/event/EventWrapper';
+import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventWrapper />', () => {
   const event = Event.build();
