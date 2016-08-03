@@ -4,43 +4,39 @@
     "stage-0",
     "react"
   ],
-  "env": {
-    "test": {
-      "plugins": [
-        [
-          "module-alias",
-          [
-            {
-              "src": "./app",
-              "expose": "app"
-            },
-            {
-              "src": "./test",
-              "expose": "test"
-            },
-            {
-              "src": "./app/helpers",
-              "expose": "helpers"
-            },
-            {
-              "src": "./app/components",
-              "expose": "components"
-            },
-            {
-              "src": "./app/schemas",
-              "expose": "schemas"
-            },
-            {
-              "src": "./app/sources",
-              "expose": "sources"
-            },
-            {
-              "src": "npm:lodash",
-              "expose": "underscore"
-            }
-          ]
-        ]
+  "plugins": [
+    [
+      "module-alias",
+      [
+        {
+          "src": "./app",
+          "expose": "app"
+        },
+        {
+          "src": "./test",
+          "expose": "test"
+        },
+        {
+          "src": "./app/helpers",
+          "expose": "helpers"
+        },
+        {
+          "src": "./app/components",
+          "expose": "components"
+        },
+        {
+          "src": "./app/schemas",
+          "expose": "schemas"
+        },
+        {
+          "src": "./app/sources",
+          "expose": "sources"
+        },
+        {
+          "src": "npm:lodash",
+          "expose": "underscore"
+        }
       ]
-    }
-  }
+    ]
+  ]
 }
