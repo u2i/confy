@@ -14,8 +14,9 @@ describe('<EventWrapper />', () => {
     timestamp:                new Date().getTime(),
     unitEventLengthInSeconds: 60
   };
+  const onDelete = sinon.spy();
 
-  const mountEventWrapper = (events) => mount(<EventWrapper events={events} {...eventProps} />);
+  const mountEventWrapper = (events) => mount(<EventWrapper events={events} {...eventProps} onDelete={onDelete} />);
 
   const events = Event.buildList(1);
 

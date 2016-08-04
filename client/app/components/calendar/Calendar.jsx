@@ -10,7 +10,7 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, shape, array, arrayOf, oneOfType, instanceOf } = PropTypes;
+const { string, number, shape, array, arrayOf, oneOfType, instanceOf, func } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -21,6 +21,7 @@ export default class Calendar extends React.Component {
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
     dateFormat:               string,
+    onDelete:                 func.isRequired,
     scrollTo:                 shape({ hours: number, minutes: number })
   };
 
@@ -57,6 +58,7 @@ export default class Calendar extends React.Component {
                    events={this._filterEvents()}
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
+                   onDelete={this.props.onDelete}
                    ref={(ref) => this.rows[time] = ref} />
     ));
 
