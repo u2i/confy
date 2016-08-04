@@ -1,12 +1,11 @@
-import React, { PropTypes } from 'react';
-import { Modal } from 'react-bootstrap';
-import moment from 'moment';
-import _ from 'lodash';
-import EventSource from 'sources/EventSource';
-import ModalHeader from './layout/ModalHeader';
-import ModalFooter from './layout/ModalFooter';
-import ModalBody from './layout/ModalBody';
-import ErrorField from './layout/ErrorField';
+import React, {PropTypes} from "react";
+import {Modal} from "react-bootstrap";
+import moment from "moment";
+import _ from "lodash";
+import EventSource from "sources/EventSource";
+import ModalHeader from "./layout/ModalHeader";
+import ModalFooter from "./layout/ModalFooter";
+import ModalBody from "./layout/ModalBody";
 
 const { func, bool, array, string } = PropTypes;
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
@@ -68,10 +67,10 @@ export default class CreateEventModal extends React.Component {
         onHide={this.props.closeModal}>
 
         <ModalHeader />
-        <ErrorField show={this.state.showErrorMessage} />
         <ModalBody
           updateParam={this.updateParam}
-          conferenceRooms={this.props.conferenceRooms} />
+          conferenceRooms={this.props.conferenceRooms}
+          showErrorMessage={this.state.showErrorMessage} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges} />

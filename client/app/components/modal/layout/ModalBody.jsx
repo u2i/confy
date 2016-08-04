@@ -1,16 +1,22 @@
-import React from 'react';
-import { Modal } from 'react-bootstrap';
-import _ from 'lodash';
-import FormTextField from './body/FormTextField';
-import FormDateField from './body/FormDateField';
-import FormLocationField from './body/FormLocationField';
+import React from "react";
+import {Modal} from "react-bootstrap";
+import _ from "lodash";
+import FormTextField from "./body/FormTextField";
+import FormDateField from "./body/FormDateField";
+import FormLocationField from "./body/FormLocationField";
+import ErrorField from "./ErrorField";
 
-const { func, array } = React.PropTypes;
+const { func, array, bool } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
-    updateParam:     func.isRequired,
-    conferenceRooms: array.isRequired
+    updateParam:      func.isRequired,
+    conferenceRooms:  array.isRequired,
+    showErrorMessage: bool
+  };
+
+  static defaultProps = {
+    showErrorMessage: false
   };
 
   constructor(props) {
@@ -46,6 +52,7 @@ export default class ModalBody extends React.Component {
   render() {
     return (
       <Modal.Body>
+        <ErrorField show={this.props.showErrorMessage} />
         <form>
           <FormTextField
             name={"summary"}
