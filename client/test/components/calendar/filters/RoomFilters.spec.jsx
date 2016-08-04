@@ -6,8 +6,8 @@ import { expect } from 'chai';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<RoomFilters />', () => {
-  const titles = ['Zamosc', 'Andrychow', 'Krakow'];
-  const conferenceRooms = titles.map((title) => ConferenceRoom.build({ title }));
+  const titles = [{ title: 'Zamosc', kind: 0 }, { title: 'Andrychow', kind: 0 } , { title: 'Krakow', kind: 1 } ];
+  const conferenceRooms = titles.map(({ title, kind }) => ConferenceRoom.build({ title, kind }));
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
@@ -29,9 +29,9 @@ describe('<RoomFilters />', () => {
       expect(wrapper.find(Filter).filterWhere(node => node.props().enabled)).to.have.lengthOf(1);
     });
 
-    it('sorts by name', () => {
+    it('sorts by kind and title', () => {
       const filterNames = defaultWrapper.find(Filter).map(e => e.props().conferenceRoom.title);
-      expect(filterNames).to.eql(titles.sort());
+      expect(filterNames).to.eql(['Krakow', 'Andrychow', 'Zamosc']);
     });
   });
 });

@@ -17,7 +17,7 @@ export default class RoomFilters extends React.Component {
   };
 
   render() {
-    let filters = this.props.conferenceRooms.sort((left, right) => left.title > right.title).map(conferenceRoom => (
+    let filters = this.props.conferenceRooms.sort(this._roomCompare).map(conferenceRoom => (
       <Filter conferenceRoom={conferenceRoom}
               enabled={this._filterEnabled(conferenceRoom)}
               onEnabled={() => this.props.onEnabled(conferenceRoom.id)}
@@ -36,5 +36,12 @@ export default class RoomFilters extends React.Component {
 
   _filterEnabled(conferenceRoom) {
     return this.props.filters.find(filter => filter === conferenceRoom.id) != null;
+  }
+
+  _roomCompare(leftRoom, rightRoom) {
+    if (leftRoom.kind === rightRoom.kind) {
+      return leftRoom.title > rightRoom.title;
+    }
+    return leftRoom.kind < rightRoom.kind;
   }
 }
