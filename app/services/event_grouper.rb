@@ -31,7 +31,7 @@ class EventGrouper
     blocks = []
     events.each do |event|
       colliding_block = blocks.find { |block| block.can_add_event(event) }
-      colliding_block.nil? ? blocks.push(Block.new(event)) : colliding_block.add_event(event)
+      colliding_block.nil? ? blocks << Block.new(event) : colliding_block.add_event(event)
     end
     blocks.map(&:block_events)
   end
@@ -46,7 +46,7 @@ class EventGrouper
 
     def add_event(event)
       return unless can_add_event(event)
-      block_events.push(event)
+      block_events << event
       update_end_time(event)
     end
 
