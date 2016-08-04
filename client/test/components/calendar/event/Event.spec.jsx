@@ -53,6 +53,4 @@ describe('<Event />', () => {
     );
     expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
   });
-
-  context('')
 });
