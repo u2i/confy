@@ -74,7 +74,6 @@ RSpec.describe 'Events', type: :request do
         allow_any_instance_of(EventsController).to receive(:session) { session }
         delete event_path event_id
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)['message']).to be_present
       end
     end
   end
