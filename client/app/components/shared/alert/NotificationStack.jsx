@@ -6,7 +6,7 @@ import './notification_stack.scss';
 
 const { string, func, shape, arrayOf } = React.PropTypes;
 
-const NotificationStack = { notifications, onDismiss, ...alertProps } => {
+const NotificationStack = ({ notifications, onDismiss, ...alertProps }) => {
   return (
     <div className="notification-stack">
       {notifications.map(notification => (

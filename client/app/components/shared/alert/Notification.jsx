@@ -9,7 +9,7 @@ const Notification = ({ type, children, ...alertProps }) => (
 
 Notification.propTypes = {
   type: React.PropTypes.oneOf(['success', 'danger', 'info', 'warning']),
-  children: React.PropTypes.string.isRequired
+  children: React.PropTypes.string
 };
 
 export default Notification;
