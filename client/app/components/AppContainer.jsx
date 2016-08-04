@@ -52,13 +52,13 @@ export default class AppContainer extends React.Component {
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
                      date={this.props.date}
-                     updating={updating}/>
+                     updating={updating} />
           </Col>
           <Col xs={12} md={10}>
-            <Calendar {...calendarProps} events={events} onDelete={this._deleteEvent}/>
+            <Calendar {...calendarProps} events={events} onDelete={this._deleteEvent} />
           </Col>
         </Grid>
-        <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss}/>
+        <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );
   }
@@ -102,7 +102,7 @@ export default class AppContainer extends React.Component {
 
   _removeNotification(id) {
     const notifications = this.state.notifications;
-    const index = notifications.findIndex(x => x.id === id);
+    const index = notifications.findIndex(notification => notification.id === id);
     if (index > -1) {
       clearTimeout(notifications[index].timeout);
       notifications.splice(index, 1);

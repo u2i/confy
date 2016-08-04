@@ -6,7 +6,6 @@ import Notification from 'components/shared/alert/Notification';
 import { Alert } from 'react-bootstrap';
 
 describe('<Notification />', () => {
-
   it('renders its children', () => {
     const text = 'text';
     const wrapper = mount(<Notification>{text}</Notification>);
