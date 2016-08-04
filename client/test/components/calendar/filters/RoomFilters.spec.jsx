@@ -32,6 +32,6 @@ describe('<RoomFilters />', () => {
     it('sorts by name', () => {
       const filterNames = defaultWrapper.find(Filter).map(e => e.props().conferenceRoom.title);
       expect(filterNames).to.eql(titles.sort());
-    })
+    });
   });
 });

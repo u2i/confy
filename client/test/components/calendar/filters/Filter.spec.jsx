@@ -16,7 +16,7 @@ describe('<Filter />', () => {
     key: conferenceRoom.id,
     enabled: false
   };
-  const defaultWrapper = mount(<Filter {...defaultProps} />);
+  const defaultWrapper = mount(<Filter {...defaultProps} >{conferenceRoom.title}</Filter>);
 
   it('renders <Checbkox />', () => {
     expect(defaultWrapper.find(Checkbox)).to.have.lengthOf(1);
@@ -36,7 +36,7 @@ describe('<Filter />', () => {
         onDisabled,
         enabled: false
       };
-      const wrapper = mount(<Filter {...props} />);
+      const wrapper = mount(<Filter {...props}>{conferenceRoom.title}</Filter>);
 
       wrapper.find('input').simulate('change');
       expect(onDisabled).to.have.been.calledOnce();
@@ -53,7 +53,7 @@ describe('<Filter />', () => {
         onDisabled,
         enabled: true
       };
-      const wrapper = mount(<Filter {...props} />);
+      const wrapper = mount(<Filter {...props} >{conferenceRoom.title}</Filter>);
       wrapper.find('input').simulate('change');
       expect(onEnabled).to.have.been.calledOnce();
     });

@@ -17,7 +17,7 @@ export default class RoomFilters extends React.Component {
   };
 
   render() {
-    let filters = this.props.conferenceRooms.sort((l, r) => l.title > r.title).map(conferenceRoom => (
+    let filters = this.props.conferenceRooms.sort((left, right) => left.title > right.title).map(conferenceRoom => (
       <Filter conferenceRoom={conferenceRoom}
               enabled={this._filterEnabled(conferenceRoom)}
               onEnabled={() => this.props.onEnabled(conferenceRoom.id)}
