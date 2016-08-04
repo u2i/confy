@@ -55,7 +55,7 @@ export default class Calendar extends React.Component {
         <Table bordered striped responsive className="calendar">
           <thead>
             <tr>
-              <th className="col-md-1" />
+              <th className="time-cell" />
               {headerNodes}
             </tr>
           </thead>
