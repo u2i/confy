@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import CalendarRow from '../../app/components/calendar/CalendarRow';
-import EventWrapper from '../../app/components/calendar/event/EventWrapper';
-import Event from '../factories/Event';
-import TimeCell from '../../app/components/calendar/TimeCell';
+import CalendarRow from 'components/calendar/CalendarRow';
+import EventWrapper from 'components/calendar/event/EventWrapper';
+import Event from 'test/factories/Event';
+import TimeCell from 'components/calendar/TimeCell';
 import { expect } from 'chai';
 
 describe('<CalendarRow />', () => {
