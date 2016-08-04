@@ -146,10 +146,11 @@ describe GoogleEvent do
     end
 
     context 'valid params' do
-      context 'other events exitis' do
+      context 'other events exists' do
         let(:credentials) { :credentials }
-        let(:first_event) { double('Event', summary: 'Summary') }
-        let(:second_event) { double('Event', summary: 'Meeting') }
+        let(:attendee) { Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted') }
+        let(:first_event) { double('Event', summary: 'Summary', attendees: [attendee]) }
+        let(:second_event) { double('Event', summary: 'Meeting', attendees: [attendee]) }
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
         let(:event_data) do
@@ -178,6 +179,51 @@ describe GoogleEvent do
             'Already 2 events in time span(Summary, Meeting).'
           )
         end
+      end
+
+      context 'other rejected event exists' do
+        let(:credentials) { :credentials }
+        let(:service) { double(:calendar_service) }
+        let(:attendee) { Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'acceppted') }
+        let(:rejected_attendee) do
+          Google::Apis::CalendarV3::EventAttendee.new(
+            self: true,
+            response_status: GoogleEvent.singleton_class::GOOGLE_EVENT_DECLINED_RESPONSE
+          )
+        end
+        let(:first_event) { double('Event', summary: 'Summary', attendees: [rejected_attendee]) }
+        let(:start_time) { Time.now }
+        let(:end_time) { Time.now + 3.hour }
+        let(:event_data) do
+          {
+            attendees: [],
+            start: {date_time: start_time},
+            end: {date_time: end_time}
+          }
+        end
+        let!(:room) { create :conference_room }
+
+        before do
+          allow(described_class).to receive(:events_in_span) do
+            double('EventList', items: [first_event])
+          end
+          allow(described_class).to receive(:calendar_service) { service }
+          allow(service).to receive(:insert_event) { true }
+        end
+
+        it 'creates event' do
+          expect(service).to receive(:insert_event).with(
+            'primary',
+            Google::Apis::CalendarV3::Event
+          )
+          described_class.create(
+            credentials,
+            room.id,
+            start: {date_time: start_time},
+            end: {date_time: end_time}
+          )
+        end
+
       end
       context 'no other events' do
         let(:credentials) { :credentials }
