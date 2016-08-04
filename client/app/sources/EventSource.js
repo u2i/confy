@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const EVENT_PATH = '/events';
 
@@ -13,7 +13,6 @@ const getCSRFToken = (config) => {
 };
 
 axios.interceptors.request.use(getCSRFToken, (error) => Promise.reject(error));
-
 
 const EventSource = {
   fetch(params) {

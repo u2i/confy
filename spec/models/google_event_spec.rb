@@ -223,8 +223,8 @@ describe GoogleEvent do
             end: {date_time: end_time}
           )
         end
-
       end
+
       context 'no other events' do
         let(:credentials) { :credentials }
         let(:service) { double(:calendar_service) }
