@@ -11,7 +11,7 @@ const NotificationStack = ({ notifications, onDismiss, ...alertProps }) => (
     {notifications.map(notification => (
       <Notification type={notification.type}
                     onDismiss={() => onDismiss(notification.id)}
-        {...alertProps}
+                    {...alertProps}
                     key={notification.id}>
         {notification.text}
       </Notification>

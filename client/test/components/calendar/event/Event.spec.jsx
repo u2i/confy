@@ -1,14 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { expect } from 'chai';
+import sinon from 'sinon';
+import EventFactory from 'test/factories/Event';
+
 import Event from 'components/calendar/event/Event';
 import DeleteButton from 'components/calendar/event/DeleteButton';
-import { expect } from 'chai';
-import EventFactory from 'test/factories/Event';
 
 describe('<Event />', () => {
   const containerHeight = 30;
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
+  const onDelete = sinon.spy();
   it('renders correctly', () => {
     const event = EventFactory.build({ summary: 'Summary' });
     const wrapper = shallow(
@@ -17,7 +20,7 @@ describe('<Event />', () => {
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat}
-        onDelete={(_id) => {}} />
+        onDelete={onDelete} />
     );
     expect(wrapper.find('div')).to.have.lengthOf(5);
     const eventStyle = wrapper.find('.event').props().style;
@@ -38,7 +41,7 @@ describe('<Event />', () => {
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat}
-        onDelete={(_id) => {}} />
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event').props().style.height).to.eq(180);
   });
@@ -52,7 +55,7 @@ describe('<Event />', () => {
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat}
-        onDelete={(_id) => {}} />
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
   });
@@ -67,7 +70,7 @@ describe('<Event />', () => {
           containerHeight={containerHeight}
           unitEventLengthInSeconds={unitEventLengthInSeconds}
           timeFormat={timeFormat}
-          onDelete={(_id) => {}} />
+          onDelete={onDelete} />
       );
       expect(wrapper.find(DeleteButton)).to.have.lengthOf(1);
     });
@@ -82,7 +85,7 @@ describe('<Event />', () => {
           containerHeight={containerHeight}
           unitEventLengthInSeconds={unitEventLengthInSeconds}
           timeFormat={timeFormat}
-          onDelete={(id) => {}} />
+          onDelete={onDelete} />
       );
       expect(wrapper.find(DeleteButton)).to.have.lengthOf(0);
     });
