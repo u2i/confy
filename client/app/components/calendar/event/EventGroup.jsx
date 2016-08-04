@@ -5,7 +5,7 @@ import Event from './Event';
 
 import './event_group.scss';
 
-const { number, arrayOf } = React.PropTypes;
+const { number, arrayOf, func } = React.PropTypes;
 
 export default class EventGroup extends React.Component {
   static propTypes = {
@@ -15,7 +15,8 @@ export default class EventGroup extends React.Component {
     timestamp:                number.isRequired,
     containerWidth:           number.isRequired,
     containerHeight:          number.isRequired,
-    unitEventLengthInSeconds: number.isRequired
+    unitEventLengthInSeconds: number.isRequired,
+    onDelete:                 func.isRequired
   };
 
   render() {
@@ -25,7 +26,8 @@ export default class EventGroup extends React.Component {
       <Event event={event}
              containerHeight={containerHeight}
              unitEventLengthInSeconds={unitEventLengthInSeconds}
-             key={event.id} />
+             key={event.id}
+             onDelete={this.props.onDelete} />
     );
 
     return <div className="event-group" style={this._containerStyle()}>{eventNodes}</div>;

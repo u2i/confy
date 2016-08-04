@@ -5,20 +5,24 @@ import sinon from 'sinon';
 import moment from 'moment';
 
 import { Button } from 'react-bootstrap';
-import SideNav from '../../../app/components/layout/SideNav';
+import SideNav from 'components/layout/SideNav';
+import RefreshButton from 'components/layout/RefreshButton';
 
 describe('<SideNav />', () => {
-  const refreshSpy = sinon.spy();
+  const onRefresh = sinon.spy();
   const date = moment().format('YYYY-MM-DD');
 
-  it('should render five <Button /> elements', () => {
-    const wrapper = shallow(<SideNav onRefresh={refreshSpy} date={date} />);
-    expect(wrapper.find(Button)).to.have.lengthOf(5);
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<SideNav date={date} />);
+    onRefresh.reset();
   });
 
-  it('invokes callback on refresh', () => {
-    const wrapper = shallow(<SideNav onRefresh={refreshSpy} date={date} />);
-    wrapper.find(Button).forEach(button => button.simulate('click'));
-    expect(refreshSpy).to.have.been.calledOnce();
+  it('should render four <Button /> elements', () => {
+    expect(wrapper).to.have.exactly(4).descendants(Button);
+  });
+
+  it('should render a <RefreshButton />', () => {
+    expect(wrapper).to.have.exactly(1).descendants(RefreshButton);
   });
 });

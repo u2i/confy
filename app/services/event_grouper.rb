@@ -2,7 +2,7 @@ class EventGrouper
   GRANULARITY = 30.minutes.freeze
   class << self
     def floor_time(time)
-      if time > time.beginning_of_hour + GRANULARITY
+      if time >= time.beginning_of_hour + GRANULARITY
         time.beginning_of_hour + GRANULARITY
       else
         time.beginning_of_hour
