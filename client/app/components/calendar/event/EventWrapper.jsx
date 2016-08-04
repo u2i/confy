@@ -36,7 +36,7 @@ class EventWrapper extends React.Component {
   render() {
     return (
       <td ref={this.handleContainerMounted}>
-        <If condition={this.props.events != null}>
+        <If condition={this.props.events != null && this.props.events.length > 0}>
           <Then>{() =>
             <EventGroup {...this.props}
                         containerWidth={this.state.width}
