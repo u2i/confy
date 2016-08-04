@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<RoomFilters />', () => {
-  const titles = [{ title: 'Zamosc', kind: 0 }, { title: 'Andrychow', kind: 0 } , { title: 'Krakow', kind: 1 } ];
+  const titles = [{ title: 'Zamosc', kind: 0 }, { title: 'Andrychow', kind: 0 }, { title: 'Krakow', kind: 1 }];
   const conferenceRooms = titles.map(({ title, kind }) => ConferenceRoom.build({ title, kind }));
   const props = {
     conferenceRooms,
