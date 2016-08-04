@@ -1,3 +1,5 @@
+import moment from 'moment';
+import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
@@ -8,7 +10,7 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
+const { string, number, shape, array, arrayOf, oneOfType, instanceOf } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -18,19 +20,30 @@ export default class Calendar extends React.Component {
     times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
-    dateFormat:               string
+    dateFormat:               string,
+    scrollTo:                 shape({ hours: number, minutes: number })
   };
 
   static defaultProps = {
-    events: []
+    events: [],
+    scrollTo: { hours: 0, minutes: 0 }
   };
 
   constructor(...args) {
     super(...args);
     this.state = { filteredRooms: new Immutable.Set() };
+    this.rows = {};
 
     this._addFilter = this._addFilter.bind(this);
     this._removeFilter = this._removeFilter.bind(this);
+  }
+
+  componentDidMount() {
+    const time = Object.keys(this.rows).find(t => {
+      const m = moment(t);
+      return m.hours() === 6 && m.minutes() === 0;
+    });
+    ReactDOM.findDOMNode(this.rows[time]).scrollIntoView();
   }
 
   render() {
@@ -43,7 +56,8 @@ export default class Calendar extends React.Component {
                    key={time}
                    events={this._filterEvents()}
                    days={this.props.days}
-                   unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
+                   unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
+                   ref={(ref) => this.rows[time] = ref} />
     ));
 
     return (
