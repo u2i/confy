@@ -10,7 +10,7 @@ export default class Filter extends React.Component {
     onDisabled: React.PropTypes.func.isRequired,
     color:      React.PropTypes.string,
     enabled:    React.PropTypes.bool,
-    children:   React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.string]).isRequired
+    children:   React.PropTypes.node
   };
 
   static defaultProps = {
