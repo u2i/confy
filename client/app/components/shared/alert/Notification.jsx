@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import { Alert } from 'react-bootstrap';
 
 const Notification = ({ type, children, ...alertProps }) => (
