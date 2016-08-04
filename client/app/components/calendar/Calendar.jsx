@@ -26,7 +26,7 @@ export default class Calendar extends React.Component {
   };
 
   static defaultProps = {
-    events: [],
+    events:   [],
     scrollTo: { hours: 0, minutes: 0 }
   };
 
@@ -40,11 +40,15 @@ export default class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    const time = Object.keys(this.rows).find(t => {
-      const m = moment(t);
-      return m.hours() === 6 && m.minutes() === 0;
-    });
-    ReactDOM.findDOMNode(this.rows[time]).scrollIntoView();
+    const { hours, minutes } = this.props.scrollTo;
+    const time = Object.keys(this.rows)
+      .map(t => moment(t))
+      .find(t => t.hours() === hours && t.minutes() === minutes);
+
+    const node = ReactDOM.findDOMNode(this.rows[time]);
+    if (node.scrollIntoView) {
+      node.scrollIntoView();
+    }
   }
 
   render() {

@@ -23,6 +23,8 @@ rules:
 # Variables
   no-undef: 2
   no-unused-vars: [2, { vars: all, args: none, varsIgnorePattern: "^_" }]
+  no-return-assign: 0
+  id-length: [2, { exceptions: [x, y, a, b, t] }]
 
 # Stylistic issues
   indent: [1, 2, { SwitchCase: 1, VariableDeclarator: 2 }]
