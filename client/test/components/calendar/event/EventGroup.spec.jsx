@@ -12,7 +12,6 @@ describe('<EventGroup />', () => {
   const containerWidth = 120;
   const unitEventLengthInSeconds = 30 * 60;
   const onDelete = sinon.spy();
-  
 
   it('renders correctly', () => {
     const event = EventFactory.build();
@@ -66,3 +65,8 @@ describe('<EventGroup />', () => {
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(120);
   });
 });
+
+
+
+
+

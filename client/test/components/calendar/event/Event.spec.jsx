@@ -57,7 +57,7 @@ describe('<Event />', () => {
         containerHeight={containerHeight}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timeFormat={timeFormat}
-        onDelete={onDelete}/>
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
   });
