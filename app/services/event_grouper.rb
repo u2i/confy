@@ -30,27 +30,24 @@ class EventGrouper
   def build_blocks
     blocks = []
     events.each do |event|
-      block = blocks.find { |block| block.can_add_event(event) }
-      block.nil? ? blocks.push(Block.new(event)) : block.add_event(event)
+      colliding_block = blocks.find { |block| block.can_add_event(event) }
+      colliding_block.nil? ? blocks.push(Block.new(event)) : colliding_block.add_event(event)
     end
-    blocks.map { |block| block.block_events }
+    blocks.map(&:block_events)
   end
-
-  private
 
   class Block
     attr_reader :block_events
-    def initialize(event=nil)
+    def initialize(event = nil)
       @block_events = []
       @end_time = nil
       add_event(event) unless event.nil?
     end
 
     def add_event(event)
-      if can_add_event(event)
-        block_events.push(event)
-        update_end_time(event)
-      end
+      return unless can_add_event(event)
+      block_events.push(event)
+      update_end_time(event)
     end
 
     def can_add_event(event)
