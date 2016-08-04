@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import sinon from 'sinon';
 import CalendarRow from 'components/calendar/CalendarRow';
 import EventWrapper from 'components/calendar/event/EventWrapper';
 import Event from 'test/factories/Event';
@@ -12,8 +13,9 @@ describe('<CalendarRow />', () => {
   const events = [group1, group2];
   const days = [new Date(), new Date(), new Date()];
   const unitEventLengthInSeconds = 1800;
+  const onDelete = sinon.spy();
   let time = new Date();
-  const props = { events, days, unitEventLengthInSeconds };
+  const props = { events, days, unitEventLengthInSeconds, onDelete };
   let wrapper = shallow(<CalendarRow time={time} {...props} />);
 
   describe('#render()', () => {

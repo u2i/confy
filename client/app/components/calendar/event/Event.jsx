@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
+import DeleteButton from './DeleteButton';
+import { If, Then } from 'react-if';
 
 import { formatTime } from 'helpers/DateHelper';
 
@@ -10,7 +12,8 @@ export default class Event extends React.Component {
     event:                    EventSchema.isRequired,
     containerHeight:          PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
-    timeFormat:               PropTypes.string
+    timeFormat:               PropTypes.string,
+    onDelete:                 PropTypes.func.isRequired
   };
 
   render() {
@@ -22,6 +25,11 @@ export default class Event extends React.Component {
 
     return (
       <div className="event" style={this._eventStyle()}>
+        <If condition={creator.self === true}>
+          <Then>{() =>
+            <DeleteButton id={event.id} onDelete={this.props.onDelete} />}
+          </Then>
+        </If>
         <div className="event-time">{timeStr}</div>
         <div className="event-name">{event.summary}</div>
         <div className="event-user">

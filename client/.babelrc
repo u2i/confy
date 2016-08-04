@@ -33,6 +33,10 @@
           "expose": "sources"
         },
         {
+          "src": "./app/models",
+          "expose": "models"
+        },
+        {
           "src": "npm:lodash",
           "expose": "underscore"
         }
