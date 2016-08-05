@@ -13,8 +13,7 @@ import RoomFilters from 'components/calendar/filters/RoomFilters';
 
 describe('<Calendar />', () => {
   const props = DefaultProps.build({
-    onDelete: (_id) => {
-    }
+    onDelete: () => {}
   });
 
   let wrapper;
