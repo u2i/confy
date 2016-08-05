@@ -73,7 +73,7 @@ RSpec.describe 'Events', type: :request do
         allow(GoogleEvent).to receive(:delete) { true }
         allow_any_instance_of(EventsController).to receive(:session) { session }
         delete event_path event_id
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:ok)
       end
     end
   end

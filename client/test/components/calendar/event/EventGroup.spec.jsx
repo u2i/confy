@@ -1,13 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import EventGroup from 'components/calendar/event/EventGroup';
 import { expect } from 'chai';
+import sinon from 'sinon';
+
 import EventFactory from 'test/factories/Event';
+
+import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventGroup />', () => {
   const containerHeight = 30;
   const containerWidth = 120;
   const unitEventLengthInSeconds = 30 * 60;
+  const onDelete = sinon.spy();
 
   it('renders correctly', () => {
     const event = EventFactory.build();
@@ -19,7 +23,8 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={event.start_timestamp}
         offset={0}
-        eventsInGroup={2} />
+        eventsInGroup={2}
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event-group')).to.have.lengthOf(1);
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(0);
@@ -37,7 +42,8 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={events[0].start_timestamp}
         offset={0}
-        eventsInGroup={3} />
+        eventsInGroup={3}
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event-group').props().style.width).to.equal(80);
     expect(wrapper.find('Event')).to.have.lengthOf(2);
@@ -53,8 +59,14 @@ describe('<EventGroup />', () => {
         unitEventLengthInSeconds={unitEventLengthInSeconds}
         timestamp={event.start_timestamp}
         offset={2}
-        eventsInGroup={2} />
+        eventsInGroup={2}
+        onDelete={onDelete} />
     );
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(120);
   });
 });
+
+
+
+
+

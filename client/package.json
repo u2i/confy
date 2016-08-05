@@ -14,7 +14,6 @@
   "dependencies": {
     "autoprefixer": "^6.3.5",
     "axios": "^0.9.1",
-    "babel": "^6.5.2",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
@@ -40,6 +39,7 @@
     "lodash": "^4.14.0",
     "moment": "^2.14.1",
     "node-sass": "^3.8.0",
+    "node-uuid": "^1.4.7",
     "postcss-loader": "^0.9.1",
     "react": "^0.14.8 || ^15.0.0",
     "react-addons-test-utils": "^0.14.8 || ^15.0.0",

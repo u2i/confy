@@ -4,7 +4,7 @@ import ConferenceRoom from './ConferenceRoom';
 export default new Factory()
   .attrs({
     conferenceRooms:          [ConferenceRoom.build()],
-    days:                     [],
-    times:                    [],
+    days:                     [new Date(2016, 7, 25, 0, 0, 0).toISOString()],
+    times:                    [new Date(2016, 7, 25, 0, 0, 0).toISOString()],
     unitEventLengthInSeconds: 60
   });

@@ -7,7 +7,7 @@ import EventWrapper from './event/EventWrapper';
 
 const SECONDS_IN_DAY = 24 * 60 * 60;
 
-const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes;
+const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
@@ -16,7 +16,8 @@ export default class CalendarRow extends React.Component {
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
-    displayMinutes:           bool
+    displayMinutes:           bool,
+    onDelete:                 func.isRequired
   };
 
   static defaultProps = {
@@ -74,7 +75,8 @@ export default class CalendarRow extends React.Component {
                       events={events}
                       eventsInGroup={eventGroup.length}
                       offset={offset}
-                      key={timestamp} />
+                      key={timestamp}
+                      onDelete={this.props.onDelete} />
       );
     });
   }

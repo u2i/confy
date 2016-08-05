@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const EVENT_PATH = '/events';
 
@@ -19,10 +19,7 @@ const EventSource = {
     return axios.get(EVENT_PATH, { params });
   },
   remove(id) {
-    axios({
-      method: 'DELETE',
-      url: `${EVENT_PATH}/${id}`
-    });
+    return axios.delete(`${EVENT_PATH}/${id}`);
   },
   create(params) {
     return axios({
