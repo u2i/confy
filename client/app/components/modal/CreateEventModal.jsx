@@ -30,7 +30,9 @@ export default class CreateEventModal extends React.Component {
       showErrorMessage: false,
       conferenceRoomId: this.props.conferenceRooms[0].id,
       startTime:        this.props.initialDate,
-      endTime:          this.props.initialDate
+      endTime:          this.props.initialDate,
+      disableSaving:    true,
+      errors:           {}
     };
 
     _.bindAll(this,
@@ -51,13 +53,22 @@ export default class CreateEventModal extends React.Component {
         this.props.closeModal();
         this.props.refresh();
       })
-      .catch(() => {
-        this._showError();
+      .catch((e) => {
+        console.log(e);
+        if (e.statusText === 'Unprocessable Entity') {
+          if (!e.data) {
+            this._showError();
+          } else {
+            this.setState({ errors: e.data });
+          }
+        } else {
+          this._showError();
+        }
       });
   }
 
   updateParam(key, value) {
-    this.setState({ [key]: value });
+    this.setState({ [key]: value }, () => this._validateParams(key));
   }
 
   render() {
@@ -71,13 +82,29 @@ export default class CreateEventModal extends React.Component {
         <ModalBody
           updateParam={this.updateParam}
           conferenceRooms={this.props.conferenceRooms}
-          showErrorMessage={this.state.showErrorMessage} />
+          showErrorMessage={this.state.showErrorMessage}
+          errors={this.state.errors} />
         <ModalFooter
           closeModal={this.props.closeModal}
-          saveChanges={this.saveChanges} />
+          saveChanges={this.saveChanges}
+          disableSaving={this.state.disableSaving} />
 
       </Modal>
     );
+  }
+
+  _validateTimeRange() {
+    if (this.state.startTime >= this.state.endTime) {
+      this.setState({ disableSaving: true });
+    } else {
+      this.setState({ disableSaving: false });
+    }
+  }
+
+  _validateParams(key) {
+    if (key === 'startTime' || key === 'endTime') {
+      this._validateTimeRange();
+    }
   }
 
   _showError() {

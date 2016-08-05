@@ -1,12 +1,14 @@
 import React from 'react';
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { If } from 'react-if';
 
 const { array, func } = React.PropTypes;
 
 export default class FormLocationField extends React.Component {
   static propTypes = {
     conferenceRooms: array.isRequired,
-    onChange:        func.isRequired
+    onChange:        func.isRequired,
+    errors:          array
   };
 
   render() {
@@ -22,6 +24,9 @@ export default class FormLocationField extends React.Component {
                      name="location">
           {conferenceRoomsOptions}
         </FormControl>
+        <If condition={this.props.errors != null}>
+          <HelpBlock className="text-danger">{this.props.errors[0]}</HelpBlock>
+        </If>
       </FormGroup>
     );
   }
