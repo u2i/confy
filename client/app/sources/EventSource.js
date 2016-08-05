@@ -22,7 +22,7 @@ const EventSource = {
     return axios.delete(`${EVENT_PATH}/${id}`);
   },
   create(params) {
-    return axios.post(EVENT_PATH, params);
+    return axios.post(EVENT_PATH, { event: params });
   }
 };
 
