@@ -31,21 +31,21 @@ describe('EventHelper', () => {
 
   describe('#buildBlocks()', () => {
     const startTime = moment('2016-01-01T06:00:00');
-    const event1 = Event.build({},{
+    const event1 = Event.build({}, {
       start_time: startTime.toDate(),
       end_time: startTime.clone().add(1, 'hours').toDate() });
 
     describe('with mutually colliding events', () => {
-      const event2 = Event.build({},{
+      const event2 = Event.build({}, {
         start_time: startTime.clone().add(30, 'minutes').toDate(),
         end_time: startTime.clone().add(2, 'hours').toDate() });
-      const event3 = Event.build({},{
+      const event3 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
         end_time: startTime.clone().add(2, 'hours').toDate() });
-      const event4 = Event.build({},{
+      const event4 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
         end_time: startTime.clone().add(3, 'hours').toDate() });
-      const event5 = Event.build({},{
+      const event5 = Event.build({}, {
         start_time: startTime.clone().add(3, 'hours').toDate(),
         end_time: startTime.clone().add(5, 'hours').toDate() });
       const events = [event1, event2, event3, event4, event5];
@@ -57,10 +57,10 @@ describe('EventHelper', () => {
     });
 
     describe('with pairwise colliding events', () => {
-      const event2 = Event.build({},{
+      const event2 = Event.build({}, {
         start_time: startTime.clone().subtract(1, 'hours').toDate(),
         end_time: startTime.clone().add(2, 'hours').toDate() });
-      const event3 = Event.build({},{
+      const event3 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
         end_time: startTime.clone().add(3, 'hours').toDate() });
       const expectedGroups = [[event2, event1, event3]];
