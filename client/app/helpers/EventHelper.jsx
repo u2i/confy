@@ -14,6 +14,30 @@ export function eventsStartingAt(timestamp, group) {
   return group.filter(eventStartsAt(timestamp));
 }
 
+function eventsAssignedToColumns(eventsGroup) {
+  const columns = [];
+  eventsGroup.forEach(event => {
+    const columnForEvent = columns.find(column => (
+      column[column.length - 1].end.date_time <= event.start.date_time
+    ));
+    columnForEvent === undefined ? columns.push([event]) : columnForEvent.push(event);
+  });
+  return columns;
+}
+
+export function setEventsPositionAttributes(groups) {
+  groups.forEach(group => {
+    let columns = eventsAssignedToColumns(group);
+    let eventWidth = 1 / columns.length;
+    columns.forEach((column, index) => {
+      column.forEach(event => {
+        event.eventWidth = eventWidth;
+        event.offset = index;
+      })
+    });
+  });
+}
+
 class Block {
   constructor(event = null) {
     this.blockEvents = [];
