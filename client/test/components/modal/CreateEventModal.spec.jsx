@@ -1,13 +1,12 @@
-import React from "react";
-import {Modal} from "react-bootstrap";
-import {mount} from "enzyme";
-import {expect} from "chai";
-import CreateEventModal from "components/modal/CreateEventModal";
-import ConferenceRoom from "test/factories/ConferenceRoom";
-import ModalHeader from "components/modal/layout/ModalHeader";
-import ModalBody from "components/modal/layout/ModalBody";
-import ModalFooter from "components/modal/layout/ModalFooter";
-import ErrorField from "components/modal/layout/ErrorField";
+import React from 'react';
+import { Modal } from 'react-bootstrap';
+import { mount } from 'enzyme';
+import { expect } from 'chai';
+import CreateEventModal from 'components/modal/CreateEventModal';
+import ConferenceRoom from 'test/factories/ConferenceRoom';
+import ModalHeader from 'components/modal/layout/ModalHeader';
+import ModalBody from 'components/modal/layout/ModalBody';
+import ModalFooter from 'components/modal/layout/ModalFooter';
 
 describe('<CreateEventModal />', () => {
   const wrapper = mount(<CreateEventModal
@@ -27,9 +26,5 @@ describe('<CreateEventModal />', () => {
 
   it('renders <ModalFooter />', () => {
     expect(wrapper.find(ModalFooter)).to.exist;
-  });
-
-  it('renders <ErrorField />', () => {
-    expect(wrapper.find(ErrorField)).to.exist;
   });
 });

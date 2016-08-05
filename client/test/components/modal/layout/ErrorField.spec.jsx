@@ -1,8 +1,8 @@
-import React from "react";
-import {Alert} from "react-bootstrap";
-import {mount} from "enzyme";
-import {expect} from "chai";
-import ErrorField from "components/modal/layout/ErrorField";
+import React from 'react';
+import { Alert } from 'react-bootstrap';
+import { mount } from 'enzyme';
+import { expect } from 'chai';
+import ErrorField from 'components/modal/layout/ErrorField';
 
 describe('<ErrorField />', () => {
   it('does not render <Alert /> by default', () => {

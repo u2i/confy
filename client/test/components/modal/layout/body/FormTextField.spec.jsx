@@ -1,9 +1,9 @@
-import React from "react";
-import {ControlLabel, FormControl} from "react-bootstrap";
-import {shallow, mount} from "enzyme";
-import {expect} from "chai";
-import sinon from "sinon";
-import FormTextField from "components/modal/layout/body/FormTextField";
+import React from 'react';
+import { ControlLabel, FormControl } from 'react-bootstrap';
+import { shallow, mount } from 'enzyme';
+import { expect } from 'chai';
+import sinon from 'sinon';
+import FormTextField from 'components/modal/layout/body/FormTextField';
 
 describe('<FormTextField />', () => {
   const onChangeSpy = sinon.spy();
