@@ -40,15 +40,7 @@ export default class Calendar extends React.Component {
   }
 
   componentDidMount() {
-    const { hours, minutes } = this.props.scrollTo;
-    const time = Object.keys(this.rows)
-      .map(t => moment(t))
-      .find(t => t.hours() === hours && t.minutes() === minutes);
-
-    const node = ReactDOM.findDOMNode(this.rows[time]);
-    if (node.scrollIntoView) {
-      node.scrollIntoView();
-    }
+    this._scrollToRow();
   }
 
   render() {
@@ -103,6 +95,18 @@ export default class Calendar extends React.Component {
 
   _eventIsFiltered(event) {
     return this.state.filteredRooms.has(event.conference_room.id);
+  }
+
+  _scrollToRow() {
+    const { hours, minutes } = this.props.scrollTo;
+    const time = Object.keys(this.rows)
+      .map(t => moment(t))
+      .find(t => t.hours() === hours && t.minutes() === minutes);
+
+    const node = ReactDOM.findDOMNode(this.rows[time]);
+    if (node.scrollIntoView) {
+      node.scrollIntoView();
+    }
   }
 }
 
