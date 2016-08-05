@@ -8,7 +8,7 @@ const CalendarHeader = (props) => (
 );
 
 CalendarHeader.propTypes = {
-  day:        React.PropTypes.string.isRequired,
+  day:        React.PropTypes.oneOfType([React.PropTypes.instanceOf(Date), React.PropTypes.string]).isRequired,
   dateFormat: React.PropTypes.string
 };
 

@@ -3,22 +3,23 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
-import EventFactory from 'test/factories/Event';
 import EventSource from 'sources/EventSource';
+import Event from 'test/factories/Event';
+import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
 
-import AppContainer from 'components/AppContainer';
+import App from 'components/App';
 import SideNav from 'components/layout/SideNav';
 
-describe('<AppContainer />', () => {
+describe('<App />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
   sinon.stub(EventSource, 'remove').resolves([]);
-  let props;
 
   before(() => {
     proxyquire('../../app/sources/EventSource', EventSource);
   });
 
+  let props;
   beforeEach(() => {
     props = DefaultProps.build();
   });
@@ -34,13 +35,13 @@ describe('<AppContainer />', () => {
   });
 
   it('prefetches events', () => {
-    mount(<AppContainer {...props} />);
+    mount(<App {...props} />);
     expect(EventSource.fetch).to.have.been.calledOnce();
   });
 
   describe('refresh', () => {
     it('updates events', () => {
-      const wrapper = shallow(<AppContainer {...props} />);
+      const wrapper = shallow(<App {...props} />);
       wrapper.find(SideNav).simulate('refresh');
       expect(EventSource.fetch).to.have.been.calledOnce();
     });
@@ -54,10 +55,12 @@ describe('<AppContainer />', () => {
     });
 
     it('deletes event', () => {
-      const event = EventFactory.build({ creator: { self: true, email: 'user@example.com' } });
-      props = DefaultProps.build({ initialEvents: [[event]] });
-      const wrapper = mount(<AppContainer {...props} />);
+      const event = Event.build({ creator: User.build({ self: true }) });
+      const wrapper = mount(<App {...props} initialEvents={[[event]]} />);
+
       wrapper.find('.delete-button').simulate('click');
+
+      expect(EventSource.remove).to.have.been.calledOnce();
       expect(EventSource.remove).to.have.been.calledWith(event.id);
     });
   });

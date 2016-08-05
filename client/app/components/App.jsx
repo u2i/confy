@@ -1,38 +1,55 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
+import { DATE_PARAM_FORMAT, weekDays } from 'helpers/DateHelper';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
 
-export default class AppContainer extends React.Component {
+export default class App extends React.Component {
   static propTypes = {
-    initialEvents: React.PropTypes.array,
-    date: React.PropTypes.string,
-    notificationTimeout: React.PropTypes.number
+    initialEvents:       PropTypes.array,
+    weekLength:          PropTypes.number,
+    location:            PropTypes.shape({
+      query: PropTypes.shape({
+        date: PropTypes.string
+      })
+    }).isRequired,
+    notificationTimeout: PropTypes.number
   };
 
   static defaultProps = {
-    date: moment().format('YYYY-MM-DD'),
     notificationTimeout: 10000
   };
 
   constructor(...args) {
     super(...args);
 
-    this.state = { events: this.props.initialEvents, updating: false, notifications: [] };
+    this.state = {
+      events:        this.props.initialEvents,
+      updating:      false,
+      notifications: []
+    };
+
     this.handleCalendarRefresh = this.handleCalendarRefresh.bind(this);
     this.handleNotificationDismiss = this.handleNotificationDismiss.bind(this);
-    this._deleteEvent = this._deleteEvent.bind(this);
+    this.handleEventDelete = this.handleEventDelete.bind(this);
   }
 
   componentDidMount() {
     if (!this.state.events) {
       this._fetchEvents();
     }
+  }
+
+  componentDidUpdate(prevProps) {
+    const currentQuery = this.props.location.query;
+    const prevQuery = prevProps.location.query;
+    if (prevQuery && currentQuery && prevQuery.date === currentQuery.date) return;
+    this._fetchEvents();
   }
 
   handleCalendarRefresh() {
@@ -43,6 +60,10 @@ export default class AppContainer extends React.Component {
     this._removeNotification(notificationId);
   }
 
+  handleEventDelete(eventId) {
+    this._deleteEvent(eventId);
+  }
+
   render() {
     const { initialEvents: _, ...calendarProps } = this.props;
     const { events, notifications, updating } = this.state;
@@ -51,11 +72,14 @@ export default class AppContainer extends React.Component {
         <Grid>
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
-                     date={this.props.date}
+                     date={this._dateParam()}
                      updating={updating} />
           </Col>
           <Col xs={12} md={10}>
-            <Calendar {...calendarProps} events={events} onDelete={this._deleteEvent} />
+            <Calendar {...calendarProps}
+                      events={events}
+                      days={weekDays(this._dateParam(), this.props.weekLength)}
+                      onDelete={this.handleEventDelete} />
           </Col>
         </Grid>
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
@@ -63,16 +87,26 @@ export default class AppContainer extends React.Component {
     );
   }
 
+  _dateParam() {
+    const query = this.props.location.query;
+    if (query && query.date) {
+      return query.date;
+    }
+    return moment().format(DATE_PARAM_FORMAT);
+  }
+
   _fetchEvents() {
     this.setState({ updating: true });
     EventSource
-      .fetch({ date: this.props.date })
+      .fetch({ date: this._dateParam() })
       .then(({ data }) => {
         this.setState({ events: data, updating: false });
       })
-      .catch(() =>
-        this.setState({ updating: false })
-      );
+      .catch((err) => {
+        const error = new Notification('danger', `Failed to fetch events: ${err}`);
+        this._addNotification(error);
+        this.setState({ updating: false });
+      });
   }
 
   _deleteEvent(id) {

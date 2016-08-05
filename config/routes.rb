@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'oauth2callback' => 'authentication#authenticate'
 
   get 'google_index' => 'calendar#google_index'
+  get 'calendar/props' => 'calendar#component_props'
 
   resources :events, only: [:create, :index, :show, :destroy]
 end

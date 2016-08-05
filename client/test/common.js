@@ -12,3 +12,6 @@ chai.use(chaiEnzyme());
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.use(dirtyChai);
+
+chai.config.showDiff = true;
+chai.config.truncateThreshold = 0;

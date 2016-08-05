@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
