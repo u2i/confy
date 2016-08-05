@@ -64,7 +64,8 @@ export default class CreateEventModal extends React.Component {
     return (
       <Modal
         show={this.props.showModal}
-        onHide={this.props.closeModal}>
+        onHide={this.props.closeModal}
+        onExited={() => this.setState({ showErrorMessage: false })}>
 
         <ModalHeader />
         <ModalBody
