@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const EVENT_PATH = '/events';
 
@@ -22,11 +22,7 @@ const EventSource = {
     return axios.delete(`${EVENT_PATH}/${id}`);
   },
   create(params) {
-    return axios({
-      method: 'post',
-      url: EVENT_PATH,
-      data: params
-    });
+    return axios.post(EVENT_PATH, params);
   }
 };
 
