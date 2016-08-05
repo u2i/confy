@@ -21,6 +21,6 @@ class GoogleEventLister
   private
 
   def build_groups(events)
-    EventGrouper.new(events.sort_by! { |e| e[:end][:date_time] }).call
+    EventGrouper.new(events).build_blocks
   end
 end
