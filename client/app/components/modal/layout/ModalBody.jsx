@@ -17,7 +17,8 @@ export default class ModalBody extends React.Component {
   };
 
   static defaultProps = {
-    showErrorMessage: false
+    showErrorMessage: false,
+    errors: {}
   };
 
   constructor(props) {

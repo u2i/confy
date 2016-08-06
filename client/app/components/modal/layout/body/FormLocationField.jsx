@@ -11,6 +11,10 @@ export default class FormLocationField extends React.Component {
     errors:          array
   };
 
+  static defaultProps = {
+    errors: []
+  }
+
   render() {
     const conferenceRoomsOptions = this.props.conferenceRooms.map(room => (
       <option value={room.id} key={room.id}>{room.title}</option>
