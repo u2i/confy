@@ -30,7 +30,7 @@ describe('<RoomFilters />', () => {
     });
 
     it('sorts by kind and title', () => {
-      const filterNames = defaultWrapper.find(Filter).map(e => e.props().conferenceRoom.title);
+      const filterNames = defaultWrapper.find(Filter).map(e => e.props().children);
       expect(filterNames).to.eql(['Krakow', 'Andrychow', 'Zamosc']);
     });
   });
