@@ -7,9 +7,9 @@ import './filters.scss';
 export default class RoomFilters extends React.Component {
   static propTypes = {
     conferenceRooms: PropTypes.arrayOf(ConferenceRoomSchema.only('id')).isRequired,
-    onEnabled: PropTypes.func.isRequired,
-    onDisabled: PropTypes.func.isRequired,
-    filters: PropTypes.arrayOf(PropTypes.number)
+    onEnabled:       PropTypes.func.isRequired,
+    onDisabled:      PropTypes.func.isRequired,
+    filters:         PropTypes.arrayOf(PropTypes.number)
   };
 
   static defaultProps = {
@@ -18,8 +18,7 @@ export default class RoomFilters extends React.Component {
 
   render() {
     let filters = this.props.conferenceRooms.sort(this._roomCompare).map(conferenceRoom => (
-      <Filter conferenceRoom={conferenceRoom}
-              enabled={this._filterEnabled(conferenceRoom)}
+      <Filter enabled={this._filterEnabled(conferenceRoom)}
               onEnabled={() => this.props.onEnabled(conferenceRoom.id)}
               onDisabled={() => this.props.onDisabled(conferenceRoom.id)}
               color={conferenceRoom.color}
