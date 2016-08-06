@@ -1,6 +1,6 @@
 class ConferenceRoom < ApplicationRecord
   HEX_COLOR_FORMAT = /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/i
-  KINDS = %i(narnia without_walls small big)
+  KINDS = %i(narnia without_walls small big).freeze
 
   enum kind: KINDS
 
