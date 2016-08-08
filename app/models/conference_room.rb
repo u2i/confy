@@ -17,15 +17,4 @@ class ConferenceRoom < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   has_many :events, dependent: :destroy
-
-  def attributes
-    {
-      'title'    => nil,
-      'color'    => nil,
-      'email'    => nil,
-      'capacity' => nil,
-      'id'       => nil,
-      'kind'     => nil
-    }
-  end
 end
