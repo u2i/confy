@@ -1,6 +1,4 @@
 class ConferenceRoom < ApplicationRecord
-  include ActiveModel::Serialization
-
   HEX_COLOR_FORMAT = /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/i
   KINDS = {
     narnia: 0,
