@@ -50,7 +50,7 @@ export default class Event extends React.Component {
   }
 
   _eventWidth() {
-    return this.props.event.width * this.props.containerWidth - 1;
+    return this.props.event.width * this.props.containerWidth;
   }
 
   _eventOffset() {

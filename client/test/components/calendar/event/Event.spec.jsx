@@ -43,6 +43,21 @@ describe('<Event />', () => {
     expect(defaultWrapper).to.have.style('height').equal('120px');
   });
 
+  it('renders with correct width', () => {
+    const event = EventFactory.build({ width: 0.5 });
+    const wrapper = shallowEvent(event);
+
+    expect(defaultWrapper).to.have.style('width').equal('100px');
+    expect(wrapper).to.have.style('width').equal('50px');
+  });
+
+  it('renders with correct offset', () => {
+    const event = EventFactory.build({ width: 0.5, offset: 1 });
+    const wrapper = shallowEvent(event);
+
+    expect(wrapper).to.have.style('left').equal('50px');
+  });
+
   it('renders with correct background color', () => {
     expect(defaultWrapper).to.have.style('background-color').equal(defaultEvent.conference_room.color);
   });
