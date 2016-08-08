@@ -7,5 +7,5 @@ export default new Factory()
     email:    'narnia@resource.calendar.google.com',
     color:    '#dffabd',
     capacity: 10,
-    kind: 0
+    kind: 'narnia'
   });

@@ -8,7 +8,7 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, array, arrayOf, oneOfType, instanceOf } = PropTypes;
+const { string, number, array, arrayOf, oneOfType, instanceOf, object } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -18,7 +18,8 @@ export default class Calendar extends React.Component {
     times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
-    dateFormat:               string
+    dateFormat:               string,
+    roomKinds:                object.isRequired
   };
 
   static defaultProps = {
@@ -51,7 +52,8 @@ export default class Calendar extends React.Component {
         <RoomFilters onEnabled={this._addFilter}
                      onDisabled={this._removeFilter}
                      conferenceRooms={this.props.conferenceRooms}
-                     filters={this.state.filteredRooms.toArray()} />
+                     filters={this.state.filteredRooms.toArray()}
+                     roomKinds={this.props.roomKinds} />
         <Table bordered striped responsive className="calendar">
           <thead>
             <tr>

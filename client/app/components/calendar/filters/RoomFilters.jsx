@@ -4,19 +4,13 @@ import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 import './filters.scss';
 
-const ROOM_KINDS = {
-  big: 3,
-  small: 2,
-  without_walls: 1,
-  narnia: 0
-};
-
 export default class RoomFilters extends React.Component {
   static propTypes = {
     conferenceRooms: PropTypes.arrayOf(ConferenceRoomSchema.only('id')).isRequired,
     onEnabled:       PropTypes.func.isRequired,
     onDisabled:      PropTypes.func.isRequired,
-    filters:         PropTypes.arrayOf(PropTypes.number)
+    filters:         PropTypes.arrayOf(PropTypes.number),
+    roomKinds:       PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -24,7 +18,7 @@ export default class RoomFilters extends React.Component {
   };
 
   render() {
-    let filters = this.props.conferenceRooms.sort(this._roomCompare).map(conferenceRoom => (
+    let filters = this.props.conferenceRooms.sort(this._roomCompare.bind(this)).map(conferenceRoom => (
       <Filter enabled={this._filterEnabled(conferenceRoom)}
               onEnabled={() => this.props.onEnabled(conferenceRoom.id)}
               onDisabled={() => this.props.onDisabled(conferenceRoom.id)}
@@ -48,6 +42,6 @@ export default class RoomFilters extends React.Component {
     if (leftRoom.kind === rightRoom.kind) {
       return leftRoom.title > rightRoom.title;
     }
-    return ROOM_KINDS[leftRoom.kind] < ROOM_KINDS[rightRoom.kind];
+    return this.props.roomKinds[leftRoom.kind] < this.props.roomKinds[rightRoom.kind];
   }
 }

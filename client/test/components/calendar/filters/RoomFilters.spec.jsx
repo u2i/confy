@@ -15,7 +15,8 @@ describe('<RoomFilters />', () => {
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
-    onDisabled: () => {}
+    onDisabled: () => {},
+    roomKinds: { narnia: 0, big: 1 }
   };
   const defaultWrapper = shallow(<RoomFilters {...props} />);
 

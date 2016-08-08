@@ -5,5 +5,6 @@ export default new Factory()
     conferenceRooms:          [],
     days:                     [],
     times:                    [],
-    unitEventLengthInSeconds: 60
+    unitEventLengthInSeconds: 60,
+    roomKinds:                { narnia: 0 }
   });
