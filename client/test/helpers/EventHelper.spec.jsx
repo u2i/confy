@@ -95,7 +95,7 @@ describe('EventHelper', () => {
         end_time: startTime.clone().add(2, 'hours').toDate() });
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
-        end_time: startTime.clone().add(3,'hours').toDate() });
+        end_time: startTime.clone().add(3, 'hours').toDate() });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(4, 'hours').toDate(),
         end_time: startTime.clone().add(5, 'hours').toDate() });
@@ -116,7 +116,7 @@ describe('EventHelper', () => {
         end_time: startTime.clone().add(2, 'hours').toDate() });
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
-        end_time: startTime.clone().add(3,'hours').toDate() });
+        end_time: startTime.clone().add(3, 'hours').toDate() });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
         end_time: startTime.clone().add(5, 'hours').toDate() });
@@ -129,6 +129,6 @@ describe('EventHelper', () => {
         expect(event2.offset).to.eq(1);
         expect(event3.offset).to.eq(0);
       });
-    })
+    });
   });
 });

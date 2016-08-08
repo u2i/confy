@@ -27,8 +27,8 @@ function eventsAssignedToColumns(eventsGroup) {
 
 export function setEventsPositionAttributes(groups) {
   groups.forEach(group => {
-    let columns = eventsAssignedToColumns(group);
-    let eventWidth = 1 / columns.length;
+    const columns = eventsAssignedToColumns(group);
+    const eventWidth = 1 / columns.length;
     columns.forEach((column, index) => {
       column.forEach(event => {
         event.width = eventWidth;
