@@ -6,6 +6,7 @@
     "npm": "3.5.0"
   },
   "scripts": {
+    "start": "foreman start -f Procfile.dev -p ${PORT:-3000}",
     "postinstall": "cd client && npm install",
     "test": "rspec && npm run test:client && npm run lint",
     "test:client": "(cd client && npm run test --silent)",
