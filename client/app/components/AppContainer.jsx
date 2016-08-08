@@ -47,8 +47,7 @@ export default class AppContainer extends React.Component {
   }
 
   closeModal() {
-    this.setState({ showModal: false });
-    this.setState({ errors: {} });
+    this.setState({ showModal: false, errors: {} });
   }
 
   handleCalendarRefresh() {
