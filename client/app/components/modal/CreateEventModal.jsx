@@ -101,7 +101,7 @@ export default class CreateEventModal extends React.Component {
                       errors: { start_time: [ DATE_ERROR_TEXT ]}});
     } else {
       this.setState({ disableSaving: false,
-                      errors: { start_time: null }});
+                      errors: { start_time: null } });
     }
   }
 
