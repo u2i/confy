@@ -4,6 +4,13 @@ import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 import './filters.scss';
 
+const ROOM_KINDS = {
+  big: 3,
+  small: 2,
+  without_walls: 1,
+  narnia: 0
+};
+
 export default class RoomFilters extends React.Component {
   static propTypes = {
     conferenceRooms: PropTypes.arrayOf(ConferenceRoomSchema.only('id')).isRequired,
@@ -41,6 +48,6 @@ export default class RoomFilters extends React.Component {
     if (leftRoom.kind === rightRoom.kind) {
       return leftRoom.title > rightRoom.title;
     }
-    return leftRoom.kind < rightRoom.kind;
+    return ROOM_KINDS[leftRoom.kind] < ROOM_KINDS[rightRoom.kind];
   }
 }

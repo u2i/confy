@@ -24,15 +24,8 @@ class ConferenceRoom < ApplicationRecord
       'color'    => nil,
       'email'    => nil,
       'capacity' => nil,
-      'id'       => nil
+      'id'       => nil,
+      'kind'     => nil
     }
-  end
-
-  def serializable_hash(options={})
-    super({methods: :kind_id}.update(options.to_h))
-  end
-
-  def kind_id
-    kind_before_type_cast
   end
 end

@@ -30,14 +30,4 @@ RSpec.describe ConferenceRoom, type: :model do
       expect(conference_room.color).to eq color.downcase
     end
   end
-
-  describe '#as_json' do
-    it 'casts type as integer' do
-      room = build(:conference_room)
-      described_class::KINDS.each_key.with_index do |kind, index|
-        room.public_send("#{kind}!")
-        expect(room.as_json['kind_id'.freeze]).to eq index
-      end
-    end
-  end
 end
