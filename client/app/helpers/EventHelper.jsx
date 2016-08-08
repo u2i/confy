@@ -31,7 +31,7 @@ export function setEventsPositionAttributes(groups) {
     let eventWidth = 1 / columns.length;
     columns.forEach((column, index) => {
       column.forEach(event => {
-        event.eventWidth = eventWidth;
+        event.width = eventWidth;
         event.offset = index;
       })
     });

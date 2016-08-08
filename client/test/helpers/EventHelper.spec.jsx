@@ -86,4 +86,49 @@ describe('EventHelper', () => {
       });
     });
   });
+
+  describe('#setEventsPositionAttributes', () => {
+    const startTime = moment('2016-01-01T06:00:00');
+    describe('given non colliding events', () => {
+      const event1 = Event.build({}, {
+        start_time: startTime.toDate(),
+        end_time: startTime.clone().add(2, 'hours').toDate() });
+      const event2 = Event.build({}, {
+        start_time: startTime.clone().add(2, 'hours').toDate(),
+        end_time: startTime.clone().add(3,'hours').toDate() });
+      const event3 = Event.build({}, {
+        start_time: startTime.clone().add(4, 'hours').toDate(),
+        end_time: startTime.clone().add(5, 'hours').toDate() });
+      const group = [event1, event2, event3];
+      const groups = [group];
+      it('sets 100% width for all events and 0 offset', () => {
+        EventHelper.setEventsPositionAttributes(groups);
+        group.forEach(event => {
+          expect(event.width).to.eq(1);
+          expect(event.offset).to.eq(0);
+        });
+      });
+    });
+
+    describe('given pairwise colliding events', () => {
+      const event1 = Event.build({}, {
+        start_time: startTime.toDate(),
+        end_time: startTime.clone().add(2, 'hours').toDate() });
+      const event2 = Event.build({}, {
+        start_time: startTime.clone().add(1, 'hours').toDate(),
+        end_time: startTime.clone().add(3,'hours').toDate() });
+      const event3 = Event.build({}, {
+        start_time: startTime.clone().add(2, 'hours').toDate(),
+        end_time: startTime.clone().add(5, 'hours').toDate() });
+      const group = [event1, event2, event3];
+      const groups = [group];
+      it('sets 50% width for all events and event1.offset = event3.offset = 0 and event2.offset = 1', () => {
+        EventHelper.setEventsPositionAttributes(groups);
+        group.forEach(event => expect(event.width).to.eq(0.5));
+        expect(event1.offset).to.eq(0);
+        expect(event2.offset).to.eq(1);
+        expect(event3.offset).to.eq(0);
+      });
+    })
+  });
 });
