@@ -1,13 +1,11 @@
 import React from 'react';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
-
 import TimeCell from './TimeCell';
 import EventWrapper from './event/EventWrapper';
+import { SECONDS_IN_DAY, eventGroupContaining, eventsStartingAt } from 'helpers/EventHelper';
 
-const SECONDS_IN_DAY = 24 * 60 * 60;
-
-const { string, bool, number, arrayOf, oneOfType, instanceOf } = React.PropTypes;
+const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
@@ -16,7 +14,8 @@ export default class CalendarRow extends React.Component {
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
-    displayMinutes:           bool
+    displayMinutes:           bool,
+    onDelete:                 func.isRequired
   };
 
   static defaultProps = {
@@ -35,26 +34,6 @@ export default class CalendarRow extends React.Component {
     );
   }
 
-  _eventStartsAt(timestamp) {
-    return (event) => event.start_timestamp === timestamp;
-  }
-
-  _groupInDay(group, timestamp) {
-    return Math.abs(group[group.length - 1].start_timestamp - timestamp) < SECONDS_IN_DAY;
-  }
-
-  _eventGroupContaining(timestamp) {
-    return this.props.events.find(group =>
-      group.length &&
-      this._groupInDay(group, timestamp) &&
-      group.some(this._eventStartsAt(timestamp))
-    );
-  }
-
-  _eventsStartingAt(timestamp, group) {
-    return group.filter(this._eventStartsAt(timestamp));
-  }
-
   _displayTime() {
     return new Date(this.props.time).getMinutes() === 0 || this.props.displayMinutes;
   }
@@ -64,8 +43,8 @@ export default class CalendarRow extends React.Component {
     return this.props.days.map(() => {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
-      const eventGroup = this._eventGroupContaining(timestamp) || [];
-      let events = this._eventsStartingAt(timestamp, eventGroup);
+      const eventGroup = eventGroupContaining(this.props.events, timestamp) || [];
+      let events = eventsStartingAt(timestamp, eventGroup);
       let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
 
       return (
@@ -74,7 +53,8 @@ export default class CalendarRow extends React.Component {
                       events={events}
                       eventsInGroup={eventGroup.length}
                       offset={offset}
-                      key={timestamp} />
+                      key={timestamp}
+                      onDelete={this.props.onDelete} />
       );
     });
   }

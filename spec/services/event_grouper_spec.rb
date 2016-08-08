@@ -31,7 +31,7 @@ RSpec.describe EventGrouper do
 
       let(:expected_events) { [[event1, event2, event3], [event4], [event5]] }
 
-      subject(:events) { described_class.new([event1, event2, event3, event4, event5]).call }
+      subject(:events) { described_class.new([event1, event2, event3, event4, event5]).build_blocks }
       it 'groups overlapping events' do
         expect(events).to match_array(expected_events)
       end
@@ -49,7 +49,7 @@ RSpec.describe EventGrouper do
 
       let(:expected_events) { [[event2, event1, event3]] }
 
-      subject(:events) { described_class.new([event1, event2, event3]).call }
+      subject(:events) { described_class.new([event1, event2, event3]).build_blocks }
       it 'groups overlapping events into one block' do
         expect(events).to match_array(expected_events)
       end
@@ -66,9 +66,45 @@ RSpec.describe EventGrouper do
       end
       let(:expected_events) { [[event1, event2, event3]] }
 
-      subject(:events) { described_class.new([event1, event3, event2]).call }
+      subject(:events) { described_class.new([event1, event3, event2]).build_blocks }
       it 'groups overlapping events into one block' do
         expect(events[0]).to match_array(expected_events[0])
+      end
+    end
+  end
+
+  describe '.floor_time' do
+    context 'granularity past hour' do
+      let(:time) { Time.now.beginning_of_hour + EventGrouper::GRANULARITY }
+
+      it 'returns argument' do
+        expect(described_class.floor_time(time)).to eq time
+      end
+    end
+
+    context 'half granularity past hour' do
+      let(:time) { Time.now.beginning_of_hour + EventGrouper::GRANULARITY / 2 }
+
+      it 'floors time' do
+        expect(described_class.floor_time(time)).to eq time.beginning_of_hour
+      end
+    end
+  end
+
+  describe '.ceil_time' do
+    context 'granularity past hour' do
+      let(:time) { Time.now.beginning_of_hour + EventGrouper::GRANULARITY }
+
+      it 'returns argument' do
+        expect(described_class.ceil_time(time)).to eq time
+      end
+    end
+
+    context 'half granularity past hour' do
+      let(:time) { Time.now.beginning_of_hour + EventGrouper::GRANULARITY / 2 }
+
+      it 'ceils time' do
+        expect(described_class.ceil_time(time)).to eq (time.beginning_of_hour + EventGrouper::GRANULARITY)
       end
     end
   end
