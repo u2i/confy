@@ -12,8 +12,8 @@ import CreateEventModal from './modal/CreateEventModal';
 
 export default class AppContainer extends React.Component {
   static propTypes = {
-    initialEvents: React.PropTypes.array,
-    date:          React.PropTypes.string,
+    initialEvents:       React.PropTypes.array,
+    date:                React.PropTypes.string,
     notificationTimeout: React.PropTypes.number
   };
 

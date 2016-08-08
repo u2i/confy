@@ -42,8 +42,8 @@ export default class CreateEventModal extends React.Component {
 
   saveChanges() {
     const eventParams = {
-      summary:            this.state.summary ? this.state.summary : '',
-      description:        this.state.description ? this.state.description : '',
+      summary:            this.state.summary || '',
+      description:        this.state.description || '',
       start_time:         this.state.startTime,
       end_time:           this.state.endTime,
       conference_room_id: this.state.conferenceRoomId
