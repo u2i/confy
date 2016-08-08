@@ -9,7 +9,6 @@ import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
 import CreateEventModal from './modal/CreateEventModal';
-import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema'
 
 export default class AppContainer extends React.Component {
   static propTypes = {
@@ -49,6 +48,7 @@ export default class AppContainer extends React.Component {
 
   closeModal() {
     this.setState({ showModal: false });
+    this.setState({ errors: {} });
   }
 
   handleCalendarRefresh() {

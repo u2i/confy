@@ -13,7 +13,7 @@ export default class FormLocationField extends React.Component {
 
   static defaultProps = {
     errors: []
-  }
+  };
 
   render() {
     const conferenceRoomsOptions = this.props.conferenceRooms.map(room => (
@@ -29,7 +29,7 @@ export default class FormLocationField extends React.Component {
           {conferenceRoomsOptions}
         </FormControl>
         <If condition={this.props.errors != null}>
-          <HelpBlock className="text-danger">{this.props.errors[0]}</HelpBlock>
+          <div className="text-danger">{this.props.errors[0]}</div>
         </If>
       </FormGroup>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import {Modal} from "react-bootstrap";
+import { Modal, Col } from "react-bootstrap";
 import _ from "lodash";
 import FormTextField from "./body/FormTextField";
 import FormDateField from "./body/FormDateField";
@@ -64,12 +64,19 @@ export default class ModalBody extends React.Component {
           <FormTextField
             name={"description"}
             onChange={this.handleTextFieldChange} />
-          <FormDateField
-            label={"Start time"}
-            onChange={this.handleStartTimeChange} />
-          <FormDateField
-            label={"End time"}
-            onChange={this.handleEndTimeChange} />
+          <section className="row">
+            <Col xs={12} md={6}>
+              <FormDateField
+                label={"Start time"}
+                onChange={this.handleStartTimeChange}
+                errors={this.props.errors.start_time || []} />
+            </Col>
+            <Col xs={12} md={6} className="pull-right">
+              <FormDateField
+                label={"End time"}
+                onChange={this.handleEndTimeChange}/>
+            </Col>
+          </section>
           <FormLocationField
             conferenceRooms={this.props.conferenceRooms}
             onChange={this.handleLocationChange}

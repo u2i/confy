@@ -1,5 +1,5 @@
-import React, {PropTypes} from "react";
-import {Modal} from "react-bootstrap";
+import React, { PropTypes } from "react";
+import { Modal } from "react-bootstrap";
 import moment from "moment";
 import _ from "lodash";
 import EventSource from "sources/EventSource";
@@ -9,6 +9,7 @@ import ModalBody from "./layout/ModalBody";
 
 const { func, bool, array, string } = PropTypes;
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
+const DATE_ERROR_TEXT = 'Start time must be lower than end time';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
@@ -36,7 +37,7 @@ export default class CreateEventModal extends React.Component {
     };
 
     _.bindAll(this,
-      ['saveChanges', 'updateParam']);
+      ['saveChanges', 'updateParam', 'handleCloseModal']);
   }
 
   saveChanges() {
@@ -50,21 +51,22 @@ export default class CreateEventModal extends React.Component {
 
     EventSource.create(eventParams)
       .then(() => {
-        this.props.closeModal();
+        this.handleCloseModal();
         this.props.refresh();
       })
       .catch((e) => {
-        console.log(e);
-        if (e.statusText === 'Unprocessable Entity') {
-          if (!e.data) {
-            this._showError();
-          } else {
-            this.setState({ errors: e.data });
-          }
+        if (e.statusText === 'Unprocessable Entity' && e.data) {
+          this.setState({ errors: e.data });
         } else {
           this._showError();
         }
       });
+  }
+
+  handleCloseModal() {
+    this.setState({ errors: {},
+                    showErrorMessage: false });
+    this.props.closeModal();
   }
 
   updateParam(key, value) {
@@ -76,7 +78,7 @@ export default class CreateEventModal extends React.Component {
       <Modal
         show={this.props.showModal}
         onHide={this.props.closeModal}
-        onExited={() => this.setState({ showErrorMessage: false })}>
+        onExited={this.handleCloseModal}>
 
         <ModalHeader />
         <ModalBody
@@ -95,15 +97,17 @@ export default class CreateEventModal extends React.Component {
 
   _validateTimeRange() {
     if (this.state.startTime >= this.state.endTime) {
-      this.setState({ disableSaving: true });
+      this.setState({ disableSaving: true,
+                      errors: { start_time: [ DATE_ERROR_TEXT ]}});
     } else {
-      this.setState({ disableSaving: false });
+      this.setState({ disableSaving: false,
+                      errors: { start_time: null }});
     }
   }
 
   _validateParams(key) {
     if (key === 'startTime' || key === 'endTime') {
-      this._validateTimeRange();
+      this._validateTimeRange(key);
     }
   }
 
