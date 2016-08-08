@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { DATE_PARAM_FORMAT } from 'helpers/DateHelper';
 
 import RefreshButton from './RefreshButton';
@@ -17,13 +17,15 @@ export default class SideNav extends React.Component {
     return (
       <aside className="sidebar">
         <Button bsStyle="primary" className="btn-block">Create Event</Button>
-        <Link to="/"><Button className="btn-block">Home</Button></Link>
-        <Link to={{ pathName: '/', query: { date: this._nextWeek() } }}>
+        <IndexLinkContainer to="/" active={false}>
+          <Button className="btn-block">Home</Button>
+        </IndexLinkContainer>
+        <LinkContainer to={{ pathName: '/', query: { date: this._nextWeek() } }} active={false}>
           <Button className="btn-block">Next Week</Button>
-        </Link>
-        <Link to={{ pathName: '/', query: { date: this._previousWeek() } }}>
+        </LinkContainer>
+        <LinkContainer to={{ pathName: '/', query: { date: this._previousWeek() } }} active={false}>
           <Button className="btn-block">Previous Week</Button>
-        </Link>
+        </LinkContainer>
         <RefreshButton onRefresh={this.props.onRefresh} animate={this.props.updating} />
       </aside>
     );
