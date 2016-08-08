@@ -66,15 +66,12 @@ class GoogleEvent
     def insert_event_and_return_result(credentials, event_data)
       events = events_in_span(credentials, event_data[:attendees].first,
                               event_data[:start][:date_time], event_data[:end][:date_time])
-      if events
-        events.items.reject! { |event| event_declined?(event) }
-        if events.items.any?
-          count = events.items.size
-          raise(
-            EventInTimeSpanError,
-            "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
-          )
-        end
+      if events && events.items.any?
+        count = events.items.size
+        raise(
+          EventInTimeSpanError,
+          "Already #{count} #{'event'.pluralize(count)} in time span(#{items_list(events.items)})."
+        )
       end
       calendar_service(credentials).insert_event(
         'primary',
