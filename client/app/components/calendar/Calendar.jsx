@@ -1,4 +1,8 @@
 import moment from 'moment';
+import flow from 'lodash/fp/flow';
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+import find from 'lodash/fp/find';
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
@@ -55,7 +59,7 @@ export default class Calendar extends React.Component {
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete}
-                   ref={(ref) => this.rows[time] = ref} />
+                   ref={(ref) => this.rows[moment(time).unix()] = ref} />
     ));
 
     return (
@@ -97,13 +101,19 @@ export default class Calendar extends React.Component {
     return this.state.filteredRooms.has(event.conference_room.id);
   }
 
+  _findRow(hours, minutes) {
+    const time = flow(
+      keys,
+      map(t => moment.unix(t)),
+      find(t => t.hours() === hours && t.minutes() === minutes)
+    )(this.rows);
+
+    return this.rows[time.unix()];
+  }
+
   _scrollToRow() {
     const { hours, minutes } = this.props.scrollTo;
-    const time = Object.keys(this.rows)
-      .map(t => moment(t))
-      .find(t => t.hours() === hours && t.minutes() === minutes);
-
-    const node = ReactDOM.findDOMNode(this.rows[time]);
+    const node = ReactDOM.findDOMNode(this._findRow(hours, minutes));
     if (node.scrollIntoView) {
       node.scrollIntoView();
     }
