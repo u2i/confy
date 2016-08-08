@@ -40,11 +40,12 @@ export default class Calendar extends React.Component {
       <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
     ));
 
-    const blocks = this._groupEvents(this._filterEvents());
+    const filteredEvents = this._filterEvents();
+    setEventsPositionAttributes(filteredEvents);
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
                    key={time}
-                   blocks={blocks}
+                   events={filteredEvents}
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete} />
@@ -87,12 +88,6 @@ export default class Calendar extends React.Component {
 
   _eventIsFiltered(event) {
     return this.state.filteredRooms.has(event.conference_room.id);
-  }
-
-  _groupEvents(events) {
-    const blocks = buildBlocks(events);
-    setEventsPositionAttributes(blocks);
-    return blocks;
   }
 }
 

@@ -8,14 +8,11 @@ import TimeCell from 'components/calendar/TimeCell';
 import { expect } from 'chai';
 
 describe('<CalendarRow />', () => {
-  const group1 = EventGroup.build({}, { length: 2 });
-  const group2 = EventGroup.build({}, { length: 2 });
-  const blocks = [group1, group2];
   const days = [new Date(), new Date(), new Date()];
   const unitEventLengthInSeconds = 1800;
   const onDelete = sinon.spy();
   let time = new Date();
-  const props = { blocks, days, unitEventLengthInSeconds, onDelete };
+  const props = { days, unitEventLengthInSeconds, onDelete };
   let wrapper = shallow(<CalendarRow time={time} {...props} />);
 
   describe('#render()', () => {

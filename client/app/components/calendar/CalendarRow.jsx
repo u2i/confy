@@ -5,15 +5,11 @@ import TimeCell from './TimeCell';
 import EventWrapper from './event/EventWrapper';
 import { SECONDS_IN_DAY, eventGroupContaining, eventsStartingAt } from 'helpers/EventHelper';
 
-const { string, bool, number, shape, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
+const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    blocks:                   arrayOf(shape({
-      events:    arrayOf(EventSchema.only('start_timestamp', 'end_timestamp')),
-      startTime: number,
-      endTime:   number
-    })).isRequired,
+    events:    arrayOf(EventSchema.only('start_timestamp', 'end_timestamp')).isRequired,
     time:                     oneOfType([instanceOf(Date), string]).isRequired,
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
@@ -47,8 +43,7 @@ export default class CalendarRow extends React.Component {
     return this.props.days.map(() => {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
-      const eventGroup = eventGroupContaining(this.props.blocks, timestamp);
-      let events = eventGroup ? eventsStartingAt(timestamp, eventGroup) : [];
+      let events = this.props.events ? eventsStartingAt(timestamp, this.props.events) : [];
 
       return (
         <EventWrapper timestamp={timestamp}

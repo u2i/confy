@@ -4,15 +4,8 @@ function eventStartsAt(timestamp) {
   return (event) => event.start_timestamp === timestamp;
 }
 
-export function eventGroupContaining(blocks, timestamp) {
-  return blocks.find(block => {
-      return block.start <= timestamp && block.end >= timestamp;
-    }
-  );
-}
-
-export function eventsStartingAt(timestamp, block) {
-  return block.events.filter(eventStartsAt(timestamp));
+export function eventsStartingAt(timestamp, events) {
+  return events.filter(eventStartsAt(timestamp));
 }
 
 function eventsAssignedToColumns(eventsGroup) {
@@ -26,9 +19,10 @@ function eventsAssignedToColumns(eventsGroup) {
   return columns;
 }
 
-export function setEventsPositionAttributes(groups) {
+export function setEventsPositionAttributes(events) {
+  const groups = buildBlocks(events);
   groups.forEach(group => {
-    const columns = eventsAssignedToColumns(group.events);
+    const columns = eventsAssignedToColumns(group);
     const eventWidth = 1 / columns.length;
     columns.forEach((column, index) => {
       column.forEach(event => {
@@ -41,20 +35,12 @@ export function setEventsPositionAttributes(groups) {
 
 class Block {
   constructor(event = null) {
+
     this.blockEvents = [];
     this.endTime = null;
     if (event !== null) {
       this.addEvent(event);
     }
-  }
-
-  get startTime() {
-    return this.blockEvents[0].start_timestamp;
-  }
-  
-  get lastEventStartTime() {
-    const blockLength = this.blockEvents.length;
-    return this.blockEvents[blockLength-1].start_timestamp;
   }
 
   addEvent(event) {
@@ -94,5 +80,5 @@ export function buildBlocks(events) {
     const collidingBlock = blocks.find(block => block.canAddEvent(event));
     collidingBlock === undefined ? blocks.push(new Block(event)) : collidingBlock.addEvent(event);
   });
-  return blocks.map(block => ({ start: block.startTime, end: block.lastEventStartTime, events: block.blockEvents }));
+  return blocks.map(block => block.blockEvents);
 }
