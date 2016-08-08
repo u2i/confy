@@ -1,6 +1,13 @@
 class ConferenceRoom < ApplicationRecord
+  include ActiveModel::Serialization
+
   HEX_COLOR_FORMAT = /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/i
-  KINDS = %i(narnia without_walls small big).freeze
+  KINDS = {
+    narnia: 0,
+    without_walls: 1,
+    small: 2,
+    big: 3
+  }.freeze
 
   enum kind: KINDS
 
@@ -11,7 +18,21 @@ class ConferenceRoom < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   has_many :events, dependent: :destroy
 
-  def as_json(options = nil)
-    super.tap { |h| h['kind'] = kind_before_type_cast }
+  def attributes
+    {
+      'title'    => nil,
+      'color'    => nil,
+      'email'    => nil,
+      'capacity' => nil,
+      'id'       => nil
+    }
+  end
+
+  def serializable_hash(options={})
+    super({methods: :kind_id}.update(options.to_h))
+  end
+
+  def kind_id
+    kind_before_type_cast
   end
 end
