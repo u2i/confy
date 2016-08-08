@@ -48,7 +48,7 @@ export default class CalendarRow extends React.Component {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
       const eventGroup = eventGroupContaining(this.props.blocks, timestamp);
-      let events = eventGroup ? eventsStartingAt(timestamp, eventGroup.events) : [];
+      let events = eventGroup ? eventsStartingAt(timestamp, eventGroup) : [];
 
       return (
         <EventWrapper timestamp={timestamp}

@@ -87,13 +87,8 @@ export default class AppContainer extends React.Component {
         this._addNotification(error);
       });
     const events = this.state.events;
-    for (const row of events) {
-      const index = row.findIndex(event => event.id === id);
-      if (index >= 0) {
-        row.splice(index, 1);
-        break;
-      }
-    }
+    const index = events.findIndex(event => event.id === id);
+    events.splice(index, 1);
     this.setState({ events });
   }
 

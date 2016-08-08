@@ -12,5 +12,7 @@ export default new Factory()
   .attr('end', ['end_time'], endTime => ({ date_time: endTime }))
   .attrs({
     creator:         User.build(),
-    conference_room: ConferenceRoom.build()
+    conference_room: ConferenceRoom.build(),
+    width:           1,
+    offset:          0
   });

@@ -19,6 +19,8 @@ const EventShema = {
   start:           time.isRequired,
   end:             time.isRequired,
   conference_room: ConferenceRoomSchema.isRequired,
+  width:           number.isRequired,
+  offset:          number.isRequired,
   name:            string,
   summary:         string,
   start_timestamp: number,

@@ -4,6 +4,18 @@ import Event from '../factories/Event';
 import EventGroup from '../factories/EventGroup';
 import moment from 'moment';
 
+describe('EventGroup', () => {
+  it('has a working factory', () => {
+    const event1 = Event.build({}, { start_time: new Date(2016, 7, 25, 16, 0, 0) });
+    const event2 = Event.build({}, { start_time: new Date(2016, 7, 25, 4, 0, 0) });
+
+    const group = EventGroup.build({ events: [event1, event2] });
+
+    expect(group.start).to.equal(event2.start_timestamp);
+    expect(group.end).to.equal(event1.start_timestamp);
+  });
+});
+
 describe('EventHelper', () => {
   describe('#eventGroupContaining()', () => {
     const event1 = Event.build({}, { start_time: new Date(2016, 7, 25, 4, 0, 0) });
@@ -39,6 +51,17 @@ describe('EventHelper', () => {
     const event1 = Event.build({}, {
       start_time: startTime.toDate(),
       end_time:   startTime.clone().add(1, 'hours').toDate()
+    });
+
+    it('sets proper block start and end', () => {
+      const event2 = Event.build({}, {
+        start_time: startTime.clone().add(30, 'minutes').toDate(),
+        end_time:   startTime.clone().add(2, 'hours').toDate()
+      });
+      const group = EventHelper.buildBlocks([event1, event2])[0];
+
+      expect(group.start).to.equal(event1.start_timestamp);
+      expect(group.end).to.equal(event2.start_timestamp);
     });
 
     describe('with mutually colliding events', () => {
