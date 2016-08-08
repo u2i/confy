@@ -1,14 +1,48 @@
-import React, { PropTypes } from 'react';
-import './event.scss';
+import React, {PropTypes} from "react";
+import {Tooltip, OverlayTrigger} from "react-bootstrap";
+import {If, Then, Else} from "react-if";
+import "./event.scss";
 
-const DeleteButton = ({ id, onDelete }) => (
-  <span onClick={() => onDelete(id)} className="delete-button glyphicon glyphicon-remove">
-  </span>
-);
+const TOOLTIP_MESSAGE = 'You are not the owner of this event';
 
-DeleteButton.propTypes = {
-  id: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired
-};
+export default class DeleteButton extends React.Component {
+  static propTypes = {
+    id:       PropTypes.string.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired
+  };
 
-export default DeleteButton;
+  render() {
+    const enabled = this.props.disabled ? 'disabled' : 'enabled';
+    const tooltip = (
+      <Tooltip id="tooltip">{TOOLTIP_MESSAGE}</Tooltip>
+    );
+
+    const button = (
+      <span onClick={this._handleOnClick.bind(this)}
+            className={"delete-button glyphicon glyphicon-remove " + enabled}>
+      </span>
+    );
+
+    return (
+      <If condition={this.props.disabled}>
+        <Then>
+          <OverlayTrigger placement="right" overlay={tooltip} trigger="click">
+            {button}
+          </OverlayTrigger>
+        </Then>
+        <Else>
+          {button}
+        </Else>
+      </If>
+    );
+  }
+
+  _handleOnClick() {
+    if (this.props.disabled) {
+      return false;
+    } else {
+      this.props.onDelete(this.props.id);
+    }
+  }
+}
