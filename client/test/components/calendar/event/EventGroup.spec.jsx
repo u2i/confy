@@ -65,8 +65,3 @@ describe('<EventGroup />', () => {
     expect(wrapper.find('.event-group').props().style.marginLeft).to.equal(120);
   });
 });
-
-
-
-
-
