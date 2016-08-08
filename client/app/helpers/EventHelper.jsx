@@ -14,7 +14,7 @@ function eventsAssignedToColumns(eventsGroup) {
     const columnForEvent = columns.find(column => (
       column[column.length - 1].end_timestamp <= event.start_timestamp
     ));
-    columnForEvent === undefined ? columns.push([event]) : columnForEvent.push(event);
+    columnForEvent ? columnForEvent.push(event) : columns.push([event]);
   });
   return columns;
 }
@@ -23,7 +23,7 @@ class Block {
   constructor(event = null) {
     this.blockEvents = [];
     this.endTime = null;
-    if (event !== null) {
+    if (event) {
       this.addEvent(event);
     }
   }
@@ -36,7 +36,7 @@ class Block {
   }
 
   canAddEvent(event) {
-    return this.endTime === null || event.start_timestamp < this.endTime;
+    return !this.endTime || event.start_timestamp < this.endTime;
   }
 
   _updateEndTime(event) {
@@ -47,7 +47,7 @@ class Block {
   }
 
   _shouldUpdateEndTime(newEndTime) {
-    return this.endTime === null || newEndTime > this.endTime;
+    return !this.endTime || newEndTime > this.endTime;
   }
 }
 
@@ -58,17 +58,17 @@ export function sortEventsByStartTime(events) {
 }
 
 export function buildBlocks(events) {
-  if (events === undefined) return events;
   const sortedEvents = sortEventsByStartTime(events);
   const blocks = [];
   sortedEvents.forEach(event => {
     const collidingBlock = blocks.find(block => block.canAddEvent(event));
-    collidingBlock === undefined ? blocks.push(new Block(event)) : collidingBlock.addEvent(event);
+    collidingBlock ? collidingBlock.addEvent(event) : blocks.push(new Block(event));
   });
   return blocks.map(block => block.blockEvents);
 }
 
 export function setEventsPositionAttributes(events) {
+  if (!events) return;
   const groups = buildBlocks(events);
   groups.forEach(group => {
     const columns = eventsAssignedToColumns(group);
