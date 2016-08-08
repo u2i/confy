@@ -6,7 +6,6 @@ import Notification from '../models/Notification';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
-import { buildBlocks, setEventsPositionAttributes } from 'helpers/EventHelper';
 import NotificationStack from './shared/alert/NotificationStack';
 
 export default class AppContainer extends React.Component {

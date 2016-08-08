@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
-import { setEventsPositionAttributes, buildBlocks } from "helpers/EventHelper";
-
+import { setEventsPositionAttributes } from 'helpers/EventHelper';
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 import CalendarHeader from './CalendarHeader';

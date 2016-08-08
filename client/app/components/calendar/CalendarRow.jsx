@@ -28,7 +28,7 @@ export default class CalendarRow extends React.Component {
       <tr>
         <TimeCell visible={this._displayTime()}
                   time={this.props.time}
-                  timeFormat={this.props.timeFormat}/>
+                  timeFormat={this.props.timeFormat} />
         {this._tableCellNodes()}
       </tr>
     );
@@ -50,7 +50,7 @@ export default class CalendarRow extends React.Component {
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       key={timestamp}
-                      onDelete={this.props.onDelete}/>
+                      onDelete={this.props.onDelete} />
       );
     });
   }

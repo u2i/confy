@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import CalendarRow from 'components/calendar/CalendarRow';
 import EventWrapper from 'components/calendar/event/EventWrapper';
-import EventGroup from 'test/factories/EventGroup';
 import TimeCell from 'components/calendar/TimeCell';
 import { expect } from 'chai';
 

@@ -19,23 +19,8 @@ function eventsAssignedToColumns(eventsGroup) {
   return columns;
 }
 
-export function setEventsPositionAttributes(events) {
-  const groups = buildBlocks(events);
-  groups.forEach(group => {
-    const columns = eventsAssignedToColumns(group);
-    const eventWidth = 1 / columns.length;
-    columns.forEach((column, index) => {
-      column.forEach(event => {
-        event.width = eventWidth;
-        event.offset = index;
-      })
-    });
-  });
-}
-
 class Block {
   constructor(event = null) {
-
     this.blockEvents = [];
     this.endTime = null;
     if (event !== null) {
@@ -81,4 +66,18 @@ export function buildBlocks(events) {
     collidingBlock === undefined ? blocks.push(new Block(event)) : collidingBlock.addEvent(event);
   });
   return blocks.map(block => block.blockEvents);
+}
+
+export function setEventsPositionAttributes(events) {
+  const groups = buildBlocks(events);
+  groups.forEach(group => {
+    const columns = eventsAssignedToColumns(group);
+    const eventWidth = 1 / columns.length;
+    columns.forEach((column, index) => {
+      column.forEach(event => {
+        event.width = eventWidth;
+        event.offset = index;
+      });
+    });
+  });
 }
