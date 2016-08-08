@@ -17,8 +17,13 @@ export default class RoomFilters extends React.Component {
     filters: []
   };
 
+  constructor(props) {
+    super(props);
+    this._roomCompare = this._roomCompare.bind(this);
+  }
+
   render() {
-    let filters = this.props.conferenceRooms.sort(this._roomCompare.bind(this)).map(conferenceRoom => (
+    let filters = this.props.conferenceRooms.sort(this._roomCompare).map(conferenceRoom => (
       <Filter enabled={this._filterEnabled(conferenceRoom)}
               onEnabled={() => this.props.onEnabled(conferenceRoom.id)}
               onDisabled={() => this.props.onDisabled(conferenceRoom.id)}
