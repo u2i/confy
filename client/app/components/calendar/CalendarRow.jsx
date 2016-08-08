@@ -5,11 +5,15 @@ import TimeCell from './TimeCell';
 import EventWrapper from './event/EventWrapper';
 import { SECONDS_IN_DAY, eventGroupContaining, eventsStartingAt } from 'helpers/EventHelper';
 
-const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
+const { string, bool, number, shape, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:                   arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
+    blocks:                   arrayOf(shape({
+      events:    arrayOf(EventSchema.only('start_timestamp', 'end_timestamp')),
+      startTime: number,
+      endTime:   number
+    })).isRequired,
     time:                     oneOfType([instanceOf(Date), string]).isRequired,
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
@@ -28,7 +32,7 @@ export default class CalendarRow extends React.Component {
       <tr>
         <TimeCell visible={this._displayTime()}
                   time={this.props.time}
-                  timeFormat={this.props.timeFormat} />
+                  timeFormat={this.props.timeFormat}/>
         {this._tableCellNodes()}
       </tr>
     );
@@ -43,18 +47,15 @@ export default class CalendarRow extends React.Component {
     return this.props.days.map(() => {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
-      const eventGroup = eventGroupContaining(this.props.events, timestamp) || [];
-      let events = eventsStartingAt(timestamp, eventGroup);
-      let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
+      const eventGroup = eventGroupContaining(this.props.blocks, timestamp);
+      let events = eventGroup ? eventsStartingAt(timestamp, eventGroup.events) : [];
 
       return (
         <EventWrapper timestamp={timestamp}
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
-                      eventsInGroup={eventGroup.length}
-                      offset={offset}
                       key={timestamp}
-                      onDelete={this.props.onDelete} />
+                      onDelete={this.props.onDelete}/>
       );
     });
   }

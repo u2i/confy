@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
+import { setEventsPositionAttributes, buildBlocks } from "helpers/EventHelper";
 
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
@@ -39,10 +40,11 @@ export default class Calendar extends React.Component {
       <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
     ));
 
+    const blocks = this._groupEvents(this._filterEvents());
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
                    key={time}
-                   events={this._filterEvents()}
+                   blocks={blocks}
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete} />
@@ -80,11 +82,17 @@ export default class Calendar extends React.Component {
   }
 
   _filterEvents() {
-    return this.props.events.map((group) => group.filter((event) => !this._eventIsFiltered(event)));
+    return this.props.events.filter((event) => !this._eventIsFiltered(event));
   }
 
   _eventIsFiltered(event) {
     return this.state.filteredRooms.has(event.conference_room.id);
+  }
+
+  _groupEvents(events) {
+    const blocks = buildBlocks(events);
+    setEventsPositionAttributes(blocks);
+    return blocks;
   }
 }
 

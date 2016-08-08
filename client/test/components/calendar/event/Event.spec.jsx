@@ -10,6 +10,7 @@ import DeleteButton from 'components/calendar/event/DeleteButton';
 
 describe('<Event />', () => {
   const containerHeight = 30;
+  const containerWidth = 100;
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
@@ -18,6 +19,7 @@ describe('<Event />', () => {
     <Event
       event={event}
       containerHeight={containerHeight}
+      containerWidth={containerWidth}
       unitEventLengthInSeconds={unitEventLengthInSeconds}
       timeFormat={timeFormat}
       onDelete={onDelete} />

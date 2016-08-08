@@ -6,7 +6,7 @@ import Notification from '../models/Notification';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
-import { buildBlocks } from 'helpers/EventHelper';
+import { buildBlocks, setEventsPositionAttributes } from 'helpers/EventHelper';
 import NotificationStack from './shared/alert/NotificationStack';
 
 export default class AppContainer extends React.Component {
@@ -24,7 +24,11 @@ export default class AppContainer extends React.Component {
   constructor(...args) {
     super(...args);
 
-    this.state = { events: buildBlocks(this.props.initialEvents), updating: false, notifications: [] };
+    this.state = {
+      events: this.props.initialEvents,
+      updating: false,
+      notifications: []
+    };
     this.handleCalendarRefresh = this.handleCalendarRefresh.bind(this);
     this.handleNotificationDismiss = this.handleNotificationDismiss.bind(this);
     this._deleteEvent = this._deleteEvent.bind(this);

@@ -4,21 +4,22 @@ function eventStartsAt(timestamp) {
   return (event) => event.start_timestamp === timestamp;
 }
 
-export function eventGroupContaining(events, timestamp) {
-  return events.find(group =>
-    group.some(eventStartsAt(timestamp))
+export function eventGroupContaining(blocks, timestamp) {
+  return blocks.find(block => {
+      return block.start <= timestamp && block.end >= timestamp;
+    }
   );
 }
 
-export function eventsStartingAt(timestamp, group) {
-  return group.filter(eventStartsAt(timestamp));
+export function eventsStartingAt(timestamp, block) {
+  return block.events.filter(eventStartsAt(timestamp));
 }
 
 function eventsAssignedToColumns(eventsGroup) {
   const columns = [];
   eventsGroup.forEach(event => {
     const columnForEvent = columns.find(column => (
-      column[column.length - 1].end.date_time <= event.start.date_time
+      column[column.length - 1].end_timestamp <= event.start_timestamp
     ));
     columnForEvent === undefined ? columns.push([event]) : columnForEvent.push(event);
   });
@@ -27,7 +28,7 @@ function eventsAssignedToColumns(eventsGroup) {
 
 export function setEventsPositionAttributes(groups) {
   groups.forEach(group => {
-    const columns = eventsAssignedToColumns(group);
+    const columns = eventsAssignedToColumns(group.events);
     const eventWidth = 1 / columns.length;
     columns.forEach((column, index) => {
       column.forEach(event => {
@@ -47,6 +48,15 @@ class Block {
     }
   }
 
+  get startTime() {
+    return this.blockEvents[0].start_timestamp;
+  }
+  
+  get lastEventStartTime() {
+    const blockLength = this.blockEvents.length;
+    return this.blockEvents[blockLength-1].start_timestamp;
+  }
+
   addEvent(event) {
     if (this.canAddEvent(event)) {
       this.blockEvents.push(event);
@@ -55,11 +65,11 @@ class Block {
   }
 
   canAddEvent(event) {
-    return this.endTime === null || event.start.date_time < this.endTime;
+    return this.endTime === null || event.start_timestamp < this.endTime;
   }
 
   _updateEndTime(event) {
-    const eventEndTime = event.end.date_time;
+    const eventEndTime = event.end_timestamp;
     if (this._shouldUpdateEndTime(eventEndTime)) {
       this.endTime = eventEndTime;
     }
@@ -70,9 +80,9 @@ class Block {
   }
 }
 
-function sortEventsByStartTime(events) {
+export function sortEventsByStartTime(events) {
   return events.sort((event1, event2) => (
-    new Date(event1.start.date_time).getTime() - new Date(event2.start.date_time).getTime()
+    event1.start_timestamp - event2.start_timestamp
   ));
 }
 
@@ -84,5 +94,5 @@ export function buildBlocks(events) {
     const collidingBlock = blocks.find(block => block.canAddEvent(event));
     collidingBlock === undefined ? blocks.push(new Block(event)) : collidingBlock.addEvent(event);
   });
-  return blocks.map(block => block.blockEvents);
+  return blocks.map(block => ({ start: block.startTime, end: block.lastEventStartTime, events: block.blockEvents }));
 }

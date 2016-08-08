@@ -3,11 +3,9 @@ $event-border-color: #f7f7f7;
 .event {
   border: 1px solid $event-border-color;
   border-radius: 5px;
-
-  flex-basis: 0;
-  flex-grow: 1;
   height: 100%;
   overflow: hidden;
+  position: absolute;
 
   > * {
     margin-left: 5%;

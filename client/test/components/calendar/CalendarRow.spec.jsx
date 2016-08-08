@@ -3,19 +3,19 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import CalendarRow from 'components/calendar/CalendarRow';
 import EventWrapper from 'components/calendar/event/EventWrapper';
-import Event from 'test/factories/Event';
+import EventGroup from 'test/factories/EventGroup';
 import TimeCell from 'components/calendar/TimeCell';
 import { expect } from 'chai';
 
 describe('<CalendarRow />', () => {
-  const group1 = [Event.build(), Event.build()];
-  const group2 = [Event.build(), Event.build()];
-  const events = [group1, group2];
+  const group1 = EventGroup.build({}, { length: 2 });
+  const group2 = EventGroup.build({}, { length: 2 });
+  const blocks = [group1, group2];
   const days = [new Date(), new Date(), new Date()];
   const unitEventLengthInSeconds = 1800;
   const onDelete = sinon.spy();
   let time = new Date();
-  const props = { events, days, unitEventLengthInSeconds, onDelete };
+  const props = { blocks, days, unitEventLengthInSeconds, onDelete };
   let wrapper = shallow(<CalendarRow time={time} {...props} />);
 
   describe('#render()', () => {
