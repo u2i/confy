@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
+import EventSchema from 'schemas/EventSchema';
 import { setEventsPositionAttributes } from 'helpers/EventHelper';
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
@@ -12,7 +13,7 @@ const { string, number, array, arrayOf, oneOfType, instanceOf, func } = PropType
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:                   array,
+    events:                 arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
     conferenceRooms:          array,
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,

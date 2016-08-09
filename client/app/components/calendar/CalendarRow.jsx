@@ -9,7 +9,7 @@ const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.Pro
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:    arrayOf(EventSchema.only('start_timestamp', 'end_timestamp')).isRequired,
+    events:    arrayOf(EventSchema.only('start_timestamp')).isRequired,
     time:                     oneOfType([instanceOf(Date), string]).isRequired,
     days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,

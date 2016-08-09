@@ -1,11 +1,7 @@
 export const SECONDS_IN_DAY = 24 * 60 * 60;
 
-function eventStartsAt(timestamp) {
-  return (event) => event.start_timestamp === timestamp;
-}
-
 export function eventsStartingAt(timestamp, events) {
-  return events.filter(eventStartsAt(timestamp));
+  return events.filter(event => event.start_timestamp === timestamp);
 }
 
 function eventsAssignedToColumns(eventsGroup) {
