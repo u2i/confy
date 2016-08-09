@@ -9,14 +9,24 @@ import RefreshButton from './RefreshButton';
 export default class SideNav extends React.Component {
   static propTypes = {
     date:      PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
-    onRefresh: PropTypes.func,
-    updating:  PropTypes.bool
+    onRefresh: React.PropTypes.func,
+    updating:  React.PropTypes.bool,
+    openModal: React.PropTypes.func.isRequired
   };
+
+  constructor() {
+    super();
+
+    this._handleCreateEvent = this._handleCreateEvent.bind(this);
+  }
 
   render() {
     return (
       <aside className="sidebar">
-        <Button bsStyle="primary" className="btn-block">Create Event</Button>
+        <Button bsStyle="primary" className="btn-block"
+                onClick={this._handleCreateEvent}>
+          Create Event
+        </Button>
         <IndexLinkContainer to="/" active={false}>
           <Button className="btn-block">Home</Button>
         </IndexLinkContainer>
@@ -37,5 +47,9 @@ export default class SideNav extends React.Component {
 
   _previousWeek() {
     return moment(this.props.date).subtract(1, 'weeks').format(DATE_PARAM_FORMAT);
+  }
+
+  _handleCreateEvent() {
+    this.props.openModal();
   }
 }

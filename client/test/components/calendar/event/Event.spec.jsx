@@ -14,55 +14,7 @@ describe('<Event />', () => {
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
 
-  it('renders correctly', () => {
-    const event = EventFactory.build({ summary: 'Summary' });
-    const wrapper = shallow(
-      <Event
-        event={event}
-        containerHeight={containerHeight}
-        unitEventLengthInSeconds={unitEventLengthInSeconds}
-        timeFormat={timeFormat}
-        onDelete={onDelete} />
-    );
-    expect(wrapper.find('div')).to.have.lengthOf(5);
-    const eventStyle = wrapper.find('.event').props().style;
-    expect(eventStyle.height).to.eq(120);
-    expect(eventStyle.backgroundColor).to.eq(event.conference_room.color);
-    expect(wrapper.find('.event-time').text()).to.include('0:00');
-    expect(wrapper.find('.event-name').text()).to.include(event.summary);
-    expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
-    expect(wrapper.find('.event-location').text()).to.include(event.conference_room.title);
-  });
-
-  it('renders correctly with other length', () => {
-    const event = EventFactory.build();
-    event.end_timestamp += 60 * 60; // 1 hour
-    const wrapper = shallow(
-      <Event
-        event={event}
-        containerHeight={containerHeight}
-        unitEventLengthInSeconds={unitEventLengthInSeconds}
-        timeFormat={timeFormat}
-        onDelete={onDelete} />
-    );
-    expect(wrapper.find('.event').props().style.height).to.eq(180);
-  });
-
-  it('renders email when no display_name', () => {
-    const event = EventFactory.build();
-    event.creator.display_name = undefined;
-    const wrapper = shallow(
-      <Event
-        event={event}
-        containerHeight={containerHeight}
-        unitEventLengthInSeconds={unitEventLengthInSeconds}
-        timeFormat={timeFormat}
-        onDelete={onDelete} />
-    );
-    expect(wrapper.find('.event-user').text()).to.include(event.creator.email);
-  });
-
-  const shallowEvent = (event) => shallow(
+  const eventComponent = (event) => (
     <Event
       event={event}
       containerHeight={containerHeight}
@@ -70,6 +22,9 @@ describe('<Event />', () => {
       timeFormat={timeFormat}
       onDelete={onDelete} />
   );
+
+  const shallowEvent = (event) => shallow(eventComponent(event));
+  const mountEvent = (event) => mount(eventComponent(event));
 
   const defaultEvent = EventFactory.build();
   const defaultWrapper = shallowEvent(defaultEvent);
@@ -100,55 +55,45 @@ describe('<Event />', () => {
     });
   });
 
-  context('with creator display name provided', () => {
-    const creatorDisplayName = 'creator';
-    const event = EventFactory.build({ creator: UserFactory.build({ display_name: creatorDisplayName }) });
-    const wrapper = shallowEvent(event);
-
-    it('renders creator display name', () => {
-      expect(wrapper.text()).to.include(creatorDisplayName);
-    });
-  });
-
-  context('with no creator display name provided', () => {
-    it('renders creator email', () => {
-      expect(defaultWrapper.text()).to.include(defaultEvent.creator.email);
-    });
-  });
-
   it('renders event location', () => {
     expect(defaultWrapper.text()).to.include(defaultEvent.conference_room.title);
   });
 
-  describe('creator.self', () => {
-    it('renders delete button when self correctly', () => {
-      let event = EventFactory.build();
-      event.creator.self = true;
-      const wrapper = mount(
-        <Event
-          event={event}
-          containerHeight={containerHeight}
-          unitEventLengthInSeconds={unitEventLengthInSeconds}
-          timeFormat={timeFormat}
-          onDelete={onDelete} />
-      );
-      expect(wrapper.find(DeleteButton)).to.have.lengthOf(1);
-    });
-  });
+  describe('event creator', () => {
+    describe('display name', () => {
+      context('with creator display name provided', () => {
+        const creatorDisplayName = 'creator';
+        const event = EventFactory.build({ creator: UserFactory.build({ display_name: creatorDisplayName }) });
+        const wrapper = shallowEvent(event);
 
-  describe('undefined creator.self', () => {
-    it('does not render delete button when not self', () => {
-      let event = EventFactory.build();
-      event.creator.self = undefined;
-      const wrapper = mount(
-        <Event
-          event={event}
-          containerHeight={containerHeight}
-          unitEventLengthInSeconds={unitEventLengthInSeconds}
-          timeFormat={timeFormat}
-          onDelete={onDelete} />
-      );
-      expect(wrapper.find(DeleteButton)).to.have.lengthOf(0);
+        it('renders creator display name', () => {
+          expect(wrapper.text()).to.include(creatorDisplayName);
+        });
+      });
+
+      context('with no creator display name provided', () => {
+        it('renders creator email', () => {
+          expect(defaultWrapper.text()).to.include(defaultEvent.creator.email);
+        });
+      });
+    });
+
+    describe('self', () => {
+      context('when creator is the current user', () => {
+        it('renders delete button', () => {
+          const event = EventFactory.build({ creator: UserFactory.build({ self: true }) });
+          const wrapper = mountEvent(event);
+          expect(wrapper).to.have.exactly(1).descendants(DeleteButton);
+        });
+      });
+
+      context('when creator is not the current user', () => {
+        it('does not render delete button', () => {
+          const wrapper = mountEvent(defaultEvent);
+          expect(wrapper).to.not.have.descendants(DeleteButton);
+        });
+      });
     });
   });
-});
+})
+;

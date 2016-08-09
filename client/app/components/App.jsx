@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
+import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
@@ -8,6 +9,7 @@ import { DATE_PARAM_FORMAT, weekDays } from 'helpers/DateHelper';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
+import CreateEventModal from './modal/CreateEventModal';
 
 export default class App extends React.Component {
   static propTypes = {
@@ -29,14 +31,14 @@ export default class App extends React.Component {
     super(...args);
 
     this.state = {
-      events:        this.props.initialEvents,
-      updating:      false,
-      notifications: []
+      events: this.props.initialEvents,
+      updating: false,
+      notifications: [],
+      showModal: false
     };
 
-    this.handleCalendarRefresh = this.handleCalendarRefresh.bind(this);
-    this.handleNotificationDismiss = this.handleNotificationDismiss.bind(this);
-    this.handleEventDelete = this.handleEventDelete.bind(this);
+    bindAll(this,
+      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete']);
   }
 
   componentDidMount() {
@@ -50,6 +52,14 @@ export default class App extends React.Component {
     const prevQuery = prevProps.location.query;
     if (prevQuery && currentQuery && prevQuery.date === currentQuery.date) return;
     this._fetchEvents();
+  }
+
+  openModal() {
+    this.setState({ showModal: true });
+  }
+
+  closeModal() {
+    this.setState({ showModal: false, errors: {} });
   }
 
   handleCalendarRefresh() {
@@ -73,7 +83,8 @@ export default class App extends React.Component {
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
                      date={this._dateParam()}
-                     updating={updating} />
+                     updating={updating}
+                     openModal={this.openModal} />
           </Col>
           <Col xs={12} md={10}>
             <Calendar {...calendarProps}
@@ -82,6 +93,10 @@ export default class App extends React.Component {
                       onDelete={this.handleEventDelete} />
           </Col>
         </Grid>
+        <CreateEventModal closeModal={this.closeModal}
+                          showModal={this.state.showModal}
+                          conferenceRooms={this.props.conferenceRooms}
+                          refresh={this.handleCalendarRefresh} />
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );
