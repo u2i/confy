@@ -26,7 +26,7 @@ export default class EventGroup extends React.Component {
       <Event event={event}
              containerHeight={containerHeight}
              unitEventLengthInSeconds={unitEventLengthInSeconds}
-             key={`${event.id}|${event.conference_room.id}`}
+             key={`${event.id}_${event.conference_room.id}`}
              onDelete={this.props.onDelete} />
     );
 
