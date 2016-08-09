@@ -1,11 +1,11 @@
-import React from "react";
-import {shallow, mount} from "enzyme";
-import {expect} from "chai";
-import sinon from "sinon";
-import {OverlayTrigger} from "react-bootstrap";
-import EventFactory from "test/factories/Event";
-import UserFactory from "test/factories/User";
-import Event from "components/calendar/event/Event";
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+import { expect } from 'chai';
+import sinon from 'sinon';
+import { OverlayTrigger } from 'react-bootstrap';
+import EventFactory from 'test/factories/Event';
+import UserFactory from 'test/factories/User';
+import Event from 'components/calendar/event/Event';
 
 describe('<Event />', () => {
   const containerHeight = 30;

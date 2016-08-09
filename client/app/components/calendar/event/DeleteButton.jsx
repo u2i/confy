@@ -25,7 +25,7 @@ export default class DeleteButton extends React.Component {
     );
 
     const button = (
-      <span onClick={this._handleOnClick.bind(this)}
+      <span onClick={this._handleOnClick}
             className={`delete-button glyphicon glyphicon-remove ${enabled}`}>
       </span>
     );
