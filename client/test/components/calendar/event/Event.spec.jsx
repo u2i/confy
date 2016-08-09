@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { OverlayTrigger } from 'react-bootstrap';
+import { Overlay } from 'react-bootstrap';
 import EventFactory from 'test/factories/Event';
 import UserFactory from 'test/factories/User';
 import Event from 'components/calendar/event/Event';
@@ -79,17 +79,17 @@ describe('<Event />', () => {
 
     describe('self', () => {
       context('when creator is the current user', () => {
-        it('does not render <OverlayTrigger /> with tooltip', () => {
+        it('does not render <Overlay /> with tooltip', () => {
           const event = EventFactory.build({ creator: UserFactory.build({ self: true }) });
           const wrapper = mountEvent(event);
-          expect(wrapper).to.not.have.descendants(OverlayTrigger);
+          expect(wrapper).to.not.have.descendants(Overlay);
         });
       });
 
       context('when creator is not the current user', () => {
-        it('renders <OverlayTrigger /> with tooltip', () => {
+        it('renders <Overlay /> with tooltip', () => {
           const wrapper = mountEvent(defaultEvent);
-          expect(wrapper).to.have.exactly(1).descendants(OverlayTrigger);
+          expect(wrapper).to.have.exactly(1).descendants(Overlay);
         });
       });
     });

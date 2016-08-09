@@ -12,10 +12,19 @@ describe('<DeleteButton />', () => {
     expect(wrapper.find('span').props().className).to.contain('glyphicon');
   });
 
-  describe('click', () => {
-    const spy = sinon.spy();
-    const wrapper = mount(<DeleteButton id={id} onDelete={spy} />);
-    wrapper.simulate('click');
-    expect(spy.calledWith(id)).to.eq(true);
+  context('click', () => {
+    describe('with enabled deleting', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled={false} />);
+      wrapper.find('span').simulate('click');
+      expect(spy.calledWith(id)).to.eq(true);
+    });
+
+    describe('with disabled deleting', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled={true} />);
+      wrapper.find('span').simulate('click');
+      expect(spy.calledWith(id)).to.eq(false);
+    });
   });
 });
