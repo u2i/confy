@@ -24,7 +24,8 @@ class CalendarController < ApplicationController
               times: calendar_times,
               unitEventLengthInSeconds: EventGrouper::GRANULARITY,
               date: params[:date],
-              roomKinds: ConferenceRoom::KINDS}.compact
+              roomKinds: ConferenceRoom::KINDS,
+              scrollTo: {hours: 6, minutes: 0}}.compact
   end
 
   def date_param
