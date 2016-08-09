@@ -32,10 +32,9 @@ module GoogleCalendar
     def raise_error_if_occupied(credentials, event_data)
       events = events_in_span(credentials, event_data[:attendees].first,
                               event_data[:start][:date_time], event_data[:end][:date_time])
-      if events.any?
-        error_message = occupied_error_message(events)
-        raise(EventInTimeSpanError, error_message)
-      end
+      return unless events.any?
+      error_message = occupied_error_message(events)
+      raise(EventInTimeSpanError, error_message)
     end
 
     def occupied_error_message(events)
