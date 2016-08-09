@@ -47,7 +47,7 @@ class EventsController < ApplicationController
   def destroy
     event_id = params[:id]
     GoogleCalendar::GoogleEvent.delete(session[:credentials], event_id)
-    redirect_to root_path
+    head :ok
   end
 
   private
