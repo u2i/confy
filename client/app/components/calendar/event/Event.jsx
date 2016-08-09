@@ -1,9 +1,8 @@
-import React, {PropTypes} from "react";
-import EventSchema from "schemas/EventSchema";
-import DeleteButton from "./DeleteButton";
-import {If, Then} from "react-if";
-import {formatTime} from "helpers/DateHelper";
-import "./event.scss";
+import React, { PropTypes } from 'react';
+import EventSchema from 'schemas/EventSchema';
+import DeleteButton from './DeleteButton';
+import { formatTime } from 'helpers/DateHelper';
+import './event.scss';
 
 export default class Event extends React.Component {
   static propTypes = {
@@ -25,7 +24,7 @@ export default class Event extends React.Component {
       <div className="event" style={this._eventStyle()}>
         <DeleteButton id={event.id}
                       onDelete={this.props.onDelete}
-                      disabled={!creator.self} />
+                      disabled={!creator.self}/>
         <div className="event-time">{timeStr}</div>
         <div className="event-name">{event.summary}</div>
         <div className="event-user">

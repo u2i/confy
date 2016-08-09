@@ -1,7 +1,7 @@
-import React, {PropTypes} from "react";
-import {Tooltip, OverlayTrigger} from "react-bootstrap";
-import {If, Then, Else} from "react-if";
-import "./event.scss";
+import React, { PropTypes } from 'react';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { If, Then, Else } from 'react-if';
+import './event.scss';
 
 const TOOLTIP_MESSAGE = 'You are not the owner of this event';
 
@@ -12,6 +12,12 @@ export default class DeleteButton extends React.Component {
     disabled: PropTypes.bool.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    this._handleOnClick = this._handleOnClick.bind(this);
+  }
+
   render() {
     const enabled = this.props.disabled ? 'disabled' : 'enabled';
     const tooltip = (
@@ -20,7 +26,7 @@ export default class DeleteButton extends React.Component {
 
     const button = (
       <span onClick={this._handleOnClick.bind(this)}
-            className={"delete-button glyphicon glyphicon-remove " + enabled}>
+            className={`delete-button glyphicon glyphicon-remove ${enabled}`}>
       </span>
     );
 
@@ -39,10 +45,10 @@ export default class DeleteButton extends React.Component {
   }
 
   _handleOnClick() {
-    if (this.props.disabled) {
-      return false;
-    } else {
-      this.props.onDelete(this.props.id);
+    if (!this.props.disabled) {
+      return this.props.onDelete(this.props.id);
     }
+
+    return false;
   }
 }
