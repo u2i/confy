@@ -1,20 +1,7 @@
 import * as EventHelper from '../../app/helpers/EventHelper';
 import { expect } from 'chai';
 import Event from '../factories/Event';
-import EventGroup from '../factories/EventGroup';
 import moment from 'moment';
-
-describe('EventGroup', () => {
-  it('has a working factory', () => {
-    const event1 = Event.build({}, { start_time: new Date(2016, 7, 25, 16, 0, 0) });
-    const event2 = Event.build({}, { start_time: new Date(2016, 7, 25, 4, 0, 0) });
-
-    const group = EventGroup.build({ events: [event1, event2] });
-
-    expect(group.start).to.equal(event2.start_timestamp);
-    expect(group.end).to.equal(event1.start_timestamp);
-  });
-});
 
 describe('EventHelper', () => {
   describe('#eventsStartingAt()', () => {
