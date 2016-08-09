@@ -1,5 +1,13 @@
 class ConferenceRoom < ApplicationRecord
   HEX_COLOR_FORMAT = /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/i
+  KINDS = {
+    narnia: 0,
+    without_walls: 1,
+    small: 2,
+    big: 3
+  }.freeze
+
+  enum kind: KINDS
 
   before_validation { color&.downcase! }
   validates :capacity, presence: true

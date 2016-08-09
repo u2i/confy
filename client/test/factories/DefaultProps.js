@@ -6,5 +6,6 @@ export default new Factory()
     conferenceRooms:          [ConferenceRoom.build()],
     days:                     [new Date(2016, 7, 25, 0, 0, 0).toISOString()],
     times:                    [new Date(2016, 7, 25, 0, 0, 0).toISOString()],
-    unitEventLengthInSeconds: 60
+    unitEventLengthInSeconds: 60,
+    roomKinds:                { narnia: 0 }
   });
