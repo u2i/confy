@@ -22,7 +22,7 @@ describe('<DeleteButton />', () => {
 
     describe('with disabled deleting', () => {
       const spy = sinon.spy();
-      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled={true} />);
+      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled />);
       wrapper.find('span').simulate('click');
       expect(spy.calledWith(id)).to.eq(false);
     });

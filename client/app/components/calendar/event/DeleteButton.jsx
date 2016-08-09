@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Tooltip, Overlay } from 'react-bootstrap';
-import { If, Then, Else } from 'react-if';
+import { If } from 'react-if';
 import './event.scss';
 
 const TOOLTIP_MESSAGE = 'You are not the owner of this event';
