@@ -1,19 +1,19 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import shared from 'mocha-shared';
+import sinon from 'sinon';
+import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import DefaultProps from '../../factories/DefaultProps';
 
 import { Table } from 'react-bootstrap';
-import Calendar from '../../../app/components/calendar/Calendar';
-import CalendarHeader from '../../../app/components/calendar/CalendarHeader';
-import CalendarRow from '../../../app/components/calendar/CalendarRow';
-import RoomFilters from '../../../app/components/calendar/filters/RoomFilters';
+import Calendar from 'components/calendar/Calendar';
+import CalendarHeader from 'components/calendar/CalendarHeader';
+import CalendarRow from 'components/calendar/CalendarRow';
+import RoomFilters from 'components/calendar/filters/RoomFilters';
 
 describe('<Calendar />', () => {
   const props = DefaultProps.build({
-    days:  ['2016-07-28', '2016-07-29'],
-    times: ['8:00', '9:00'],
-    onDelete: (_id) => {}
+    onDelete: () => {}
   });
 
   let wrapper;
@@ -57,6 +57,20 @@ describe('<Calendar />', () => {
       wrapper.find(RoomFilters).simulate('disabled', 1);
       expect(wrapper.state('filteredRooms').size).to.equal(0);
       expect(wrapper.state('filteredRooms').includes(1)).to.be.false();
+    });
+  });
+
+  describe('scrolling behaviour', () => {
+    let scrollSpy;
+    shared.setup('stub ReactDOM.findDOMNode', {
+      cb: (node) => {
+        scrollSpy = node.scrollIntoView = sinon.spy();
+      }
+    });
+
+    it('scrolls calendar to row with scrollTo time', () => {
+      wrapper = mount(<Calendar {...props} />);
+      expect(scrollSpy).to.have.been.called();
     });
   });
 });

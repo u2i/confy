@@ -23,10 +23,11 @@ rules:
 # Variables
   no-undef: 2
   no-unused-vars: [2, { vars: all, args: none, varsIgnorePattern: "^_" }]
+  no-return-assign: 0
 
 # Stylistic issues
   indent: [1, 2, { SwitchCase: 1, VariableDeclarator: 2 }]
-  id-length: [1, { min: 2, exceptions: [_, e, i, k, v] }]
+  id-length: [1, { min: 2, exceptions: [_, e, i, k, v, t] }]
   space-before-function-paren: [1, never]
   no-underscore-dangle: 0
 
