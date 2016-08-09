@@ -44,6 +44,8 @@
     "react": "^0.14.8 || ^15.0.0",
     "react-addons-test-utils": "^0.14.8 || ^15.0.0",
     "react-bootstrap": "^0.30.0-rc.1",
+    "react-bootstrap-datetimepicker": "^0.0.22",
+    "react-dimensions": "^1.3.0",
     "react-dom": "^0.14.8 || ^15.0.0",
     "react-if": "^2.1.0",
     "react-on-rails": "5.2.0",
