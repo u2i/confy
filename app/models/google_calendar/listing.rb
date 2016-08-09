@@ -8,9 +8,10 @@ module GoogleCalendar
     def list_events(credentials, user_email, starting, ending)
       all_events = daily_events_container
       rooms = ConferenceRoom.all
+      listing_configuration = listing_options(starting, ending)
       calendar_service(credentials).batch do |service|
         rooms.each do |room|
-          add_events_from_room(room, service, all_events, listing_options(starting, ending))
+          add_events_from_room(room, service, all_events, listing_configuration)
         end
       end
       mark_user_events(user_email, all_events)
@@ -24,8 +25,7 @@ module GoogleCalendar
     def mark_user_events(user_email, all_events)
       all_events.values.each do |events|
         events.each do |event|
-          creator_email = event[:creator][:email]
-          event[:creator][:self] = (user_email == creator_email)
+          event[:creator][:self] = (user_email == event[:creator][:email])
         end
       end
     end

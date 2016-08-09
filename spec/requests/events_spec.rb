@@ -15,36 +15,36 @@ RSpec.describe 'Events', type: :request do
     end
 
     context 'given invalid event attributes' do
-      let(:exception) { Google::Apis::ClientError.new('error') }
+      let(:error) { Google::Apis::ClientError.new('error') }
       it 'responds with 422' do
-        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
+        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
         post events_path
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
     context 'given invalid conference room id' do
-      let(:exception) { GoogleCalendar::Adding::AddEventInvalidRoom.new('error') }
+      let(:error) { GoogleCalendar::Adding::EventInvalidRoom.new('error') }
       it 'responds with 422' do
-        allow(GoogleCalendar::GoogleEvent).to receive(:create).and_raise(exception)
+        allow(GoogleCalendar::GoogleEvent).to receive(:create).and_raise(error)
         post events_path
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
     context 'google server does not respond' do
-      let(:exception) { Google::Apis::ServerError.new('error') }
+      let(:error) { Google::Apis::ServerError.new('error') }
       it 'responds with 503' do
-        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
+        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
         post events_path
         expect(response).to have_http_status(:service_unavailable)
       end
     end
 
     context 'user is not authorized' do
-      let(:exception) { Google::Apis::AuthorizationError.new('error') }
+      let(:error) { Google::Apis::AuthorizationError.new('error') }
       it 'responds with 401' do
-        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(exception)
+        allow(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
         post events_path
         expect(response).to have_http_status(:unauthorized)
       end
@@ -63,9 +63,9 @@ RSpec.describe 'Events', type: :request do
     let(:event_id) { 'test_event_id' }
     let(:session) { {credentials: 'test_credentials'} }
     context 'request is forbidden' do
-      let(:exception) { Google::Apis::ClientError.new('forbidden error') }
+      let(:error) { Google::Apis::ClientError.new('forbidden error') }
       it 'responds with 403' do
-        allow(GoogleCalendar::GoogleEvent).to receive(:delete).and_raise(exception)
+        allow(GoogleCalendar::GoogleEvent).to receive(:delete).and_raise(error)
         allow_any_instance_of(EventsController).to receive(:session) { session }
         delete event_path event_id
         expect(response).to have_http_status :forbidden

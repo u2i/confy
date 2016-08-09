@@ -47,10 +47,10 @@ describe Adding do
     context 'given invalid conference room id' do
       let(:invalid_id) { 1 }
       let(:params) { {} }
-      it 'raises GoogleCalendar::AddEventInvalidRoom error' do
+      it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
         expect { described_class.add_room_to_event(params, invalid_id) }.
-          to raise_error(GoogleCalendar::Adding::AddEventInvalidRoom)
+          to raise_error(GoogleCalendar::Adding::EventInvalidRoom)
       end
     end
   end
@@ -89,8 +89,8 @@ describe Adding do
   describe '.create' do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
-      it 'raises GoogleCalendar::AddEventInvalidParamsError' do
-        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::Adding::AddEventInvalidParamsError)
+      it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
+        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::Adding::EventInvalidParamsError)
       end
     end
 
@@ -111,18 +111,16 @@ describe Adding do
         let!(:room) { create :conference_room }
 
         before do
-          allow(described_class).to receive(:events_in_span) do
-            double('EventList', items: [first_event, second_event])
-          end
+          allow(described_class).to receive(:events_in_span) { [first_event, second_event] }
         end
 
-        it 'raises AddEventInTimeSpanError' do
+        it 'raises EventInTimeSpanError' do
           expect do
             described_class.create(credentials,
                                    room.id,
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
-          end.to raise_error(GoogleCalendar::Adding::AddEventInTimeSpanError,
+          end.to raise_error(GoogleCalendar::Adding::EventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
       end
@@ -141,9 +139,7 @@ describe Adding do
         let!(:room) { create :conference_room }
 
         before do
-          allow(described_class).to receive(:events_in_span) do
-            double('EventList', items: [])
-          end
+          allow(described_class).to receive(:events_in_span) { [] }
           allow(described_class).to receive(:calendar_service) { service }
           allow(service).to receive(:insert_event) { true }
         end
