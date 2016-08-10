@@ -8,6 +8,7 @@ const instanceOfMoment = (props, propName, componentName) => {
       Expected prop of type \`Moment\` and found \`${typeof props[propName]}\`.`
     );
   }
+  return null;
 };
 
 export default createChainableTypeChecker(instanceOfMoment);
