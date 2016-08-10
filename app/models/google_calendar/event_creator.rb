@@ -1,10 +1,8 @@
 module GoogleCalendar
-  module Adding
+  class EventCreator
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
     EventInvalidRoom = Class.new(StandardError)
-
-    include Client
 
     EVENT_SCHEMA = Dry::Validation.Schema do
       required(:start).schema do
@@ -16,21 +14,26 @@ module GoogleCalendar
       end
     end.freeze
 
-    def create(credentials, conference_room_id, raw_event_data = {})
-      event_data = build_event_data(raw_event_data, conference_room_id)
-      insert_event_and_return_result(credentials, event_data)
+    def initialize(credentials)
+      @credentials = credentials
+      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def insert_event_and_return_result(credentials, event_data)
-      raise_error_if_occupied(credentials, event_data)
-      calendar_service(credentials).insert_event(
+    def create(conference_room_id, raw_event_data = {})
+      event_data = build_event_data(raw_event_data, conference_room_id)
+      insert_event_and_return_result(event_data)
+    end
+
+    def insert_event_and_return_result(event_data)
+      raise_error_if_occupied(event_data)
+      calendar_service.insert_event(
         'primary',
         Google::Apis::CalendarV3::Event.new(event_data)
       )
     end
 
-    def raise_error_if_occupied(credentials, event_data)
-      events = events_in_span(credentials, event_data[:attendees].first,
+    def raise_error_if_occupied(event_data)
+      events = events_in_span(event_data[:attendees].first,
                               event_data[:start][:date_time], event_data[:end][:date_time])
       return unless events.any?
       error_message = occupied_error_message(events)
@@ -64,13 +67,15 @@ module GoogleCalendar
       params.merge!(attendees: [{email: room.email}], location: room.title)
     end
 
-    def events_in_span(credentials, conference_room, starting, ending)
-      events = calendar_service(credentials).list_events(
+    def events_in_span(conference_room, starting, ending)
+      events = calendar_service.list_events(
         conference_room[:email],
         time_min: starting,
         time_max: ending
       )
       events ? events.items : []
     end
+
+    attr_accessor :credentials, :calendar_service
   end
 end

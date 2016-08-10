@@ -7,12 +7,8 @@ class GoogleEventLister
   end
 
   def call(time_interval)
-    events = GoogleCalendar::GoogleEvent.list_events(
-      credentials,
-      email,
-      time_interval.start.to_datetime,
-      time_interval.end.to_datetime
-    )
+    google_event = GoogleCalendar::GoogleEvent.new(credentials, email)
+    events = google_event.list_events(time_interval.start.to_datetime, time_interval.end.to_datetime)
     events.flat_map do |_wday, day_events|
       build_groups(day_events)
     end

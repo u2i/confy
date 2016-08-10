@@ -1,20 +1,25 @@
 module GoogleCalendar
-  module Listing
-    include Client
+  class EventFinder
 
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator, attendees(self, responseStatus))'.freeze
 
-    def list_events(credentials, user_email, starting, ending)
+    def initialize(credentials, user_email)
+      @credentials = credentials
+      @user_email = user_email
+      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+    end
+
+    def list_events(starting, ending)
       all_events = daily_events_container
       rooms = ConferenceRoom.all
       listing_configuration = listing_options(starting, ending)
-      calendar_service(credentials).batch do |service|
+      calendar_service.batch do |service|
         rooms.each do |room|
           add_events_from_room(room, service, all_events, listing_configuration)
         end
       end
-      mark_user_events(user_email, all_events)
+      mark_user_events(all_events)
       all_events
     end
 
@@ -22,7 +27,7 @@ module GoogleCalendar
       Hash[(1..CalendarHelper::WEEK_LENGTH).map { |i| [i, []] }]
     end
 
-    def mark_user_events(user_email, all_events)
+    def mark_user_events(all_events)
       all_events.values.each do |events|
         events.each do |event|
           event[:creator][:self] = (user_email == event[:creator][:email])
@@ -77,5 +82,9 @@ module GoogleCalendar
       return false unless event.attendees.present?
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
+
+    private
+
+    attr_accessor :credentials, :user_email, :calendar_service
   end
 end

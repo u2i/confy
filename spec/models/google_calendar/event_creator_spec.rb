@@ -1,27 +1,24 @@
 require 'rails_helper'
 
-class Adding
-  extend GoogleCalendar::Adding
-end
-
-describe Adding do
-  describe '.event_in_span' do
-    let(:service) { double(:calendar_service) }
-    let(:credentials) { :credentials }
+RSpec.describe GoogleCalendar::EventCreator do
+  let(:client) { double(:client) }
+  let(:service) { double(:calendar_service) }
+  let(:credentials) { :credentials }
+  let(:event_creator) { described_class.new(credentials) }
+  before do
+    allow(client).to receive(:calendar_service) { service }
+    allow(GoogleCalendar::Client).to receive(:new) { client }
+  end
+  describe '.events_in_span' do
     let(:conference_room) { {email: 'email@sample.com'.freeze, key: :value} }
     let(:start_time) { Time.now }
     let(:end_time) { Time.now + 3.hour }
 
-    before do
-      allow(described_class).to receive(:calendar_service) { service }
-    end
-
     it 'calls calendar_service' do
-      expect(described_class).to receive(:calendar_service).with(credentials)
       expect(service).to receive(:list_events).with(conference_room[:email],
                                                     time_min: start_time,
                                                     time_max: end_time)
-      described_class.events_in_span(credentials, conference_room, start_time, end_time)
+      event_creator.events_in_span(conference_room, start_time, end_time)
     end
   end
 
@@ -39,7 +36,7 @@ describe Adding do
       end
       let(:params) { {} }
       it 'adds attendess and location keys with appropriate values' do
-        described_class.add_room_to_event(params, first_room.id)
+        described_class.new(credentials).add_room_to_event(params, first_room.id)
         expect(params).to eq expected_result
       end
     end
@@ -49,14 +46,14 @@ describe Adding do
       let(:params) { {} }
       it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
-        expect { described_class.add_room_to_event(params, invalid_id) }.
-          to raise_error(GoogleCalendar::Adding::EventInvalidRoom)
+        expect { described_class.new(credentials).add_room_to_event(params, invalid_id) }.
+          to raise_error(GoogleCalendar::EventCreator::EventInvalidRoom)
       end
     end
   end
 
   describe 'EVENT_SCHEMA' do
-    let(:schema) { GoogleCalendar::Adding::EVENT_SCHEMA }
+    let(:schema) { GoogleCalendar::EventCreator::EVENT_SCHEMA }
     let(:time1) { Faker::Time.forward 5 }
     let(:time2) { Faker::Time.forward 5 }
     let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
@@ -90,7 +87,8 @@ describe Adding do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
-        expect { described_class.create({}, 0, {}) }.to raise_error(GoogleCalendar::Adding::EventInvalidParamsError)
+        expect { described_class.new(credentials).create(0, {}) }.
+          to raise_error(GoogleCalendar::EventCreator::EventInvalidParamsError)
       end
     end
 
@@ -111,16 +109,15 @@ describe Adding do
         let!(:room) { create :conference_room }
 
         before do
-          allow(described_class).to receive(:events_in_span) { [first_event, second_event] }
+          allow(event_creator).to receive(:events_in_span) { [first_event, second_event] }
         end
 
         it 'raises EventInTimeSpanError' do
           expect do
-            described_class.create(credentials,
-                                   room.id,
+            event_creator.create(room.id,
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
-          end.to raise_error(GoogleCalendar::Adding::EventInTimeSpanError,
+          end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
       end
@@ -139,8 +136,8 @@ describe Adding do
         let!(:room) { create :conference_room }
 
         before do
-          allow(described_class).to receive(:events_in_span) { [] }
-          allow(described_class).to receive(:calendar_service) { service }
+          allow(event_creator).to receive(:events_in_span) { [] }
+          allow(event_creator).to receive(:calendar_service) { service }
           allow(service).to receive(:insert_event) { true }
         end
         it 'creates event' do
@@ -148,8 +145,7 @@ describe Adding do
             'primary',
             Google::Apis::CalendarV3::Event
           )
-          described_class.create(credentials,
-                                 room.id,
+          event_creator.create(room.id,
                                  start: {date_time: start_time},
                                  end: {date_time: end_time})
         end
