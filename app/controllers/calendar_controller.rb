@@ -31,7 +31,8 @@ class CalendarController < ApplicationController
   end
 
   def events
-    GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
+    events = GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
+    EventGrouper.new(events).build_blocks
   end
 
   def calendar_days

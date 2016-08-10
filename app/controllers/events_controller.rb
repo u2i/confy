@@ -30,7 +30,9 @@ class EventsController < ApplicationController
   end
 
   def index
-    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
+    events = GoogleEventLister.new(session[:credentials], session[:email]).call(span_param)
+    return render json: events unless params[:grouped]
+    render json: EventGrouper.new(events).build_blocks
   end
 
   def create
@@ -54,5 +56,10 @@ class EventsController < ApplicationController
 
   def date_param
     params[:date] ? Date.parse(params[:date]) : Date.today
+  end
+
+  def span_param
+    return TimeInterval.week(date_param) unless params[:start] && params[:end]
+    TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
   end
 end

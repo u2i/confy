@@ -86,7 +86,7 @@ export default class AppContainer extends React.Component {
   _fetchEvents() {
     this.setState({ updating: true });
     EventSource
-      .fetch({ date: this.props.date })
+      .fetch({ date: this.props.date, grouped: true })
       .then(({ data }) => {
         this.setState({ events: data, updating: false });
       })

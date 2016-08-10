@@ -1,7 +1,11 @@
 import React, { PropTypes } from "react";
 import { Modal } from "react-bootstrap";
 import moment from "moment";
-import _ from "lodash";
+import bindAll from "lodash/bindAll";
+import flow from 'lodash/fp/flow';
+import map from 'lodash/fp/map';
+import uniqBy from 'lodash/fp/uniqBy';
+import differenceBy from 'lodash/differenceBy';
 import EventSource from "sources/EventSource";
 import ModalHeader from "./layout/ModalHeader";
 import ModalFooter from "./layout/ModalFooter";
@@ -32,12 +36,20 @@ export default class CreateEventModal extends React.Component {
       conferenceRoomId: this.props.conferenceRooms[0].id,
       startTime:        this.props.initialDate,
       endTime:          this.props.initialDate,
+      availableRooms:   [],
+      unavailableRooms: [],
       disableSaving:    true,
       errors:           {}
     };
 
-    _.bindAll(this,
+    bindAll(this,
       ['saveChanges', 'updateParam', 'handleCloseModal']);
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.startTime !== this.state.startTime || prevState.endTime !== this.state.endTime) {
+      this._updateRoomAvailability();
+    }
   }
 
   saveChanges() {
@@ -64,8 +76,10 @@ export default class CreateEventModal extends React.Component {
   }
 
   handleCloseModal() {
-    this.setState({ errors: {},
-                    showErrorMessage: false });
+    this.setState({
+      errors:           {},
+      showErrorMessage: false
+    });
     this.props.closeModal();
   }
 
@@ -82,8 +96,9 @@ export default class CreateEventModal extends React.Component {
 
         <ModalHeader />
         <ModalBody
+          availableLocations={this.state.availableRooms}
+          unavailableLocations={this.state.unavailableRooms}
           updateParam={this.updateParam}
-          conferenceRooms={this.props.conferenceRooms}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors} />
         <ModalFooter
@@ -97,11 +112,15 @@ export default class CreateEventModal extends React.Component {
 
   _validateTimeRange() {
     if (this.state.startTime >= this.state.endTime) {
-      this.setState({ disableSaving: true,
-                      errors: { start_time: [ DATE_ERROR_TEXT ]}});
+      this.setState({
+        disableSaving: true,
+        errors:        { start_time: [DATE_ERROR_TEXT] }
+      });
     } else {
-      this.setState({ disableSaving: false,
-                      errors: { start_time: null } });
+      this.setState({
+        disableSaving: false,
+        errors:        { start_time: null }
+      });
     }
   }
 
@@ -113,5 +132,22 @@ export default class CreateEventModal extends React.Component {
 
   _showError() {
     this.setState({ showErrorMessage: true });
+  }
+
+  _updateRoomAvailability() {
+    const { startTime, endTime } = this.state;
+    EventSource
+      .fetch({ start: startTime, end: endTime })
+      .then(({ data }) => {
+          const unavailableRooms = flow(
+            map(e => e.conference_room),
+            uniqBy(room => room.id)
+          )(data);
+
+          const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
+
+          this.setState({ availableRooms, unavailableRooms });
+        }
+      );
   }
 }

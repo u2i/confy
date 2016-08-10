@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Col } from "react-bootstrap";
-import _ from "lodash";
+import bindAll from "lodash/bindAll";
 import FormTextField from "./body/FormTextField";
 import FormDateField from "./body/FormDateField";
 import FormLocationField from "./body/FormLocationField";
@@ -10,21 +10,22 @@ const { func, array, object, bool } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
-    updateParam:      func.isRequired,
-    conferenceRooms:  array.isRequired,
-    errors:           object,
-    showErrorMessage: bool
+    updateParam:          func.isRequired,
+    availableLocations:   array.isRequired,
+    unavailableLocations: array.isRequired,
+    errors:               object,
+    showErrorMessage:     bool
   };
 
   static defaultProps = {
     showErrorMessage: false,
-    errors: {}
+    errors:           {}
   };
 
   constructor(props) {
     super(props);
 
-    _.bindAll(this,
+    bindAll(this,
       ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange']);
   }
 
@@ -74,11 +75,12 @@ export default class ModalBody extends React.Component {
             <Col xs={12} md={6} className="pull-right">
               <FormDateField
                 label={"End time"}
-                onChange={this.handleEndTimeChange}/>
+                onChange={this.handleEndTimeChange} />
             </Col>
           </section>
           <FormLocationField
-            conferenceRooms={this.props.conferenceRooms}
+            available={this.props.availableLocations}
+            unavailable={this.props.unavailableLocations}
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
             errors={this.props.errors.conference_room_id || []} />

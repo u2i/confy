@@ -13,44 +13,62 @@ describe('<FormLocationField />', () => {
     ConferenceRoom.build()
   ];
 
+  const formLocationField = (props) => (
+    <FormLocationField
+      available={props.available || rooms}
+      unavailable={props.unavailable || []}
+      onChange={onChangeSpy} />
+  );
+
+  const shallowWrapper = (props) => shallow(formLocationField(props));
+  const mountWrapper = (props) => mount(formLocationField(props));
+
   it('renders <ControlLabel />', () => {
-    const wrapper =
-      shallow(<FormLocationField
-                  conferenceRooms={rooms}
-                  onChange={onChangeSpy} />);
-    expect(wrapper.find(ControlLabel)).to.exist;
+    const wrapper = shallowWrapper();
+    expect(wrapper.find(ControlLabel)).to.exist();
   });
 
   it('renders <ControlLabel /> with "Location:" text', () => {
-    const wrapper =
-      mount(<FormLocationField
-        conferenceRooms={rooms}
-        onChange={onChangeSpy} />);
+    const wrapper = mountWrapper();
     expect(wrapper.find(ControlLabel)).to.have.text('Location:');
   });
 
   it('renders <FormControl />', () => {
-    const wrapper =
-      shallow(<FormLocationField
-        conferenceRooms={rooms}
-        onChange={onChangeSpy} />);
-    expect(wrapper.find(FormControl)).to.exist;
-  });
-
-  it('renders select option for every room', () => {
-    const wrapper =
-      mount(<FormLocationField
-        conferenceRooms={rooms}
-        onChange={onChangeSpy} />);
-    expect(wrapper.find('option')).to.have.lengthOf(rooms.length);
+    const wrapper = shallowWrapper();
+    expect(wrapper.find(FormControl)).to.exist();
   });
 
   it('invokes onChange handler after location change', () => {
-    const wrapper =
-      mount(<FormLocationField
-        conferenceRooms={rooms}
-        onChange={onChangeSpy} />);
+    const wrapper = mountWrapper();
     wrapper.find('select').simulate('change', { target: { value: rooms[1].id } });
     expect(onChangeSpy).to.be.calledOnce();
+  });
+
+  describe('location select', () => {
+    it('renders select option for every room', () => {
+      const wrapper = mountWrapper({ unavailable: ConferenceRoom.buildList(2) });
+      expect(wrapper).to.have.exactly(rooms.length + 2).descendants();
+    });
+
+    context('with empty available and unavailable location list', () => {
+      it('should not render option groups', () => {
+        const wrapper = mountWrapper({ available: [] });
+        expect(wrapper).to.not.have.descendants('optgroup');
+      });
+    });
+
+    context('with non-empty available location list', () => {
+      it('should render available location group', () => {
+        const wrapper = mountWrapper({ available: rooms });
+        expect(wrapper).to.have.exactly(1).descendants('optgroup');
+      });
+    });
+
+    context('with non-empty unavailable location list', () => {
+      it('should render unavailable location group', () => {
+        const wrapper = mountWrapper({ available: [], unavailable: rooms });
+        expect(wrapper).to.have.exactly(1).descendants('optgroup');
+      });
+    });
   });
 });
