@@ -115,7 +115,7 @@ export default class App extends React.Component {
   }
 
   _dateParam() {
-    return dateParam(this._dateOrNow);
+    return dateParam(this._dateOrNow());
   }
 
   _fetchEvents() {
