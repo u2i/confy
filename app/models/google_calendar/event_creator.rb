@@ -24,6 +24,8 @@ module GoogleCalendar
       insert_event_and_return_result(event_data)
     end
 
+    private
+
     def insert_event_and_return_result(event_data)
       raise_error_if_occupied(event_data)
       calendar_service.insert_event(
@@ -63,7 +65,7 @@ module GoogleCalendar
 
     def add_room_to_event(params, conference_room_id)
       room = ConferenceRoom.find_by(id: conference_room_id)
-      raise EventInvalidRoom, 'Undefined conference room: ' + conference_room_id.to_s if room.nil?
+      raise EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if room.nil?
       params.merge!(attendees: [{email: room.email}], location: room.title)
     end
 

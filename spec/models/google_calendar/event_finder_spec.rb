@@ -156,7 +156,7 @@ describe GoogleCalendar::EventFinder do
 
     it 'sets event[:creator][:self] flag to true if user is creator of the event' do
       allow(GoogleOauth).to receive(:user_email) { user_email }
-      event_finder.mark_user_events(all_events)
+      event_finder.send(:mark_user_events, all_events)
       expect(event1[:creator][:self]).to eq true
       expect(event2[:creator][:self]).to eq false
     end

@@ -18,7 +18,7 @@ RSpec.describe GoogleCalendar::EventCreator do
       expect(service).to receive(:list_events).with(conference_room[:email],
                                                     time_min: start_time,
                                                     time_max: end_time)
-      event_creator.events_in_span(conference_room, start_time, end_time)
+      event_creator.send(:events_in_span, conference_room, start_time, end_time)
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe GoogleCalendar::EventCreator do
       end
       let(:params) { {} }
       it 'adds attendess and location keys with appropriate values' do
-        described_class.new(credentials).add_room_to_event(params, first_room.id)
+        described_class.new(credentials).send(:add_room_to_event, params, first_room.id)
         expect(params).to eq expected_result
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe GoogleCalendar::EventCreator do
       let(:params) { {} }
       it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
-        expect { described_class.new(credentials).add_room_to_event(params, invalid_id) }.
+        expect { described_class.new(credentials).send(:add_room_to_event, params, invalid_id) }.
           to raise_error(GoogleCalendar::EventCreator::EventInvalidRoom)
       end
     end

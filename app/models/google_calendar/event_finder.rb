@@ -11,7 +11,6 @@ module GoogleCalendar
 
     def list_events(starting, ending)
       all_events = daily_events_container
-      rooms = ConferenceRoom.all
       listing_configuration = listing_options(starting, ending)
       calendar_service.batch do |service|
         rooms.each do |room|
@@ -20,6 +19,12 @@ module GoogleCalendar
       end
       mark_user_events(all_events)
       all_events
+    end
+
+    private
+
+    def rooms
+      ConferenceRoom.all
     end
 
     def daily_events_container
@@ -81,8 +86,6 @@ module GoogleCalendar
       return false unless event.attendees.present?
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
-
-    private
 
     attr_accessor :credentials, :user_email, :calendar_service
   end
