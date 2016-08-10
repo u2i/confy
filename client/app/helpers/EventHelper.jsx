@@ -7,9 +7,7 @@ export function eventsStartingAt(timestamp, events) {
 function eventsAssignedToColumns(eventsGroup) {
   const columns = [];
   eventsGroup.forEach(event => {
-    const columnForEvent = columns.find(column => (
-      column[column.length - 1].end_timestamp <= event.start_timestamp
-    ));
+    const columnForEvent = columns.find(column => column[column.length - 1].end_timestamp <= event.start_timestamp);
     columnForEvent ? columnForEvent.push(event) : columns.push([event]);
   });
   return columns;

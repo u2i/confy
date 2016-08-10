@@ -13,14 +13,14 @@ const { string, number, array, arrayOf, oneOfType, instanceOf, func } = PropType
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:                 arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
-    conferenceRooms:          array,
-    days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    events:  arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
+    conferenceRooms:  array,
+    days: arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    times:  arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
-    timeFormat:               string,
-    dateFormat:               string,
-    onDelete:                 func.isRequired
+    timeFormat: string,
+    dateFormat: string,
+    onDelete: func.isRequired
   };
 
   static defaultProps = {
