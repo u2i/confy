@@ -3,18 +3,18 @@ $event-border-color: #f7f7f7;
 .event {
   border: 1px solid $event-border-color;
   border-radius: 5px;
-  position: relative;
+  position: absolute;
   flex-basis: 0;
   flex-grow: 1;
   height: 100%;
   overflow: hidden;
 
   > * {
-    margin-left: 5%;
+    margin-left: 2%;
   }
 
   .event-time {
-    margin-top: 5%;
+    margin-top: 2%;
     font-size: 0.8em;
     font-weight: bold;
   }
@@ -38,9 +38,12 @@ $event-border-color: #f7f7f7;
   position: absolute;
   float: right;
   display: block;
-  right: 5px;
-  top: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 5px;
   opacity: 0.2;
+  right: 0;
+  top: 0;
 
   &.enabled {
     cursor: pointer;

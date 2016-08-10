@@ -6,11 +6,12 @@ import './event.scss';
 
 export default class Event extends React.Component {
   static propTypes = {
-    event:                    EventSchema.isRequired,
-    containerHeight:          PropTypes.number.isRequired,
+    event: EventSchema.isRequired,
+    containerHeight: PropTypes.number.isRequired,
+    containerWidth: PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
-    timeFormat:               PropTypes.string,
-    onDelete:                 PropTypes.func.isRequired
+    timeFormat: PropTypes.string,
+    onDelete: PropTypes.func.isRequired
   };
 
   render() {
@@ -43,6 +44,16 @@ export default class Event extends React.Component {
     return this._eventLengthInSeconds() * this.props.containerHeight;
   }
 
+  _eventWidth() {
+    return this.props.event.width * this.props.containerWidth;
+  }
+
+  _eventOffset() {
+    const { width, offset } = this.props.event;
+    const containerWidth = this.props.containerWidth;
+    return width * containerWidth * offset;
+  }
+
   _eventLengthInSeconds() {
     return (this.props.event.end_timestamp - this.props.event.start_timestamp) / this.props.unitEventLengthInSeconds;
   }
@@ -50,7 +61,9 @@ export default class Event extends React.Component {
   _eventStyle() {
     return {
       backgroundColor: this.props.event.conference_room.color,
-      height:          this._eventHeight()
+      height: this._eventHeight(),
+      width: this._eventWidth(),
+      left: this._eventOffset()
     };
   }
 }
