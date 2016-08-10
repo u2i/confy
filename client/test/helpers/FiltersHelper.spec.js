@@ -28,7 +28,7 @@ describe('FiltersHelper', () => {
     describe('when there are saved filters', () => {
       const filters = [1, 2, 3];
       const filtersStringified = JSON.stringify(filters);
-      before(() => sinon.stub(LocalStorageHelper, 'getItem').returns(filtersStringified) );
+      before(() => sinon.stub(LocalStorageHelper, 'getItem').returns(filtersStringified));
 
       it('returns Immutable set with parsed values', () => {
         expect(FiltersHelper.loadFilters()).to.eql(new Set(filters));

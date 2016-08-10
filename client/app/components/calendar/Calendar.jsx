@@ -83,7 +83,7 @@ export default class Calendar extends React.Component {
       </div>
     );
   }
-  
+
   _addFilter(conferenceRoomId) {
     const filters = this.state.filteredRooms.add(conferenceRoomId);
     saveFilters(filters);
