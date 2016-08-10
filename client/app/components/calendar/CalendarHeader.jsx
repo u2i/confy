@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDate } from 'helpers/DateHelper';
 
 const CalendarHeader = (props) => (
-  <th className="text-center">
+  <th className="col-md-2 text-center">
     {formatDate(props.day, props.dateFormat)}
   </th>
 );

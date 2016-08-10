@@ -13,7 +13,9 @@ class GoogleEventLister
       time_interval.start.to_datetime,
       time_interval.end.to_datetime
     )
-    events.values.flatten
+    events.flat_map do |_wday, day_events|
+      build_groups(day_events)
+    end
   end
 
   private

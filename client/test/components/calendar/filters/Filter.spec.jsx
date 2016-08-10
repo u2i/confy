@@ -10,13 +10,12 @@ import ConferenceRoom from 'test/factories/ConferenceRoom';
 describe('<Filter />', () => {
   const conferenceRoom = ConferenceRoom.build();
   const defaultProps = {
-    color: conferenceRoom.color,
+    conferenceRoom,
     onEnabled: () => {},
     onDisabled: () => {},
-    key: conferenceRoom.id,
     enabled: false
   };
-  const defaultWrapper = mount(<Filter {...defaultProps} >{conferenceRoom.title}</Filter>);
+  const defaultWrapper = shallow(<Filter {...defaultProps} />);
 
   it('renders <Checbkox />', () => {
     expect(defaultWrapper.find(Checkbox)).to.have.lengthOf(1);
@@ -26,20 +25,25 @@ describe('<Filter />', () => {
     expect(defaultWrapper.find('.filter-box').props().style.backgroundColor).to.eq(conferenceRoom.color);
   });
 
+  it('puts conference room title inside Checkbox component', () => {
+    expect(defaultWrapper.find(Checkbox).children().text()).to.eq(conferenceRoom.title);
+  });
+
   describe('props.enabled === true', () => {
     it('triggers onDisabled on change', () => {
       const onEnabled = sinon.spy();
       const onDisabled = sinon.spy();
       const props = {
-        color: conferenceRoom.color,
+        conferenceRoom,
         onEnabled,
         onDisabled,
         enabled: false
       };
-      const wrapper = mount(<Filter {...props}>{conferenceRoom.title}</Filter>);
+      const wrapper = mount(<Filter {...props} />);
 
       wrapper.find('input').simulate('change');
       expect(onDisabled).to.have.been.calledOnce();
+      expect(onDisabled).to.have.been.calledWith(conferenceRoom.id);
     });
   });
 
@@ -48,14 +52,15 @@ describe('<Filter />', () => {
       const onEnabled = sinon.spy();
       const onDisabled = sinon.spy();
       const props = {
-        color: conferenceRoom.color,
+        conferenceRoom,
         onEnabled,
         onDisabled,
         enabled: true
       };
-      const wrapper = mount(<Filter {...props} >{conferenceRoom.title}</Filter>);
+      const wrapper = mount(<Filter {...props} />);
       wrapper.find('input').simulate('change');
       expect(onEnabled).to.have.been.calledOnce();
+      expect(onEnabled).to.have.been.calledWith(conferenceRoom.id);
     });
   });
 });

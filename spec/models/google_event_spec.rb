@@ -21,7 +21,7 @@ describe GoogleEvent do
                                           end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time2),
                                           summary: 'Event2', description: sample_summary,
                                           attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')]
-      )
+                                         )
     end
 
     let(:sample_events) do
@@ -174,9 +174,9 @@ describe GoogleEvent do
                                    start: {date_time: start_time},
                                    end: {date_time: end_time})
           end.to raise_error(
-                   GoogleEvent::EventInTimeSpanError,
-                   'Already 2 events in time span(Summary, Meeting).'
-                 )
+            GoogleEvent::EventInTimeSpanError,
+            'Already 2 events in time span(Summary, Meeting).'
+          )
         end
       end
       context 'no other events' do

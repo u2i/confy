@@ -5,8 +5,7 @@ const ConferenceRoomSchema = {
   id:       PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title:    PropTypes.string.isRequired,
   color:    PropTypes.string,
-  capacity: PropTypes.number,
-  kind:     PropTypes.string
+  capacity: PropTypes.number
 };
 
 export default schema(ConferenceRoomSchema);

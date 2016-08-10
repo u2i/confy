@@ -2,43 +2,15 @@
   margin-top: 25px;
 }
 
-.calendar {
-  display: flex;
-  flex-flow: column;
-  height: 90vh;
-  width: 100%;
+.calendar > tbody > tr {
 
-  > thead > tr, > tbody > tr {
-    display: table;
-    table-layout: fixed;
-    width: 100%;
+  > td {
+    overflow: visible;
+    height: 2em;
+    padding: 0;
 
-    > td.time-cell, > th.time-cell {
+    &.time-cell {
       padding-right: 0.5em;
-      width: 50px;
-    }
-  }
-
-  > thead {
-    flex: 0 0 auto;
-    width: 100%;
-
-    > tr > th {
-      border-width: 0 1px 1px 0;
-    }
-  }
-
-  > tbody {
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: scroll;
-
-    > tr > td {
-      position: relative;
-      overflow: visible;
-      height: 2em;
-      padding: 0;
-      border-width: 0 1px 1px 0;
     }
   }
 }

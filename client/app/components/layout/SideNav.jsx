@@ -8,25 +8,15 @@ export default class SideNav extends React.Component {
   static propTypes = {
     date:      React.PropTypes.string.isRequired,
     onRefresh: React.PropTypes.func,
-    updating:  React.PropTypes.bool,
-    openModal: React.PropTypes.func.isRequired
+    updating:  React.PropTypes.bool
   };
-
-  constructor() {
-    super();
-
-    this._handleCreateEvent = this._handleCreateEvent.bind(this);
-  }
 
   render() {
     return (
       <aside className="sidebar">
-        <Button bsStyle="primary" className="btn-block"
-                onClick={this._handleCreateEvent}>
-          Create Event
-        </Button>
+        <Button bsStyle="primary" className="btn-block">Create Event</Button>
         <Button href={"/"}
-                className="btn-block">Today</Button>
+                className="btn-block">Home</Button>
         <Button href={this._dateParam(this._nextWeek())}
                 className="btn-block">Next Week</Button>
         <Button href={this._dateParam(this._previousWeek())}
@@ -46,9 +36,5 @@ export default class SideNav extends React.Component {
 
   _dateParam(date) {
     return `/?date=${date.format('YYYY-MM-DD')}`;
-  }
-
-  _handleCreateEvent() {
-    this.props.openModal();
   }
 }
