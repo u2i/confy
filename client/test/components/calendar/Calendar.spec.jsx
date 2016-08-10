@@ -4,14 +4,28 @@ import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import DefaultProps from '../../factories/DefaultProps';
-
 import { Table } from 'react-bootstrap';
 import Calendar from 'components/calendar/Calendar';
 import CalendarHeader from 'components/calendar/CalendarHeader';
 import CalendarRow from 'components/calendar/CalendarRow';
 import RoomFilters from 'components/calendar/filters/RoomFilters';
+import * as FiltersHelper from 'helpers/FiltersHelper';
+import proxyquire from 'proxyquire';
+import { Set } from 'immutable';
 
 describe('<Calendar />', () => {
+
+  before(() => {
+    sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
+    sinon.stub(FiltersHelper, 'saveFilters');
+    proxyquire('../../../app/helpers/FiltersHelper', FiltersHelper);
+  });
+
+  after(() => {
+    FiltersHelper.loadFilters.restore();
+    FiltersHelper.saveFilters.restore();
+  });
+
   const props = DefaultProps.build({
     onDelete: () => {}
   });

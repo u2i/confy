@@ -6,7 +6,7 @@ import find from 'lodash/fp/find';
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
-import * as Immutable from 'immutable';
+import { loadFilters, saveFilters } from 'helpers/FiltersHelper';
 import EventSchema from 'schemas/EventSchema';
 import { setEventsPositionAttributes } from 'helpers/EventHelper';
 import RoomFilters from './filters/RoomFilters';
@@ -38,7 +38,7 @@ export default class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { filteredRooms: new Immutable.Set() };
+    this.state = { filteredRooms: loadFilters() };
     this.rows = {};
 
     this._addFilter = this._addFilter.bind(this);
@@ -90,11 +90,13 @@ export default class Calendar extends React.Component {
 
   _addFilter(conferenceRoomId) {
     const filters = this.state.filteredRooms.add(conferenceRoomId);
+    saveFilters(filters);
     this.setState({ filteredRooms: filters });
   }
 
   _removeFilter(conferenceRoomId) {
     const filters = this.state.filteredRooms.delete(conferenceRoomId);
+    saveFilters(filters);
     this.setState({ filteredRooms: filters });
   }
 

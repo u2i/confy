@@ -7,28 +7,34 @@ import shared from 'mocha-shared';
 import EventFactory from 'test/factories/Event';
 import EventSource from 'sources/EventSource';
 import DefaultProps from 'test/factories/DefaultProps';
-
+import * as FiltersHelper from 'helpers/FiltersHelper';
+import { Set } from 'immutable';
 import AppContainer from 'components/AppContainer';
 import SideNav from 'components/layout/SideNav';
 
 describe('<AppContainer />', () => {
-  sinon.stub(EventSource, 'fetch').resolves([]);
-  sinon.stub(EventSource, 'remove').resolves([]);
   let props;
 
   shared.setup('stub ReactDOM.findDOMNode');
 
   before(() => {
+    sinon.stub(EventSource, 'fetch').resolves([]);
+    sinon.stub(EventSource, 'remove').resolves([]);
+    sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
+    sinon.stub(FiltersHelper, 'saveFilters');
     proxyquire('../../app/sources/EventSource', EventSource);
-  });
-
-  beforeEach(() => {
-    props = DefaultProps.build();
+    proxyquire('../../app/helpers/FiltersHelper', FiltersHelper);
   });
 
   after(() => {
     EventSource.fetch.restore();
     EventSource.remove.restore();
+    FiltersHelper.loadFilters.restore();
+    FiltersHelper.saveFilters.restore();
+  });
+
+  beforeEach(() => {
+    props = DefaultProps.build();
   });
 
   afterEach(() => {
