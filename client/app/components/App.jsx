@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React  from 'react';
+import React from 'react';
 import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';

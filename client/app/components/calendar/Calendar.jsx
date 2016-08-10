@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import instanceOfMoment from 'proptypes/moment'
+import instanceOfMoment from 'proptypes/moment';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
 

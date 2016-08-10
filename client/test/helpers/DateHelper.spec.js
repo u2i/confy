@@ -12,8 +12,8 @@ describe('DateHelper', () => {
         const days = DateHelper.weekDays(date, 3);
 
         expect(days).to.have.length(3);
-        expectedDates.forEach(date =>
-          expect(days.some(day => day.isSame(date))).to.be.true()
+        expectedDates.forEach(expected =>
+          expect(days.some(day => day.isSame(expected))).to.be.true()
         );
       });
     });
@@ -42,7 +42,7 @@ describe('DateHelper', () => {
         const expectedString = '2016-08-10';
 
         expect(DateHelper.dateParam(date)).to.equal(expectedString);
-      })
-    })
+      });
+    });
   });
 });
