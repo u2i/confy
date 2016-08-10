@@ -2,11 +2,10 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { Overlay } from 'react-bootstrap';
 import EventFactory from 'test/factories/Event';
 import UserFactory from 'test/factories/User';
-
 import Event from 'components/calendar/event/Event';
-import DeleteButton from 'components/calendar/event/DeleteButton';
 
 describe('<Event />', () => {
   const containerHeight = 30;
@@ -97,17 +96,17 @@ describe('<Event />', () => {
 
     describe('self', () => {
       context('when creator is the current user', () => {
-        it('renders delete button', () => {
+        it('does not render <Overlay /> with tooltip', () => {
           const event = EventFactory.build({ creator: UserFactory.build({ self: true }) });
           const wrapper = mountEvent(event);
-          expect(wrapper).to.have.exactly(1).descendants(DeleteButton);
+          expect(wrapper).to.not.have.descendants(Overlay);
         });
       });
 
       context('when creator is not the current user', () => {
-        it('does not render delete button', () => {
+        it('renders <Overlay /> with tooltip', () => {
           const wrapper = mountEvent(defaultEvent);
-          expect(wrapper).to.not.have.descendants(DeleteButton);
+          expect(wrapper).to.have.exactly(1).descendants(Overlay);
         });
       });
     });
