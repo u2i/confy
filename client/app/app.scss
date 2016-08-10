@@ -1,4 +1,8 @@
+html, body {
+  height: calc(100% - 25px);
+}
+
 html, body, .container {
-  width: 100%;
+  width: 100vw;
 }
 

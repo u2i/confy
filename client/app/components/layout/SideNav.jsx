@@ -28,7 +28,7 @@ export default class SideNav extends React.Component {
           Create Event
         </Button>
         <IndexLinkContainer to="/" active={false}>
-          <Button className="btn-block">Home</Button>
+          <Button className="btn-block">Today</Button>
         </IndexLinkContainer>
         <LinkContainer to={{ pathName: '/', query: { date: dateParam(nextWeek(this.props.date)) } }} active={false}>
           <Button className="btn-block">Next Week</Button>

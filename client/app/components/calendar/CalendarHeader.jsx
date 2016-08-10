@@ -3,7 +3,7 @@ import instanceOfMoment from 'proptypes/moment';
 import { formatDate } from 'helpers/DateHelper';
 
 const CalendarHeader = (props) => (
-  <th className="col-md-2 text-center">
+  <th className="text-center">
     {formatDate(props.day, props.dateFormat)}
   </th>
 );

@@ -4,19 +4,15 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import CalendarRow from 'components/calendar/CalendarRow';
 import EventWrapper from 'components/calendar/event/EventWrapper';
-import Event from 'test/factories/Event';
 import TimeCell from 'components/calendar/TimeCell';
 import { expect } from 'chai';
 
 describe('<CalendarRow />', () => {
-  const group1 = [Event.build(), Event.build()];
-  const group2 = [Event.build(), Event.build()];
-  const events = [group1, group2];
   const days = [moment(), moment(), moment()];
   const unitEventLengthInSeconds = 1800;
   const onDelete = sinon.spy();
   let time;
-  const props = { events, days, unitEventLengthInSeconds, onDelete };
+  const props = { days, unitEventLengthInSeconds, onDelete };
   let wrapper = shallow(<CalendarRow time={moment()} {...props} />);
 
   beforeEach(() => {

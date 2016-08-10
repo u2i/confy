@@ -10,17 +10,17 @@ const { string, bool, number, arrayOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
-    events:                   arrayOf(arrayOf(EventSchema.only('start'))).isRequired,
-    time:                     instanceOfMoment.isRequired,
-    days:                     arrayOf(instanceOfMoment).isRequired,
+    events: arrayOf(EventSchema.only('start_timestamp')).isRequired,
+    time: instanceOfMoment.isRequired,
+    days: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
-    timeFormat:               string,
-    displayMinutes:           bool,
-    onDelete:                 func.isRequired
+    timeFormat: string,
+    displayMinutes: bool,
+    onDelete: func.isRequired
   };
 
   static defaultProps = {
-    timeFormat:     'Ha',
+    timeFormat: 'Ha',
     displayMinutes: false
   };
 
@@ -44,16 +44,12 @@ export default class CalendarRow extends React.Component {
     return this.props.days.map(() => {
       currentTimeStamp += SECONDS_IN_DAY;
       let timestamp = currentTimeStamp;
-      const eventGroup = eventGroupContaining(this.props.events, timestamp) || [];
-      let events = eventsStartingAt(timestamp, eventGroup);
-      let offset = events.length ? eventGroup.indexOf(events[0]) : 0;
+      let events = this.props.events ? eventsStartingAt(timestamp, this.props.events) : [];
 
       return (
         <EventWrapper timestamp={timestamp}
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
-                      eventsInGroup={eventGroup.length}
-                      offset={offset}
                       key={timestamp}
                       onDelete={this.props.onDelete} />
       );

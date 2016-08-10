@@ -1,32 +1,46 @@
 import React from 'react';
+import { Set } from 'immutable';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
+import shared from 'mocha-shared';
 import EventSource from 'sources/EventSource';
 import Event from 'test/factories/Event';
 import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
+import * as FiltersHelper from 'helpers/FiltersHelper';
 
 import App from 'components/App';
 import SideNav from 'components/layout/SideNav';
 
 describe('<App />', () => {
-  sinon.stub(EventSource, 'fetch').resolves([]);
-  sinon.stub(EventSource, 'remove').resolves([]);
+  let props;
+
+  shared.setup('stub ReactDOM.findDOMNode');
 
   before(() => {
+    sinon.stub(EventSource, 'fetch').resolves([]);
+    sinon.stub(EventSource, 'remove').resolves([]);
+    sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
+    sinon.stub(FiltersHelper, 'saveFilters');
     proxyquire('../../app/sources/EventSource', EventSource);
   });
 
-  let props;
   beforeEach(() => {
     props = DefaultProps.build();
+    proxyquire('../../app/helpers/FiltersHelper', FiltersHelper);
   });
 
   after(() => {
     EventSource.fetch.restore();
     EventSource.remove.restore();
+    FiltersHelper.loadFilters.restore();
+    FiltersHelper.saveFilters.restore();
+  });
+
+  beforeEach(() => {
+    props = DefaultProps.build();
   });
 
   afterEach(() => {
@@ -56,8 +70,7 @@ describe('<App />', () => {
 
     it('deletes event', () => {
       const event = Event.build({ creator: User.build({ self: true }) });
-      const wrapper = mount(<App {...props} initialEvents={[[event]]} />);
-
+      const wrapper = mount(<App {...props} initialEvents={[event]} />);
       wrapper.find('.delete-button').simulate('click');
 
       expect(EventSource.remove).to.have.been.calledOnce();
