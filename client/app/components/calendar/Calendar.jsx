@@ -1,3 +1,9 @@
+import moment from 'moment';
+import flow from 'lodash/fp/flow';
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+import find from 'lodash/fp/find';
+import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
@@ -9,7 +15,7 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, array, arrayOf, oneOfType, instanceOf, func } = PropTypes;
+const { string, number, shape, array, arrayOf, oneOfType, instanceOf, func, object } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
@@ -20,19 +26,27 @@ export default class Calendar extends React.Component {
     unitEventLengthInSeconds: number.isRequired,
     timeFormat: string,
     dateFormat: string,
-    onDelete: func.isRequired
+    roomKinds:  object.isRequired,
+    onDelete: func.isRequired,
+    scrollTo: shape({ hours: number, minutes: number })
   };
 
   static defaultProps = {
-    events: []
+    events:   [],
+    scrollTo: { hours: 0, minutes: 0 }
   };
 
   constructor(...args) {
     super(...args);
     this.state = { filteredRooms: new Immutable.Set() };
+    this.rows = {};
 
     this._addFilter = this._addFilter.bind(this);
     this._removeFilter = this._removeFilter.bind(this);
+  }
+
+  componentDidMount() {
+    this._scrollToRow();
   }
 
   render() {
@@ -48,7 +62,8 @@ export default class Calendar extends React.Component {
                    events={filteredEvents}
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
-                   onDelete={this.props.onDelete} />
+                   onDelete={this.props.onDelete}
+                   ref={(ref) => this.rows[moment(time).unix()] = ref} />
     ));
 
     return (
@@ -56,11 +71,12 @@ export default class Calendar extends React.Component {
         <RoomFilters onEnabled={this._addFilter}
                      onDisabled={this._removeFilter}
                      conferenceRooms={this.props.conferenceRooms}
-                     filters={this.state.filteredRooms.toArray()} />
+                     filters={this.state.filteredRooms.toArray()}
+                     roomKinds={this.props.roomKinds} />
         <Table bordered striped responsive className="calendar">
           <thead>
             <tr>
-              <th className="col-md-1" />
+              <th className="time-cell" />
               {headerNodes}
             </tr>
           </thead>
@@ -88,6 +104,24 @@ export default class Calendar extends React.Component {
 
   _eventIsFiltered(event) {
     return this.state.filteredRooms.has(event.conference_room.id);
+  }
+
+  _findRow(hours, minutes) {
+    const time = flow(
+      keys,
+      map(t => moment.unix(t)),
+      find(t => t.hours() === hours && t.minutes() === minutes)
+    )(this.rows);
+
+    return this.rows[time.unix()];
+  }
+
+  _scrollToRow() {
+    const { hours, minutes } = this.props.scrollTo;
+    const node = ReactDOM.findDOMNode(this._findRow(hours, minutes));
+    if (node.scrollIntoView) {
+      node.scrollIntoView();
+    }
   }
 }
 

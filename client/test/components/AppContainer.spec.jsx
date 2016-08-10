@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
+import shared from 'mocha-shared';
 import EventFactory from 'test/factories/Event';
 import EventSource from 'sources/EventSource';
 import DefaultProps from 'test/factories/DefaultProps';
@@ -14,6 +15,8 @@ describe('<AppContainer />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
   sinon.stub(EventSource, 'remove').resolves([]);
   let props;
+
+  shared.setup('stub ReactDOM.findDOMNode');
 
   before(() => {
     proxyquire('../../app/sources/EventSource', EventSource);
