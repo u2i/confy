@@ -3,9 +3,8 @@ import moment from 'moment';
 export const DATE_PARAM_FORMAT = 'YYYY-MM-DD';
 
 export function addDateAndTime(date, time) {
-  time = moment(time);
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
-  return moment(date)
+  return date
     .hours(hours)
     .minutes(minutes)
     .seconds(seconds);
@@ -15,7 +14,7 @@ export function timestamp(date, time) {
   if (time) {
     return addDateAndTime(date, time).unix();
   }
-  return moment(date).unix();
+  return date.unix();
 }
 
 export function formatDate(date, format = 'ddd M/D') {
@@ -30,20 +29,19 @@ export function formatTime(time, format = 'H:mm') {
 }
 
 export function weekDays(date, weekLength = 5) {
-  const start = moment(date).startOf('isoWeek');
+  const start = date.startOf('isoWeek');
   return [...new Array(weekLength).keys()]
     .map(i => start
       .clone()
-      .add(i, 'days')
-      .toDate());
+      .add(i, 'days'));
 }
 
 export function nextWeek(date) {
-  return moment(date).add(1, 'week');
+  return date.add(1, 'week');
 }
 
 export function previousWeek(date) {
-  return moment(date).subtract(1, 'week');
+  return date.subtract(1, 'week');
 }
 
 export function dateParam(date) {

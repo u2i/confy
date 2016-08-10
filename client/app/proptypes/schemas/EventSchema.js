@@ -1,16 +1,14 @@
 import { PropTypes } from 'react';
+import moment from '../moment';
 import schema from './Schema';
 
 import UserSchema from './UserSchema';
 import ConferenceRoomSchema from './ConferenceRoomSchema';
 
-const { string, number, shape, oneOfType, instanceOf } = PropTypes;
+const { string, number, shape, oneOfType } = PropTypes;
 
 const time = shape({
-  date_time: oneOfType([
-    instanceOf(Date),
-    string
-  ]).isRequired
+  date_time: moment.isRequired
 });
 
 const EventShema = {

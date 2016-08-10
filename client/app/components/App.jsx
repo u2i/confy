@@ -1,26 +1,29 @@
-import React, { PropTypes } from 'react';
 import moment from 'moment';
+import React  from 'react';
 import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
-import { DATE_PARAM_FORMAT, weekDays } from 'helpers/DateHelper';
+import { dateParam, weekDays } from 'helpers/DateHelper';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
 import CreateEventModal from './modal/CreateEventModal';
 
+const { number, string, shape, array, arrayOf } = React.PropTypes;
+
 export default class App extends React.Component {
   static propTypes = {
-    initialEvents: PropTypes.array,
-    weekLength: PropTypes.number,
-    location: PropTypes.shape({
-      query: PropTypes.shape({
-        date: PropTypes.string
+    initialEvents: array,
+    weekLength: number,
+    times: arrayOf(string).isRequired,
+    location: shape({
+      query: shape({
+        date: string
       })
     }).isRequired,
-    notificationTimeout: PropTypes.number
+    notificationTimeout: number
   };
 
   static defaultProps = {
@@ -82,14 +85,15 @@ export default class App extends React.Component {
         <Grid>
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
-                     date={this._dateParam()}
+                     date={this._dateOrNow()}
                      updating={updating}
                      openModal={this.openModal} />
           </Col>
           <Col xs={12} md={10}>
             <Calendar {...calendarProps}
                       events={events}
-                      days={weekDays(this._dateParam(), this.props.weekLength)}
+                      days={weekDays(this._dateOrNow(), this.props.weekLength)}
+                      times={this.props.times.map(time => moment(time))}
                       onDelete={this.handleEventDelete} />
           </Col>
         </Grid>
@@ -102,12 +106,16 @@ export default class App extends React.Component {
     );
   }
 
-  _dateParam() {
+  _dateOrNow() {
     const query = this.props.location.query;
     if (query && query.date) {
-      return query.date;
+      return moment(query.date);
     }
-    return moment().format(DATE_PARAM_FORMAT);
+    return moment();
+  }
+
+  _dateParam() {
+    return dateParam(this._dateOrNow);
   }
 
   _fetchEvents() {

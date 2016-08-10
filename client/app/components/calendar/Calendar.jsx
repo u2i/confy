@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import instanceOfMoment from 'proptypes/moment'
 import { Table } from 'react-bootstrap';
 import * as Immutable from 'immutable';
 
@@ -8,14 +9,14 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, array, arrayOf, oneOfType, instanceOf, func } = PropTypes;
+const { string, number, array, arrayOf, func } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
     events:                   array,
     conferenceRooms:          array,
-    days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    days:                     arrayOf(instanceOfMoment).isRequired,
+    times:                    arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat:               string,
     dateFormat:               string,

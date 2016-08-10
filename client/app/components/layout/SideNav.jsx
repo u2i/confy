@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { dateParam, nextWeek, previousWeek } from 'helpers/DateHelper';
@@ -7,7 +8,7 @@ import RefreshButton from './RefreshButton';
 
 export default class SideNav extends React.Component {
   static propTypes = {
-    date: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
+    date: instanceOfMoment.isRequired,
     onRefresh: React.PropTypes.func,
     updating: React.PropTypes.bool,
     openModal: React.PropTypes.func.isRequired

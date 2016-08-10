@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
@@ -11,8 +12,7 @@ import RoomFilters from '../../../app/components/calendar/filters/RoomFilters';
 
 describe('<Calendar />', () => {
   const props = DefaultProps.build({
-    days:  ['2016-07-28', '2016-07-29'],
-    times: ['8:00', '9:00'],
+    times: [moment({ hours: 8 }), moment({ hours: 9 })],
     onDelete: (_id) => {}
   });
 
