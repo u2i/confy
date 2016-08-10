@@ -1,6 +1,5 @@
 module GoogleCalendar
   class GoogleEvent
-
     def self.process_params(params)
       zone = Time.now.getlocal.zone
       params.merge(start: {date_time: datetime_parse(params[:start_time], zone)},

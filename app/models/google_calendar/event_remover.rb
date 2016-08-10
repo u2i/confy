@@ -1,6 +1,5 @@
 module GoogleCalendar
   class EventRemover
-
     def initialize(credentials)
       @credentials = credentials
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service

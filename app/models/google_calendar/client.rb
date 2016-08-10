@@ -1,6 +1,5 @@
 module GoogleCalendar
   class Client
-
     def initialize(credentials)
       @credentials = credentials
     end

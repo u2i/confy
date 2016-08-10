@@ -114,9 +114,7 @@ RSpec.describe GoogleCalendar::EventCreator do
 
         it 'raises EventInTimeSpanError' do
           expect do
-            event_creator.create(room.id,
-                                   start: {date_time: start_time},
-                                   end: {date_time: end_time})
+            event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
           end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
@@ -145,9 +143,7 @@ RSpec.describe GoogleCalendar::EventCreator do
             'primary',
             Google::Apis::CalendarV3::Event
           )
-          event_creator.create(room.id,
-                                 start: {date_time: start_time},
-                                 end: {date_time: end_time})
+          event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
         end
       end
     end
