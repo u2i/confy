@@ -10,7 +10,7 @@ import DefaultProps from 'test/factories/DefaultProps';
 
 import AppContainer from 'components/AppContainer';
 import SideNav from 'components/layout/SideNav';
-import DeleteButton from 'components/calendar/event/DeleteButton'
+import DeleteButton from 'components/calendar/event/DeleteButton';
 
 describe('<AppContainer />', () => {
   sinon.stub(EventSource, 'fetch').resolves([]);
@@ -60,7 +60,7 @@ describe('<AppContainer />', () => {
     it('deletes event', () => {
       const event = EventFactory.build({ creator: { self: true, email: 'user@example.com' } });
       props = DefaultProps.build({ initialEvents: [event] });
-      const wrapper = mount(<AppContainer {...props} />)
+      const wrapper = mount(<AppContainer {...props} />);
       wrapper.find(DeleteButton).props().onDelete();
       expect(EventSource.remove).to.have.been.calledWith(event.id);
     });

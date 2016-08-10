@@ -84,9 +84,9 @@ export default class DeleteButton extends React.Component {
 
   _handleOnClick() {
     if (!this.props.disabled) {
-      return this._handleOnClickEnabled();
+      this._handleOnClickEnabled();
     } else {
-      return this._handleOnClickDisabled();
+      this._handleOnClickDisabled();
     }
   }
 }

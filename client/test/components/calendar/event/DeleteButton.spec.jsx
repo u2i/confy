@@ -3,7 +3,6 @@ import { shallow, mount } from 'enzyme';
 import DeleteButton from 'components/calendar/event/DeleteButton';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { If, Else } from 'react-if';
 import { Overlay } from 'react-bootstrap';
 
 describe('<DeleteButton />', () => {
@@ -22,7 +21,7 @@ describe('<DeleteButton />', () => {
     context('props.disabled', () => {
       let wrapper;
       beforeEach(() => {
-        wrapper = mount(<DeleteButton onDelete={spy} disabled={true} />);
+        wrapper = mount(<DeleteButton onDelete={spy} disabled />);
       });
 
       it('does not have a confirmation box', () => {
