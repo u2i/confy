@@ -58,7 +58,7 @@ describe('<AppContainer />', () => {
 
     it('deletes event', () => {
       const event = EventFactory.build({ creator: { self: true, email: 'user@example.com' } });
-      props = DefaultProps.build({ initialEvents: [[event]] });
+      props = DefaultProps.build({ initialEvents: [event] });
       const wrapper = mount(<AppContainer {...props} />);
       wrapper.find('.delete-button').simulate('click');
       expect(EventSource.remove).to.have.been.calledWith(event.id);

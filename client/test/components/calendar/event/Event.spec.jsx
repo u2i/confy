@@ -10,6 +10,7 @@ import DeleteButton from 'components/calendar/event/DeleteButton';
 
 describe('<Event />', () => {
   const containerHeight = 30;
+  const containerWidth = 100;
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
@@ -18,6 +19,7 @@ describe('<Event />', () => {
     <Event
       event={event}
       containerHeight={containerHeight}
+      containerWidth={containerWidth}
       unitEventLengthInSeconds={unitEventLengthInSeconds}
       timeFormat={timeFormat}
       onDelete={onDelete} />
@@ -39,6 +41,21 @@ describe('<Event />', () => {
 
   it('renders with correct height', () => {
     expect(defaultWrapper).to.have.style('height').equal('120px');
+  });
+
+  it('renders with correct width', () => {
+    const event = EventFactory.build({ width: 0.5 });
+    const wrapper = shallowEvent(event);
+
+    expect(defaultWrapper).to.have.style('width').equal('100px');
+    expect(wrapper).to.have.style('width').equal('50px');
+  });
+
+  it('renders with correct offset', () => {
+    const event = EventFactory.build({ width: 0.5, offset: 1 });
+    const wrapper = shallowEvent(event);
+
+    expect(wrapper).to.have.style('left').equal('50px');
   });
 
   it('renders with correct background color', () => {
