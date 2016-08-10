@@ -3,15 +3,12 @@ require('sinon');
 require('sinon-as-promised');
 
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
-import dirtyChai from 'dirty-chai';
 
-chai.use(chaiEnzyme());
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.use(dirtyChai);
+chai.use(require('chai-enzyme')());
+chai.use(require('chai-as-promised'));
+chai.use(require('sinon-chai'));
+chai.use(require('dirty-chai'));
+chai.use(require('chai-moment'));
 
 chai.config.showDiff = true;
 chai.config.truncateThreshold = 0;

@@ -1,8 +1,7 @@
-import moment from 'moment';
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
-import { DATE_PARAM_FORMAT } from 'helpers/DateHelper';
+import { dateParam, nextWeek, previousWeek } from 'helpers/DateHelper';
 
 import RefreshButton from './RefreshButton';
 
@@ -30,23 +29,15 @@ export default class SideNav extends React.Component {
         <IndexLinkContainer to="/" active={false}>
           <Button className="btn-block">Home</Button>
         </IndexLinkContainer>
-        <LinkContainer to={{ pathName: '/', query: { date: this._nextWeek() } }} active={false}>
+        <LinkContainer to={{ pathName: '/', query: { date: dateParam(nextWeek(this.props.date)) } }} active={false}>
           <Button className="btn-block">Next Week</Button>
         </LinkContainer>
-        <LinkContainer to={{ pathName: '/', query: { date: this._previousWeek() } }} active={false}>
+        <LinkContainer to={{ pathName: '/', query: { date: dateParam(previousWeek(this.props.date)) } }} active={false}>
           <Button className="btn-block">Previous Week</Button>
         </LinkContainer>
         <RefreshButton onRefresh={this.props.onRefresh} animate={this.props.updating} />
       </aside>
     );
-  }
-
-  _nextWeek() {
-    return moment(this.props.date).add(1, 'weeks').format(DATE_PARAM_FORMAT);
-  }
-
-  _previousWeek() {
-    return moment(this.props.date).subtract(1, 'weeks').format(DATE_PARAM_FORMAT);
   }
 
   _handleCreateEvent() {

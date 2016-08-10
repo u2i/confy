@@ -19,6 +19,9 @@ export function timestamp(date, time) {
 }
 
 export function formatDate(date, format = 'ddd M/D') {
+  if (moment.isMoment(date)) {
+    return date.format(format);
+  }
   return moment(date).format(format);
 }
 
@@ -33,4 +36,16 @@ export function weekDays(date, weekLength = 5) {
       .clone()
       .add(i, 'days')
       .toDate());
+}
+
+export function nextWeek(date) {
+  return moment(date).add(1, 'week');
+}
+
+export function previousWeek(date) {
+  return moment(date).subtract(1, 'week');
+}
+
+export function dateParam(date) {
+  return formatDate(date, DATE_PARAM_FORMAT);
 }
