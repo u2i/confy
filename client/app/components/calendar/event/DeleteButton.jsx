@@ -8,7 +8,6 @@ const TOOLTIP_MESSAGE = 'You are not the owner of this event';
 
 export default class DeleteButton extends React.Component {
   static propTypes = {
-    id:       PropTypes.string.isRequired,
     onDelete: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired
   };
@@ -38,13 +37,15 @@ export default class DeleteButton extends React.Component {
       <div>
         {button}
         <If condition={this.props.disabled}>
-          <Overlay target={() => this.refs.target}
+          <Overlay className="tooltip-overlay destroy-info-overlay"
+                   target={() => this.refs.target}
                    show={this.state.showIndicator}
                    placement="right">
             <Tooltip id="tooltip">{TOOLTIP_MESSAGE}</Tooltip>
           </Overlay>
           <Else>
-            <Overlay target={() => this.refs.target}
+            <Overlay className="confirmation-overlay"
+                     target={() => this.refs.target}
                      show={this.state.showConfirmationBox}
                      placement="right">
               <Tooltip id="confirmation-box">
@@ -60,7 +61,7 @@ export default class DeleteButton extends React.Component {
 
   _handleConfirmDeletion() {
     this.setState({ showConfirmationBox: false });
-    return this.props.onDelete(this.props.id);
+    return this.props.onDelete();
   }
 
   _handleCancelDeletion() {

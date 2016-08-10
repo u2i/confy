@@ -3,28 +3,42 @@ import { shallow, mount } from 'enzyme';
 import DeleteButton from 'components/calendar/event/DeleteButton';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { If, Else } from 'react-if';
+import { Overlay } from 'react-bootstrap';
 
 describe('<DeleteButton />', () => {
-  const id = '123';
+  let spy;
+  beforeEach(() => {
+    spy = sinon.spy();
+  });
+
   it('renders', () => {
-    const wrapper = mount(<DeleteButton id={id} onDelete={(_id) => {}} disabled={false} />);
+    const wrapper = mount(<DeleteButton onDelete={spy} disabled={false} />);
     expect(wrapper.find('span').props().className).to.contain('delete-button');
     expect(wrapper.find('span').props().className).to.contain('glyphicon');
   });
 
-  context('click', () => {
-    describe('with enabled deleting', () => {
-      const spy = sinon.spy();
-      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled={false} />);
-      wrapper.find('span').simulate('click');
-      expect(spy.calledWith(id)).to.eq(true);
+  describe('overlay', () => {
+    context('props.disabled', () => {
+      let wrapper;
+      beforeEach(() => {
+        wrapper = mount(<DeleteButton onDelete={spy} disabled={true} />);
+      });
+
+      it('does not have a confirmation box', () => {
+        expect(wrapper.find(Overlay).prop('className')).to.contain('destroy-info-overlay');
+      });
     });
 
-    describe('with disabled deleting', () => {
-      const spy = sinon.spy();
-      const wrapper = mount(<DeleteButton id={id} onDelete={spy} disabled />);
-      wrapper.find('span').simulate('click');
-      expect(spy.calledWith(id)).to.eq(false);
+    context('props.disabled === false', () => {
+      let wrapper;
+      beforeEach(() => {
+        wrapper = mount(<DeleteButton onDelete={spy} disabled={false} />);
+      });
+
+      it('has a confirmation box', () => {
+        expect(wrapper.find(Overlay).prop('className')).to.contain('confirmation-overlay');
+      });
     });
   });
 });
