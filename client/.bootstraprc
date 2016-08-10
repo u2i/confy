@@ -59,7 +59,7 @@ styles:
 
   # Components w/ JavaScript
   modals: true
-  tooltip: true
+  tooltip: false
   popovers: false
   carousel: false
 

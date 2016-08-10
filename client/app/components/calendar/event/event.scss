@@ -3,11 +3,9 @@ $event-border-color: #f7f7f7;
 .event {
   border: 1px solid $event-border-color;
   border-radius: 5px;
-  position: relative;
-  flex-basis: 0;
-  flex-grow: 1;
   height: 100%;
   overflow: hidden;
+  position: absolute;
 
   > * {
     margin-left: 2%;
@@ -35,18 +33,14 @@ $event-border-color: #f7f7f7;
 }
 
 .delete-button {
-  position: absolute;
   float: right;
   display: block;
-  right: 5px;
-  top: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 5px;
   opacity: 0.2;
 
-  &.enabled {
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
+  &:hover {
+    opacity: 1;
   }
 }
