@@ -9,7 +9,7 @@ const { number, arrayOf, func } = React.PropTypes;
 
 export default class EventGroup extends React.Component {
   static propTypes = {
-    events: arrayOf(EventSchema.only('id')).isRequired,
+    events: arrayOf(EventSchema.only('id', 'conference_room')).isRequired,
     timestamp: number.isRequired,
     containerWidth: number.isRequired,
     containerHeight: number.isRequired,
@@ -27,7 +27,7 @@ export default class EventGroup extends React.Component {
                  containerHeight={containerHeight}
                  containerWidth={containerWidth}
                  unitEventLengthInSeconds={unitEventLengthInSeconds}
-                 key={event.id}
+                 key={`${event.id}_${event.conference_room.id}`}
                  onDelete={this.props.onDelete} />
         ))}
       </div>
