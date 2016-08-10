@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Tooltip, Overlay, Button } from 'react-bootstrap';
 import { If, Else } from 'react-if';
+import bindAll from 'lodash/bindAll';
 import './event.scss';
 
 const TOOLTIP_MESSAGE = 'You are not the owner of this event';
@@ -20,7 +21,7 @@ export default class DeleteButton extends React.Component {
       showConfirmationBox: false
     };
 
-    this._handleOnClick = this._handleOnClick.bind(this);
+    bindAll(this, ['_handleOnClick', '_handleConfirmDeletion', '_handleCancelDeletion']);
   }
 
   render() {
