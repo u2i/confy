@@ -30,6 +30,6 @@ describe('DateHelper', () => {
 
         expect(previousWeek(date)).to.be.sameMoment(expectedDate);
       });
-    })
-  })
+    });
+  });
 });
