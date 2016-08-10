@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import { Tooltip, Overlay } from 'react-bootstrap';
-import { If } from 'react-if';
+import { Tooltip, Overlay, Button } from 'react-bootstrap';
+import { If, Else } from 'react-if';
 import './event.scss';
 
 const TOOLTIP_MESSAGE = 'You are not the owner of this event';
@@ -16,7 +16,8 @@ export default class DeleteButton extends React.Component {
     super(props);
 
     this.state = {
-      showIndicator: false
+      showIndicator: false,
+      showConfirmationBox: false
     };
 
     this._handleOnClick = this._handleOnClick.bind(this);
@@ -41,16 +42,35 @@ export default class DeleteButton extends React.Component {
                    placement="right">
             <Tooltip id="tooltip">{TOOLTIP_MESSAGE}</Tooltip>
           </Overlay>
+          <Else>
+            <Overlay target={() => this.refs.target}
+                     show={this.state.showConfirmationBox}
+                     placement="right">
+              <Tooltip id="confirmation-box">
+                <Button bsStyle="danger" onClick={this._handleConfirmDeletion}>Delete</Button>
+                <Button onClick={this._handleCancelDeletion}>Cancel</Button>
+              </Tooltip>
+            </Overlay>
+          </Else>
         </If>
       </div>
     );
   }
 
-  _handleOnClick() {
-    if (!this.props.disabled) {
-      return this.props.onDelete(this.props.id);
-    }
+  _handleConfirmDeletion() {
+    this.setState({ showConfirmationBox: false });
+    return this.props.onDelete(this.props.id);
+  }
 
+  _handleCancelDeletion() {
+    this.setState({ showConfirmationBox: false });
+  }
+
+  _handleOnClickEnabled() {
+    this.setState({ showConfirmationBox: true });
+  }
+
+  _handleOnClickDisabled() {
     this.setState({
       showIndicator: true
     });
@@ -58,5 +78,13 @@ export default class DeleteButton extends React.Component {
     setTimeout(() => this.setState({ showIndicator: false }), 2000);
 
     return false;
+  }
+
+  _handleOnClick() {
+    if (!this.props.disabled) {
+      return this._handleOnClickEnabled();
+    } else {
+      return this._handleOnClickDisabled();
+    }
   }
 }
