@@ -7,9 +7,9 @@ import RefreshButton from './RefreshButton';
 
 export default class SideNav extends React.Component {
   static propTypes = {
-    date:      PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
+    date: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
     onRefresh: React.PropTypes.func,
-    updating:  React.PropTypes.bool,
+    updating: React.PropTypes.bool,
     openModal: React.PropTypes.func.isRequired
   };
 

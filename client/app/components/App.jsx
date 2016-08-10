@@ -13,9 +13,9 @@ import CreateEventModal from './modal/CreateEventModal';
 
 export default class App extends React.Component {
   static propTypes = {
-    initialEvents:       PropTypes.array,
-    weekLength:          PropTypes.number,
-    location:            PropTypes.shape({
+    initialEvents: PropTypes.array,
+    weekLength: PropTypes.number,
+    location: PropTypes.shape({
       query: PropTypes.shape({
         date: PropTypes.string
       })
