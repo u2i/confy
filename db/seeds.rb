@@ -1,5 +1,5 @@
 {
-  'Mordor' => ['u2i.com_2d3631343934393033313035@resource.calendar.google.com', '#CDE6F4', :small],
+  'Mordor' => ['u2i.com_2d3631343934393033313035@resource.calendar.google.com', '#CDE6F4', :mordor],
   'Neverland' => ['u2i.com_3530363130383730383638@resource.calendar.google.com', '#D2D4F6', :small],
   'Sherwood Forest' => ['u2i.com_2d33383335393438322d323331@resource.calendar.google.com', '#FFEBD3', :big],
   'Valhalla' => ['u2i.com_2d3836323435373930353536@resource.calendar.google.com', '#FFEEC0', :big],

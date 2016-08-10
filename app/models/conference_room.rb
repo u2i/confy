@@ -3,8 +3,9 @@ class ConferenceRoom < ApplicationRecord
   KINDS = {
     narnia: 0,
     without_walls: 1,
-    small: 2,
-    big: 3
+    mordor: 2,
+    small: 3,
+    big: 4
   }.freeze
 
   enum kind: KINDS

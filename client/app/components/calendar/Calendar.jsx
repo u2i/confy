@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
 import { Table } from 'react-bootstrap';
 import { loadFilters, saveFilters } from 'helpers/FiltersHelper';
+import EventSchema from 'schemas/EventSchema';
+import { setEventsPositionAttributes } from 'helpers/EventHelper';
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 import CalendarHeader from './CalendarHeader';
@@ -17,16 +19,16 @@ const { string, number, shape, array, arrayOf, oneOfType, instanceOf, func, obje
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:                   array,
-    conferenceRooms:          array,
-    days:                     arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:                    arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    events:  arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
+    conferenceRooms:  array,
+    days: arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    times:  arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
     unitEventLengthInSeconds: number.isRequired,
-    timeFormat:               string,
-    dateFormat:               string,
-    roomKinds:                object.isRequired,
-    onDelete:                 func.isRequired,
-    scrollTo:                 shape({ hours: number, minutes: number })
+    timeFormat: string,
+    dateFormat: string,
+    roomKinds:  object.isRequired,
+    onDelete: func.isRequired,
+    scrollTo: shape({ hours: number, minutes: number })
   };
 
   static defaultProps = {
@@ -52,10 +54,12 @@ export default class Calendar extends React.Component {
       <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
     ));
 
+    const filteredEvents = this._filterEvents();
+    setEventsPositionAttributes(filteredEvents);
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
                    key={time}
-                   events={this._filterEvents()}
+                   events={filteredEvents}
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete}
@@ -97,7 +101,7 @@ export default class Calendar extends React.Component {
   }
 
   _filterEvents() {
-    return this.props.events.map((group) => group.filter((event) => !this._eventIsFiltered(event)));
+    return this.props.events.filter((event) => !this._eventIsFiltered(event));
   }
 
   _eventIsFiltered(event) {
