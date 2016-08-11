@@ -33,13 +33,12 @@ export default class CreateEventModal extends React.Component {
 
     this.state = {
       showErrorMessage: false,
-      conferenceRoomId: this.props.conferenceRooms[0].id,
-      startTime:        this.props.initialDate,
-      endTime:          this.props.initialDate,
-      availableRooms:   [],
+      conferenceRoomId: null,
+      startTime: this.props.initialDate,
+      endTime: this.props.initialDate,
+      availableRooms: [],
       unavailableRooms: [],
-      disableSaving:    true,
-      errors:           {}
+      errors: {}
     };
 
     bindAll(this,
@@ -54,10 +53,10 @@ export default class CreateEventModal extends React.Component {
 
   saveChanges() {
     const eventParams = {
-      summary:            this.state.summary || '',
-      description:        this.state.description || '',
-      start_time:         this.state.startTime,
-      end_time:           this.state.endTime,
+      summary: this.state.summary || '',
+      description: this.state.description || '',
+      start_time: this.state.startTime,
+      end_time: this.state.endTime,
       conference_room_id: this.state.conferenceRoomId
     };
 
@@ -77,7 +76,7 @@ export default class CreateEventModal extends React.Component {
 
   handleCloseModal() {
     this.setState({
-      errors:           {},
+      errors: {},
       showErrorMessage: false
     });
     this.props.closeModal();
@@ -98,6 +97,7 @@ export default class CreateEventModal extends React.Component {
         <ModalBody
           availableLocations={this.state.availableRooms}
           unavailableLocations={this.state.unavailableRooms}
+          selectedLocation={this.state.conferenceRoomId}
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors} />

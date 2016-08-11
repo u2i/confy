@@ -2,17 +2,19 @@ import React from "react";
 import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import { If } from "react-if";
 
-const { array, func } = React.PropTypes;
 import RoomSelectGroup from './RoomSelectGroup';
+
+const { array, number, func } = React.PropTypes;
 
 import './form_location_field.scss';
 
 export default class FormLocationField extends React.Component {
   static propTypes = {
-    available:   array.isRequired,
+    available: array.isRequired,
     unavailable: array.isRequired,
-    onChange:    func.isRequired,
-    errors:      array
+    onChange: func.isRequired,
+    selected: number,
+    errors: array
   };
 
   static defaultProps = {
@@ -20,14 +22,14 @@ export default class FormLocationField extends React.Component {
   };
 
   render() {
-    const { available, unavailable, onChange, errors } = this.props;
+    const { available, unavailable, selected, onChange, errors } = this.props;
     return (
       <FormGroup>
         <ControlLabel>Location:</ControlLabel>
         <FormControl componentClass="select"
                      onChange={onChange}
                      name="location"
-                     selected={available.length > 0 ? available[0].id : ''}>
+                     value={selected}>
           <RoomSelectGroup rooms={available} label="Available" />
           <RoomSelectGroup rooms={unavailable} label="Unavailable" />
         </FormControl>

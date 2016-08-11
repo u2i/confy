@@ -6,20 +6,21 @@ import FormDateField from "./body/FormDateField";
 import FormLocationField from "./body/FormLocationField";
 import ErrorField from "./ErrorField";
 
-const { func, array, object, bool } = React.PropTypes;
+const { func, array, object, bool, number } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
-    updateParam:          func.isRequired,
-    availableLocations:   array.isRequired,
+    updateParam: func.isRequired,
+    availableLocations: array.isRequired,
     unavailableLocations: array.isRequired,
-    errors:               object,
-    showErrorMessage:     bool
+    selectedLocation: number,
+    errors: object,
+    showErrorMessage: bool
   };
 
   static defaultProps = {
     showErrorMessage: false,
-    errors:           {}
+    errors: {}
   };
 
   constructor(props) {
@@ -37,7 +38,7 @@ export default class ModalBody extends React.Component {
   }
 
   handleLocationChange(e) {
-    this.props.updateParam('conferenceRoomId', e.target.value);
+    this.props.updateParam('conferenceRoomId', parseInt(e.target.value));
   }
 
   _updateDateParam(key, value) {
@@ -81,6 +82,7 @@ export default class ModalBody extends React.Component {
           <FormLocationField
             available={this.props.availableLocations}
             unavailable={this.props.unavailableLocations}
+            selected={this.props.selectedLocation}
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
             errors={this.props.errors.conference_room_id || []} />

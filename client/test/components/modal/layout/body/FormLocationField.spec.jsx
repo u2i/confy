@@ -50,4 +50,12 @@ describe('<FormLocationField />', () => {
     const wrapper = shallowWrapper();
     expect(wrapper).to.have.exactly(2).descendants(RoomSelectGroup);
   });
+
+  context('given selected prop', () => {
+    it('selects corresponding option', () => {
+      const selectedRoom = rooms[1].id;
+      const wrapper = mountWrapper({ selected: selectedRoom });
+      expect(wrapper.find(`option[value=${selectedRoom}]`)).to.be.selected();
+    });
+  });
 });
