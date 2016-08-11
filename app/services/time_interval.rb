@@ -37,11 +37,12 @@ class TimeInterval
   end
 
   class TimeIntervalRFC3339
+    GOOGLE_CALENDAR_TIME_FORMAT = 9
     attr_reader :starting, :ending
 
     def initialize(starting, ending)
-      @starting = starting.to_datetime.rfc3339(9)
-      @ending = ending.to_datetime.rfc3339(9)
+      @starting = starting.to_datetime.rfc3339(GOOGLE_CALENDAR_TIME_FORMAT)
+      @ending = ending.to_datetime.rfc3339(GOOGLE_CALENDAR_TIME_FORMAT)
     end
   end
 end
