@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import { Tooltip, Overlay, Button, Modal } from 'react-bootstrap';
 import { If, Else } from 'react-if';
 import bindAll from 'lodash/bindAll';
+import DeleteTooltip from 'components/calendar/event/DeleteTooltip';
+import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
 import './event.scss';
 
-const TOOLTIP_MESSAGE = 'You are not the owner of this event';
 
 export default class DeleteButton extends React.Component {
   static propTypes = {
@@ -37,25 +38,12 @@ export default class DeleteButton extends React.Component {
       <div>
         {button}
         <If condition={this.props.disabled}>
-          <Overlay className="tooltip-overlay destroy-info-overlay"
-                   target={() => this.refs.target}
-                   show={this.state.showIndicator}
-                   placement="right">
-            <Tooltip id="tooltip">{TOOLTIP_MESSAGE}</Tooltip>
-          </Overlay>
+          <DeleteTooltip show={this.state.showIndicator} target={() => this.refs.target} />
           <Else>
-            <Modal bsSize="small"
-                   show={this.state.showConfirmationModal}
-                   onHide={this._hideConfirmationModal}
-                   className="delete-confirmation-modal">
-              <Modal.Header className="text-center">
-                Are you sure?
-              </Modal.Header>
-              <Modal.Footer className="confirmation-footer">
-                <Button onClick={this._hideConfirmationModal}>Cancel</Button>
-                <Button bsStyle="danger" onClick={this._handleConfirmDeletion}>Delete</Button>
-              </Modal.Footer>
-            </Modal>
+            <DeleteConfirmation show={this.state.showConfirmationModal}
+                                cancelHandler={this._hideConfirmationModal}
+                                confirmHandler={this._handleConfirmDeletion}
+                                onHide={this._hideConfirmationModal} />
           </Else>
         </If>
       </div>
