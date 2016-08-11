@@ -5,6 +5,7 @@ import bindAll from "lodash/bindAll";
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
 import uniqBy from 'lodash/fp/uniqBy';
+import keys from 'lodash/fp/keys';
 import differenceBy from 'lodash/differenceBy';
 import EventSource from "sources/EventSource";
 import ModalHeader from "./layout/ModalHeader";
@@ -14,14 +15,15 @@ import ModalBody from "./layout/ModalBody";
 const { func, bool, array, string } = PropTypes;
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 const DATE_ERROR_TEXT = 'Start time must be lower than end time';
+const LOCATION_ERROR_TEXT = 'This room is not available during the selected time.';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
-    closeModal:      func.isRequired,
-    showModal:       bool.isRequired,
+    closeModal: func.isRequired,
+    showModal: bool.isRequired,
     conferenceRooms: array.isRequired,
-    initialDate:     string,
-    refresh:         func.isRequired
+    initialDate: string,
+    refresh: func.isRequired
   };
 
   static defaultProps = {
@@ -104,7 +106,7 @@ export default class CreateEventModal extends React.Component {
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
-          disableSaving={this.state.disableSaving} />
+          disableSaving={this._disableSaving()} />
 
       </Modal>
     );
@@ -112,26 +114,50 @@ export default class CreateEventModal extends React.Component {
 
   _validateTimeRange() {
     if (this.state.startTime >= this.state.endTime) {
-      this.setState({
-        disableSaving: true,
-        errors:        { start_time: [DATE_ERROR_TEXT] }
-      });
+      this._addError('start_time', DATE_ERROR_TEXT);
     } else {
-      this.setState({
-        disableSaving: false,
-        errors:        { start_time: null }
-      });
+      this._clearErrors('start_time');
+    }
+  }
+
+  _validateLocation() {
+    const currentLoc = this.state.conferenceRoomId;
+    const locAvailable = this.state.availableRooms.some(room => room.id === currentLoc);
+    if (!locAvailable) {
+      this._addError('conference_room_id', LOCATION_ERROR_TEXT);
+    } else {
+      this._clearErrors('conference_room_id');
     }
   }
 
   _validateParams(key) {
     if (key === 'startTime' || key === 'endTime') {
       this._validateTimeRange(key);
+      this._validateLocation();
+    }
+    if (key === 'conferenceRoomId') {
+      this._validateLocation();
     }
   }
 
   _showError() {
     this.setState({ showErrorMessage: true });
+  }
+
+  _addError(key, error) {
+    const errors = this.state.errors;
+    errors[key] = errors[key] ? errors[key].concat([error]) : [error];
+    this.setState({ errors });
+  }
+
+  _clearErrors(key) {
+    const errors = this.state.errors;
+    delete errors[key];
+    this.setState({ errors });
+  }
+
+  _disableSaving() {
+    return keys(this.state.errors).length > 0;
   }
 
   _updateRoomAvailability() {
@@ -147,6 +173,7 @@ export default class CreateEventModal extends React.Component {
           const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
 
           this.setState({ availableRooms, unavailableRooms });
+          this._validateLocation();
         }
       );
   }
