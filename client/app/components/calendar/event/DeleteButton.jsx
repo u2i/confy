@@ -46,11 +46,12 @@ export default class DeleteButton extends React.Component {
           <Else>
             <Modal bsSize="small"
                    show={this.state.showConfirmationModal}
-                   onHide={this._hideConfirmationModal}>
-              <Modal.Header>
+                   onHide={this._hideConfirmationModal}
+                   className="delete-confirmation-modal">
+              <Modal.Header className="text-center">
                 Are you sure?
               </Modal.Header>
-              <Modal.Footer>
+              <Modal.Footer className="confirmation-footer">
                 <Button onClick={this._hideConfirmationModal}>Cancel</Button>
                 <Button bsStyle="danger" onClick={this._handleConfirmDeletion}>Delete</Button>
               </Modal.Footer>

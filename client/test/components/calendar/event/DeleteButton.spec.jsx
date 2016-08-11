@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import DeleteButton from 'components/calendar/event/DeleteButton';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { Overlay } from 'react-bootstrap';
+import { Overlay, Modal } from 'react-bootstrap';
 
 describe('<DeleteButton />', () => {
   let spy;
@@ -24,8 +24,9 @@ describe('<DeleteButton />', () => {
         wrapper = mount(<DeleteButton onDelete={spy} disabled />);
       });
 
-      it('does not have a confirmation box', () => {
+      it('has information overlay', () => {
         expect(wrapper.find(Overlay).prop('className')).to.contain('destroy-info-overlay');
+        expect(wrapper.find(Modal)).not.to.be.present();
       });
     });
 
@@ -36,7 +37,8 @@ describe('<DeleteButton />', () => {
       });
 
       it('has a confirmation box', () => {
-        expect(wrapper.find(Overlay).prop('className')).to.contain('confirmation-overlay');
+        expect(wrapper.find(Overlay)).not.to.be.present();
+        expect(wrapper.find(Modal)).to.have.lengthOf(1);
       });
     });
   });
