@@ -30,9 +30,7 @@ class EventsController < ApplicationController
   end
 
   def index
-    events = GoogleEventLister.new(session[:credentials], session[:email]).call(span_param)
-    return render json: events unless params[:grouped]
-    render json: EventGrouper.new(events).build_blocks
+    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(span_param)
   end
 
   def create

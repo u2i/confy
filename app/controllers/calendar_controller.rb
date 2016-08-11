@@ -23,7 +23,9 @@ class CalendarController < ApplicationController
               days: calendar_days,
               times: calendar_times,
               unitEventLengthInSeconds: EventGrouper::GRANULARITY,
-              date: params[:date]}.compact
+              date: params[:date],
+              roomKinds: ConferenceRoom::KINDS,
+              scrollTo: {hours: 6, minutes: 0}}.compact
   end
 
   def date_param
@@ -31,8 +33,7 @@ class CalendarController < ApplicationController
   end
 
   def events
-    events = GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
-    EventGrouper.new(events).build_blocks
+    GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
   end
 
   def calendar_days

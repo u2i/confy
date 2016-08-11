@@ -26,7 +26,7 @@ export default class SideNav extends React.Component {
           Create Event
         </Button>
         <Button href={"/"}
-                className="btn-block">Home</Button>
+                className="btn-block">Today</Button>
         <Button href={this._dateParam(this._nextWeek())}
                 className="btn-block">Next Week</Button>
         <Button href={this._dateParam(this._previousWeek())}
