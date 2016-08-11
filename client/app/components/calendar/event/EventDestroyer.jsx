@@ -25,8 +25,6 @@ export default class EventDestroyer extends React.Component {
   }
 
   render() {
-    const enabled = this.props.disabled ? 'disabled' : 'enabled';
-    
     return (
       <div>
         <DeleteButton onClick={this._handleOnClick} disabled={this.props.disabled} ref="target" />
