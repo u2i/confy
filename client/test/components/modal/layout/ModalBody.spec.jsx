@@ -15,12 +15,14 @@ describe('<ModalBody />', () => {
 
   const wrapper = mount(<ModalBody
     updateParam={updateSpy}
-    conferenceRooms={rooms} />);
+    availableLocations={rooms}
+    unavailableLocations={[]} />);
 
   it('renders a form for creating event', () => {
     const wrapperShallow = shallow(<ModalBody
       updateParam={updateSpy}
-      conferenceRooms={rooms} />);
+      availableLocations={rooms}
+      unavailableLocations={[]} />);
     expect(wrapperShallow.find('form')).to.exist;
   });
 
