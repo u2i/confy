@@ -39,12 +39,7 @@ describe GoogleCalendar::EventFinder do
       [google_event1, google_event2]
     end
 
-    let(:expected_events) do
-      {
-        1 => [google_event1],
-        2 => [google_event2]
-      }
-    end
+    let(:expected_events) { [google_event1, google_event2] }
 
     before do
       events = double('events')
@@ -87,10 +82,8 @@ describe GoogleCalendar::EventFinder do
         end
         it 'adds event' do
           expect(event_finder.list_events(start_time1, start_time2)).to satisfy do |response|
-            response.all? do |day, _|
-              response[day].each_with_index.all? do |event, i|
-                event[:summary] == expected_events[day][i].summary
-              end
+            response.each_with_index.all? do |event, i|
+              event[:summary] == expected_events[i].summary
             end
           end
         end
@@ -105,10 +98,8 @@ describe GoogleCalendar::EventFinder do
 
       it 'returns array of events' do
         expect(event_finder.list_events(start_time1, start_time2)).to satisfy do |response|
-          response.all? do |day, _|
-            response[day].each_with_index.all? do |event, i|
-              event[:summary] == expected_events[day][i].summary
-            end
+          response.each_with_index.all? do |event, i|
+            event[:summary] == expected_events[i].summary
           end
         end
       end
@@ -122,10 +113,10 @@ describe GoogleCalendar::EventFinder do
 
       it 'normalizes events' do
         response = event_finder.list_events(start_time1, start_time2)
-        expect(response[1].first[:start][:date_time]).to eq DateTime.now.beginning_of_week
-        expect(response[1].first[:end][:date_time]).to eq DateTime.now.beginning_of_week + 3.hours
-        expect(response[2].first[:start][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 30.minutes
-        expect(response[2].first[:end][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 2.hours + 30.minutes
+        expect(response[0][:start][:date_time]).to eq DateTime.now.beginning_of_week
+        expect(response[0][:end][:date_time]).to eq DateTime.now.beginning_of_week + 3.hours
+        expect(response[1][:start][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 30.minutes
+        expect(response[1][:end][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 2.hours + 30.minutes
       end
     end
 
@@ -140,8 +131,8 @@ describe GoogleCalendar::EventFinder do
       end
       it 'normalizes event' do
         response = event_finder.list_events(start_time1, end_time1)
-        expect(response[1].first[:start][:date_time]).to eq start_time1
-        expect(response[1].first[:end][:date_time]).to eq end_time1
+        expect(response[0][:start][:date_time]).to eq start_time1
+        expect(response[0][:end][:date_time]).to eq end_time1
       end
     end
   end
@@ -152,7 +143,7 @@ describe GoogleCalendar::EventFinder do
     let(:not_user_email) { 'not_user@example.com' }
     let(:event1) { {creator: {email: user_email}} }
     let(:event2) { {creator: {email: not_user_email}} }
-    let(:all_events) { {1 => [event1, event2]} }
+    let(:all_events) { [event1, event2] }
 
     it 'sets event[:creator][:self] flag to true if user is creator of the event' do
       allow(GoogleOauth).to receive(:user_email) { user_email }

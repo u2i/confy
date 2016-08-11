@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
+  include GoogleEventClient
 
   before_action :refresh_token
   before_action :check_authentication
@@ -34,21 +35,21 @@ class EventsController < ApplicationController
   end
 
   def index
-    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
+    time_interval = TimeInterval.week(date_param)
+    events = google_event_client.list_events(time_interval.start.to_datetime, time_interval.end.to_datetime)
+    render json: events
   end
 
   def create
     conference_room_id = event_params[:conference_room_id]
     google_event_params = GoogleCalendar::GoogleEvent.process_params(event_params)
-    google_event = GoogleCalendar::GoogleEvent.new(session[:credentials], session[:email])
-    data = google_event.create(conference_room_id, google_event_params)
+    data = google_event_client.create(conference_room_id, google_event_params)
     render json: data.to_json, status: :created
   end
 
   def destroy
     event_id = params[:id]
-    google_event = GoogleCalendar::GoogleEvent.new(session[:credentials], session[:email])
-    google_event.delete(event_id)
+    google_event_client.delete(event_id)
     head :ok
   end
 

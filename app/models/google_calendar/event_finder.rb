@@ -10,7 +10,7 @@ module GoogleCalendar
     end
 
     def list_events(starting, ending)
-      all_events = daily_events_container
+      all_events = []
       listing_configuration = listing_options(starting, ending)
       calendar_service.batch do |service|
         rooms.each do |room|
@@ -27,15 +27,9 @@ module GoogleCalendar
       ConferenceRoom.all
     end
 
-    def daily_events_container
-      Hash[(1..CalendarHelper::WEEK_LENGTH).map { |i| [i, []] }]
-    end
-
     def mark_user_events(all_events)
-      all_events.values.each do |events|
-        events.each do |event|
-          event[:creator][:self] = (user_email == event[:creator][:email])
-        end
+      all_events.each do |event|
+        event[:creator][:self] = (user_email == event[:creator][:email])
       end
     end
 
@@ -51,9 +45,7 @@ module GoogleCalendar
           result.items.each do |event|
             next if event_declined?(event)
             normalize_event_datetime(event)
-            events[event.start.date_time.wday].push(
-              event.to_h.merge(additional_properties(event, room))
-            )
+            events << event.to_h.merge(additional_properties(event, room))
           end
         end
       end
@@ -72,8 +64,8 @@ module GoogleCalendar
         event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
         event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
       else
-        event.start.date_time = EventGrouper.floor_time(event.start.date_time)
-        event.end.date_time = EventGrouper.ceil_time(event.end.date_time)
+        event.start.date_time = TimeRound.floor_time(event.start.date_time)
+        event.end.date_time = TimeRound.ceil_time(event.end.date_time)
       end
     end
 
