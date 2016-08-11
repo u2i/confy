@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import { ControlLabel, FormControl } from 'react-bootstrap';
 import FormLocationField from 'components/modal/layout/body/FormLocationField';
+import RoomSelectGroup from 'components/modal/layout/body/RoomSelectGroup';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<FormLocationField />', () => {
@@ -13,10 +14,11 @@ describe('<FormLocationField />', () => {
     ConferenceRoom.build()
   ];
 
-  const formLocationField = (props) => (
+  const formLocationField = (props = {}) => (
     <FormLocationField
       available={props.available || rooms}
       unavailable={props.unavailable || []}
+      selected={props.selected}
       onChange={onChangeSpy} />
   );
 
@@ -44,31 +46,8 @@ describe('<FormLocationField />', () => {
     expect(onChangeSpy).to.be.calledOnce();
   });
 
-  describe('location select', () => {
-    it('renders select option for every room', () => {
-      const wrapper = mountWrapper({ unavailable: ConferenceRoom.buildList(2) });
-      expect(wrapper).to.have.exactly(rooms.length + 2).descendants();
-    });
-
-    context('with empty available and unavailable location list', () => {
-      it('should not render option groups', () => {
-        const wrapper = mountWrapper({ available: [] });
-        expect(wrapper).to.not.have.descendants('optgroup');
-      });
-    });
-
-    context('with non-empty available location list', () => {
-      it('should render available location group', () => {
-        const wrapper = mountWrapper({ available: rooms });
-        expect(wrapper).to.have.exactly(1).descendants('optgroup');
-      });
-    });
-
-    context('with non-empty unavailable location list', () => {
-      it('should render unavailable location group', () => {
-        const wrapper = mountWrapper({ available: [], unavailable: rooms });
-        expect(wrapper).to.have.exactly(1).descendants('optgroup');
-      });
-    });
+  it('renders two <RoomSelectGroup />', () => {
+    const wrapper = shallowWrapper();
+    expect(wrapper).to.have.exactly(2).descendants(RoomSelectGroup);
   });
 });
