@@ -22,4 +22,5 @@ DeleteConfirmation.propTypes = {
   cancelHandler:  React.PropTypes.func.isRequired,
   confirmHandler: React.PropTypes.func.isRequired
 };
+
 export default DeleteConfirmation;

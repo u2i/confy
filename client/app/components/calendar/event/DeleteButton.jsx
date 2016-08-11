@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Tooltip, Overlay, Button, Modal } from 'react-bootstrap';
 import { If, Else } from 'react-if';
 import bindAll from 'lodash/bindAll';
 import DeleteTooltip from 'components/calendar/event/DeleteTooltip';
