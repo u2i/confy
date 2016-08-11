@@ -21,14 +21,27 @@ class TimeInterval
     end
   end
 
-  attr_reader :start, :end
+  attr_reader :starting, :ending
 
   def initialize(starting, ending)
-    @start = starting
-    @end = ending
+    @starting = starting
+    @ending = ending
   end
 
   def collect_steps(step)
-    (@start.to_i..@end.to_i).step(step).collect { |time| Time.at time }
+    (@starting.to_i..@ending.to_i).step(step).collect { |time| Time.at time }
+  end
+
+  def to_rfc3339
+    TimeIntervalRFC3339.new(starting, ending)
+  end
+
+  class TimeIntervalRFC3339
+    attr_reader :starting, :ending
+
+    def initialize(starting, ending)
+      @starting = starting.to_datetime.rfc3339(9)
+      @ending = ending.to_datetime.rfc3339(9)
+    end
   end
 end

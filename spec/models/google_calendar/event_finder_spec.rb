@@ -56,6 +56,7 @@ describe GoogleCalendar::EventFinder do
       end
     end
 
+    let(:time_interval) { double('time_interval', starting: start_time1, ending: start_time2) }
     context 'rejected event' do
       let(:start_time1) { DateTime.now.beginning_of_week }
       let(:start_time2) { DateTime.now.beginning_of_week + 1.day }
@@ -67,7 +68,7 @@ describe GoogleCalendar::EventFinder do
           google_event1.attendees.first.response_status = described_class::GOOGLE_EVENT_DECLINED_RESPONSE
         end
         it 'ignores event' do
-          expect(event_finder.list_events(start_time1, start_time2)).to satisfy do |response|
+          expect(event_finder.list_events(time_interval)).to satisfy do |response|
             response[1].blank?
           end
         end
@@ -81,7 +82,7 @@ describe GoogleCalendar::EventFinder do
           )
         end
         it 'adds event' do
-          expect(event_finder.list_events(start_time1, start_time2)).to satisfy do |response|
+          expect(event_finder.list_events(time_interval)).to satisfy do |response|
             response.each_with_index.all? do |event, i|
               event[:summary] == expected_events[i].summary
             end
@@ -97,7 +98,7 @@ describe GoogleCalendar::EventFinder do
       let(:end_time2) { start_time2 + 2.hours }
 
       it 'returns array of events' do
-        expect(event_finder.list_events(start_time1, start_time2)).to satisfy do |response|
+        expect(event_finder.list_events(time_interval)).to satisfy do |response|
           response.each_with_index.all? do |event, i|
             event[:summary] == expected_events[i].summary
           end
@@ -112,7 +113,7 @@ describe GoogleCalendar::EventFinder do
       let(:end_time2) { start_time2.beginning_of_hour + 2.hours + 10.minutes }
 
       it 'normalizes events' do
-        response = event_finder.list_events(start_time1, start_time2)
+        response = event_finder.list_events(time_interval)
         expect(response[0][:start][:date_time]).to eq DateTime.now.beginning_of_week
         expect(response[0][:end][:date_time]).to eq DateTime.now.beginning_of_week + 3.hours
         expect(response[1][:start][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 30.minutes
@@ -130,7 +131,7 @@ describe GoogleCalendar::EventFinder do
         google_event1.end = Google::Apis::CalendarV3::EventDateTime.new(date: end_time1.to_date.to_s)
       end
       it 'normalizes event' do
-        response = event_finder.list_events(start_time1, end_time1)
+        response = event_finder.list_events(time_interval)
         expect(response[0][:start][:date_time]).to eq start_time1
         expect(response[0][:end][:date_time]).to eq end_time1
       end

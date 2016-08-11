@@ -9,9 +9,9 @@ module GoogleCalendar
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def list_events(starting, ending)
+    def list_events(time_interval)
       all_events = []
-      listing_configuration = listing_options(starting, ending)
+      listing_configuration = listing_options(time_interval)
       calendar_service.batch do |service|
         rooms.each do |room|
           add_events_from_room(room, service, all_events, listing_configuration)
@@ -24,7 +24,7 @@ module GoogleCalendar
     private
 
     def rooms
-      ConferenceRoom.all
+      @rooms ||= ConferenceRoom.all
     end
 
     def mark_user_events(all_events)
@@ -33,9 +33,9 @@ module GoogleCalendar
       end
     end
 
-    def listing_options(starting, ending)
-      {fields: LISTING_FIELDS, single_events: true, time_min: starting.rfc3339(9),
-       time_max: ending.rfc3339(9), time_zone: ENV.fetch('TZ'),
+    def listing_options(time_interval)
+      {fields: LISTING_FIELDS, single_events: true, time_min: time_interval.starting,
+       time_max: time_interval.ending, time_zone: ENV.fetch('TZ'),
        always_include_email: true}.freeze
     end
 

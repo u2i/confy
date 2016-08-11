@@ -35,8 +35,8 @@ class EventsController < ApplicationController
   end
 
   def index
-    time_interval = TimeInterval.week(date_param)
-    events = google_event_client.list_events(time_interval.start.to_datetime, time_interval.end.to_datetime)
+    time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
+    events = google_event_client.list_events(time_interval_rfc3339)
     render json: events
   end
 
