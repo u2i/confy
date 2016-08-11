@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Tooltip, Overlay, Button } from 'react-bootstrap';
+import { Tooltip, Overlay, Button, Modal } from 'react-bootstrap';
 import { If, Else } from 'react-if';
 import bindAll from 'lodash/bindAll';
 import './event.scss';
@@ -17,10 +17,10 @@ export default class DeleteButton extends React.Component {
 
     this.state = {
       showIndicator: false,
-      showConfirmationBox: false
+      showConfirmationModal: false
     };
 
-    bindAll(this, ['_handleOnClick', '_handleConfirmDeletion', '_handleCancelDeletion']);
+    bindAll(this, ['_handleOnClick', '_handleConfirmDeletion', '_hideConfirmationModal']);
   }
 
   render() {
@@ -44,32 +44,34 @@ export default class DeleteButton extends React.Component {
             <Tooltip id="tooltip">{TOOLTIP_MESSAGE}</Tooltip>
           </Overlay>
           <Else>
-            <Overlay className="confirmation-overlay"
-                     target={() => this.refs.target}
-                     show={this.state.showConfirmationBox}
-                     placement="right">
-              <Tooltip id="confirmation-box">
+            <Modal bsSize="small"
+                   show={this.state.showConfirmationModal}
+                   onHide={this._hideConfirmationModal}>
+              <Modal.Header>
+                Are you sure?
+              </Modal.Header>
+              <Modal.Footer>
+                <Button onClick={this._hideConfirmationModal}>Cancel</Button>
                 <Button bsStyle="danger" onClick={this._handleConfirmDeletion}>Delete</Button>
-                <Button onClick={this._handleCancelDeletion}>Cancel</Button>
-              </Tooltip>
-            </Overlay>
+              </Modal.Footer>
+            </Modal>
           </Else>
         </If>
       </div>
     );
   }
 
+  _hideConfirmationModal() {
+    this.setState({ showConfirmationModal: false });
+  }
+
   _handleConfirmDeletion() {
-    this.setState({ showConfirmationBox: false });
+    this._hideConfirmationModal();
     return this.props.onDelete();
   }
 
-  _handleCancelDeletion() {
-    this.setState({ showConfirmationBox: false });
-  }
-
   _handleOnClickEnabled() {
-    this.setState({ showConfirmationBox: true });
+    this.setState({ showConfirmationModal: true });
   }
 
   _handleOnClickDisabled() {
