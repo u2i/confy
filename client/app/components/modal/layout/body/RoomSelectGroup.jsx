@@ -1,5 +1,5 @@
-import React from "react";
-import { If } from "react-if";
+import React from 'react';
+import { If } from 'react-if';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 
 const { arrayOf, string } = React.PropTypes;

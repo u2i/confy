@@ -1,10 +1,10 @@
-import React from "react";
-import { Modal, Col } from "react-bootstrap";
-import bindAll from "lodash/bindAll";
-import FormTextField from "./body/FormTextField";
-import FormDateField from "./body/FormDateField";
-import FormLocationField from "./body/FormLocationField";
-import ErrorField from "./ErrorField";
+import React from 'react';
+import { Modal, Col } from 'react-bootstrap';
+import bindAll from 'lodash/bindAll';
+import FormTextField from './body/FormTextField';
+import FormDateField from './body/FormDateField';
+import FormLocationField from './body/FormLocationField';
+import ErrorField from './ErrorField';
 
 const { func, array, object, bool, number } = React.PropTypes;
 
@@ -38,13 +38,7 @@ export default class ModalBody extends React.Component {
   }
 
   handleLocationChange(e) {
-    this.props.updateParam('conferenceRoomId', parseInt(e.target.value));
-  }
-
-  _updateDateParam(key, value) {
-    if (value !== 'Invalid date') {
-      this.props.updateParam(key, value);
-    }
+    this.props.updateParam('conferenceRoomId', parseInt(e.target.value, 10));
   }
 
   handleStartTimeChange(e) {
@@ -89,5 +83,11 @@ export default class ModalBody extends React.Component {
         </form>
       </Modal.Body>
     );
+  }
+
+  _updateDateParam(key, value) {
+    if (value !== 'Invalid date') {
+      this.props.updateParam(key, value);
+    }
   }
 }

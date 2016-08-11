@@ -1,6 +1,6 @@
-import React from "react";
-import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
-import { If } from "react-if";
+import React from 'react';
+import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { If } from 'react-if';
 
 import RoomSelectGroup from './RoomSelectGroup';
 

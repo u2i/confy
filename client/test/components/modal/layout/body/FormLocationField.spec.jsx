@@ -14,16 +14,20 @@ describe('<FormLocationField />', () => {
     ConferenceRoom.build()
   ];
 
-  const formLocationField = (props = {}) => (
-    <FormLocationField
+  const shallowWrapper = (props = {}) =>
+    shallow(<FormLocationField
+      available={props.available || rooms}
+      unavailable={props.unavailable || []}
+      selected={props.selected}
+      onChange={onChangeSpy} />);
+
+  const mountWrapper = (props = {}) =>
+    mount(<FormLocationField
       available={props.available || rooms}
       unavailable={props.unavailable || []}
       selected={props.selected}
       onChange={onChangeSpy} />
-  );
-
-  const shallowWrapper = (props) => shallow(formLocationField(props));
-  const mountWrapper = (props) => mount(formLocationField(props));
+    );
 
   it('renders <ControlLabel />', () => {
     const wrapper = shallowWrapper();

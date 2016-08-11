@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import { ControlLabel, FormControl } from 'react-bootstrap';
 import RoomSelectGroup from 'components/modal/layout/body/RoomSelectGroup';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
