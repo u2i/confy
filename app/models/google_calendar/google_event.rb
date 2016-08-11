@@ -8,7 +8,7 @@ module GoogleCalendar
     end
 
     def self.datetime_parse(time, zone)
-      "#{time} #{zone}".rfc3339(9)
+      DateTime.parse("#{time} #{zone}").rfc3339(9)
     end
 
     def initialize(credentials, user_email)
