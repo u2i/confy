@@ -6,11 +6,17 @@ import { expect } from 'chai';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<RoomFilters />', () => {
-  const conferenceRooms = ConferenceRoom.buildList(3);
+  const titles = [
+    { title: 'Zamosc', kind: 'narnia' },
+    { title: 'Andrychow', kind: 'narnia' },
+    { title: 'Krakow', kind: 'big' }
+  ];
+  const conferenceRooms = titles.map(({ title, kind }) => ConferenceRoom.build({ title, kind }));
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
-    onDisabled: () => {}
+    onDisabled: () => {},
+    roomKinds: { narnia: 0, big: 1 }
   };
   const defaultWrapper = shallow(<RoomFilters {...props} />);
 
@@ -26,6 +32,11 @@ describe('<RoomFilters />', () => {
     it('renders <Filter /> with appropriate enabled prop', () => {
       const wrapper = shallow(<RoomFilters filters={[conferenceRooms[0].id]} {...props} />);
       expect(wrapper.find(Filter).filterWhere(node => node.props().enabled)).to.have.lengthOf(1);
+    });
+
+    it('sorts by kind and title', () => {
+      const filterNames = defaultWrapper.find(Filter).map(e => e.props().children);
+      expect(filterNames).to.eql(['Krakow', 'Andrychow', 'Zamosc']);
     });
   });
 });

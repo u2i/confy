@@ -48,7 +48,7 @@ styles:
   badges: true
   jumbotron: false
   thumbnails: true
-  alerts: false
+  alerts: true
   progress-bars: false
   media: true
   list-group: true
@@ -59,7 +59,7 @@ styles:
 
   # Components w/ JavaScript
   modals: true
-  tooltip: false
+  tooltip: true
   popovers: false
   carousel: false
 

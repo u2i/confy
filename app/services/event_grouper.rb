@@ -1,5 +1,6 @@
 class EventGrouper
   GRANULARITY = 30.minutes.freeze
+
   class << self
     def floor_time(time)
       if time >= time.beginning_of_hour + GRANULARITY
@@ -23,62 +24,45 @@ class EventGrouper
   attr_reader :events
 
   def initialize(events)
-    @events = events
+    @events = events.sort_by { |event| event[:start][:date_time] }
   end
-
-  def call
-    build_blocks.map { |block| block.sort_by! { |n| n[:start][:date_time] } }
-  end
-
-  private
 
   def build_blocks
-    @blocks = [[]]
+    blocks = []
     events.each do |event|
-      if (block = find_block_for_event(event))
-        block << event
-        merge_blocks
-      else
-        add_new_block(event)
-      end
+      colliding_block = blocks.find { |block| block.can_add_event(event) }
+      colliding_block.nil? ? blocks << Block.new(event) : colliding_block.add_event(event)
+    end
+    blocks.map(&:block_events)
+  end
+
+  class Block
+    attr_reader :block_events
+    def initialize(event = nil)
+      @block_events = []
+      @end_time = nil
+      add_event(event) unless event.nil?
     end
 
-    @blocks
-  end
-
-  def find_block_for_event(event)
-    @blocks.find do |block|
-      event_in_block?(block, event)
+    def add_event(event)
+      return unless can_add_event(event)
+      block_events << event
+      update_end_time(event)
     end
-  end
 
-  def event_in_block?(current_block, event)
-    current_block.none? || event[:start][:date_time] < current_block.last[:end][:date_time]
-  end
-
-  def add_new_block(event)
-    @blocks << [event]
-  end
-
-  def merge_blocks
-    (0..(@blocks.size - 1)).to_a.combination(2).each do |y, x|
-      next unless overlapping?(block_range(@blocks[y]), block_range(@blocks[x]))
-      @blocks[x] += @blocks[y]
-      @blocks.delete_at(y)
-      return merge_blocks
+    def can_add_event(event)
+      @end_time.nil? || event[:start][:date_time] < @end_time
     end
-    false
-  end
 
-  def block_range(block)
-    min = block.min_by { |v| v[:start][:date_time] }[:start][:date_time]
-    max = block.max_by { |v| v[:end][:date_time] }[:end][:date_time]
-    min..max
-  end
+    private
 
-  def overlapping?(left, right)
-    left, right = right, left if left.min > right.min
+    def update_end_time(event)
+      event_end_time = event[:end][:date_time]
+      @end_time = event_end_time if should_update_end_time(event_end_time)
+    end
 
-    right.min < left.max
+    def should_update_end_time(new_end_time)
+      @end_time.nil? || new_end_time > @end_time
+    end
   end
 end
