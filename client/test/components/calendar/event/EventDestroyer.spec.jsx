@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import EventDestroyer from 'components/calendar/event/EventDestroyer';
 import { expect } from 'chai';
 import sinon from 'sinon';
