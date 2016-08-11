@@ -44,7 +44,7 @@ module GoogleCalendar
         if result
           result.items.each do |event|
             next if event_declined?(event)
-            normalize_event_datetime(event)
+            GoogleCalendar::EventDataService.normalize_event_datetime(event)
             events << event.to_h.merge(additional_properties(event, room))
           end
         end
@@ -57,20 +57,6 @@ module GoogleCalendar
         start_timestamp: event.start.date_time.to_i,
         end_timestamp: event.end.date_time.to_i
       }
-    end
-
-    def normalize_event_datetime(event)
-      if whole_day_event?(event)
-        event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
-        event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
-      else
-        event.start.date_time = TimeRound.floor_time(event.start.date_time)
-        event.end.date_time = TimeRound.ceil_time(event.end.date_time)
-      end
-    end
-
-    def whole_day_event?(event)
-      event.start.date.present?
     end
 
     # self is a field from Google::Apis::CalendarV3::EventAttendee

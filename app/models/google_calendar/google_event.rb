@@ -1,16 +1,5 @@
 module GoogleCalendar
   class GoogleEvent
-    def self.process_params(params)
-      zone = Time.now.getlocal.zone
-      params.merge(start: {date_time: datetime_parse(params[:start_time], zone)},
-                   end: {date_time: datetime_parse(params[:end_time], zone)}).
-        except(:start_time, :end_time, :conference_room_id, :permitted)
-    end
-
-    def self.datetime_parse(time, zone)
-      DateTime.parse("#{time} #{zone}").rfc3339(9)
-    end
-
     def initialize(credentials, user_email)
       @credentials = credentials
       @user_email = user_email
