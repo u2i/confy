@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import cable from 'cable';
 import _ from 'lodash';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
@@ -14,7 +15,8 @@ export default class AppContainer extends React.Component {
   static propTypes = {
     initialEvents:       React.PropTypes.array,
     date:                React.PropTypes.string,
-    notificationTimeout: React.PropTypes.number
+    notificationTimeout: React.PropTypes.number,
+    eventChannel:        React.object
   };
 
   static defaultProps = {
@@ -40,6 +42,12 @@ export default class AppContainer extends React.Component {
     if (!this.state.events) {
       this._fetchEvents();
     }
+
+    cable.subscriptions.create('EventChannel', {
+      received(data) {
+        console.log(data);
+      }
+    })
   }
 
   openModal() {

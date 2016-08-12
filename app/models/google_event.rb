@@ -77,6 +77,7 @@ class GoogleEvent
         'primary',
         Google::Apis::CalendarV3::Event.new(event_data)
       )
+      ActionCable.server.broadcast 'events', event: event_data
     end
 
     def items_list(items)
