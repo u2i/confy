@@ -29,7 +29,8 @@ export default class FormLocationField extends React.Component {
         <FormControl componentClass="select"
                      onChange={onChange}
                      name="location"
-                     value={selected}>
+                     value={selected || ''}>
+          <option value="" disabled style={{ display: 'none' }} />
           <RoomSelectGroup rooms={available} label="Available" />
           <RoomSelectGroup rooms={unavailable} label="Unavailable" />
         </FormControl>
@@ -37,6 +38,6 @@ export default class FormLocationField extends React.Component {
           <div className="text-danger">{errors[0]}</div>
         </If>
       </FormGroup>
-    );
+  );
   }
-}
+  }
