@@ -6,7 +6,6 @@ import DeleteTooltip from 'components/calendar/event/DeleteTooltip';
 import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
 import './event.scss';
 
-
 export default class EventDestroyer extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func.isRequired,
@@ -55,9 +54,7 @@ export default class EventDestroyer extends React.Component {
   }
 
   _handleOnClickDisabled() {
-    this.setState({
-      showIndicator: true
-    });
+    this.setState({ showIndicator: true });
 
     setTimeout(() => this.setState({ showIndicator: false }), 2000);
 
