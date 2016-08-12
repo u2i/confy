@@ -53,11 +53,14 @@ class EventsController < ApplicationController
   end
 
   def date_param
-    params[:date] ? Date.parse(params[:date]) : Date.today
+    Date.parse(params[:date])
+  rescue
+    Date.today
   end
 
   def span_param
-    return TimeInterval.week(date_param) unless params[:start] && params[:end]
     TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
+  rescue
+    TimeInterval.week(date_param)
   end
 end
