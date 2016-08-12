@@ -11,6 +11,7 @@ import * as FiltersHelper from 'helpers/FiltersHelper';
 import { Set } from 'immutable';
 import AppContainer from 'components/AppContainer';
 import SideNav from 'components/layout/SideNav';
+import EventDestroyer from 'components/calendar/event/EventDestroyer';
 
 describe('<AppContainer />', () => {
   let props;
@@ -66,7 +67,7 @@ describe('<AppContainer />', () => {
       const event = EventFactory.build({ creator: { self: true, email: 'user@example.com' } });
       props = DefaultProps.build({ initialEvents: [event] });
       const wrapper = mount(<AppContainer {...props} />);
-      wrapper.find('.delete-button').simulate('click');
+      wrapper.find(EventDestroyer).props().onDelete();
       expect(EventSource.remove).to.have.been.calledWith(event.id);
     });
   });
