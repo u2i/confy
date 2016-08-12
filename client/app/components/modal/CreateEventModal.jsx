@@ -122,6 +122,7 @@ export default class CreateEventModal extends React.Component {
 
   _validateLocation() {
     const currentLoc = this.state.conferenceRoomId;
+    if (!currentLoc) return;
     const locAvailable = this.state.availableRooms.some(room => room.id === currentLoc);
     if (!locAvailable) {
       this._addError('conference_room_id', LOCATION_ERROR_TEXT);
