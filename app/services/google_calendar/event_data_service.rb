@@ -23,9 +23,10 @@ module GoogleCalendar
       end
 
       def normalize_whole_day_event(event)
-        event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
-        event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
-        [event.start.date_time, event.end.date_time]
+        [
+          (event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime),
+          (event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime)
+        ]
       end
 
       def rounded_time_span(event)
