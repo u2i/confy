@@ -19,7 +19,7 @@ RSpec.describe GoogleCalendar::EventDataService do
 
   describe '.normalize_event_datetime' do
     let(:start_date_string) { '2016-01-01' }
-    let(:end_date_string) { '2016-01-03' }
+    let(:end_date_string) { '2016-01-02' }
     let(:start) { double('start', date: start_date_string, date_time: '') }
     let(:ending) { double('ending', date: end_date_string, date_time: '') }
     let(:event) { double('event', start: start, end: ending) }
@@ -30,7 +30,7 @@ RSpec.describe GoogleCalendar::EventDataService do
         allow(described_class).to receive(:whole_day_event?) { true }
         expect(start).to receive(:date_time=).with(expected_start_result)
         expect(ending).to receive(:date_time=).with(expected_end_result)
-        expect(described_class.normalize_event_datetime(event)).to eq [expected_start_result, expected_end_result]
+        described_class.normalize_event_datetime(event)
       end
     end
 
