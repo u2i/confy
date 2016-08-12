@@ -5,6 +5,7 @@ import map from 'lodash/fp/map';
 import find from 'lodash/fp/find';
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { Table } from 'react-bootstrap';
 import { loadFilters, saveFilters } from 'helpers/FiltersHelper';
 import EventSchema from 'schemas/EventSchema';
@@ -15,24 +16,24 @@ import CalendarHeader from './CalendarHeader';
 
 import './calendar.scss';
 
-const { string, number, shape, array, arrayOf, oneOfType, instanceOf, func, object } = PropTypes;
+const { string, number, shape, array, arrayOf, func, object } = PropTypes;
 
 export default class Calendar extends React.Component {
   static propTypes = {
-    events:  arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
-    conferenceRooms:  array,
-    days: arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
-    times:  arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    events: arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
+    conferenceRooms: array,
+    days: arrayOf(instanceOfMoment).isRequired,
+    times: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat: string,
     dateFormat: string,
-    roomKinds:  object.isRequired,
+    roomKinds: object.isRequired,
     onDelete: func.isRequired,
     scrollTo: shape({ hours: number, minutes: number })
   };
 
   static defaultProps = {
-    events:   [],
+    events: [],
     scrollTo: { hours: 0, minutes: 0 }
   };
 
@@ -63,7 +64,7 @@ export default class Calendar extends React.Component {
                    days={this.props.days}
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete}
-                   ref={(ref) => this.rows[moment(time).unix()] = ref} />
+                   ref={(ref) => this.rows[time.unix()] = ref} />
     ));
 
     return (

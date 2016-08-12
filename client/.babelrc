@@ -29,8 +29,12 @@
           "expose": "components"
         },
         {
-          "src": "./app/schemas",
+          "src": "./app/proptypes/schemas",
           "expose": "schemas"
+        },
+        {
+          "src": "./app/proptypes",
+          "expose": "proptypes"
         },
         {
           "src": "./app/sources",

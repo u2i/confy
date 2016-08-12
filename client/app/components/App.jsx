@@ -1,26 +1,33 @@
-import React from 'react';
 import moment from 'moment';
 import cable from 'cable';
-import _ from 'lodash';
+import React from 'react';
+import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
-
+import { dateParam, weekDays } from 'helpers/DateHelper';
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
 import CreateEventModal from './modal/CreateEventModal';
 
-export default class AppContainer extends React.Component {
+const { number, string, shape, array, arrayOf } = React.PropTypes;
+
+export default class App extends React.Component {
   static propTypes = {
-    initialEvents:       React.PropTypes.array,
-    date:                React.PropTypes.string,
-    notificationTimeout: React.PropTypes.number,
-    eventChannel:        React.object
+    initialEvents: array,
+    weekLength: number,
+    times: arrayOf(string).isRequired,
+    location: shape({
+      query: shape({
+        date: string
+      })
+    }).isRequired,
+    notificationTimeout: number,
+    eventChannel: React.object
   };
 
   static defaultProps = {
-    date: moment().format('YYYY-MM-DD'),
     notificationTimeout: 10000
   };
 
@@ -34,8 +41,8 @@ export default class AppContainer extends React.Component {
       showModal: false
     };
 
-    _.bindAll(this,
-      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', '_deleteEvent']);
+    bindAll(this,
+      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete']);
   }
 
   componentDidMount() {
@@ -48,6 +55,13 @@ export default class AppContainer extends React.Component {
         console.log(data);
       }
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    const currentQuery = this.props.location.query;
+    const prevQuery = prevProps.location.query;
+    if (prevQuery && currentQuery && prevQuery.date === currentQuery.date) return;
+    this._fetchEvents();
   }
 
   openModal() {
@@ -66,6 +80,10 @@ export default class AppContainer extends React.Component {
     this._removeNotification(notificationId);
   }
 
+  handleEventDelete(eventId) {
+    this._deleteEvent(eventId);
+  }
+
   render() {
     const { initialEvents: _, ...calendarProps } = this.props;
     const { events, notifications, updating } = this.state;
@@ -74,12 +92,16 @@ export default class AppContainer extends React.Component {
         <Grid>
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
-                     date={this.props.date}
+                     date={this._dateOrNow()}
                      updating={updating}
                      openModal={this.openModal} />
           </Col>
           <Col xs={12} md={10}>
-            <Calendar {...calendarProps} events={events} onDelete={this._deleteEvent} />
+            <Calendar {...calendarProps}
+                      events={events}
+                      days={weekDays(this._dateOrNow(), this.props.weekLength)}
+                      times={this.props.times.map(time => moment(time))}
+                      onDelete={this.handleEventDelete} />
           </Col>
         </Grid>
         <CreateEventModal closeModal={this.closeModal}
@@ -91,16 +113,30 @@ export default class AppContainer extends React.Component {
     );
   }
 
+  _dateOrNow() {
+    const query = this.props.location.query;
+    if (query && query.date) {
+      return moment(query.date);
+    }
+    return moment().startOf('day');
+  }
+
+  _dateParam() {
+    return dateParam(this._dateOrNow());
+  }
+
   _fetchEvents() {
     this.setState({ updating: true });
     EventSource
-      .fetch({ date: this.props.date })
+      .fetch({ date: this._dateParam() })
       .then(({ data }) => {
         this.setState({ events: data, updating: false });
       })
-      .catch(() =>
-        this.setState({ updating: false })
-      );
+      .catch((err) => {
+        const error = new Notification('danger', `Failed to fetch events: ${err}`);
+        this._addNotification(error);
+        this.setState({ updating: false });
+      });
   }
 
   _deleteEvent(id) {

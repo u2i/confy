@@ -6,17 +6,15 @@ import chai from 'chai';
 import proxyquire from 'proxyquire';
 import shared from 'mocha-shared';
 
-import chaiEnzyme from 'chai-enzyme';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
-import dirtyChai from 'dirty-chai';
+chai.use(require('chai-enzyme')());
+chai.use(require('chai-as-promised'));
+chai.use(require('sinon-chai'));
+chai.use(require('dirty-chai'));
+
+chai.config.showDiff = true;
+chai.config.truncateThreshold = 0;
 
 require('sinon-as-promised');
-
-chai.use(chaiEnzyme());
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.use(dirtyChai);
 
 shared.setup('stub ReactDOM.findDOMNode', ({ cb } = {}) => {
   before(() => {
@@ -32,4 +30,3 @@ shared.setup('stub ReactDOM.findDOMNode', ({ cb } = {}) => {
     ReactDOM.findDOMNode.restore();
   });
 });
-

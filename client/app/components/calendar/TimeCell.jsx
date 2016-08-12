@@ -1,8 +1,7 @@
 import React from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { If } from 'react-if';
 import { formatTime } from 'helpers/DateHelper';
-
-const { string, bool, oneOfType, instanceOf } = React.PropTypes;
 
 const TimeCell = (props) => (
   <td className="text-right time-cell">
@@ -13,9 +12,9 @@ const TimeCell = (props) => (
 );
 
 TimeCell.propTypes = {
-  time:       oneOfType([instanceOf(Date), string]).isRequired,
-  visible:    bool,
-  timeFormat: string
+  time:       instanceOfMoment.isRequired,
+  visible:    React.PropTypes.bool,
+  timeFormat: React.PropTypes.string
 };
 
 TimeCell.defaultProps = {
