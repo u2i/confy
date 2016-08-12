@@ -36,7 +36,6 @@ rules:
   max-len: [2, 120]
   no-param-reassign: 0
   one-var: 0
-  no-eq-null: 0
 
 # Imports
   import/no-unresolved: 0
