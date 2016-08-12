@@ -111,7 +111,7 @@ export default class App extends React.Component {
     if (query && query.date) {
       return moment(query.date);
     }
-    return moment();
+    return moment().startOf('day');
   }
 
   _dateParam() {
