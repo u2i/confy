@@ -16,13 +16,13 @@ class GoogleOauth
     end
 
     def refresh_token(credentials = {})
-      auth_client = Signet::OAuth2::Client.new(JSON.parse(credentials))
+      auth_client = new_auth_client(credentials)
       auth_client.fetch_access_token!
       auth_client.to_json
     end
 
     def need_to_refresh_token?(credentials = {})
-      auth_client = Signet::OAuth2::Client.new(JSON.parse(credentials))
+      auth_client = new_auth_client(credentials)
       auth_client.refresh_token && auth_client.expired?
     end
 
@@ -52,13 +52,13 @@ class GoogleOauth
     end
 
     def user_info_service(credentials)
-      Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = service_client(credentials) }
+      Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = new_auth_client(credentials) }
     end
 
-    def service_client(credentials)
+    def new_auth_client(credentials)
       Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
   end
 
-  private_class_method :user_info_service, :service_client
+  private_class_method :user_info_service, :new_auth_client
 end
