@@ -2,7 +2,7 @@ module GoogleCalendar
   class EventDataService
     class << self
       def normalize_event_datetime(event)
-        whole_day_event?(event) ? normalize_whole_day_event(event) : normalize_partial_day_event(event)
+        whole_day_event?(event) ? normalize_whole_day_event(event) : rounded_time_span(event)
       end
 
       def whole_day_event?(event)
@@ -23,13 +23,14 @@ module GoogleCalendar
       end
 
       def normalize_whole_day_event(event)
-        event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime
-        event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime
+        [
+          (event.start.date_time = Date.parse(event.start.date).beginning_of_day.to_datetime),
+          (event.end.date_time = Date.parse(event.end.date).beginning_of_day.to_datetime)
+        ]
       end
 
-      def normalize_partial_day_event(event)
-        event.start.date_time = TimeRound.floor_time(event.start.date_time)
-        event.end.date_time = TimeRound.ceil_time(event.end.date_time)
+      def rounded_time_span(event)
+        [TimeRound.floor_time(event.start.date_time), TimeRound.ceil_time(event.end.date_time)]
       end
     end
   end
