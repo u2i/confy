@@ -29,7 +29,7 @@ class EventWrapper extends React.Component {
   handleResize() {
     if (this.container) {
       const { width, height } = this.container.getBoundingClientRect();
-      this.setState({ width, height });
+      this.setState({ width: width + 1, height: height + 1 });
     }
   }
 
