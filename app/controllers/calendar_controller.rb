@@ -3,6 +3,7 @@ require 'google/api_client/client_secrets'
 
 class CalendarController < ApplicationController
   include GoogleAuthentication
+  include GoogleEventClient
 
   before_action :refresh_token
   before_action :check_authentication
@@ -21,7 +22,7 @@ class CalendarController < ApplicationController
     @props = {conferenceRooms: ConferenceRoom.all,
               initialEvents: events,
               times: calendar_times,
-              unitEventLengthInSeconds: EventGrouper::GRANULARITY,
+              unitEventLengthInSeconds: TimeRound::GRANULARITY,
               date: params[:date],
               roomKinds: ConferenceRoom::KINDS,
               scrollTo: {hours: 6, minutes: 0}}.compact
@@ -32,7 +33,8 @@ class CalendarController < ApplicationController
   end
 
   def events
-    GoogleEventLister.new(session[:credentials], session[:email]).call(TimeInterval.week(date_param))
+    time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
+    google_event_client.list_events(time_interval_rfc3339)
   end
 
   def calendar_days
@@ -40,6 +42,6 @@ class CalendarController < ApplicationController
   end
 
   def calendar_times
-    TimeInterval.day.collect_steps(EventGrouper::GRANULARITY)
+    TimeInterval.day.collect_steps(TimeRound::GRANULARITY)
   end
 end

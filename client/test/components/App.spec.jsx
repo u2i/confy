@@ -13,6 +13,7 @@ import * as FiltersHelper from 'helpers/FiltersHelper';
 
 import App from 'components/App';
 import SideNav from 'components/layout/SideNav';
+import EventDestroyer from 'components/calendar/event/EventDestroyer';
 
 describe('<App />', () => {
   let props;
@@ -73,6 +74,7 @@ describe('<App />', () => {
       const wrapper = mount(<App {...props} initialEvents={[event]} />);
       wrapper.find('.delete-button').simulate('click');
 
+      wrapper.find(EventDestroyer).props().onDelete();
       expect(EventSource.remove).to.have.been.calledOnce();
       expect(EventSource.remove).to.have.been.calledWith(event.id);
     });
