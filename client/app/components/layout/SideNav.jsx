@@ -1,14 +1,16 @@
-import moment from 'moment';
 import React from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
+import { dateParam, nextWeek, previousWeek } from 'helpers/DateHelper';
 
 import RefreshButton from './RefreshButton';
 
 export default class SideNav extends React.Component {
   static propTypes = {
-    date:      React.PropTypes.string.isRequired,
+    date: instanceOfMoment.isRequired,
     onRefresh: React.PropTypes.func,
-    updating:  React.PropTypes.bool,
+    updating: React.PropTypes.bool,
     openModal: React.PropTypes.func.isRequired
   };
 
@@ -25,27 +27,18 @@ export default class SideNav extends React.Component {
                 onClick={this._handleCreateEvent}>
           Create Event
         </Button>
-        <Button href={"/"}
-                className="btn-block">Today</Button>
-        <Button href={this._dateParam(this._nextWeek())}
-                className="btn-block">Next Week</Button>
-        <Button href={this._dateParam(this._previousWeek())}
-                className="btn-block">Previous Week</Button>
+        <IndexLinkContainer to="/" active={false}>
+          <Button className="btn-block">Today</Button>
+        </IndexLinkContainer>
+        <LinkContainer to={{ pathName: '/', query: { date: dateParam(nextWeek(this.props.date)) } }} active={false}>
+          <Button className="btn-block">Next Week</Button>
+        </LinkContainer>
+        <LinkContainer to={{ pathName: '/', query: { date: dateParam(previousWeek(this.props.date)) } }} active={false}>
+          <Button className="btn-block">Previous Week</Button>
+        </LinkContainer>
         <RefreshButton onRefresh={this.props.onRefresh} animate={this.props.updating} />
       </aside>
     );
-  }
-
-  _nextWeek() {
-    return moment(this.props.date).add(1, 'weeks');
-  }
-
-  _previousWeek() {
-    return moment(this.props.date).subtract(1, 'weeks');
-  }
-
-  _dateParam(date) {
-    return `/?date=${date.format('YYYY-MM-DD')}`;
   }
 
   _handleCreateEvent() {

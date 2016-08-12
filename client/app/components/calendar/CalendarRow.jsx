@@ -1,17 +1,18 @@
 import React from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 import TimeCell from './TimeCell';
 import EventWrapper from './event/EventWrapper';
 import { SECONDS_IN_DAY, eventGroupContaining, eventsStartingAt } from 'helpers/EventHelper';
 
-const { string, bool, number, arrayOf, oneOfType, instanceOf, func } = React.PropTypes;
+const { string, bool, number, arrayOf, func } = React.PropTypes;
 
 export default class CalendarRow extends React.Component {
   static propTypes = {
     events: arrayOf(EventSchema.only('start_timestamp')).isRequired,
-    time: oneOfType([instanceOf(Date), string]).isRequired,
-    days: arrayOf(oneOfType([instanceOf(Date), string])).isRequired,
+    time: instanceOfMoment.isRequired,
+    days: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
     timeFormat: string,
     displayMinutes: bool,
@@ -19,7 +20,7 @@ export default class CalendarRow extends React.Component {
   };
 
   static defaultProps = {
-    timeFormat:     'Ha',
+    timeFormat: 'Ha',
     displayMinutes: false
   };
 

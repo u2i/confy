@@ -7,4 +7,3 @@ const UserSchema = {
 };
 
 export default schema(UserSchema);
-

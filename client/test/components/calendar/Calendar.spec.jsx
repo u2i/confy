@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import shared from 'mocha-shared';
 import sinon from 'sinon';
@@ -27,7 +28,9 @@ describe('<Calendar />', () => {
   });
 
   const props = DefaultProps.build({
-    onDelete: () => {}
+    times: [moment({ hours: 8 }), moment({ hours: 9 })],
+    onDelete: () => {
+    }
   });
 
   let wrapper;
@@ -83,7 +86,7 @@ describe('<Calendar />', () => {
     });
 
     it('scrolls calendar to row with scrollTo time', () => {
-      wrapper = mount(<Calendar {...props} />);
+      wrapper = mount(<Calendar {...props} scrollTo={{ hours: 8, minutes: 0 }} />);
       expect(scrollSpy).to.have.been.called();
     });
   });
