@@ -1,6 +1,7 @@
 module GoogleCalendar
   class EventFinder
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
+    GOOGLE_EVENT_CANCELLED_RESPONSE = 'cancelled'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator, attendees(self, responseStatus))'.freeze
 
     def initialize(credentials, user_email)
@@ -43,7 +44,7 @@ module GoogleCalendar
       service.list_events(room.email, config) do |result, _|
         if result
           result.items.each do |event|
-            next if event_declined?(event)
+            next if ignore_event?(event)
             GoogleCalendar::EventDataService.normalize_event_datetime(event)
             events << event.to_h.merge(additional_properties(event, room))
           end
@@ -60,7 +61,8 @@ module GoogleCalendar
     end
 
     # self is a field from Google::Apis::CalendarV3::EventAttendee
-    def event_declined?(event)
+    def ignore_event?(event)
+      return true if event.status == GOOGLE_EVENT_CANCELLED_RESPONSE
       return false unless event.attendees.present?
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
