@@ -85,7 +85,7 @@ module GoogleCalendar
         conference_room[:email], listing_options(starting, ending)
       )
       return [] unless events
-      events.items.reject!(&method(:event_declined?))
+      events.items.reject(&method(:event_declined?))
     end
 
     # TODO: Fix repetition from EventFinder
