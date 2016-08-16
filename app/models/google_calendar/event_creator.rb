@@ -15,9 +15,9 @@ module GoogleCalendar
       end
     end.freeze
 
-    def initialize(credentials)
+    def initialize(credentials, service = nil)
       @credentials = credentials
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+      @calendar_service = service || GoogleCalendar::Client.new(credentials).calendar_service
     end
 
     def create(conference_room_id, raw_event_data = {})
@@ -85,7 +85,7 @@ module GoogleCalendar
         conference_room[:email], listing_options(starting, ending)
       )
       return [] unless events
-      events.items.reject(&method(:event_declined?))
+      events.items.reject { |e| event_declined?(e) }
     end
 
     # TODO: Fix repetition from EventFinder
