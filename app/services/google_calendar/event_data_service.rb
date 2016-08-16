@@ -37,7 +37,6 @@ module GoogleCalendar
         Date.parse(date).beginning_of_day.to_datetime
       end
 
-
       def rounded_time_span(event)
         [TimeRound.floor_time(event.start.date_time), TimeRound.ceil_time(event.end.date_time)]
       end

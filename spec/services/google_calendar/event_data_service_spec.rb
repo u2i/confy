@@ -22,7 +22,7 @@ RSpec.describe GoogleCalendar::EventDataService do
     let(:end_date_string) { '2016-01-02' }
     let(:start) { double('start', date: start_date_string, date_time: '') }
     let(:ending) { double('ending', date: end_date_string, date_time: '') }
-    let(:event) { double('event', start: start, end: ending, to_h: { start: start, end: ending }) }
+    let(:event) { double('event', start: start, end: ending, to_h: {start: start, end: ending}) }
     let(:expected_start_result) { Date.parse(start_date_string).beginning_of_day.to_datetime }
     let(:expected_end_result) { Date.parse(end_date_string).beginning_of_day.to_datetime }
     context 'given whole day event' do
