@@ -11,6 +11,7 @@ class CalendarController < ApplicationController
   # Index for showing events from Google calendar
   def index
     create_calendar_props
+    ActionCable.server.broadcast('events', data: 'eloeloeloe')
   rescue ArgumentError
     session.delete(:credentials)
     redirect_to oauth2callback_path
@@ -34,7 +35,7 @@ class CalendarController < ApplicationController
 
   def events
     time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
-    google_event_client.list_events(time_interval_rfc3339)
+    google_event_client.all(time_interval_rfc3339)
   end
 
   def calendar_days

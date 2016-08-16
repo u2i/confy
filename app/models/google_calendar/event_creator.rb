@@ -74,6 +74,7 @@ module GoogleCalendar
         conference_room[:email],
         time_min: starting,
         time_max: ending
+
       )
       events ? events.items : []
     end

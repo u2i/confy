@@ -13,8 +13,8 @@ module GoogleCalendar
       GoogleCalendar::EventRemover.new(credentials).delete(event_id)
     end
 
-    def list_events(time_interval)
-      GoogleCalendar::EventFinder.new(credentials, user_email).list_events(time_interval)
+    def all(time_interval)
+      GoogleCalendar::EventFinder.new(credentials, user_email).all_events(time_interval)
     end
 
     private
