@@ -44,21 +44,10 @@ module GoogleCalendar
         if result
           result.items.each do |event|
             next if event_declined?(event)
-            rounded_start_time, rounded_end_time = GoogleCalendar::EventDataService.normalize_event_datetime(event)
-            events << event.to_h.merge(additional_properties(room, rounded_start_time, rounded_end_time))
+            events << GoogleCalendar::EventDataService.with_normalized_datetime(event).merge(conference_room: room)
           end
         end
       end
-    end
-
-    def additional_properties(room, rounded_start_time, rounded_end_time)
-      {
-        conference_room: room,
-        start_timestamp: rounded_start_time.to_i,
-        end_timestamp: rounded_end_time.to_i,
-        rounded_start_time: rounded_start_time,
-        rounded_end_time: rounded_end_time
-      }
     end
 
     # self is a field from Google::Apis::CalendarV3::EventAttendee

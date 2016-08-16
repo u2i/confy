@@ -22,7 +22,7 @@ RSpec.describe GoogleCalendar::EventDataService do
     let(:end_date_string) { '2016-01-02' }
     let(:start) { double('start', date: start_date_string, date_time: '') }
     let(:ending) { double('ending', date: end_date_string, date_time: '') }
-    let(:event) { double('event', start: start, end: ending) }
+    let(:event) { double('event', start: start, end: ending, to_h: { start: start, end: ending }) }
     let(:expected_start_result) { Date.parse(start_date_string).beginning_of_day.to_datetime }
     let(:expected_end_result) { Date.parse(end_date_string).beginning_of_day.to_datetime }
     context 'given whole day event' do
@@ -30,7 +30,7 @@ RSpec.describe GoogleCalendar::EventDataService do
         allow(described_class).to receive(:whole_day_event?) { true }
         expect(start).to receive(:date_time=).with(expected_start_result)
         expect(ending).to receive(:date_time=).with(expected_end_result)
-        described_class.normalize_event_datetime(event)
+        described_class.with_normalized_datetime(event)
       end
     end
 
@@ -43,7 +43,9 @@ RSpec.describe GoogleCalendar::EventDataService do
       end
       it 'sets events start.date_time and end.date_time attributes to the result of TimeRound methods' do
         allow(described_class).to receive(:whole_day_event?) { false }
-        expect(described_class.normalize_event_datetime(event)).to eq [expected_start_result, expected_end_result]
+        expect(described_class.with_normalized_datetime(event)).to satisfy do |e|
+          e[:rounded_start_time] == expected_start_result && e[:rounded_end_time] == expected_end_result
+        end
       end
     end
   end
