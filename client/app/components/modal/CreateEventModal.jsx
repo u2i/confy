@@ -15,7 +15,8 @@ import ModalBody from './layout/ModalBody';
 const { func, bool, array, string } = PropTypes;
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 const DATE_ERROR_TEXT = 'Start time must be lower than end time';
-const LOCATION_ERROR_TEXT = 'This room is not available during the selected time.';
+const NO_LOCATION_ERROR = 'You must select a location';
+const LOCATION_ERROR = 'This room is not available during the selected time.';
 
 export default class CreateEventModal extends React.Component {
   static propTypes = {
@@ -62,6 +63,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   saveChanges() {
+    if (!this._validateParams({ presence: true })) return;
     const eventParams = {
       summary: this.state.summary || '',
       description: this.state.description || '',
@@ -85,7 +87,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   updateParam(key, value) {
-    this.setState({ [key]: value }, () => this._validateParams(key));
+    this.setState({ [key]: value }, () => this._validateParams());
   }
 
   render() {
@@ -114,30 +116,31 @@ export default class CreateEventModal extends React.Component {
 
   _validateTimeRange() {
     if (this.state.startTime >= this.state.endTime) {
-      this._addError('start_time', DATE_ERROR_TEXT);
-    } else {
-      this._clearErrors('start_time');
+      throw { key: 'start_time', message: DATE_ERROR_TEXT };
     }
   }
 
-  _validateLocation() {
+  _validateLocation({ presence }) {
     const currentLoc = this.state.conferenceRoomId;
-    if (!currentLoc) return;
-    const locAvailable = this.state.availableRooms.some(room => room.id === currentLoc);
-    if (!locAvailable) {
-      this._addError('conference_room_id', LOCATION_ERROR_TEXT);
-    } else {
-      this._clearErrors('conference_room_id');
+    if (currentLoc) {
+      const locAvailable = this.state.availableRooms.some(room => room.id === currentLoc);
+      if (!locAvailable) {
+        throw { key: 'conference_room_id', message: LOCATION_ERROR };
+      }
+    } else if (presence) {
+      throw { key: 'conference_room_id', message: NO_LOCATION_ERROR };
     }
   }
 
-  _validateParams(key) {
-    if (key === 'startTime' || key === 'endTime') {
-      this._validateTimeRange(key);
-      this._validateLocation();
-    }
-    if (key === 'conferenceRoomId') {
-      this._validateLocation();
+  _validateParams(options = {}) {
+    this._clearErrors();
+    try {
+      this._validateTimeRange(options);
+      this._validateLocation(options);
+
+      return true;
+    } catch (error) {
+      this._addError(error);
     }
   }
 
@@ -145,16 +148,14 @@ export default class CreateEventModal extends React.Component {
     this.setState({ showErrorMessage: true });
   }
 
-  _addError(key, error) {
+  _addError({ key, message }) {
     const errors = this.state.errors;
-    errors[key] = errors[key] ? errors[key].concat([error]) : [error];
+    errors[key] = errors[key] ? errors[key].concat([message]) : [message];
     this.setState({ errors });
   }
 
-  _clearErrors(key) {
-    const errors = this.state.errors;
-    delete errors[key];
-    this.setState({ errors });
+  _clearErrors() {
+    this.setState({ errors: {} });
   }
 
   _disableSaving() {
@@ -166,16 +167,16 @@ export default class CreateEventModal extends React.Component {
     EventSource
       .fetch({ start: startTime, end: endTime })
       .then(({ data }) => {
-        const unavailableRooms = flow(
+          const unavailableRooms = flow(
             map(e => e.conference_room),
             uniqBy(room => room.id)
           )(data);
 
-        const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
+          const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
 
-        this.setState({ availableRooms, unavailableRooms });
-        this._validateLocation();
-      }
+          this.setState({ availableRooms, unavailableRooms });
+          this._validateParams('location');
+        }
       );
   }
 }
