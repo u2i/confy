@@ -8,7 +8,6 @@ module GoogleCalendar
         else
           event.to_h.merge(additional_properties(*rounded_time_span(event)))
         end
-
       end
 
       def whole_day_event?(event)
