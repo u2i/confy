@@ -109,7 +109,7 @@ RSpec.describe GoogleCalendar::EventCreator do
           end
 
           before do
-           allow(service).to receive(:list_events) { double(items: [first_event, second_event]) }
+            allow(service).to receive(:list_events) { double(items: [first_event, second_event]) }
           end
 
           it 'raises EventInTimeSpanError' do
@@ -154,7 +154,6 @@ RSpec.describe GoogleCalendar::EventCreator do
             )
             event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
           end
-
         end
       end
       context 'no other events' do
