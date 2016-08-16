@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   include GoogleAuthentication
+  include GoogleEventClient
 
   before_action :refresh_token
   before_action :check_authentication
@@ -8,8 +9,8 @@ class EventsController < ApplicationController
     render json: {error: 'Google Server error'}, status: :service_unavailable
   end
 
-  rescue_from Google::Apis::ClientError, GoogleEvent::InvalidParamsError do |exception|
-    error_data = {error: exception.message}
+  rescue_from Google::Apis::ClientError, GoogleCalendar::EventCreator::EventInvalidParamsError do |error|
+    error_data = {error: error.message}
     case params[:action]
     when 'create'
       render json: error_data, status: :unprocessable_entity
@@ -20,29 +21,35 @@ class EventsController < ApplicationController
     end
   end
 
+  rescue_from GoogleCalendar::EventCreator::EventInvalidRoom do |error|
+    render json: error.message, status: :unprocessable_entity
+  end
+
   rescue_from Google::Apis::AuthorizationError do
     session.delete(:credentials)
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
-  rescue_from GoogleEvent::EventInTimeSpanError do |message|
+  rescue_from GoogleCalendar::EventCreator::EventInTimeSpanError do |message|
     render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 
   def index
-    render json: GoogleEventLister.new(session[:credentials], session[:email]).call(span_param)
+    time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
+    events = google_event_client.list_events(time_interval_rfc3339)
+    render json: events
   end
 
   def create
     conference_room_id = event_params[:conference_room_id]
-    google_event_params = GoogleEvent.process_params(event_params)
-    data = GoogleEvent.create(session[:credentials], conference_room_id, google_event_params)
+    google_event_params = GoogleCalendar::EventDataService.process_params(event_params)
+    data = google_event_client.create(conference_room_id, google_event_params)
     render json: data.to_json, status: :created
   end
 
   def destroy
     event_id = params[:id]
-    GoogleEvent.delete(session[:credentials], event_id)
+    google_event_client.delete(event_id)
     head :ok
   end
 

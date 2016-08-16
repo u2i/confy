@@ -16,7 +16,7 @@ module.exports = {
       'bootstrap-loader'
     ],
     app: [
-      './app/App.jsx'
+      './app/Register.jsx'
     ]
   },
   resolve: {

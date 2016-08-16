@@ -42,8 +42,3 @@ describe('<EventGroup />', () => {
     expect(wrapper.find('Event')).to.have.lengthOf(2);
   });
 });
-
-
-
-
-

@@ -10,7 +10,7 @@ import RefreshButton from 'components/layout/RefreshButton';
 
 describe('<SideNav />', () => {
   const onRefresh = sinon.spy();
-  const date = moment().format('YYYY-MM-DD');
+  const date = moment();
 
   let wrapper;
   beforeEach(() => {

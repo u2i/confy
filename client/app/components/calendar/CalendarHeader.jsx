@@ -1,4 +1,5 @@
 import React from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { formatDate } from 'helpers/DateHelper';
 
 const CalendarHeader = (props) => (
@@ -8,7 +9,7 @@ const CalendarHeader = (props) => (
 );
 
 CalendarHeader.propTypes = {
-  day:        React.PropTypes.string.isRequired,
+  day:        instanceOfMoment.isRequired,
   dateFormat: React.PropTypes.string
 };
 
