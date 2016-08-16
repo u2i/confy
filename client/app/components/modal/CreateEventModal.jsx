@@ -178,7 +178,6 @@ export default class CreateEventModal extends React.Component {
 
         this.setState({ availableRooms, unavailableRooms });
         this._validateParams('location');
-        }
-      );
+      });
   }
 }
