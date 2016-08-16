@@ -37,11 +37,11 @@ export function weekDays(date, weekLength = 5) {
 }
 
 export function nextWeek(date) {
-  return date.add(1, 'week');
+  return date.clone().add(1, 'week');
 }
 
 export function previousWeek(date) {
-  return date.subtract(1, 'week');
+  return date.clone().subtract(1, 'week');
 }
 
 export function dateParam(date) {

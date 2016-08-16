@@ -125,8 +125,8 @@ export default class App extends React.Component {
       .then(({ data }) => {
         this.setState({ events: data, updating: false });
       })
-      .catch((err) => {
-        const error = new Notification('danger', `Failed to fetch events: ${err}`);
+      .catch(({ statusText, message }) => {
+        const error = new Notification('danger', `Failed to fetch events: ${statusText || message}`);
         this._addNotification(error);
         this.setState({ updating: false });
       });
