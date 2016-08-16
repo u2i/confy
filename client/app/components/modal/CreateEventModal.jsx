@@ -141,6 +141,8 @@ export default class CreateEventModal extends React.Component {
       return true;
     } catch (error) {
       this._addError(error);
+
+      return false;
     }
   }
 
@@ -167,15 +169,15 @@ export default class CreateEventModal extends React.Component {
     EventSource
       .fetch({ start: startTime, end: endTime })
       .then(({ data }) => {
-          const unavailableRooms = flow(
-            map(e => e.conference_room),
-            uniqBy(room => room.id)
-          )(data);
+        const unavailableRooms = flow(
+          map(e => e.conference_room),
+          uniqBy(room => room.id)
+        )(data);
 
-          const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
+        const availableRooms = differenceBy(this.props.conferenceRooms, unavailableRooms, room => room.id);
 
-          this.setState({ availableRooms, unavailableRooms });
-          this._validateParams('location');
+        this.setState({ availableRooms, unavailableRooms });
+        this._validateParams('location');
         }
       );
   }
