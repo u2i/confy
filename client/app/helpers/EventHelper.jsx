@@ -1,4 +1,5 @@
 import orderBy from 'lodash/sortBy';
+
 export const SECONDS_IN_DAY = 24 * 60 * 60;
 
 export function eventsStartingAt(timestamp, events) {
