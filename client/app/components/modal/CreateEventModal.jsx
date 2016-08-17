@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Modal } from 'react-bootstrap';
 import moment from 'moment';
+import assign from 'lodash/assign';
 import bindAll from 'lodash/bindAll';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
@@ -18,6 +19,16 @@ const DATE_ERROR_TEXT = 'Start time must be lower than end time';
 const NO_LOCATION_ERROR = 'You must select a location';
 const LOCATION_ERROR = 'This room is not available during the selected time.';
 
+const INITIAL_FORM_STATE = {
+  showErrorMessage: false,
+  summary: '',
+  description: '',
+  conferenceRoomId: null,
+  availableRooms: [],
+  unavailableRooms: [],
+  errors: {}
+};
+
 export default class CreateEventModal extends React.Component {
   static propTypes = {
     closeModal: func.isRequired,
@@ -34,15 +45,10 @@ export default class CreateEventModal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showErrorMessage: false,
-      conferenceRoomId: null,
+    this.state = assign({}, INITIAL_FORM_STATE, {
       startTime: this.props.initialDate,
-      endTime: this.props.initialDate,
-      availableRooms: [],
-      unavailableRooms: [],
-      errors: {}
-    };
+      endTime: this.props.initialDate
+    });
 
     bindAll(this,
       ['saveChanges', 'updateParam', 'handleCloseModal']);
@@ -55,18 +61,15 @@ export default class CreateEventModal extends React.Component {
   }
 
   handleCloseModal() {
-    this.setState({
-      errors: {},
-      showErrorMessage: false
-    });
+    this._clearForm();
     this.props.closeModal();
   }
 
   saveChanges() {
     if (!this._validateParams({ presence: true })) return;
     const eventParams = {
-      summary: this.state.summary || '',
-      description: this.state.description || '',
+      summary: this.state.summary,
+      description: this.state.description,
       start_time: this.state.startTime,
       end_time: this.state.endTime,
       conference_room_id: this.state.conferenceRoomId
@@ -158,6 +161,10 @@ export default class CreateEventModal extends React.Component {
 
   _clearErrors() {
     this.setState({ errors: {} });
+  }
+
+  _clearForm() {
+    this.setState(INITIAL_FORM_STATE);
   }
 
   _disableSaving() {
