@@ -18,6 +18,38 @@ describe('DateHelper', () => {
       });
     });
 
+    describe('#addTime', () => {
+      const originalDate = moment([2016, 7, 3]);
+      const date = originalDate.clone();
+      const expectedDate = moment([2016, 7, 3, 2]);
+
+      const nextWeek = DateHelper.addTime(date, 2, 'hours');
+
+      it('returns incremented date', () => {
+        expect(nextWeek.isSame(expectedDate)).to.be.true();
+      });
+
+      it('does not modify the original date', () => {
+        expect(date.isSame(originalDate)).to.be.true();
+      });
+    });
+
+    describe('#subtractTime', () => {
+      const originalDate = moment([2016, 7, 3, 2]);
+      const date = originalDate.clone();
+      const expectedDate = moment([2016, 7, 3, 0]);
+
+      const nextWeek = DateHelper.subtractTime(date, 2, 'hours');
+
+      it('returns decremented date', () => {
+        expect(nextWeek.isSame(expectedDate)).to.be.true();
+      });
+
+      it('does not modify the original date', () => {
+        expect(date.isSame(originalDate)).to.be.true();
+      });
+    });
+
     describe('#nextWeek', () => {
       const originalDate = moment([2016, 7, 3]);
       const date = originalDate.clone();

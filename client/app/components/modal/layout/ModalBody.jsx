@@ -6,7 +6,7 @@ import FormDateField from './body/FormDateField';
 import FormLocationField from './body/FormLocationField';
 import ErrorField from './ErrorField';
 
-const { func, array, object, bool, number } = React.PropTypes;
+const { func, array, object, bool, number, string } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
@@ -14,6 +14,9 @@ export default class ModalBody extends React.Component {
     availableLocations: array.isRequired,
     unavailableLocations: array.isRequired,
     selectedLocation: number,
+    startTime: string.isRequired,
+    endTime: string.isRequired,
+    dateFormat: string.isRequired,
     errors: object,
     showErrorMessage: bool
   };
@@ -64,12 +67,16 @@ export default class ModalBody extends React.Component {
             <Col xs={12} md={6}>
               <FormDateField
                 label={"Start time"}
+                value={this.props.startTime}
+                dateFormat={this.props.dateFormat}
                 onChange={this.handleStartTimeChange}
                 errors={this.props.errors.start_time || []} />
             </Col>
             <Col xs={12} md={6} className="pull-right">
               <FormDateField
                 label={"End time"}
+                value={this.props.endTime}
+                dateFormat={this.props.dateFormat}
                 onChange={this.handleEndTimeChange} />
             </Col>
           </section>
