@@ -1,18 +1,20 @@
-import React from "react";
-import { Modal, Col } from "react-bootstrap";
-import _ from "lodash";
-import FormTextField from "./body/FormTextField";
-import FormDateField from "./body/FormDateField";
-import FormLocationField from "./body/FormLocationField";
-import ErrorField from "./ErrorField";
+import React from 'react';
+import { Modal, Col } from 'react-bootstrap';
+import bindAll from 'lodash/bindAll';
+import FormTextField from './body/FormTextField';
+import FormDateField from './body/FormDateField';
+import FormLocationField from './body/FormLocationField';
+import ErrorField from './ErrorField';
 
-const { func, array, object, bool } = React.PropTypes;
+const { func, array, object, bool, number } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
-    updateParam:      func.isRequired,
-    conferenceRooms:  array.isRequired,
-    errors:           object,
+    updateParam: func.isRequired,
+    availableLocations: array.isRequired,
+    unavailableLocations: array.isRequired,
+    selectedLocation: number,
+    errors: object,
     showErrorMessage: bool
   };
 
@@ -24,7 +26,7 @@ export default class ModalBody extends React.Component {
   constructor(props) {
     super(props);
 
-    _.bindAll(this,
+    bindAll(this,
       ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange']);
   }
 
@@ -36,13 +38,7 @@ export default class ModalBody extends React.Component {
   }
 
   handleLocationChange(e) {
-    this.props.updateParam('conferenceRoomId', e.target.value);
-  }
-
-  _updateDateParam(key, value) {
-    if (value !== 'Invalid date') {
-      this.props.updateParam(key, value);
-    }
+    this.props.updateParam('conferenceRoomId', parseInt(e.target.value, 10));
   }
 
   handleStartTimeChange(e) {
@@ -74,16 +70,24 @@ export default class ModalBody extends React.Component {
             <Col xs={12} md={6} className="pull-right">
               <FormDateField
                 label={"End time"}
-                onChange={this.handleEndTimeChange}/>
+                onChange={this.handleEndTimeChange} />
             </Col>
           </section>
           <FormLocationField
-            conferenceRooms={this.props.conferenceRooms}
+            available={this.props.availableLocations}
+            unavailable={this.props.unavailableLocations}
+            selected={this.props.selectedLocation}
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
             errors={this.props.errors.conference_room_id || []} />
         </form>
       </Modal.Body>
     );
+  }
+
+  _updateDateParam(key, value) {
+    if (value !== 'Invalid date') {
+      this.props.updateParam(key, value);
+    }
   }
 }

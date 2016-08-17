@@ -35,7 +35,7 @@ class EventsController < ApplicationController
   end
 
   def index
-    time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
+    time_interval_rfc3339 = span_param.to_rfc3339
     events = google_event_client.list_events(time_interval_rfc3339)
     render json: events
   end
@@ -60,6 +60,14 @@ class EventsController < ApplicationController
   end
 
   def date_param
-    params[:date] ? Date.parse(params[:date]) : Date.today
+    Date.parse(params[:date])
+  rescue
+    Date.today
+  end
+
+  def span_param
+    TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
+  rescue
+    TimeInterval.week(date_param)
   end
 end
