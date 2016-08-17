@@ -3,6 +3,7 @@ module GoogleCalendar
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
     EventInvalidRoom = Class.new(StandardError)
+    LISTING_FIELDS = 'items(attendees(self, responseStatus))'.freeze
 
     EVENT_SCHEMA = Dry::Validation.Schema do
       required(:start).schema do
@@ -14,9 +15,9 @@ module GoogleCalendar
       end
     end.freeze
 
-    def initialize(credentials)
+    def initialize(credentials, service = nil)
       @credentials = credentials
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+      @calendar_service = service || GoogleCalendar::Client.new(credentials).calendar_service
     end
 
     def create(conference_room_id, raw_event_data = {})
@@ -69,13 +70,28 @@ module GoogleCalendar
       params.merge!(attendees: [{email: room.email}], location: room.title)
     end
 
+    def listing_options(starting, ending)
+      {
+        time_min: starting,
+        time_max: ending,
+        fields: LISTING_FIELDS,
+        single_events: true,
+        time_zone: ENV.fetch('TZ')
+      }.freeze
+    end
+
     def events_in_span(conference_room, starting, ending)
       events = calendar_service.list_events(
-        conference_room[:email],
-        time_min: starting,
-        time_max: ending
+        conference_room[:email], listing_options(starting, ending)
       )
-      events ? events.items : []
+      return [] unless events
+      events.items.reject { |e| event_declined?(e) }
+    end
+
+    # TODO: Fix repetition from EventFinder
+    def event_declined?(event)
+      return false unless event.attendees.present?
+      event.attendees.find(&:self).response_status == GoogleCalendar::EventFinder::GOOGLE_EVENT_DECLINED_RESPONSE
     end
 
     attr_accessor :credentials, :calendar_service

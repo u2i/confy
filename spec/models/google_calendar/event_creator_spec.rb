@@ -15,9 +15,7 @@ RSpec.describe GoogleCalendar::EventCreator do
     let(:end_time) { Time.now + 3.hour }
 
     it 'calls calendar_service' do
-      expect(service).to receive(:list_events).with(conference_room[:email],
-                                                    time_min: start_time,
-                                                    time_max: end_time)
+      expect(service).to receive(:list_events)
       event_creator.send(:events_in_span, conference_room, start_time, end_time)
     end
   end
@@ -93,30 +91,69 @@ RSpec.describe GoogleCalendar::EventCreator do
     end
 
     context 'valid params' do
-      context 'other events exitis' do
-        let(:credentials) { :credentials }
-        let(:first_event) { double('Event', summary: 'Summary') }
-        let(:second_event) { double('Event', summary: 'Meeting') }
-        let(:start_time) { Time.now }
-        let(:end_time) { Time.now + 3.hour }
-        let(:event_data) do
-          {
-            attendees: [],
-            start: {date_time: start_time},
-            end: {date_time: end_time}
-          }
-        end
+      context 'other events exists' do
         let!(:room) { create :conference_room }
+        let(:credentials) { :credentials }
+        context 'events are not declined' do
+          let(:attendee) { double('Attendee', self: true, response_status: 'accepted') }
+          let(:first_event) { double('Event', summary: 'Summary', attendees: [attendee]) }
+          let(:second_event) { double('Event', summary: 'Meeting', attendees: [attendee]) }
+          let(:start_time) { Time.now }
+          let(:end_time) { Time.now + 3.hour }
+          let(:event_data) do
+            {
+              attendees: [],
+              start: {date_time: start_time},
+              end: {date_time: end_time}
+            }
+          end
 
-        before do
-          allow(event_creator).to receive(:events_in_span) { [first_event, second_event] }
+          before do
+            allow(service).to receive(:list_events) { double(items: [first_event, second_event]) }
+          end
+
+          it 'raises EventInTimeSpanError' do
+            expect do
+              event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
+            end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
+                               'Already 2 events in time span(Summary, Meeting).')
+          end
         end
 
-        it 'raises EventInTimeSpanError' do
-          expect do
+        context 'events are declined' do
+          let(:attendee) do
+            double(
+              'Attendee',
+              self: true,
+              response_status: GoogleCalendar::EventFinder::GOOGLE_EVENT_DECLINED_RESPONSE
+            )
+          end
+          let(:first_event) { double('Event', summary: 'Summary', attendees: [attendee]) }
+          let(:second_event) { double('Event', summary: 'Meeting', attendees: [attendee]) }
+          let(:start_time) { Time.now }
+          let(:end_time) { Time.now + 3.hour }
+          let(:event_data) do
+            {
+              attendees: [],
+              start: {date_time: start_time},
+              end: {date_time: end_time}
+            }
+          end
+          let(:service) { double(:calendar_service) }
+
+          before do
+            allow(service).to receive(:list_events) { double(items: [first_event, second_event]) }
+            allow(event_creator).to receive(:calendar_service) { service }
+            allow(service).to receive(:insert_event) { true }
+          end
+
+          it 'creates event' do
+            expect(service).to receive(:insert_event).with(
+              'primary',
+              Google::Apis::CalendarV3::Event
+            )
             event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
-          end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
-                             'Already 2 events in time span(Summary, Meeting).')
+          end
         end
       end
       context 'no other events' do
