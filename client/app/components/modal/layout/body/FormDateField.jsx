@@ -25,6 +25,7 @@ const FormDateField = ({ label, value, dateFormat, onChange, errors }) => (
 FormDateField.propTypes = {
   dateFormat: string.isRequired,
   label: string.isRequired,
+  value: string.isRequired,
   onChange: func.isRequired,
   errors: array
 };
