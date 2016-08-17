@@ -1,10 +1,8 @@
-import React from "react";
-import instanceOfMoment from 'proptypes/moment';
-import moment from "moment";
-import { FormGroup, ControlLabel } from "react-bootstrap";
-import DateTimeField from "react-bootstrap-datetimepicker";
-import { If } from "react-if";
-import "react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css";
+import React from 'react';
+import { FormGroup, ControlLabel } from 'react-bootstrap';
+import DateTimeField from 'react-bootstrap-datetimepicker';
+import { If } from 'react-if';
+import 'react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
 
 const { string, func, array } = React.PropTypes;
 
