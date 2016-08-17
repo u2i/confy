@@ -36,6 +36,8 @@ export default class CreateEventModal extends React.Component {
 
     this.state = {
       showErrorMessage: false,
+      summary: '',
+      description: '',
       conferenceRoomId: null,
       startTime: this.props.initialDate,
       endTime: this.props.initialDate,
@@ -55,18 +57,15 @@ export default class CreateEventModal extends React.Component {
   }
 
   handleCloseModal() {
-    this.setState({
-      errors: {},
-      showErrorMessage: false
-    });
+    this._clearForm();
     this.props.closeModal();
   }
 
   saveChanges() {
     if (!this._validateParams({ presence: true })) return;
     const eventParams = {
-      summary: this.state.summary || '',
-      description: this.state.description || '',
+      summary: this.state.summary,
+      description: this.state.description,
       start_time: this.state.startTime,
       end_time: this.state.endTime,
       conference_room_id: this.state.conferenceRoomId
@@ -158,6 +157,18 @@ export default class CreateEventModal extends React.Component {
 
   _clearErrors() {
     this.setState({ errors: {} });
+  }
+
+  _clearForm() {
+    this.setState({
+      showErrorMessage: false,
+      summary: '',
+      description: '',
+      conferenceRoomId: null,
+      availableRooms: [],
+      unavailableRooms: [],
+      errors: {}
+    });
   }
 
   _disableSaving() {

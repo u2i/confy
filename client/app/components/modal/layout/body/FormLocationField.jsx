@@ -38,6 +38,6 @@ export default class FormLocationField extends React.Component {
           <div className="text-danger">{errors[0]}</div>
         </If>
       </FormGroup>
-  );
+    );
   }
-  }
+}
