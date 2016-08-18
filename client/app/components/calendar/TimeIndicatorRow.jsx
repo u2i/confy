@@ -21,13 +21,8 @@ export default class TimeIndicatorRow extends React.Component {
   }
 
   render() {
-    const timeIndicatorCells = this.props.days.map(
-      day => this._isToday(day)
-        ? <td key={uuid()} className="has-marker"><div id="time-marker" style={{ top: this._topVal() }}></div></td>
-        : <td key={uuid()} />
-    );
     return (
-      <tr id="time-indicator-row"><td className="time-cell" />{timeIndicatorCells}</tr>
+      <tr id="time-indicator-row"><td className="time-cell" />{this._timeIndicatorCells()}</tr>
     );
   }
 
@@ -39,5 +34,21 @@ export default class TimeIndicatorRow extends React.Component {
     const minutesFromMidnight = moment().diff(moment().clone().startOf('day'), 'minutes');
     const top = minutesFromMidnight * parseInt(this.props.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
     return `${top}px`;
+  }
+
+  _timeIndicatorCells() {
+    return this.props.days.map(
+      day => {
+        if (this._isToday(day)) {
+          return (
+            <td key={uuid()} className="has-marker">
+              <div id="time-marker" style={{ top: this._topVal() }}></div>
+            </td>
+          );
+        } else {
+          return <td key={uuid()}/>
+        }
+      }
+    );
   }
 }
