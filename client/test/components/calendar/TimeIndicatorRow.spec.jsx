@@ -4,18 +4,21 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import TimeIndicatorRow from 'components/calendar/TimeIndicatorRow';
-import style from 'components/calendar/calendar.scss';
 
 describe('<TimeIndicatorRow />', () => {
   const unitEventLength = 30 * 60;
   const rowHeight = 32;
-  let clock, days, wrapper;
+  let clock;
+  let days;
+  let wrapper;
   const SECONDS_IN_HOUR = 1000 * 60 * 60;
 
   before(() => {
     clock = sinon.useFakeTimers();
     days = [moment().clone().subtract(1, 'days'), moment(), moment().clone().add(1, 'days')];
-    wrapper = mount(<TimeIndicatorRow unitEventLengthInSeconds={unitEventLength} days={days} rowHeight={`${rowHeight}px`} />);
+    wrapper = mount(
+      <TimeIndicatorRow unitEventLengthInSeconds={unitEventLength} days={days} rowHeight={`${rowHeight}px`} />
+    );
   });
 
   after(() => {
@@ -44,9 +47,9 @@ describe('<TimeIndicatorRow />', () => {
   describe('time-marker movement', () => {
     it('updates top property', () => {
       const topAttribute = () => wrapper.find('div#time-marker').prop('style').top;
-      let initialTop = parseInt(topAttribute(), 10);
+      const initialTop = parseInt(topAttribute(), 10);
       clock.tick(SECONDS_IN_HOUR);
       expect(parseInt(topAttribute(), 10) - initialTop).to.eq(rowHeight * 2);
     });
-  })
+  });
 });
