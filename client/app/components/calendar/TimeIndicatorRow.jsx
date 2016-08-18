@@ -45,9 +45,8 @@ export default class TimeIndicatorRow extends React.Component {
               <div id="time-marker" style={{ top: this._topVal() }}></div>
             </td>
           );
-        } else {
-          return <td key={uuid()}/>
         }
+        return <td key={uuid()} />;
       }
     );
   }
