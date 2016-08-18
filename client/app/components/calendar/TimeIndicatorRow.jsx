@@ -9,6 +9,9 @@ export default class TimeIndicatorRow extends React.Component {
     days:                     React.PropTypes.arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: React.PropTypes.number.isRequired
   };
+  static defaultProps = {
+    rowHeight: style.rowHeight
+  };
 
   componentDidMount() {
     setInterval(() => {
@@ -31,7 +34,7 @@ export default class TimeIndicatorRow extends React.Component {
 
   _topVal() {
     let minutesFromMidnight = moment().diff(moment().clone().startOf('day'), 'minutes');
-    let top = minutesFromMidnight * parseInt(style.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
+    let top = minutesFromMidnight * parseInt(this.props.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
     return `${top}px`;
   }
 }
