@@ -29,7 +29,7 @@ class GoogleOauth
     def default_client
       CLIENT_SECRETS.to_authorization.tap do |auth_client|
         auth_client.update!(
-          scope: %w(https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email),
+          scope: %w(https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/admin.directory.user.readonly),
           redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
         )
       end
