@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GoogleContacts do
   describe '#call' do
-    let(:service) { double('service', list_users: [])}
+    let(:service) {double('service', list_users: [])}
 
     it 'sends request' do
       expect(service).to receive(:list_users).with(

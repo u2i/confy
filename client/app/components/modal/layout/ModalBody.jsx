@@ -60,34 +60,34 @@ export default class ModalBody extends React.Component {
       <Modal.Body>
         <ErrorField show={this.props.showErrorMessage} />
         <form>
-            <FormTextField
-              name={"summary"}
-              onChange={this.handleTextFieldChange} />
-            <FormTextField
-              name={"description"}
-              onChange={this.handleTextFieldChange} />
-            <section className="row">
-              <Col xs={12} md={6}>
-                <FormDateField
-                  label={"Start time"}
-                  onChange={this.handleStartTimeChange}
-                  errors={this.props.errors.start_time || []} />
-              </Col>
-              <Col xs={12} md={6} className="pull-right">
-                <FormDateField
-                  label={"End time"}
-                  onChange={this.handleEndTimeChange} />
-              </Col>
-            </section>
-            <FormLocationField
-              available={this.props.availableLocations}
-              unavailable={this.props.unavailableLocations}
-              selected={this.props.selectedLocation}
-              onChange={this.handleLocationChange}
-              validationState={!!this.props.errors.conference_room_id}
-              errors={this.props.errors.conference_room_id || []} />
-            <GuestsField
-              onChange={this.handleGuestsChange} />
+          <FormTextField
+            name={"summary"}
+            onChange={this.handleTextFieldChange} />
+          <FormTextField
+            name={"description"}
+            onChange={this.handleTextFieldChange} />
+          <section className="row">
+            <Col xs={12} md={6}>
+              <FormDateField
+                label={"Start time"}
+                onChange={this.handleStartTimeChange}
+                errors={this.props.errors.start_time || []} />
+            </Col>
+            <Col xs={12} md={6} className="pull-right">
+              <FormDateField
+                label={"End time"}
+                onChange={this.handleEndTimeChange} />
+            </Col>
+          </section>
+          <FormLocationField
+            available={this.props.availableLocations}
+            unavailable={this.props.unavailableLocations}
+            selected={this.props.selectedLocation}
+            onChange={this.handleLocationChange}
+            validationState={!!this.props.errors.conference_room_id}
+            errors={this.props.errors.conference_room_id || []} />
+          <GuestsField
+            onChange={this.handleGuestsChange} />
         </form>
       </Modal.Body>
     );

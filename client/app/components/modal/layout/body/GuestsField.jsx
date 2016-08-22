@@ -18,7 +18,7 @@ export default class GuestsField extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <FormGroup>
         <ControlLabel>Guests:</ControlLabel>
         <Typeahead
@@ -35,12 +35,9 @@ export default class GuestsField extends React.Component {
     ContactSource
       .fetch()
       .then(contacts => {
-        console.log(contacts);
-        this.setState({ contacts: contacts.data.map(o => new EventGuest(o)) });
+        this.setState({ contacts: contacts.data.map(contact => new EventGuest(contact)) });
       })
-      .catch(e => {
-        console.log(e);
-      });
+      .catch(_e => {});
   }
 }
 
@@ -48,6 +45,6 @@ class EventGuest {
   constructor(object) {
     this.email = object.primary_email;
     this.name = object.name.full_name;
-    this.label = `${this.name} <${this.email}>`
+    this.label = `${this.name} <${this.email}>`;
   }
 }

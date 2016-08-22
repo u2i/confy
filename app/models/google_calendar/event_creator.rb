@@ -74,7 +74,7 @@ module GoogleCalendar
     end
 
     def add_user_to_event(params)
-      params[:attendees].push({email: @user_email, response_status: AcceptedResponse})
+      params[:attendees].push(email: @user_email, response_status: AcceptedResponse)
     end
 
     def events_in_span(conference_room, starting, ending)

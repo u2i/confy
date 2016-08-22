@@ -4,7 +4,8 @@ RSpec.describe GoogleCalendar::EventCreator do
   let(:client) { double(:client) }
   let(:service) { double(:calendar_service) }
   let(:credentials) { :credentials }
-  let(:event_creator) { described_class.new(credentials) }
+  let(:email) { 'mail@example.com'.freeze }
+  let(:event_creator) { described_class.new(credentials, email) }
   before do
     allow(client).to receive(:calendar_service) { service }
     allow(GoogleCalendar::Client).to receive(:new) { client }
@@ -29,24 +30,24 @@ RSpec.describe GoogleCalendar::EventCreator do
       let(:expected_result) do
         {
           attendees: [
-            {email: mordor_email}
+            {email: mordor_email, response_status: described_class::AcceptedResponse}
           ],
           location: first_room.title
         }
       end
-      let(:params) { {} }
+      let(:params) { { attendees: [] } }
       it 'adds attendess and location keys with appropriate values' do
-        described_class.new(credentials).send(:add_room_to_event, params, first_room.id)
+        described_class.new(credentials, email).send(:add_room_to_event, params, first_room.id)
         expect(params).to eq expected_result
       end
     end
 
     context 'given invalid conference room id' do
       let(:invalid_id) { 1 }
-      let(:params) { {} }
+      let(:params) { { attendees: []} }
       it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
-        expect { described_class.new(credentials).send(:add_room_to_event, params, invalid_id) }.
+        expect { described_class.new(credentials, email).send(:add_room_to_event, params, invalid_id) }.
           to raise_error(GoogleCalendar::EventCreator::EventInvalidRoom)
       end
     end
@@ -87,7 +88,7 @@ RSpec.describe GoogleCalendar::EventCreator do
     context 'given invalid params' do
       let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
-        expect { described_class.new(credentials).create(0, {}) }.
+        expect { described_class.new(credentials, email).create(0, {}) }.
           to raise_error(GoogleCalendar::EventCreator::EventInvalidParamsError)
       end
     end
@@ -114,11 +115,12 @@ RSpec.describe GoogleCalendar::EventCreator do
 
         it 'raises EventInTimeSpanError' do
           expect do
-            event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
+            event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time}, attendees: [])
           end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
       end
+
       context 'no other events' do
         let(:credentials) { :credentials }
         let(:service) { double(:calendar_service) }
@@ -143,7 +145,7 @@ RSpec.describe GoogleCalendar::EventCreator do
             'primary',
             Google::Apis::CalendarV3::Event
           )
-          event_creator.create(room.id, start: {date_time: start_time}, end: {date_time: end_time})
+          event_creator.create(room.id, attendees: [], start: {date_time: start_time}, end: {date_time: end_time})
         end
       end
     end

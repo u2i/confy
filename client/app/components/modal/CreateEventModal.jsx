@@ -191,6 +191,6 @@ export default class CreateEventModal extends React.Component {
   }
 
   _attendeesParam() {
-    return this.state.attendees.map((guest) => ({ email: guest.email || guest.label}));
+    return this.state.attendees.map((guest) => ({ email: guest.email || guest.label }));
   }
 }
