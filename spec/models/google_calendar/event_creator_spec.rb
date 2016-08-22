@@ -51,6 +51,17 @@ RSpec.describe GoogleCalendar::EventCreator do
           to raise_error(GoogleCalendar::EventCreator::EventInvalidRoom)
       end
     end
+
+    context 'attendees exists' do
+      let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
+      let!(:first_room) { create(:conference_room, email: mordor_email) }
+      let(:params) { {attendees: [{email: 'adam@example.com'.freeze}]} }
+
+      it 'adds room as first attendee' do
+        described_class.new(credentials, email).send(:add_room_to_event, params, first_room.id)
+        expect(params[:attendees].first[:email]).to eq(mordor_email)
+      end
+    end
   end
 
   describe 'EVENT_SCHEMA' do
