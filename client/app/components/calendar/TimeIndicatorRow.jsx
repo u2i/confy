@@ -1,7 +1,8 @@
 import React from 'react';
-import moment from 'moment';
 import instanceOfMoment from 'proptypes/moment';
 import style from './calendar.scss';
+import { isToday, minutesFromMidnight } from 'helpers/DateHelper';
+
 
 export default class TimeIndicatorRow extends React.Component {
   static propTypes = {
@@ -25,21 +26,16 @@ export default class TimeIndicatorRow extends React.Component {
     );
   }
 
-  _isToday(day) {
-    return moment(day).isSame(moment(), 'day');
-  }
-
   _topVal() {
-    const minutesFromMidnight = moment().diff(moment().clone().startOf('day'), 'minutes');
     const pixelsPerMinute = parseInt(style.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
-    const top = minutesFromMidnight * pixelsPerMinute;
+    const top = minutesFromMidnight() * pixelsPerMinute;
     return `${top}px`;
   }
 
   _timeIndicatorCells() {
     return this.props.days.map(
       (day, ind) => {
-        if (this._isToday(day)) {
+        if (isToday(day)) {
           return (
             <td key={`IndicatorRow${ind}`} className="has-marker">
               <div id="time-marker" style={{ top: this._topVal() }}></div>
