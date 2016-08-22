@@ -13,7 +13,8 @@ describe('<CreateEventModal />', () => {
     closeModal: () => {},
     refresh: () => {},
     showModal: true
-  }
+  };
+  
   const wrapper = shallow(<CreateEventModal
     conferenceRooms={[ConferenceRoom.build()]} {...props} />);
 

@@ -14,7 +14,7 @@ describe('<GuestsField />', () => {
   });
 
   after(() => {
-    ContactSource.fetch.restore()
+    ContactSource.fetch.restore();
   });
 
   afterEach(() => {
