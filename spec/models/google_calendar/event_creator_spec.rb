@@ -35,7 +35,7 @@ RSpec.describe GoogleCalendar::EventCreator do
           location: first_room.title
         }
       end
-      let(:params) { { attendees: [] } }
+      let(:params) { {attendees: []} }
       it 'adds attendess and location keys with appropriate values' do
         described_class.new(credentials, email).send(:add_room_to_event, params, first_room.id)
         expect(params).to eq expected_result
@@ -44,7 +44,7 @@ RSpec.describe GoogleCalendar::EventCreator do
 
     context 'given invalid conference room id' do
       let(:invalid_id) { 1 }
-      let(:params) { { attendees: []} }
+      let(:params) { {attendees: []} }
       it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
         allow(ConferenceRoom).to receive(:find_by) { nil }
         expect { described_class.new(credentials, email).send(:add_room_to_event, params, invalid_id) }.

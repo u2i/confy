@@ -6,6 +6,14 @@ import ContactSource from 'sources/ContactSource';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Token.css';
 
+class EventGuest {
+  constructor(object) {
+    this.email = object.primary_email;
+    this.name = object.name.full_name;
+    this.label = `${this.name} <${this.email}>`;
+  }
+}
+
 export default class GuestsField extends React.Component {
   static propTypes = {
     onChange: React.PropTypes.func.isRequired
@@ -41,10 +49,3 @@ export default class GuestsField extends React.Component {
   }
 }
 
-class EventGuest {
-  constructor(object) {
-    this.email = object.primary_email;
-    this.name = object.name.full_name;
-    this.label = `${this.name} <${this.email}>`;
-  }
-}
