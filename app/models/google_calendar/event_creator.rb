@@ -69,7 +69,7 @@ module GoogleCalendar
     def add_room_to_event(params, conference_room_id)
       room = ConferenceRoom.find_by(id: conference_room_id)
       raise EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if room.nil?
-      params[:attendees].unshift({email: room.email, response_status: ACCEPTED_RESPONSE})
+      params[:attendees].unshift(email: room.email, response_status: ACCEPTED_RESPONSE)
       params[:location] = room.title
     end
 
