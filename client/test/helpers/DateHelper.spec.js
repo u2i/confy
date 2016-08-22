@@ -23,10 +23,10 @@ describe('DateHelper', () => {
       const date = originalDate.clone();
       const expectedDate = moment([2016, 7, 3, 2]);
 
-      const nextWeek = DateHelper.addTime(date, 2, 'hours');
+      const incDate = DateHelper.addTime(date, 2, 'hours');
 
       it('returns incremented date', () => {
-        expect(nextWeek.isSame(expectedDate)).to.be.true();
+        expect(incDate.isSame(expectedDate)).to.be.true();
       });
 
       it('does not modify the original date', () => {
