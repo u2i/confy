@@ -8,6 +8,9 @@ class GoogleOauth
   CLIENT_SECRETS = Google::APIClient::ClientSecrets.new(
     YAML.load(ERB.new(File.read(Rails.root.join('config/google_secret.yml'))).result)[Rails.env]
   )
+  CALENDAR_SCOPE = 'https://www.googleapis.com/auth/calendar'.freeze
+  EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'.freeze
+  DIRECTORY_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly'.freeze
 
   class << self
     def authenticated?(credentials = {})
@@ -29,7 +32,7 @@ class GoogleOauth
     def default_client
       CLIENT_SECRETS.to_authorization.tap do |auth_client|
         auth_client.update!(
-          scope: %w(https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/admin.directory.user.readonly),
+          scope: [CALENDAR_SCOPE, EMAIL_SCOPE, DIRECTORY_SCOPE],
           redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
         )
       end

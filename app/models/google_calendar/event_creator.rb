@@ -3,7 +3,7 @@ module GoogleCalendar
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
     EventInvalidRoom = Class.new(StandardError)
-    AcceptedResponse = 'accepted'.freeze
+    ACCEPTED_RESPONSE = 'accepted'.freeze
 
     EVENT_SCHEMA = Dry::Validation.Schema do
       required(:start).schema do
@@ -69,12 +69,12 @@ module GoogleCalendar
     def add_room_to_event(params, conference_room_id)
       room = ConferenceRoom.find_by(id: conference_room_id)
       raise EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if room.nil?
-      params[:attendees].unshift({email: room.email, response_status: AcceptedResponse})
+      params[:attendees].unshift({email: room.email, response_status: ACCEPTED_RESPONSE})
       params[:location] = room.title
     end
 
     def add_user_to_event(params)
-      params[:attendees].push(email: @user_email, response_status: AcceptedResponse)
+      params[:attendees].push(email: @user_email, response_status: ACCEPTED_RESPONSE)
     end
 
     def events_in_span(conference_room, starting, ending)
