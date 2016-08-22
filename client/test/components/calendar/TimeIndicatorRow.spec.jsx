@@ -1,9 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 import sinon from 'sinon';
+import proxyquire from 'proxyquire';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import TimeIndicatorRow from 'components/calendar/TimeIndicatorRow';
+// import TimeIndicatorRow from 'components/calendar/TimeIndicatorRow';
+
+const TimeIndicatorRow = proxyquire('../../../app/components/calendar/TimeIndicatorRow', {
+  './calendar.scss': { rowHeight: '32px' }
+}).default;
 
 describe('<TimeIndicatorRow />', () => {
   const unitEventLength = 30 * 60;
@@ -17,7 +22,7 @@ describe('<TimeIndicatorRow />', () => {
     clock = sinon.useFakeTimers();
     days = [moment().clone().subtract(1, 'days'), moment(), moment().clone().add(1, 'days')];
     wrapper = mount(
-      <TimeIndicatorRow unitEventLengthInSeconds={unitEventLength} days={days} rowHeight={`${rowHeight}px`} />
+      <TimeIndicatorRow unitEventLengthInSeconds={unitEventLength} days={days} />
     );
   });
 

@@ -6,11 +6,7 @@ import style from './calendar.scss';
 export default class TimeIndicatorRow extends React.Component {
   static propTypes = {
     days:                     React.PropTypes.arrayOf(instanceOfMoment).isRequired,
-    unitEventLengthInSeconds: React.PropTypes.number.isRequired,
-    rowHeight:                React.PropTypes.string
-  };
-  static defaultProps = {
-    rowHeight: style.rowHeight
+    unitEventLengthInSeconds: React.PropTypes.number.isRequired
   };
 
   componentDidMount() {
@@ -35,7 +31,7 @@ export default class TimeIndicatorRow extends React.Component {
 
   _topVal() {
     const minutesFromMidnight = moment().diff(moment().clone().startOf('day'), 'minutes');
-    const pixelsPerMinute = parseInt(this.props.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
+    const pixelsPerMinute = parseInt(style.rowHeight, 10) / (this.props.unitEventLengthInSeconds / 60);
     const top = minutesFromMidnight * pixelsPerMinute;
     return `${top}px`;
   }
