@@ -4,7 +4,7 @@ class GoogleContacts
   DEFAULT_FIELDS = 'etag,kind,nextPageToken,users(name/fullName,primaryEmail)'.freeze
   VIEW_TYPE = 'domain_public'.freeze
   CUSTOMER = 'my_customer'.freeze
-  MAX_USER_COUNT = 500.freeze
+  MAX_USER_COUNT = 500
 
   attr_reader :service
 

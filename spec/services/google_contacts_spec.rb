@@ -13,5 +13,12 @@ RSpec.describe GoogleContacts do
       )
       described_class.new(:credentials, service).call
     end
+
+    context 'Google Error' do
+      it 'returns nil' do
+        allow(service).to receive(:list_users) { raise Google::Apis::ServerError, 'Error'.freeze }
+        expect(described_class.new(:credentials, service).call).to be_nil
+      end
+    end
   end
 end

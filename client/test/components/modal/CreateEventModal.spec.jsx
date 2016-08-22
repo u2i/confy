@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import sinon from 'sinon'
+import sinon from 'sinon';
 import CreateEventModal from 'components/modal/CreateEventModal';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import ModalHeader from 'components/modal/layout/ModalHeader';

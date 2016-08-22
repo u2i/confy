@@ -110,7 +110,7 @@ export default class App extends React.Component {
                           showModal={this.state.showModal}
                           conferenceRooms={this.props.conferenceRooms}
                           refresh={this.handleCalendarRefresh}
-                          addNotification={this.addNotification}/>
+                          addNotification={this.addNotification} />
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );

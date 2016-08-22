@@ -10,7 +10,7 @@ class ContactsController < ApplicationController
     if contacts.present?
       render json: contacts.users.to_json
     else
-      render json: { error: 'Google Server Error' }, status: :not_found
+      render json: {error: 'Google Server Error'}, status: :not_found
     end
   end
 end
