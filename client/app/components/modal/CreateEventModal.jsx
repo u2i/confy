@@ -36,7 +36,8 @@ export default class CreateEventModal extends React.Component {
     showModal: bool.isRequired,
     conferenceRooms: array.isRequired,
     initialDate: string,
-    refresh: func.isRequired
+    refresh: func.isRequired,
+    addNotification: func.isRequired
   };
 
   static defaultProps = {
@@ -109,7 +110,8 @@ export default class CreateEventModal extends React.Component {
           selectedLocation={this.state.conferenceRoomId}
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
-          errors={this.state.errors} />
+          errors={this.state.errors}
+          addNotification={this.props.addNotification} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

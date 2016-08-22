@@ -2,6 +2,7 @@ import React from 'react';
 import { FormGroup, ControlLabel } from 'react-bootstrap';
 import Typeahead from 'react-bootstrap-typeahead';
 import ContactSource from 'sources/ContactSource';
+import Notification from '../../../../models/Notification';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Token.css';
@@ -16,7 +17,8 @@ class EventGuest {
 
 export default class GuestsField extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
+    addNotification: React.PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -45,7 +47,10 @@ export default class GuestsField extends React.Component {
       .then(contacts => {
         this.setState({ contacts: contacts.data.map(contact => new EventGuest(contact)) });
       })
-      .catch(_e => {});
+      .catch((error) => {
+        const notification = new Notification('danger', `Failed to fetch contacts: ${error.data.error}`);
+        this.props.addNotification(notification);
+      });
   }
 }
 

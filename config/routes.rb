@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   get 'google_index' => 'calendar#google_index'
 
-  get 'contacts' => 'contacts#index'
+
+  resources :contacts, only: [:index]
 
   resources :events, only: [:create, :index, :show, :destroy]
 end

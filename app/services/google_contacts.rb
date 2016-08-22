@@ -4,7 +4,7 @@ class GoogleContacts
   DEFAULT_FIELDS = 'etag,kind,nextPageToken,users(name/fullName,primaryEmail)'.freeze
   VIEW_TYPE = 'domain_public'.freeze
   CUSTOMER = 'my_customer'.freeze
-  MAX_USER_COUNT = 500
+  MAX_USER_COUNT = 500.freeze
 
   attr_reader :service
 
@@ -15,6 +15,8 @@ class GoogleContacts
 
   def call(fields = DEFAULT_FIELDS, max_results = MAX_USER_COUNT)
     service.list_users(customer: CUSTOMER, view_type: VIEW_TYPE, max_results: max_results, fields: fields)
+  rescue Google::Apis::ServerError
+    nil
   end
 
   private

@@ -41,7 +41,8 @@ export default class App extends React.Component {
     };
 
     bindAll(this,
-      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete']);
+      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete',
+      'addNotification']);
   }
 
   componentDidMount() {
@@ -77,6 +78,14 @@ export default class App extends React.Component {
     this._deleteEvent(eventId);
   }
 
+  addNotification(notification) {
+    notification.timeout = setTimeout(
+      () => this._removeNotification(notification.id),
+      this.props.notificationTimeout
+    );
+    this.setState({ notifications: this.state.notifications.concat([notification]) });
+  }
+
   render() {
     const { initialEvents: _, ...calendarProps } = this.props;
     const { events, notifications, updating } = this.state;
@@ -100,7 +109,8 @@ export default class App extends React.Component {
         <CreateEventModal closeModal={this.closeModal}
                           showModal={this.state.showModal}
                           conferenceRooms={this.props.conferenceRooms}
-                          refresh={this.handleCalendarRefresh} />
+                          refresh={this.handleCalendarRefresh}
+                          addNotification={this.addNotification}/>
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );
@@ -142,14 +152,6 @@ export default class App extends React.Component {
     const index = events.findIndex(event => event.id === id);
     events.splice(index, 1);
     this.setState({ events });
-  }
-
-  _addNotification(notification) {
-    notification.timeout = setTimeout(
-      () => this._removeNotification(notification.id),
-      this.props.notificationTimeout
-    );
-    this.setState({ notifications: this.state.notifications.concat([notification]) });
   }
 
   _removeNotification(id) {

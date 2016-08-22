@@ -14,7 +14,7 @@ describe('<SideNav />', () => {
 
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<SideNav date={date} />);
+    wrapper = shallow(<SideNav date={date} openModal={sinon.spy()} />);
     onRefresh.reset();
   });
 

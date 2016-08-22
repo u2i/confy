@@ -6,12 +6,11 @@ class ContactsController < ApplicationController
   before_action :check_authentication
 
   def index
-    render json: users.to_json
-  end
-
-  private
-
-  def users
-    GoogleContacts.new(session[:credentials]).call.users || []
+    contacts = GoogleContacts.new(session[:credentials]).call
+    if contacts.present?
+      render json: contacts.users.to_json
+    else
+      render json: { error: 'Google Server Error' }, status: :not_found
+    end
   end
 end

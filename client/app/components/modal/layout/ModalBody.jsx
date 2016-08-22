@@ -16,7 +16,8 @@ export default class ModalBody extends React.Component {
     unavailableLocations: array.isRequired,
     selectedLocation: number,
     errors: object,
-    showErrorMessage: bool
+    showErrorMessage: bool,
+    addNotification: func.isRequired
   };
 
   static defaultProps = {
@@ -87,7 +88,8 @@ export default class ModalBody extends React.Component {
             validationState={!!this.props.errors.conference_room_id}
             errors={this.props.errors.conference_room_id || []} />
           <GuestsField
-            onChange={this.handleGuestsChange} />
+            onChange={this.handleGuestsChange}
+            addNotification={this.props.addNotification} />
         </form>
       </Modal.Body>
     );
