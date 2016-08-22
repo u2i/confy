@@ -26,6 +26,7 @@ const INITIAL_FORM_STATE = {
   conferenceRoomId: null,
   availableRooms: [],
   unavailableRooms: [],
+  attendees: [],
   errors: {}
 };
 
@@ -72,7 +73,8 @@ export default class CreateEventModal extends React.Component {
       description: this.state.description,
       start_time: this.state.startTime,
       end_time: this.state.endTime,
-      conference_room_id: this.state.conferenceRoomId
+      conference_room_id: this.state.conferenceRoomId,
+      attendees: this._attendeesParam()
     };
 
     EventSource.create(eventParams)
@@ -186,5 +188,9 @@ export default class CreateEventModal extends React.Component {
         this.setState({ availableRooms, unavailableRooms });
         this._validateParams('location');
       });
+  }
+
+  _attendeesParam() {
+    return this.state.attendees.map((guest) => ({ email: guest.email || guest.label}));
   }
 }
