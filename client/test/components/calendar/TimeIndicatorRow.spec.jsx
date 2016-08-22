@@ -4,23 +4,21 @@ import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-// import TimeIndicatorRow from 'components/calendar/TimeIndicatorRow';
-
-const TimeIndicatorRow = proxyquire('../../../app/components/calendar/TimeIndicatorRow', {
-  './calendar.scss': { rowHeight: '32px' }
-}).default;
 
 describe('<TimeIndicatorRow />', () => {
+  const style = { rowHeight: '32px' };
   const unitEventLength = 30 * 60;
-  const rowHeight = 32;
   let clock;
   let days;
   let wrapper;
   const SECONDS_IN_HOUR = 1000 * 60 * 60;
+  const TimeIndicatorRow = proxyquire('../../../app/components/calendar/TimeIndicatorRow', {
+    './calendar.scss': style
+  }).default;
 
   before(() => {
     clock = sinon.useFakeTimers();
-    days = [moment().clone().subtract(1, 'days'), moment(), moment().clone().add(1, 'days')];
+    days = [moment().subtract(1, 'days'), moment(), moment().add(1, 'days')];
     wrapper = mount(
       <TimeIndicatorRow unitEventLengthInSeconds={unitEventLength} days={days} />
     );
@@ -54,7 +52,7 @@ describe('<TimeIndicatorRow />', () => {
       const topAttribute = () => wrapper.find('div#time-marker').prop('style').top;
       const initialTop = parseInt(topAttribute(), 10);
       clock.tick(SECONDS_IN_HOUR);
-      expect(parseInt(topAttribute(), 10) - initialTop).to.eq(rowHeight * 2);
+      expect(parseInt(topAttribute(), 10) - initialTop).to.eq(parseInt(style.rowHeight, 10) * 2);
     });
   });
 });
