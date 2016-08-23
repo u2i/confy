@@ -13,12 +13,10 @@ class GoogleContacts
     @service = service || Google::Apis::AdminDirectoryV1::DirectoryService.new.tap do |s|
       s.authorization = new_auth_client
     end
-
   end
 
   def call(fields = DEFAULT_FIELDS, max_results = MAX_USER_COUNT)
     service.list_users(customer: CUSTOMER, view_type: VIEW_TYPE, max_results: max_results, fields: fields)
-  rescue Google::Apis::ServerError
   end
 
   private

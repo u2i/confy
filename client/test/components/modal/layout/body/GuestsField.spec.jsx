@@ -24,7 +24,7 @@ describe('<GuestsField />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(<GuestsField onChange={onChangeSpy} addNotification={sinon.spy()} />);
+    wrapper = mount(<GuestsField onChange={onChangeSpy} onError={sinon.spy()} />);
   });
 
   it('renders guests <Typeahead /> field', () => {
