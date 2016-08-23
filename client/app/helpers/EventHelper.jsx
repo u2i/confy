@@ -1,3 +1,5 @@
+import sortBy from 'lodash/sortBy';
+
 export const SECONDS_IN_DAY = 24 * 60 * 60;
 
 export function eventsStartingAt(timestamp, events) {
@@ -45,14 +47,8 @@ class Block {
   }
 }
 
-export function sortEventsByStartTime(events) {
-  return events.sort((event1, event2) => (
-    event1.start_timestamp - event2.start_timestamp
-  ));
-}
-
 export function buildBlocks(events) {
-  const sortedEvents = sortEventsByStartTime(events);
+  const sortedEvents = sortBy(events, 'start_timestamp');
   const blocks = [];
   sortedEvents.forEach(event => {
     const collidingBlock = blocks.find(block => block.canAddEvent(event));
