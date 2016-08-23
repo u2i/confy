@@ -31,12 +31,14 @@ RSpec.describe ConferenceRoom, type: :model do
     end
   end
 
-  describe 'scope' do
+  context 'scopes' do
     let!(:conference_room) { create :conference_room }
     let!(:conference_room_with_channel) { create :conference_room }
     let!(:conference_room_with_expired_channel) { create :conference_room }
     let!(:channel) do
-      create(:channel, conference_room: conference_room_with_channel, expiration: Time.now + 2 * Channel::SUBSCRIPTION_BUFFER)
+      create(:channel,
+             conference_room: conference_room_with_channel,
+             expiration: Time.now + 2 * Channel::SUBSCRIPTION_BUFFER)
     end
     let!(:expired_channel) do
       create(:channel, conference_room: conference_room_with_expired_channel, expiration: Time.now)
