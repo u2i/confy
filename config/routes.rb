@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root 'calendar#index'
   get 'oauth2callback' => 'authentication#authenticate'
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
+  get 'conference_rooms/:conference_room_id/events' => 'events#room_index'
 
   resources :events, only: [:create, :index, :show, :destroy]
 end

@@ -40,6 +40,12 @@ class EventsController < ApplicationController
     render json: events
   end
 
+  def room_index
+    time_interval_rfc3339 = TimeInterval.week(date_param).to_rfc3339
+    events = google_event_client.events_from(time_interval_rfc3339, params[:conference_room_id].to_i)
+    render json: events
+  end
+
   def create
     conference_room_id = event_params[:conference_room_id]
     google_event_params = GoogleCalendar::EventDataService.process_params(event_params)

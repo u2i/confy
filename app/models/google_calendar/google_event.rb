@@ -17,6 +17,10 @@ module GoogleCalendar
       GoogleCalendar::EventFinder.new(credentials, user_email).all_events(time_interval)
     end
 
+    def events_from(time_interval, conference_room_ids)
+      GoogleCalendar::EventFinder.new(credentials, user_email).events_from(time_interval, conference_room_ids)
+    end
+
     private
 
     attr_accessor :credentials, :user_email
