@@ -47,7 +47,7 @@ export default class GuestsField extends React.Component {
         this.setState({ contacts: contacts.data.map(contact => new EventGuest(contact)) });
       })
       .catch((error) => {
-        this.props.onError(`Failed to fetch contacts: ${error.data.error}`)
+        this.props.onError(`Failed to fetch contacts: ${error.data.error}`);
       });
   }
 }
