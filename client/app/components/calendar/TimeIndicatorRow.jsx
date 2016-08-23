@@ -1,4 +1,5 @@
 import React from 'react';
+import { If } from 'react-if';
 import instanceOfMoment from 'proptypes/moment';
 import style from './calendar.scss';
 import { isToday, minutesFromMidnight } from 'helpers/DateHelper';
@@ -34,16 +35,15 @@ export default class TimeIndicatorRow extends React.Component {
 
   _timeIndicatorCells() {
     return this.props.days.map(
-      (day, ind) => {
-        if (isToday(day)) {
-          return (
-            <td key={`IndicatorRow${ind}`} className="has-marker">
-              <div id="time-marker" style={{ top: this._topVal() }}></div>
-            </td>
-          );
-        }
-        return <td key={`IndicatorRow${ind}`} />;
-      }
-    );
+    (day, ind) => {
+      const today = isToday(day);
+      return (
+        <td className={today ? 'has-marker' : ''}  key={`IndicatorRow${ind}`}>
+          <If condition={today}>
+            <div id="time-marker" style={{ top: this._topVal() }}></div>
+          </If>
+        </td>
+      )
+    });
   }
 }
