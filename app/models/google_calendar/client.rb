@@ -9,6 +9,7 @@ module GoogleCalendar
     end
 
     private
+    
     include GoogleOauthClient
 
     attr_accessor :credentials
