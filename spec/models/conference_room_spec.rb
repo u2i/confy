@@ -25,9 +25,48 @@ RSpec.describe ConferenceRoom, type: :model do
     let(:color) { '#fFB021' }
     let(:conference_room) { build :conference_room, color: color }
 
-    it 'must downcases color' do
+    it 'downcases color' do
       conference_room.valid? # Triggers before_validation
       expect(conference_room.color).to eq color.downcase
+    end
+  end
+
+  describe 'scope' do
+    let!(:conference_room) { create :conference_room }
+    let!(:conference_room_with_channel) { create :conference_room }
+    let!(:conference_room_with_expired_channel) { create :conference_room }
+    let!(:channel) do
+      create(:channel, conference_room: conference_room_with_channel, expiration: Time.now + 2 * Channel::SUBSCRIPTION_BUFFER)
+    end
+    let!(:expired_channel) do
+      create(:channel, conference_room: conference_room_with_expired_channel, expiration: Time.now)
+    end
+
+    describe '.without_channel' do
+      let(:expected_conference_rooms) { [conference_room] }
+
+      subject(:conference_rooms) { described_class.without_channel.to_a }
+      it 'returns conference rooms that do not have an assigned google notification channel' do
+        expect(conference_rooms).to eq(expected_conference_rooms)
+      end
+    end
+
+    describe '.with_expired_channel' do
+      let(:expected_conference_rooms) { [conference_room_with_expired_channel] }
+
+      subject(:conference_rooms) { described_class.with_expired_channel.to_a }
+      it 'returns conference rooms that have an expired google notification channel' do
+        expect(conference_rooms).to eq(expected_conference_rooms)
+      end
+    end
+
+    describe '.without_active_channel' do
+      let(:expected_conference_rooms) { [conference_room, conference_room_with_expired_channel] }
+
+      subject(:conference_rooms) { described_class.without_active_channel.to_a }
+      it 'returns conference rooms that have no channel or an expired channel' do
+        expect(conference_rooms).to match_array(expected_conference_rooms)
+      end
     end
   end
 end
