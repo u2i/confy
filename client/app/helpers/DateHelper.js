@@ -52,6 +52,6 @@ export function isToday(day) {
   return moment(day).isSame(moment(), 'day');
 }
 
-export function minutesFromMidnight() {
-  return moment().diff(moment().startOf('day'), 'minutes');
+export function minutesFromMidnight(start = moment()) {
+  return start.diff(moment().startOf('day'), 'minutes');
 }

@@ -58,5 +58,27 @@ describe('DateHelper', () => {
         expect(DateHelper.dateParam(date)).to.equal(expectedString);
       });
     });
+
+    describe('#isToday', () => {
+      context('today given', () => {
+        it('returns true', () => {
+          expect(DateHelper.isToday(moment())).to.be.true();
+        });
+      });
+
+      context('other day given', () => {
+        it('returns false', () => {
+          expect(DateHelper.isToday(moment().add(1, 'days'))).to.be.false();
+        });
+      });
+    });
+
+    describe('#minutesFromMidnight', () => {
+      it('returns difference from midnight in minutes', () => {
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(1, 'hour'))).to.equal(60);
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(39, 'minutes'))).to.equal(39);
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(3, 'hour'))).to.equal(180);
+      })
+    })
   });
 });
