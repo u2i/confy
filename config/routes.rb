@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root 'calendar#index'
   get 'oauth2callback' => 'authentication#authenticate'
-  get 'google_index' => 'calendar#google_index'
+  post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
 
   resources :events, only: [:create, :index, :show, :destroy]
 end
