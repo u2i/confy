@@ -6,7 +6,7 @@ module GoogleCalendar
     end
 
     def create(conference_room_id, raw_event_data = {})
-      GoogleCalendar::EventCreator.new(credentials).create(conference_room_id, raw_event_data)
+      GoogleCalendar::EventCreator.new(credentials, user_email).create(conference_room_id, raw_event_data)
     end
 
     def delete(event_id)

@@ -5,6 +5,7 @@ import FormTextField from './body/FormTextField';
 import FormDateField from './body/FormDateField';
 import FormLocationField from './body/FormLocationField';
 import ErrorField from './ErrorField';
+import GuestsField from './body/GuestsField';
 
 const { func, array, object, bool, number } = React.PropTypes;
 
@@ -15,7 +16,8 @@ export default class ModalBody extends React.Component {
     unavailableLocations: array.isRequired,
     selectedLocation: number,
     errors: object,
-    showErrorMessage: bool
+    showErrorMessage: bool,
+    onError: func.isRequired
   };
 
   static defaultProps = {
@@ -27,7 +29,8 @@ export default class ModalBody extends React.Component {
     super(props);
 
     bindAll(this,
-      ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange']);
+      ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange',
+        'handleGuestsChange']);
   }
 
   handleTextFieldChange(e) {
@@ -47,6 +50,10 @@ export default class ModalBody extends React.Component {
 
   handleEndTimeChange(e) {
     this._updateDateParam('endTime', e);
+  }
+
+  handleGuestsChange(e) {
+    this.props.updateParam('attendees', e);
   }
 
   render() {
@@ -80,6 +87,9 @@ export default class ModalBody extends React.Component {
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
             errors={this.props.errors.conference_room_id || []} />
+          <GuestsField
+            onChange={this.handleGuestsChange}
+            onError={this.props.onError} />
         </form>
       </Modal.Body>
     );

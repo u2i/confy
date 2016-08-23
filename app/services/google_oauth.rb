@@ -8,8 +8,13 @@ class GoogleOauth
   CLIENT_SECRETS = Google::APIClient::ClientSecrets.new(
     YAML.load(ERB.new(File.read(Rails.root.join('config/google_secret.yml'))).result)[Rails.env]
   )
+  CALENDAR_SCOPE = 'https://www.googleapis.com/auth/calendar'.freeze
+  EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'.freeze
+  DIRECTORY_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly'.freeze
 
   class << self
+    include GoogleOauthClient
+
     def authenticated?(credentials = {})
       return false unless credentials.is_a?(Hash)
       credentials.key?('client_id') && credentials.key?('client_secret')
@@ -29,7 +34,7 @@ class GoogleOauth
     def default_client
       CLIENT_SECRETS.to_authorization.tap do |auth_client|
         auth_client.update!(
-          scope: %w(https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email),
+          scope: [CALENDAR_SCOPE, EMAIL_SCOPE, DIRECTORY_SCOPE],
           redirect_uri: (url_for action: :authenticate, controller: :authentication, host: ENV['HOSTNAME'])
         )
       end
@@ -53,10 +58,6 @@ class GoogleOauth
 
     def user_info_service(credentials)
       Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = new_auth_client(credentials) }
-    end
-
-    def new_auth_client(credentials)
-      Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
   end
 
