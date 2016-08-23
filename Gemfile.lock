@@ -249,6 +249,9 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
+    rspec-activejob (0.6.1)
+      activejob (>= 4.2)
+      rspec-mocks
     rspec-core (3.5.0)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -348,6 +351,7 @@ DEPENDENCIES
   rails (>= 5.0.0.rc2, < 5.1)
   react_on_rails (~> 5)
   redis (~> 3.0)
+  rspec-activejob
   rspec-rails (~> 3.4)
   sass-rails (~> 5.0)
   shoulda-matchers (~> 3.1)
