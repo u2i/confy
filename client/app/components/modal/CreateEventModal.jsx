@@ -37,7 +37,7 @@ export default class CreateEventModal extends React.Component {
     conferenceRooms: array.isRequired,
     initialDate: string,
     refresh: func.isRequired,
-    addNotification: func.isRequired
+    onError: func.isRequired
   };
 
   static defaultProps = {
@@ -111,7 +111,7 @@ export default class CreateEventModal extends React.Component {
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
-          addNotification={this.props.addNotification} />
+          onError={this.props.onError} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

@@ -14,7 +14,7 @@ describe('<CreateEventModal />', () => {
     closeModal: () => {},
     refresh: () => {},
     showModal: true,
-    addNotification: sinon.spy()
+    notifyError: sinon.spy()
   };
 
   const wrapper = shallow(<CreateEventModal
