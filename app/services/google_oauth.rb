@@ -13,6 +13,8 @@ class GoogleOauth
   DIRECTORY_SCOPE = 'https://www.googleapis.com/auth/admin.directory.user.readonly'.freeze
 
   class << self
+    include GoogleOauthClient
+
     def authenticated?(credentials = {})
       return false unless credentials.is_a?(Hash)
       credentials.key?('client_id') && credentials.key?('client_secret')
@@ -56,10 +58,6 @@ class GoogleOauth
 
     def user_info_service(credentials)
       Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = new_auth_client(credentials) }
-    end
-
-    def new_auth_client(credentials)
-      Signet::OAuth2::Client.new(JSON.parse(credentials))
     end
   end
 

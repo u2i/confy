@@ -10,20 +10,20 @@ class GoogleContacts
 
   def initialize(credentials, service = nil)
     @credentials = credentials
-    @service = service || Google::Apis::AdminDirectoryV1::DirectoryService.new.tap { |s| s.authorization = client }
+    @service = service || Google::Apis::AdminDirectoryV1::DirectoryService.new.tap do |s|
+      s.authorization = new_auth_client
+    end
+
   end
 
   def call(fields = DEFAULT_FIELDS, max_results = MAX_USER_COUNT)
     service.list_users(customer: CUSTOMER, view_type: VIEW_TYPE, max_results: max_results, fields: fields)
   rescue Google::Apis::ServerError
-    nil
   end
 
   private
 
-  attr_accessor :credentials
+  include GoogleOauthClient
 
-  def client
-    Signet::OAuth2::Client.new(JSON.parse(credentials))
-  end
+  attr_accessor :credentials
 end
