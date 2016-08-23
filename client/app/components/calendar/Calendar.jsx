@@ -13,6 +13,7 @@ import { setEventsPositionAttributes } from 'helpers/EventHelper';
 import RoomFilters from './filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 import CalendarHeader from './CalendarHeader';
+import TimeIndicatorRow from './TimeIndicatorRow';
 
 import './calendar.scss';
 
@@ -82,6 +83,9 @@ export default class Calendar extends React.Component {
             </tr>
           </thead>
           <tbody>
+            <TimeIndicatorRow
+              days={this.props.days}
+              unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
             {rowNodes}
           </tbody>
         </Table>
