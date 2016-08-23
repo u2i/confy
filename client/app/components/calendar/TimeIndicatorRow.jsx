@@ -38,12 +38,12 @@ export default class TimeIndicatorRow extends React.Component {
     (day, ind) => {
       const today = isToday(day);
       return (
-        <td className={today ? 'has-marker' : ''}  key={`IndicatorRow${ind}`}>
+        <td className={today ? 'has-marker' : ''} key={`IndicatorRow${ind}`}>
           <If condition={today}>
             <div id="time-marker" style={{ top: this._topVal() }}></div>
           </If>
         </td>
-      )
+      );
     });
   }
 }

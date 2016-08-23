@@ -78,7 +78,7 @@ describe('DateHelper', () => {
         expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(1, 'hour'))).to.equal(60);
         expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(39, 'minutes'))).to.equal(39);
         expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(3, 'hour'))).to.equal(180);
-      })
-    })
+      });
+    });
   });
 });
