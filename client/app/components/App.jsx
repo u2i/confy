@@ -1,11 +1,13 @@
 import moment from 'moment';
-import cable from 'cable';
+import { EVENT_CHANNEL, createSubscription } from 'cable';
 import React from 'react';
 import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
 import { dateParam, weekDays } from 'helpers/DateHelper';
+import { updateRoomEvents } from 'helpers/EventHelper';
+
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
@@ -23,8 +25,7 @@ export default class App extends React.Component {
         date: string
       })
     }).isRequired,
-    notificationTimeout: number,
-    eventChannel: React.object
+    notificationTimeout: number
   };
 
   static defaultProps = {
@@ -49,12 +50,7 @@ export default class App extends React.Component {
     if (!this.state.events) {
       this._fetchEvents();
     }
-
-    cable.subscriptions.create('EventChannel', {
-      received(data) {
-        console.log(data);
-      }
-    })
+    createSubscription(EVENT_CHANNEL, ({ conference_room_id }) => this._fetchEvents(conference_room_id));
   }
 
   componentDidUpdate(prevProps) {
@@ -125,12 +121,13 @@ export default class App extends React.Component {
     return dateParam(this._dateOrNow());
   }
 
-  _fetchEvents() {
+  _fetchEvents(conferenceRoomId) {
     this.setState({ updating: true });
     EventSource
-      .fetch({ date: this._dateParam() })
+      .fetch({ date: this._dateParam() }, conferenceRoomId)
       .then(({ data }) => {
-        this.setState({ events: data, updating: false });
+        const events = conferenceRoomId ? updateRoomEvents(this.state.events, data, conferenceRoomId) : data;
+        this.setState({ events, updating: false });
       })
       .catch((err) => {
         const error = new Notification('danger', `Failed to fetch events: ${err}`);
