@@ -60,7 +60,7 @@ export default class Event extends React.Component {
   _eventStyle() {
     return {
       backgroundColor: this.props.event.conference_room.color,
-      height: this._eventHeight(),
+      minHeight: this._eventHeight(),
       width: this._eventWidth(),
       left: this._eventOffset()
     };

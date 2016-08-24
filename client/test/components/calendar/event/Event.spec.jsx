@@ -37,8 +37,8 @@ describe('<Event />', () => {
     expect(defaultWrapper.text()).to.include('2:00');
   });
 
-  it('renders with correct height', () => {
-    expect(defaultWrapper).to.have.style('height').equal('120px');
+  it('renders with correct minHeight', () => {
+    expect(defaultWrapper).to.have.style('min-height').equal('120px');
   });
 
   it('renders with correct width', () => {

@@ -61,7 +61,7 @@ describe('<App />', () => {
 
   it('prefetches events', () => {
     mount(<App {...props} />);
-    expect(EventSource.fetch).to.have.been.calledOnce();
+    expect(EventSource.fetch).to.have.been.called();
   });
 
   describe('refresh', () => {
