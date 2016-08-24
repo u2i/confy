@@ -15,6 +15,7 @@ class ConferenceRoom < ApplicationRecord
   validates :color, presence: true, uniqueness: {case_sensitive: false}, format: HEX_COLOR_FORMAT
   validates :title, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
+
   has_one :channel, dependent: :destroy
 
   scope :without_channel, -> { left_outer_joins(:channel).where(channels: {id: nil}) }
