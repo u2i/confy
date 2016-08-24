@@ -12,8 +12,8 @@ const { func, array, object, bool, number, string } = React.PropTypes;
 export default class ModalBody extends React.Component {
   static propTypes = {
     updateParam: func.isRequired,
-    availableLocations: array.isRequired,
-    unavailableLocations: array.isRequired,
+    availableLocations: array,
+    unavailableLocations: array,
     selectedLocation: number,
     startTime: string.isRequired,
     endTime: string.isRequired,
