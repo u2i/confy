@@ -56,6 +56,9 @@ $event-border: 1px;
 }
 
 .event {
+  //Fix hover not triggering
+  z-index: 1;
+  
   &:hover, &:focus {
     transition: all 0.5s;
     height: auto;
