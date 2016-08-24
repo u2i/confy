@@ -16,7 +16,7 @@ export default class Event extends React.Component {
 
   render() {
     const event = this.props.event;
-    const creator = event.creator;
+    const creator = event.creator || { self: false };
     const startTimeStr = formatTime(event.start.date_time, this.props.timeFormat);
     const endTimeStr = formatTime(event.end.date_time, this.props.timeFormat);
     let timeStr = `${startTimeStr} - ${endTimeStr}`;

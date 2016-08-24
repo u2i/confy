@@ -12,7 +12,7 @@ const time = shape({
 
 const EventShema = {
   id:              oneOfType([string, number]).isRequired,
-  creator:         UserSchema.isRequired,
+  creator:         UserSchema,
   start:           time.isRequired,
   end:             time.isRequired,
   conference_room: ConferenceRoomSchema.isRequired,

@@ -10,15 +10,17 @@ import './form_location_field.scss';
 
 export default class FormLocationField extends React.Component {
   static propTypes = {
-    available: array.isRequired,
-    unavailable: array.isRequired,
+    available: array,
+    unavailable: array,
     onChange: func.isRequired,
     selected: number,
     errors: array
   };
 
   static defaultProps = {
-    errors: []
+    errors: [],
+    available: [],
+    unavailable: []
   };
 
   render() {
