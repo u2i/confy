@@ -32,7 +32,8 @@ module GoogleCalendar
       raise_error_if_occupied(event_data)
       calendar_service.insert_event(
         'primary',
-        Google::Apis::CalendarV3::Event.new(event_data)
+        Google::Apis::CalendarV3::Event.new(event_data),
+        send_notifications: true
       )
     end
 

@@ -154,7 +154,8 @@ RSpec.describe GoogleCalendar::EventCreator do
         it 'creates event' do
           expect(service).to receive(:insert_event).with(
             'primary',
-            Google::Apis::CalendarV3::Event
+            Google::Apis::CalendarV3::Event,
+            send_notifications: true
           )
           event_creator.create(room.id, event_data)
         end
