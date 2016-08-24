@@ -54,10 +54,10 @@ $event-border: 1px;
 .event-group {
   width: 100%;
 }
+
 .event {
   &:hover, &:focus {
     transition: all 0.5s;
-    overflow: visible;
     height: auto;
     width: 100% !important;
     z-index: 99;
