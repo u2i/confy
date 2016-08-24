@@ -6,7 +6,7 @@ module GoogleCalendar
     end
 
     def delete(event_id)
-      calendar_service.delete_event('primary', event_id)
+      calendar_service.delete_event('primary', event_id, send_notifications: true)
     end
 
     private
