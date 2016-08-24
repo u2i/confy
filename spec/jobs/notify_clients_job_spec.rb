@@ -8,7 +8,7 @@ RSpec.describe NotifyClientsJob, type: :job do
     subject(:job) { described_class.perform_later(conference_room_id) }
 
     it 'is queued' do
-      expect{ job }.to have_enqueued_job.with(conference_room_id)
+      expect { job }.to have_enqueued_job.with(conference_room_id)
     end
 
     it 'executes ActionCable.server.broadcast call with appropriate conference room id' do

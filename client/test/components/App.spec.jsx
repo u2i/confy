@@ -81,7 +81,7 @@ describe('<App />', () => {
 
     it('deletes event', () => {
       const event = Event.build({ creator: User.build({ self: true }) });
-      const wrapper = mount(<App {...props} initialEvents={[event]}/>);
+      const wrapper = mount(<App {...props} initialEvents={[event]} />);
       wrapper.find('.delete-button').simulate('click');
 
       wrapper.find(EventDestroyer).props().onDelete();
