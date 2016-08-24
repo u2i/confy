@@ -7,7 +7,7 @@ class Channel < ApplicationRecord
 
   before_destroy :unsubscribe
 
-  scope :expired, -> { where('expiration <= ?', Time.now + SUBSCRIPTION_BUFFER)}
+  scope :expired, -> { where('expiration <= ?', Time.now + SUBSCRIPTION_BUFFER) }
 
   def google_update!(google_channel)
     update!(resource_id: google_channel.resource_id,

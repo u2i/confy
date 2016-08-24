@@ -34,4 +34,3 @@ class NotificationService
     GoogleCalendar::ChannelFactory.build(channel)
   end
 end
-
