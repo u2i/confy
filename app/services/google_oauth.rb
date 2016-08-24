@@ -61,7 +61,7 @@ class GoogleOauth
     end
 
     def authorization_details
-      scopes = [CALENDAR_ACCESS_SCOPE]
+      scopes = [CALENDAR_SCOPE]
       authorization = Google::Auth.get_application_default(scopes)
       authorization.sub = ENV.fetch('APPLICATION_OWNER')
       authorization.fetch_access_token!
