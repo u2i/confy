@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
+import instanceOfMoment from 'proptypes/moment';
 import { Modal } from 'react-bootstrap';
 import moment from 'moment';
-import assign from 'lodash/assign';
+import defaults from 'lodash/defaults';
 import bindAll from 'lodash/bindAll';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
@@ -12,9 +13,9 @@ import EventSource from 'sources/EventSource';
 import ModalHeader from './layout/ModalHeader';
 import ModalFooter from './layout/ModalFooter';
 import ModalBody from './layout/ModalBody';
+import * as DateHelper from 'helpers/DateHelper';
 
-const { func, bool, array, string } = PropTypes;
-const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
+const { func, bool, array, number, string } = PropTypes;
 const DATE_ERROR_TEXT = 'Start time must be lower than end time';
 const NO_LOCATION_ERROR = 'You must select a location';
 const LOCATION_ERROR = 'This room is not available during the selected time.';
@@ -24,8 +25,6 @@ const INITIAL_FORM_STATE = {
   summary: '',
   description: '',
   conferenceRoomId: null,
-  availableRooms: [],
-  unavailableRooms: [],
   attendees: [],
   errors: {}
 };
@@ -35,25 +34,30 @@ export default class CreateEventModal extends React.Component {
     closeModal: func.isRequired,
     showModal: bool.isRequired,
     conferenceRooms: array.isRequired,
-    initialDate: string,
+    initialDate: instanceOfMoment,
+    initialLength: number,
+    dateFormat: string,
     refresh: func.isRequired,
     onError: func.isRequired
   };
 
   static defaultProps = {
-    initialDate: moment().format(DATE_FORMAT)
+    initialDate: moment(),
+    initialLength: 1,
+    dateFormat: 'DD/MM/YYYY HH:mm'
   };
 
   constructor(props) {
     super(props);
 
-    this.state = assign({}, INITIAL_FORM_STATE, {
-      startTime: this.props.initialDate,
-      endTime: this.props.initialDate
-    });
+    this.state = this._initialFormState();
 
     bindAll(this,
       ['saveChanges', 'updateParam', 'handleCloseModal']);
+  }
+
+  componentDidMount() {
+    this._updateRoomAvailability();
   }
 
   componentDidUpdate(_, prevState) {
@@ -108,6 +112,9 @@ export default class CreateEventModal extends React.Component {
           availableLocations={this.state.availableRooms}
           unavailableLocations={this.state.unavailableRooms}
           selectedLocation={this.state.conferenceRoomId}
+          startTime={this.state.startTime}
+          endTime={this.state.endTime}
+          dateFormat={this.props.dateFormat}
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
@@ -119,6 +126,14 @@ export default class CreateEventModal extends React.Component {
 
       </Modal>
     );
+  }
+
+  _initialFormState() {
+    const startTime = this.props.initialDate.format(this.props.dateFormat);
+    const endTime = DateHelper
+      .addTime(this.props.initialDate, this.props.initialLength, 'minutes')
+      .format(this.props.dateFormat);
+    return defaults({}, INITIAL_FORM_STATE, { startTime, endTime });
   }
 
   _validateTimeRange() {
@@ -168,7 +183,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   _clearForm() {
-    this.setState(INITIAL_FORM_STATE);
+    this.setState(this._initialFormState());
   }
 
   _disableSaving() {
@@ -189,7 +204,8 @@ export default class CreateEventModal extends React.Component {
 
         this.setState({ availableRooms, unavailableRooms });
         this._validateParams('location');
-      });
+      })
+      .catch(() => this._showError());
   }
 
   _attendeesParam() {

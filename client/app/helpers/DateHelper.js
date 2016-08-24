@@ -36,12 +36,20 @@ export function weekDays(date, weekLength = 5) {
       .add(i, 'days'));
 }
 
+export function addTime(date, number, unit) {
+  return date.clone().add(number, unit);
+}
+
+export function subtractTime(date, number, unit) {
+  return date.clone().subtract(number, unit);
+}
+
 export function nextWeek(date) {
-  return date.clone().add(1, 'week');
+  return addTime(date, 1, 'week');
 }
 
 export function previousWeek(date) {
-  return date.clone().subtract(1, 'week');
+  return subtractTime(date, 1, 'week');
 }
 
 export function dateParam(date) {
