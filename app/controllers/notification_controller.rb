@@ -2,7 +2,7 @@ class NotificationController < ApplicationController
   before_action :fetch_conference_room
   before_action :validate_request
 
-  CHANNEL_ID_HEADER = 'X-Goog-Channel-ID'
+  CHANNEL_ID_HEADER = 'X-Goog-Channel-ID'.freeze
 
   def receive
     NotifyClientsJob.perform_later params[:conference_room_id]
