@@ -1,3 +1,4 @@
+
 require 'rails_helper'
 
 describe GoogleCalendar::EventFinder do
@@ -114,11 +115,11 @@ describe GoogleCalendar::EventFinder do
       let(:end_time2) { start_time2.beginning_of_hour + 2.hours + 10.minutes }
 
       it 'normalizes events' do
-        response = event_finder.send(:list_events, time_interval, rooms)
-        expect(response[0][:start][:date_time]).to eq DateTime.now.beginning_of_week
-        expect(response[0][:end][:date_time]).to eq DateTime.now.beginning_of_week + 3.hours
-        expect(response[1][:start][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 30.minutes
-        expect(response[1][:end][:date_time]).to eq DateTime.now.beginning_of_week + 1.days + 2.hours + 30.minutes
+        response = event_finder.list_events(time_interval)
+        expect(response[0][:rounded_start_time]).to eq DateTime.now.beginning_of_week
+        expect(response[0][:rounded_end_time]).to eq DateTime.now.beginning_of_week + 3.hours
+        expect(response[1][:rounded_start_time]).to eq DateTime.now.beginning_of_week + 1.days + 30.minutes
+        expect(response[1][:rounded_end_time]).to eq DateTime.now.beginning_of_week + 1.days + 2.hours + 30.minutes
       end
     end
 

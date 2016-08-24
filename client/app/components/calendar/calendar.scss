@@ -1,3 +1,11 @@
+$event-height: 2em;
+$event-font-size: 14px;
+$event-border: 1px;
+@function stripUnit($arg){
+  @return $arg/($arg * 0 + 1)
+}
+:export { rowHeight: stripUnit($event-height) * $event-font-size + $event-border }
+
 .container {
   margin-top: 25px;
 }
@@ -30,15 +38,28 @@
 
   > tbody {
     flex: 1 1 auto;
-    display: block;
     overflow-y: overlay;
 
     > tr > td {
       position: relative;
       overflow: visible;
-      height: 2em;
+      height: $event-height;
       padding: 0;
-      border-width: 0 1px 1px 0;
+      font-size: $event-font-size;
+      border-width: 0 $event-border $event-border 0;
     }
   }
+}
+
+#time-indicator-row {
+  td {
+    height: 0;
+  }
+}
+
+#time-marker {
+  border-bottom: 2px solid red;
+  width: 100%;
+  z-index: 99;
+  position: absolute;
 }

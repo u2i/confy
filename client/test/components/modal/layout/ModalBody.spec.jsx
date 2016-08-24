@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import ModalBody from 'components/modal/layout/ModalBody';
 import FormLocationField from 'components/modal/layout/body/FormLocationField';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
+import GuestsField from 'components/modal/layout/body/GuestsField';
 
 describe('<ModalBody />', () => {
   const updateSpy = sinon.spy();
@@ -15,32 +16,36 @@ describe('<ModalBody />', () => {
 
   const wrapper = mount(<ModalBody
     updateParam={updateSpy}
-    conferenceRooms={rooms} />);
+    availableLocations={rooms}
+    unavailableLocations={[]}
+    onError={sinon.spy()} />);
 
   it('renders a form for creating event', () => {
     const wrapperShallow = shallow(<ModalBody
       updateParam={updateSpy}
-      conferenceRooms={rooms} />);
-    expect(wrapperShallow.find('form')).to.exist;
+      availableLocations={rooms}
+      unavailableLocations={[]}
+      onError={sinon.spy()} />);
+    expect(wrapperShallow.find('form')).to.exist();
   });
 
   it('renders Summary text field', () => {
-    expect(wrapper.find('FormTextField[name="summary"]')).to.exist;
+    expect(wrapper.find({ name: 'summary' })).to.exist();
   });
 
   it('renders Description text field', () => {
-    expect(wrapper.find('FormTextField[name="description"]')).to.exist;
+    expect(wrapper.find({ name: 'description' })).to.exist();
   });
 
-  it('renders Start time date field', () => {
-    expect(wrapper.find('FormDateField[label="Start time"]')).to.exist;
-  });
-
-  it('renders End time date field', () => {
-    expect(wrapper.find('FormDateField[label="End time"]')).to.exist;
+  it('renders two date fields', () => {
+    expect(wrapper.find('FormDateField')).to.have.lengthOf(2);
   });
 
   it('renders Location select field', () => {
-    expect(wrapper.find(FormLocationField)).to.exist;
+    expect(wrapper.find(FormLocationField)).to.exist();
+  });
+
+  it('renders <GuestsField />', () => {
+    expect(wrapper.find(GuestsField)).to.exist();
   });
 });

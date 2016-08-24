@@ -1,14 +1,20 @@
-import React from "react";
-import {FormGroup, ControlLabel, FormControl} from "react-bootstrap";
-import {If} from "react-if";
+import React from 'react';
+import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { If } from 'react-if';
 
-const { array, func } = React.PropTypes;
+import RoomSelectGroup from './RoomSelectGroup';
+
+const { array, number, func } = React.PropTypes;
+
+import './form_location_field.scss';
 
 export default class FormLocationField extends React.Component {
   static propTypes = {
-    conferenceRooms: array.isRequired,
-    onChange:        func.isRequired,
-    errors:          array
+    available: array.isRequired,
+    unavailable: array.isRequired,
+    onChange: func.isRequired,
+    selected: number,
+    errors: array
   };
 
   static defaultProps = {
@@ -16,20 +22,20 @@ export default class FormLocationField extends React.Component {
   };
 
   render() {
-    const conferenceRoomsOptions = this.props.conferenceRooms.map(room => (
-      <option value={room.id} key={room.id}>{room.title}</option>
-    ));
-
+    const { available, unavailable, selected, onChange, errors } = this.props;
     return (
       <FormGroup>
         <ControlLabel>Location:</ControlLabel>
         <FormControl componentClass="select"
-                     onChange={this.props.onChange}
-                     name="location">
-          {conferenceRoomsOptions}
+                     onChange={onChange}
+                     name="location"
+                     value={selected || ''}>
+          <option value="" disabled style={{ display: 'none' }} />
+          <RoomSelectGroup rooms={available} label="Available" />
+          <RoomSelectGroup rooms={unavailable} label="Unavailable" />
         </FormControl>
-        <If condition={this.props.errors != null}>
-          <div className="text-danger">{this.props.errors[0]}</div>
+        <If condition={errors != null}>
+          <div className="text-danger">{errors[0]}</div>
         </If>
       </FormGroup>
     );

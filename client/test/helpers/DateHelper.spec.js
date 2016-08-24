@@ -19,20 +19,34 @@ describe('DateHelper', () => {
     });
 
     describe('#nextWeek', () => {
-      it('returns a date in the following week', () => {
-        const date = moment([2016, 7, 3]);
-        const expectedDate = moment([2016, 7, 10]);
+      const originalDate = moment([2016, 7, 3]);
+      const date = originalDate.clone();
+      const expectedDate = moment([2016, 7, 10]);
 
-        expect(DateHelper.nextWeek(date).isSame(expectedDate)).to.be.true();
+      const nextWeek = DateHelper.nextWeek(date);
+
+      it('returns a date in the following week', () => {
+        expect(nextWeek.isSame(expectedDate)).to.be.true();
+      });
+
+      it('does not modify the original date', () => {
+        expect(date.isSame(originalDate)).to.be.true();
       });
     });
 
     describe('#previousWeek', () => {
-      it('returns a date in the previous week', () => {
-        const date = moment([2016, 7, 10]);
-        const expectedDate = moment([2016, 7, 3]);
+      const originalDate = moment([2016, 7, 10]);
+      const date = originalDate.clone();
+      const expectedDate = moment([2016, 7, 3]);
 
-        expect(DateHelper.previousWeek(date).isSame(expectedDate)).to.be.true();
+      const previousWeek = DateHelper.previousWeek(date);
+
+      it('returns a date in the previous week', () => {
+        expect(previousWeek.isSame(expectedDate)).to.be.true();
+      });
+
+      it('does not modify the original date', () => {
+        expect(date.isSame(originalDate)).to.be.true();
       });
     });
 
@@ -42,6 +56,28 @@ describe('DateHelper', () => {
         const expectedString = '2016-08-10';
 
         expect(DateHelper.dateParam(date)).to.equal(expectedString);
+      });
+    });
+
+    describe('#isToday', () => {
+      context('today given', () => {
+        it('returns true', () => {
+          expect(DateHelper.isToday(moment())).to.be.true();
+        });
+      });
+
+      context('other day given', () => {
+        it('returns false', () => {
+          expect(DateHelper.isToday(moment().add(1, 'days'))).to.be.false();
+        });
+      });
+    });
+
+    describe('#minutesFromMidnight', () => {
+      it('returns difference from midnight in minutes', () => {
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(1, 'hour'))).to.equal(60);
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(39, 'minutes'))).to.equal(39);
+        expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(3, 'hour'))).to.equal(180);
       });
     });
   });

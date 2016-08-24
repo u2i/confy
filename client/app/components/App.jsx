@@ -43,7 +43,8 @@ export default class App extends React.Component {
     };
 
     bindAll(this,
-      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete']);
+      ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete',
+      'notifyError']);
   }
 
   componentDidMount() {
@@ -80,6 +81,11 @@ export default class App extends React.Component {
     this._deleteEvent(eventId);
   }
 
+  notifyError(message) {
+    const notification = new Notification('danger', message);
+    this._addNotification(notification);
+  }
+
   render() {
     const { initialEvents: _, ...calendarProps } = this.props;
     const { events, notifications, updating } = this.state;
@@ -103,10 +109,19 @@ export default class App extends React.Component {
         <CreateEventModal closeModal={this.closeModal}
                           showModal={this.state.showModal}
                           conferenceRooms={this.props.conferenceRooms}
-                          refresh={this.handleCalendarRefresh} />
+                          refresh={this.handleCalendarRefresh}
+                          onError={this.notifyError} />
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );
+  }
+
+  _addNotification(notification) {
+    notification.timeout = setTimeout(
+      () => this._removeNotification(notification.id),
+      this.props.notificationTimeout
+    );
+    this.setState({ notifications: this.state.notifications.concat([notification]) });
   }
 
   _dateOrNow() {
@@ -129,8 +144,8 @@ export default class App extends React.Component {
         const events = conferenceRoomId ? updateRoomEvents(this.state.events, data, conferenceRoomId) : data;
         this.setState({ events, updating: false });
       })
-      .catch((err) => {
-        const error = new Notification('danger', `Failed to fetch events: ${err}`);
+      .catch(({ statusText, message }) => {
+        const error = new Notification('danger', `Failed to fetch events: ${statusText || message}`);
         this._addNotification(error);
         this.setState({ updating: false });
       });
@@ -146,14 +161,6 @@ export default class App extends React.Component {
     const index = events.findIndex(event => event.id === id);
     events.splice(index, 1);
     this.setState({ events });
-  }
-
-  _addNotification(notification) {
-    notification.timeout = setTimeout(
-      () => this._removeNotification(notification.id),
-      this.props.notificationTimeout
-    );
-    this.setState({ notifications: this.state.notifications.concat([notification]) });
   }
 
   _removeNotification(id) {
