@@ -38,7 +38,7 @@ RSpec.describe 'Notification', type: :request do
         before do
           post notifications_path(valid_conference_room_id), headers: valid_headers
         end
-        
+
         it 'responds with 200' do
           expect(response).to have_http_status :ok
         end
