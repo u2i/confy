@@ -55,3 +55,11 @@ export function previousWeek(date) {
 export function dateParam(date) {
   return formatDate(date, DATE_PARAM_FORMAT);
 }
+
+export function isToday(day) {
+  return moment(day).isSame(moment(), 'day');
+}
+
+export function minutesFromMidnight(start = moment()) {
+  return start.diff(moment().startOf('day'), 'minutes');
+}

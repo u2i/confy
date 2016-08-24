@@ -25,8 +25,7 @@ const INITIAL_FORM_STATE = {
   summary: '',
   description: '',
   conferenceRoomId: null,
-  availableRooms: [],
-  unavailableRooms: [],
+  attendees: [],
   errors: {}
 };
 
@@ -38,7 +37,8 @@ export default class CreateEventModal extends React.Component {
     initialDate: instanceOfMoment,
     initialLength: number,
     dateFormat: string,
-    refresh: func.isRequired
+    refresh: func.isRequired,
+    onError: func.isRequired
   };
 
   static defaultProps = {
@@ -78,7 +78,8 @@ export default class CreateEventModal extends React.Component {
       description: this.state.description,
       start_time: this.state.startTime,
       end_time: this.state.endTime,
-      conference_room_id: this.state.conferenceRoomId
+      conference_room_id: this.state.conferenceRoomId,
+      attendees: this._attendeesParam()
     };
 
     EventSource.create(eventParams)
@@ -116,7 +117,8 @@ export default class CreateEventModal extends React.Component {
           dateFormat={this.props.dateFormat}
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
-          errors={this.state.errors} />
+          errors={this.state.errors}
+          onError={this.props.onError} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
@@ -204,5 +206,9 @@ export default class CreateEventModal extends React.Component {
         this._validateParams('location');
       })
       .catch(() => this._showError());
+  }
+
+  _attendeesParam() {
+    return this.state.attendees.map((guest) => ({ email: guest.email || guest.label }));
   }
 }

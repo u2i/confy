@@ -11,8 +11,9 @@ describe('<CalendarRow />', () => {
   const days = [moment(), moment(), moment()];
   const unitEventLengthInSeconds = 1800;
   const onDelete = sinon.spy();
+  const events = [];
   let time;
-  const props = { days, unitEventLengthInSeconds, onDelete };
+  const props = { days, unitEventLengthInSeconds, onDelete, events };
   let wrapper = shallow(<CalendarRow time={moment()} {...props} />);
 
   beforeEach(() => {
