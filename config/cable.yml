@@ -6,8 +6,8 @@ test:
 
 staging:
   adapter: redis
-  url: redis://localhost:6379/1
+  url: redis://h:p7edi6c8hgs4d0bimsip0toem05@ec2-46-137-186-21.eu-west-1.compute.amazonaws.com:23849
 
 production:
   adapter: redis
-  url: redis://localhost:6379/1
+  url: redis://h:p7edi6c8hgs4d0bimsip0toem05@ec2-46-137-186-21.eu-west-1.compute.amazonaws.com:23849
