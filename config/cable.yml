@@ -1,8 +1,8 @@
 development:
-  adapter: async
+  adapter: redis
 
 test:
-  adapter: async
+  adapter: redis
 
 staging:
   adapter: redis
