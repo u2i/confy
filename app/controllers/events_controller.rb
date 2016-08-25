@@ -36,7 +36,7 @@ class EventsController < ApplicationController
 
   def index
     time_interval_rfc3339 = span_param.to_rfc3339
-    events = google_event_client.list_events(time_interval_rfc3339)
+    events = google_event_client.all(time_interval_rfc3339)
     render json: events
   end
 
