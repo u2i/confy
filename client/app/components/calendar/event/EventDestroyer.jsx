@@ -4,12 +4,14 @@ import bindAll from 'lodash/bindAll';
 import DeleteButton from 'components/calendar/event/DeleteButton';
 import DeleteTooltip from 'components/calendar/event/DeleteTooltip';
 import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
+import EventSchema from 'schemas/EventSchema';
 import './event.scss';
 
 export default class EventDestroyer extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired
+    disabled: PropTypes.bool.isRequired,
+    event:    EventSchema.isRequired
   };
 
   constructor(props) {
@@ -33,7 +35,8 @@ export default class EventDestroyer extends React.Component {
             <DeleteConfirmation show={this.state.showConfirmationModal}
                                 cancelHandler={this._hideConfirmationModal}
                                 confirmHandler={this._handleConfirmDeletion}
-                                onHide={this._hideConfirmationModal} />
+                                onHide={this._hideConfirmationModal}
+                                event={this.props.event} />
           </Else>
         </If>
       </div>
