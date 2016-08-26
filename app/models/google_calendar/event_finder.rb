@@ -20,7 +20,8 @@ module GoogleCalendar
     private
 
     def rooms(conference_room_ids = nil)
-      @rooms ||= conference_room_ids.nil? ? ConferenceRoom.all : ConferenceRoom.where(id: conference_room_ids)
+      return ConferenceRoom.where(id: conference_room_ids) unless conference_room_ids.nil?
+      @rooms ||= ConferenceRoom.all
     end
 
     def list_events(time_interval, rooms)
