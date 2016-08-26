@@ -9,11 +9,11 @@ module GoogleCalendar
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def events_from(time_interval, conference_room_ids)
+    def by_room(time_interval, conference_room_ids)
       list_events(time_interval, rooms(conference_room_ids))
     end
 
-    def all_events(time_interval)
+    def all(time_interval)
       list_events(time_interval, rooms)
     end
 

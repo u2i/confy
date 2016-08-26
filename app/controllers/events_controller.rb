@@ -42,7 +42,7 @@ class EventsController < ApplicationController
 
   def room_index
     time_interval_rfc3339 = span_param.to_rfc3339
-    events = google_event_client.events_from(time_interval_rfc3339, params[:conference_room_id].to_i)
+    events = google_event_client.find_by_room(time_interval_rfc3339, params[:conference_room_id].to_i)
     render json: events
   end
 

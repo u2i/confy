@@ -14,11 +14,11 @@ module GoogleCalendar
     end
 
     def all(time_interval)
-      GoogleCalendar::EventFinder.new(credentials, user_email).all_events(time_interval)
+      GoogleCalendar::EventFinder.new(credentials, user_email).all(time_interval)
     end
 
-    def events_from(time_interval, conference_room_ids)
-      GoogleCalendar::EventFinder.new(credentials, user_email).events_from(time_interval, conference_room_ids)
+    def find_by_room(time_interval, conference_room_ids)
+      GoogleCalendar::EventFinder.new(credentials, user_email).by_room(time_interval, conference_room_ids)
     end
 
     private
