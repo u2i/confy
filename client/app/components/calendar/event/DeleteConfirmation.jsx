@@ -45,11 +45,11 @@ const DeleteConfirmation = ({ onHide, show, onCancel, onConfirm, event }) => (
 );
 
 DeleteConfirmation.propTypes = {
-  onHide:         React.PropTypes.func.isRequired,
-  show:           React.PropTypes.bool.isRequired,
-  cancelHandler:  React.PropTypes.func.isRequired,
-  confirmHandler: React.PropTypes.func.isRequired,
-  event:          EventSchema.isRequired
+  onHide:    React.PropTypes.func.isRequired,
+  show:      React.PropTypes.bool.isRequired,
+  onCancel:  React.PropTypes.func.isRequired,
+  onConfirm: React.PropTypes.func.isRequired,
+  event:     EventSchema.isRequired
 };
 
 export default DeleteConfirmation;
