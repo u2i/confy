@@ -7,7 +7,7 @@ import moment from 'moment';
 const TIME_FORMAT = 'HH:mm';
 const DATE_FORMAT = 'Mo MMM YYYY';
 
-const DeleteConfirmation = ({ onHide, show, cancelHandler, confirmHandler, event }) => (
+const DeleteConfirmation = ({ onHide, show, onCancel, onConfirm, event }) => (
   <Modal show={show}
          onHide={onHide}
          className="delete-confirmation-modal">
@@ -31,12 +31,12 @@ const DeleteConfirmation = ({ onHide, show, cancelHandler, confirmHandler, event
       </p>
     </Modal.Body>
     <Modal.Footer className="delete-confirmation-modal">
-      <Button onClick={cancelHandler}
+      <Button onClick={onCancel}
               className="cancel-delete">
         Cancel
       </Button>
       <Button bsStyle="danger"
-              onClick={confirmHandler}
+              onClick={onConfirm}
               className="confirm-delete">
         Delete
       </Button>

@@ -16,8 +16,8 @@ describe('<DeleteConfirmation />', () => {
     event,
     show: true,
     onHide: onHideSpy,
-    cancelHandler: cancelHandlerSpy,
-    confirmHandler: confirmHandlerSpy
+    onCancel: cancelHandlerSpy,
+    onConfirm: confirmHandlerSpy
   };
 
   it('renders <Modal />', () => {

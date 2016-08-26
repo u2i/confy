@@ -33,8 +33,8 @@ export default class EventDestroyer extends React.Component {
           <DeleteTooltip show={this.state.showIndicator} target={() => this.refs.target} />
           <Else>
             <DeleteConfirmation show={this.state.showConfirmationModal}
-                                cancelHandler={this._hideConfirmationModal}
-                                confirmHandler={this._handleConfirmDeletion}
+                                onCancel={this._hideConfirmationModal}
+                                onConfirm={this._handleConfirmDeletion}
                                 onHide={this._hideConfirmationModal}
                                 event={this.props.event} />
           </Else>
