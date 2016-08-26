@@ -61,11 +61,10 @@ class GoogleOauth
     end
 
     def authorization_details
-      scopes = [CALENDAR_SCOPE]
-      authorization = Google::Auth.get_application_default(scopes)
-      authorization.sub = ENV.fetch('APPLICATION_OWNER')
-      authorization.fetch_access_token!
-      authorization
+      Google::Auth.get_application_default([CALENDAR_SCOPE]).tap do |authorization|
+        authorization.sub = ENV.fetch('APPLICATION_OWNER')
+        authorization.fetch_access_token!
+      end
     end
 
     def user_info_service(credentials)
