@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import ModalFooter from 'components/modal/layout/ModalFooter';
 
 describe('<ModalFooter />', () => {
-  const props = { closeModal: () => {}, saveChanges: () => {} };
+  const props = { closeModal: () => {}, saveChanges: () => {}, disableSaving: false };
   const wrapper = shallow(<ModalFooter {...props} />);
   it('renders <Modal.Footer />', () => {
     expect(wrapper.find(Modal.Footer)).to.have.lengthOf(1);
@@ -20,6 +20,6 @@ describe('<ModalFooter />', () => {
   });
 
   it('renders <Button /> with "Save changes" string inside', () => {
-    expect(wrapper.find(Button).findWhere(node => node.text() === 'Save changes')).to.have.lengthOf(1);
+    expect(wrapper.findWhere(node => node.type() === 'span' && node.text() === 'Save changes')).to.have.lengthOf(1);
   });
 });
