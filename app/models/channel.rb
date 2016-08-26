@@ -1,4 +1,6 @@
 class Channel < ApplicationRecord
+  include GoogleCalendar::Timestamp
+
   SUBSCRIPTION_BUFFER = 2.days.freeze
 
   belongs_to :conference_room
@@ -11,7 +13,7 @@ class Channel < ApplicationRecord
 
   def google_update!(google_channel)
     update!(resource_id: google_channel.resource_id,
-            expiration: GoogleCalendar::Timestamp.convert(google_channel.expiration))
+            expiration: str_to_timestamp(google_channel.expiration))
   end
 
   private

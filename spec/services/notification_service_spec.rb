@@ -15,6 +15,8 @@ RSpec::Matchers.define :valid_notification_request do |conference_room|
 end
 
 RSpec.describe NotificationService do
+  include GoogleCalendar::Timestamp
+
   let(:google_channel) { double('channel', resource_id: 'elo', expiration: '123456') }
   let(:client) { double('client', watch_event: google_channel, stop_channel: false) }
 
@@ -48,7 +50,7 @@ RSpec.describe NotificationService do
 
       it 'updates channel expiration time' do
         notification_service.renew_subscription
-        expect(channel.expiration).to eq(GoogleCalendar::Timestamp.convert(google_channel.expiration))
+        expect(channel.expiration).to eq(str_to_timestamp(google_channel.expiration))
       end
     end
   end

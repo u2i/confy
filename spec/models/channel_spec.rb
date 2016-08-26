@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Channel, type: :model do
+  include GoogleCalendar::Timestamp
+
   before { allow(GoogleOauth).to receive(:push_notification_client) }
 
   subject(:channel) { create :channel }
@@ -42,7 +44,7 @@ RSpec.describe Channel, type: :model do
   describe '#google_update' do
     let(:resource_id) { 'ala' }
     let(:expiration) { '123456789' }
-    let(:expiration_timestamp) { GoogleCalendar::Timestamp.convert(expiration) }
+    let(:expiration_timestamp) { str_to_timestamp(expiration) }
     let(:conference_room) { create :conference_room }
     let(:google_channel) do
       channel = Google::Apis::CalendarV3::Channel.new
