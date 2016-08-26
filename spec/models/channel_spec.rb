@@ -16,7 +16,7 @@ RSpec.describe Channel, type: :model do
     end
 
     %i(channel_id resource_id conference_room_id).each do |s|
-      it { is_expected.to validate_uniqueness_of(s) }
+      it { is_expected.to validate_uniqueness_of s }
     end
   end
 
