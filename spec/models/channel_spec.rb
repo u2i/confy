@@ -30,8 +30,8 @@ RSpec.describe Channel, type: :model do
   end
 
   describe '.expired' do
-    let!(:active_channel) { create(:channel, expiration: Time.now + Channel::SUBSCRIPTION_BUFFER + 1.minute) }
-    let!(:expired_channel) { create(:channel, expiration: Time.now + Channel::SUBSCRIPTION_BUFFER) }
+    let!(:active_channel) { create(:channel) }
+    let!(:expired_channel) { create(:channel, :expired) }
 
     let(:expected_channels) { [expired_channel] }
 

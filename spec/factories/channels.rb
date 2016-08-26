@@ -6,7 +6,11 @@ FactoryGirl.define do
     sequence :resource_id do |n|
       "calendar#{n}"
     end
-    expiration Time.now
+    expiration Time.now + 1.year
     association :conference_room
+
+    trait :expired do
+      expiration Time.now
+    end
   end
 end
