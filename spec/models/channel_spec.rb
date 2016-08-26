@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Channel, type: :model do
-  include Rails.application.routes.url_helpers
-
   before { allow(GoogleOauth).to receive(:push_notification_client) }
 
   subject(:channel) { create :channel }
