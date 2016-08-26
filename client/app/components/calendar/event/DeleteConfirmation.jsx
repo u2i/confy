@@ -15,7 +15,7 @@ const DeleteConfirmation = ({ onHide, show, cancelHandler, confirmHandler, event
       Are you sure you want to delete this event?
     </Modal.Header>
     <Modal.Body className="delete-confirmation-modal modal-body">
-      <h1>{event.summary}</h1>
+      <h1 className="summary">{event.summary}</h1>
       <p>
         <em>on </em>
         <strong>{moment(event.start.date_time).format(DATE_FORMAT)} </strong>
@@ -31,8 +31,15 @@ const DeleteConfirmation = ({ onHide, show, cancelHandler, confirmHandler, event
       </p>
     </Modal.Body>
     <Modal.Footer className="delete-confirmation-modal">
-      <Button onClick={cancelHandler}>Cancel</Button>
-      <Button bsStyle="danger" onClick={confirmHandler}>Delete</Button>
+      <Button onClick={cancelHandler}
+              className="cancel-delete">
+        Cancel
+      </Button>
+      <Button bsStyle="danger"
+              onClick={confirmHandler}
+              className="confirm-delete">
+        Delete
+      </Button>
     </Modal.Footer>
   </Modal>
 );
