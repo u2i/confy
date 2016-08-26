@@ -13,15 +13,15 @@ describe('<DeleteConfirmation />', () => {
   const event = EventFactory.build();
 
   const props = {
+    event,
     show: true,
     onHide: onHideSpy,
     cancelHandler: cancelHandlerSpy,
-    confirmHandler: confirmHandlerSpy,
-    event: event
+    confirmHandler: confirmHandlerSpy
   };
 
   it('renders <Modal />', () => {
-    const wrapper = shallow(<DeleteConfirmation  {...props} />);
+    const wrapper = shallow(<DeleteConfirmation {...props} />);
     expect(wrapper.find(Modal)).to.exist();
   });
 
@@ -39,7 +39,6 @@ describe('<DeleteConfirmation />', () => {
 
   it('renders event\'s summary', () => {
     const wrapper = shallow(<DeleteConfirmation {...props} />);
-    console.log(wrapper.debug());
     expect(wrapper.find('.summary')).to.have.text(event.summary);
-  })
+  });
 });
