@@ -9,8 +9,9 @@ import EventGroup from './EventGroup';
 
 class EventWrapper extends React.Component {
   static propTypes = {
-    events:   React.PropTypes.array,
-    onDelete: React.PropTypes.func.isRequired
+    events:    React.PropTypes.array,
+    onDelete:  React.PropTypes.func.isRequired,
+    timestamp: React.PropTypes.number.isRequired
   };
 
   constructor(...args) {
