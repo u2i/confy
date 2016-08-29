@@ -53,7 +53,13 @@ $event-border-color: #f7f7f7;
   }
 }
 
-.confirmation-footer {
-  text-align: center;
-  border-top: 0;
+.delete-confirmation-modal {
+  .modal-footer {
+    text-align: center;
+  }
+
+  .modal-body {
+    width: 75%;
+    margin: auto;
+  }
 }

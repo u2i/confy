@@ -63,3 +63,9 @@ export function isToday(day) {
 export function minutesFromMidnight(start = moment()) {
   return start.diff(moment().startOf('day'), 'minutes');
 }
+
+export function eventTimeString(event, timeFormat) {
+  const startTimeStr = formatTime(event.start.date_time, timeFormat);
+  const endTimeStr = formatTime(event.end.date_time, timeFormat);
+  return `${startTimeStr} - ${endTimeStr}`;
+}

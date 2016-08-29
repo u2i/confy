@@ -4,15 +4,18 @@ import EventDestroyer from 'components/calendar/event/EventDestroyer';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { Overlay, Modal } from 'react-bootstrap';
+import EventFactory from 'test/factories/Event';
 
 describe('<EventDestroyer />', () => {
   let spy;
+  const event = EventFactory.build();
+
   beforeEach(() => {
     spy = sinon.spy();
   });
 
   it('renders', () => {
-    const wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} />);
+    const wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={event} />);
     expect(wrapper.find('span').props().className).to.contain('delete-button');
     expect(wrapper.find('span').props().className).to.contain('glyphicon');
   });
@@ -21,7 +24,7 @@ describe('<EventDestroyer />', () => {
     context('props.disabled', () => {
       let wrapper;
       beforeEach(() => {
-        wrapper = mount(<EventDestroyer onDelete={spy} disabled />);
+        wrapper = mount(<EventDestroyer onDelete={spy} disabled event={event} />);
       });
 
       it('has information overlay', () => {
@@ -33,7 +36,7 @@ describe('<EventDestroyer />', () => {
     context('props.disabled === false', () => {
       let wrapper;
       beforeEach(() => {
-        wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} />);
+        wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={event} />);
       });
 
       it('has a confirmation box', () => {
