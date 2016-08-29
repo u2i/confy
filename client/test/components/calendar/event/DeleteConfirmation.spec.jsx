@@ -8,16 +8,16 @@ import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
 
 describe('<DeleteConfirmation />', () => {
   const onHideSpy = sinon.spy();
-  const cancelHandlerSpy = sinon.spy();
-  const confirmHandlerSpy = sinon.spy();
+  const onCancelSpy = sinon.spy();
+  const onConfirm = sinon.spy();
   const event = EventFactory.build();
 
   const props = {
     event,
     show: true,
     onHide: onHideSpy,
-    onCancel: cancelHandlerSpy,
-    onConfirm: confirmHandlerSpy
+    onCancel: onCancelSpy,
+    onConfirm: onConfirm
   };
 
   it('renders <Modal />', () => {
@@ -28,17 +28,12 @@ describe('<DeleteConfirmation />', () => {
   it('invokes cancelHandler on Cancel button press', () => {
     const wrapper = shallow(<DeleteConfirmation {...props} />);
     wrapper.find('Button.cancel-delete').simulate('click');
-    expect(cancelHandlerSpy).to.be.calledOnce();
+    expect(onCancelSpy).to.be.calledOnce();
   });
 
   it('invokes confirmHandler on Delete button press', () => {
     const wrapper = shallow(<DeleteConfirmation {...props} />);
     wrapper.find('Button.confirm-delete').simulate('click');
-    expect(confirmHandlerSpy).to.be.calledOnce();
-  });
-
-  it('renders event\'s summary', () => {
-    const wrapper = shallow(<DeleteConfirmation {...props} />);
-    expect(wrapper.find('.summary')).to.have.text(event.summary);
+    expect(onConfirm).to.be.calledOnce();
   });
 });
