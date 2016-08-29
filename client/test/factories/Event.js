@@ -1,5 +1,6 @@
 import { Factory } from 'rosie';
 import User from './User';
+import Attendee from './Attendee';
 import ConferenceRoom from './ConferenceRoom';
 
 export default new Factory()
@@ -13,6 +14,7 @@ export default new Factory()
   .attr('start', ['start_time'], startTime => ({ date_time: startTime.toISOString() }))
   .attr('end', ['end_time'], endTime => ({ date_time: endTime.toISOString() }))
   .attrs({
+    attendees:       Attendee.buildList(2),
     creator:         User.build(),
     conference_room: ConferenceRoom.build(),
     width:           1,

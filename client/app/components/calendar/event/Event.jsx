@@ -7,6 +7,7 @@ import './event.scss';
 export default class Event extends React.Component {
   static propTypes = {
     event: EventSchema.isRequired,
+    userEmail: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
     containerWidth: PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
@@ -17,15 +18,19 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-
+    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event highlight';
     return (
-      <div className="event" style={this._eventStyle()}>
+      <div className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
         <EventDetails event={event} timeFormat={this.props.timeFormat} />
       </div>
     );
+  }
+
+  _userParticipatesInEvent() {
+    return this.props.event.attendees.find(attendee => attendee.email === this.props.userEmail) !== undefined
   }
 
   _eventHeight() {

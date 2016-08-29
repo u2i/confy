@@ -24,6 +24,7 @@ export default class EventGroup extends React.Component {
       <div className="event-group">
         {this.props.events.map(event => (
           <Event event={event}
+                 userEmail={this.props.userEmail}
                  containerHeight={containerHeight}
                  containerWidth={containerWidth}
                  unitEventLengthInSeconds={unitEventLengthInSeconds}

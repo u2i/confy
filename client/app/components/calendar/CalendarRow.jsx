@@ -48,6 +48,7 @@ export default class CalendarRow extends React.Component {
 
       return (
         <EventWrapper timestamp={timestamp}
+                      userEmail={this.props.userEmail}
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       key={timestamp}

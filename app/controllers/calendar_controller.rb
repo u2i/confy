@@ -21,6 +21,7 @@ class CalendarController < ApplicationController
   def create_calendar_props
     @props = {conferenceRooms: ConferenceRoom.all,
               initialEvents: events,
+              userEmail: session[:email],
               times: calendar_times,
               unitEventLengthInSeconds: TimeRound::GRANULARITY,
               date: params[:date],

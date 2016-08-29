@@ -60,6 +60,7 @@ export default class Calendar extends React.Component {
     setEventsPositionAttributes(filteredEvents);
     let rowNodes = this.props.times.map(time => (
       <CalendarRow time={time}
+                   userEmail={this.props.userEmail}
                    key={time}
                    events={filteredEvents}
                    days={this.props.days}

@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import EventFactory from 'test/factories/Event';
 import UserFactory from 'test/factories/User';
+import Attendee from 'test/factories/Attendee';
 import Event from 'components/calendar/event/Event';
 
 describe('<Event />', () => {
@@ -12,10 +13,15 @@ describe('<Event />', () => {
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
+  const userEmail = 'user@email.com';
+  const attendee = Attendee.build({email: userEmail});
+  const attendees = [attendee];
 
   const eventComponent = (event) => (
     <Event
       event={event}
+      userEmail={userEmail}
+      attendees={attendees}
       containerHeight={containerHeight}
       containerWidth={containerWidth}
       unitEventLengthInSeconds={unitEventLengthInSeconds}
@@ -50,6 +56,11 @@ describe('<Event />', () => {
 
   it('renders with correct background color', () => {
     expect(defaultWrapper).to.have.style('background-color').equal(defaultEvent.conference_room.color);
+  });
+
+  it("renders div with '.event highlight' className", () => {
+    const wrapper = shallowEvent(EventFactory.build());
+    expect(wrapper.find('.event highlight')).to.exists
   });
 
   describe('event creator', () => {
