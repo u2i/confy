@@ -126,7 +126,7 @@ export default class CreateEventModal extends React.Component {
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
-          disableSaving={this._disableSaving()} />
+          disableSaving={this._savingDisabled()} />
 
       </Modal>
     );
@@ -190,7 +190,7 @@ export default class CreateEventModal extends React.Component {
     this.setState(this._initialFormState());
   }
 
-  _disableSaving() {
+  _savingDisabled() {
     return keys(this.state.errors).length > 0 || this.state.disableSaving;
   }
 
