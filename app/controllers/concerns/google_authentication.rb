@@ -10,7 +10,14 @@ module GoogleAuthentication
   end
 
   def check_authentication
-    return redirect_to oauth2callback_path unless session[:credentials]
-    redirect_to oauth2callback_path unless GoogleOauth.authenticated?(JSON.parse(session[:credentials]))
+    return redirect_action unless session[:credentials]
+    redirect_action unless GoogleOauth.authenticated?(JSON.parse(session[:credentials]))
+  end
+
+  private
+
+  def redirect_action
+    session[:redirect_to] = request.original_url
+    redirect_to oauth2callback_path
   end
 end
