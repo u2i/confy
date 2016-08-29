@@ -1,5 +1,9 @@
 import React from 'react';
 import { If, Then } from 'react-if';
+import { isToday } from 'helpers/DateHelper';
+import classNames from 'classnames';
+
+import '../calendar.scss';
 
 import EventGroup from './EventGroup';
 
@@ -34,8 +38,9 @@ class EventWrapper extends React.Component {
   }
 
   render() {
+    const tdClassNames = classNames({ 'today-column': isToday(this.props.timestamp * 1000) });
     return (
-      <td ref={this.handleContainerMounted}>
+      <td ref={this.handleContainerMounted} className={tdClassNames}>
         <If condition={this.props.events != null && this.props.events.length > 0}>
           <Then>{() =>
             <EventGroup {...this.props}

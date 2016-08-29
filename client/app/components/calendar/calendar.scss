@@ -1,10 +1,12 @@
-$event-height: 2em;
-$event-font-size: 14px;
-$event-border: 1px;
 @function stripUnit($arg){
   @return $arg/($arg * 0 + 1)
 }
-:export { rowHeight: stripUnit($event-height) * $event-font-size + $event-border }
+$event-height: 2em;
+$event-font-size: 14px;
+$event-border: 1px;
+$rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
+
+:export { rowHeight: $rowHeight }
 
 .container {
   margin-top: 25px;
@@ -57,7 +59,7 @@ $event-border: 1px;
 
 .event {
   //Fix hover not triggering
-  z-index: 1;
+  z-index: 3;
 
   &:hover, &:focus {
     transition: all 0.5s, z-index 1ms;
@@ -80,4 +82,8 @@ $event-border: 1px;
   width: 100%;
   z-index: 99;
   position: absolute;
+}
+
+.today-column {
+  background-color: rgba(53, 147, 247, 0.1);
 }

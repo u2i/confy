@@ -1,16 +1,20 @@
 import React from 'react';
 import instanceOfMoment from 'proptypes/moment';
-import { formatDate } from 'helpers/DateHelper';
+import { formatDate, isToday } from 'helpers/DateHelper';
+import classNames from 'classnames';
 
-const CalendarHeader = (props) => (
-  <th className="text-center">
-    {formatDate(props.day, props.dateFormat)}
-  </th>
-);
+export default class CalendarHeader extends React.Component {
+  static propTypes = {
+    day:        instanceOfMoment.isRequired,
+    dateFormat: React.PropTypes.string
+  };
 
-CalendarHeader.propTypes = {
-  day:        instanceOfMoment.isRequired,
-  dateFormat: React.PropTypes.string
-};
-
-export default CalendarHeader;
+  render() {
+    const headerClassNames = classNames('text-center', { 'today-column': isToday(this.props.day) });
+    return (
+      <th className={headerClassNames}>
+        {formatDate(this.props.day, this.props.dateFormat)}
+      </th>
+    );
+  }
+}
