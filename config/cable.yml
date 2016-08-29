@@ -10,4 +10,4 @@ staging:
 
 production:
   adapter: redis
-  url: redis://h:p7edi6c8hgs4d0bimsip0toem05@ec2-46-137-186-21.eu-west-1.compute.amazonaws.com:23849
+  url: redis://h:p97c68uma88ij4d1ph4j901j7qq@ec2-46-137-186-21.eu-west-1.compute.amazonaws.com:24189
