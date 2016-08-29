@@ -11,8 +11,8 @@ describe('<EventDetails />', () => {
                   creator={event.creator} />
   );
 
-  const event = EventFactory.build();
-  const defaultWrapper = shallowEvent(event);
+  const defaultEvent = EventFactory.build();
+  const defaultWrapper = shallowEvent(defaultEvent);
 
   it('renders event start time', () => {
     expect(defaultWrapper.text()).to.include('0:00');
@@ -23,7 +23,7 @@ describe('<EventDetails />', () => {
   });
 
   it('renders event location', () => {
-    expect(defaultWrapper.text()).to.include(event.conference_room.title);
+    expect(defaultWrapper.text()).to.include(defaultEvent.conference_room.title);
   });
 
   context('with event summary provided', () => {
@@ -49,7 +49,7 @@ describe('<EventDetails />', () => {
 
     context('with no creator display name provided', () => {
       it('renders creator email', () => {
-        expect(defaultWrapper.text()).to.include(event.creator.email);
+        expect(defaultWrapper.text()).to.include(defaultEvent.creator.email);
       });
     });
   });

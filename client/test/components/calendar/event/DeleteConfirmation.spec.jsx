@@ -9,7 +9,7 @@ import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
 describe('<DeleteConfirmation />', () => {
   const onHideSpy = sinon.spy();
   const onCancelSpy = sinon.spy();
-  const onConfirm = sinon.spy();
+  const onConfirmSpy = sinon.spy();
   const event = EventFactory.build();
 
   const props = {
@@ -17,7 +17,7 @@ describe('<DeleteConfirmation />', () => {
     show: true,
     onHide: onHideSpy,
     onCancel: onCancelSpy,
-    onConfirm: onConfirm
+    onConfirm: onConfirmSpy
   };
 
   it('renders <Modal />', () => {
@@ -34,6 +34,6 @@ describe('<DeleteConfirmation />', () => {
   it('invokes confirmHandler on Delete button press', () => {
     const wrapper = shallow(<DeleteConfirmation {...props} />);
     wrapper.find('Button.confirm-delete').simulate('click');
-    expect(onConfirm).to.be.calledOnce();
+    expect(onConfirmSpy).to.be.calledOnce();
   });
 });
