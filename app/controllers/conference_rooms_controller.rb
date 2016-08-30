@@ -13,7 +13,7 @@ class ConferenceRoomsController < ApplicationController
 
   def create_props
     current_event, next_event = events
-    @props = { current_event: current_event, next_event: next_event, conference_room: conference_room }.compact
+    @props = {current_event: current_event, next_event: next_event, conference_room: conference_room}.compact
   end
 
   def events

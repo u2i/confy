@@ -19,7 +19,7 @@ const CurrentEvent = ({ event }) => (
         <div>
           <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false} />
           <div className="time-progress-container">
-            <TimeProgress start={moment(event.start.date_time).unix()} end={moment(event.end.date_time).unix()}/>
+            <TimeProgress start={moment(event.start.date_time).unix()} end={moment(event.end.date_time).unix()} />
           </div>
         </div>
       )}
