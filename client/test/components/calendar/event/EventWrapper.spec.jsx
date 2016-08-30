@@ -3,12 +3,11 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Event from 'test/factories/Event';
-
 import EventWrapper from 'components/calendar/event/EventWrapper';
 import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventWrapper />', () => {
-  const userEmail = 'example@com';
+  const userEmail = 'mail@example.com';
   const eventProps = {
     eventsInGroup:            1,
     offset:                   0,

@@ -13,7 +13,7 @@ describe('<Event />', () => {
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
-  const [userEmail1, userEmail2] = ['example1@com', 'example2@com'];
+  const [userEmail1, userEmail2] = ['mail1@example.com', 'mail2@example.com'];
   const currentUserEmail = userEmail1;
   const attendee1 = Attendee.build({ email: userEmail1 });
   const attendee2 = Attendee.build({ email: userEmail2 });
@@ -59,16 +59,16 @@ describe('<Event />', () => {
   });
 
   context('currentUserEmail is not present in attendees', () => {
-    it("renders div with '.event .not-participate' className", () => {
+    it("renders div with '.event .not-participating' className", () => {
       const wrapper = shallowEvent(EventFactory.build({attendees: [attendee2]}));
-      expect(wrapper.find('.event .not-participate')).to.exist();
+      expect(wrapper.find('.event .not-participating')).to.exist();
     });
   });
 
   context('currentUserEmail is present in attendees', () => {
     it("renders div with '.event' className", () => {
       const wrapper = shallowEvent(EventFactory.build({attendees: [attendee1, attendee2]}));
-      !expect(wrapper.find('.event .not-participate')).to.not.exist();
+      expect(wrapper.find('.event .not-participating')).to.not.exist();
     });
   });
 

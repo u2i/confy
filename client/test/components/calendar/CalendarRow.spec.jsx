@@ -10,7 +10,7 @@ import { expect } from 'chai';
 describe('<CalendarRow />', () => {
   const days = [moment(), moment(), moment()];
   const unitEventLengthInSeconds = 1800;
-  const userEmail = 'example@com';
+  const userEmail = 'mail@example.com';
   const onDelete = sinon.spy();
   const events = [];
   let time;

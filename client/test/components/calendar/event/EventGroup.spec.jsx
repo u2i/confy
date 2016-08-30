@@ -2,16 +2,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-
 import EventFactory from 'test/factories/Event';
-
 import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventGroup />', () => {
   const containerHeight = 30;
   const containerWidth = 120;
   const unitEventLengthInSeconds = 30 * 60;
-  const userEmail = 'example@com';
+  const userEmail = 'mail@example.com';
   const onDelete = sinon.spy();
 
   it('renders correctly', () => {

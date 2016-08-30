@@ -8,7 +8,7 @@ export default new Factory()
     days:                     [moment([2016, 7, 25, 0, 0, 0])],
     times:                    [moment([2016, 7, 25, 0, 0, 0]).toISOString()],
     unitEventLengthInSeconds: 60,
-    userEmail:                'example@com',
+    userEmail:                'mail@example.com',
     location:                 { query: { date: '2016-08-25' } },
     params:                   {},
     roomKinds:                { narnia: 0 }
