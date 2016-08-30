@@ -1,6 +1,13 @@
 module GoogleAuthentication
   extend ActiveSupport::Concern
 
+  included do
+    rescue_from ArgumentError do
+      session.delete(:credentials)
+      redirect_action
+    end
+  end
+
   def refresh_token
     credentials = session[:credentials]
     if credentials && GoogleOauth.need_to_refresh_token?(credentials)
