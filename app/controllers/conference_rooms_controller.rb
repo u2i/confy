@@ -22,6 +22,6 @@ class ConferenceRoomsController < ApplicationController
   end
 
   def conference_room
-    ConferenceRoom.find_by(title: params[:title].titleize)
+    ConferenceRoom.find_by!(title: params[:title].titleize)
   end
 end
