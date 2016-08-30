@@ -1,7 +1,8 @@
 import React from 'react';
-import { Grid, Col, Jumbotron, ProgressBar } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
+import EventSchema from 'proptypes/schemas/EventSchema';
 
 import EventContainer from './EventContainer';
 import EventDetails from 'components/calendar/event/EventDetails';
@@ -9,7 +10,7 @@ import TimeProgress from '../time/TimeProgress';
 
 import './current_event.scss';
 
-export default ({ event, progress }) => (
+const CurrentEvent = ({ event }) => (
   <div className="current-event-container">
     <EventContainer event={event}
                     label="Current Event"
@@ -25,3 +26,9 @@ export default ({ event, progress }) => (
     </EventContainer>
   </div>
 );
+
+CurrentEvent.propTypes = {
+  event: EventSchema.except('width', 'offset')
+};
+
+export default CurrentEvent;

@@ -17,9 +17,10 @@ const EventContainer = ({ event, label, noEventLabel, children }) => (
 );
 
 EventContainer.propTypes = {
-  event:        EventSchema,
-  label:        React.PropTypes.string.isRequired,
-  noEventLabel: React.PropTypes.string.isRequired
+  event: EventSchema,
+  label: React.PropTypes.string.isRequired,
+  noEventLabel: React.PropTypes.string.isRequired,
+  children: React.PropTypes.func
 };
 
 export default EventContainer;

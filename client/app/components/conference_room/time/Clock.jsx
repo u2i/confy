@@ -31,7 +31,7 @@ export default class Clock extends React.Component {
       <div>
         {this.state.time.format(this.props.format)}
       </div>
-    )
+    );
   }
 
   _setTime() {

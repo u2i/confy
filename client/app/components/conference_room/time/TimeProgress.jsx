@@ -22,9 +22,9 @@ export default class TimeProgress extends React.Component {
     easing:      'bounce',
     trailColor:  '#ddd',
     trailWidth:  1,
-    from:        { color: "#ff0000" },
-    to:          { color: "#00ff00" },
-    step:        function (state, circle) {
+    from:        { color: '#ff0000' },
+    to:          { color: '#00ff00' },
+    step(state, circle) {
       circle.path.setAttribute('stroke', state.color);
     }
   };
@@ -48,9 +48,9 @@ export default class TimeProgress extends React.Component {
     return (
       <Circle progress={this.state.progress}
               text={`<h1>${formatDuration(this._timeLeft(), 'HH:mm:ss')}</h1>`}
+              initialAnimate
               options={TimeProgress.progressBarOptions}
-              initialAnimate={true}
-              containerClassName="time-progress"/>
+              containerClassName="time-progress" />
     );
   }
 

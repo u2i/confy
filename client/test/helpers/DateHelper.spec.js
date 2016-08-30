@@ -114,7 +114,6 @@ describe('DateHelper', () => {
     });
 
     describe('#formatDuration', () => {
-
       context('with days, months and years', () => {
         const duration = moment.duration({
           seconds: 1,
