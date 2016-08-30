@@ -5,13 +5,16 @@ import { If } from 'react-if';
 
 import './event.scss';
 
+const defaultCreator = { display_name: 'private', self: false };
+const creator = (event) => event.creator || defaultCreator;
+
 const EventDetails = ({ event, timeFormat, showLocation }) => (
   <div>
     <div className="event-time">{eventTimeString(event, timeFormat)}</div>
     <div className="event-name">{event.summary}</div>
     <div className="event-user">
       <small>by&nbsp;</small>
-      {event.creator.display_name || event.creator.email}
+      {creator(event).display_name || creator(event).email}
     </div>
     <If condition={showLocation}>
       <div className="event-location">

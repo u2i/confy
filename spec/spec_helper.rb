@@ -21,10 +21,18 @@ CodeClimate::TestReporter.start
 require 'simplecov'
 SimpleCov.start
 require 'factory_girl_rails'
+require 'rspec/active_job'
 $LOAD_PATH << File.expand_path(File.join(__FILE__, '../../app/services'))
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
+  config.include(RSpec::ActiveJob)
+
+  # clean out the queue after each spec
+  config.after(:each) do
+    ActiveJob::Base.queue_adapter.enqueued_jobs = []
+    ActiveJob::Base.queue_adapter.performed_jobs = []
+  end
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

@@ -1,3 +1,4 @@
+
 require 'rails_helper'
 
 describe GoogleCalendar::EventFinder do
@@ -6,6 +7,7 @@ describe GoogleCalendar::EventFinder do
   let(:credentials) { :credentials }
   let(:user_email) { 'example@com' }
   let(:event_finder) { described_class.new(credentials, user_email) }
+  let(:rooms) { ConferenceRoom.all }
 
   before do
     allow(client).to receive(:calendar_service) { service }
@@ -151,6 +153,26 @@ describe GoogleCalendar::EventFinder do
       event_finder.send(:mark_user_events, all_events)
       expect(event1[:creator][:self]).to eq true
       expect(event2[:creator][:self]).to eq false
+    end
+  end
+
+  describe '.rooms' do
+    let!(:conference_room1) { create :conference_room }
+    let!(:conference_room2) { create :conference_room }
+    let!(:conference_room3) { create :conference_room }
+    context 'without param' do
+      it 'returns all conference rooms' do
+        expect(event_finder.send(:rooms).size).to eq(3)
+      end
+    end
+
+    context 'with conference_room_ids array' do
+      let(:conference_room_ids) { [conference_room1.id] }
+      it 'returns only specified conference rooms' do
+        result = event_finder.send(:rooms, conference_room_ids)
+        expect(result.size).to eq(1)
+        expect(result[0]).to eq(conference_room1)
+      end
     end
   end
 end

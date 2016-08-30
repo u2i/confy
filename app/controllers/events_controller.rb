@@ -35,8 +35,12 @@ class EventsController < ApplicationController
   end
 
   def index
-    time_interval_rfc3339 = span_param.to_rfc3339
-    events = google_event_client.list_events(time_interval_rfc3339)
+    events = google_event_client.all(time_interval_rfc3339)
+    render json: events
+  end
+
+  def room_index
+    events = google_event_client.find_by_room(time_interval_rfc3339, params[:conference_room_id].to_i)
     render json: events
   end
 
@@ -70,5 +74,9 @@ class EventsController < ApplicationController
     TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
   rescue
     TimeInterval.week(date_param)
+  end
+
+  def time_interval_rfc3339
+    span_param.to_rfc3339
   end
 end

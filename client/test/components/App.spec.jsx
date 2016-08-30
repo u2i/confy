@@ -10,13 +10,18 @@ import Event from 'test/factories/Event';
 import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
 import * as FiltersHelper from 'helpers/FiltersHelper';
-
-import App from 'components/App';
 import SideNav from 'components/layout/SideNav';
 import EventDestroyer from 'components/calendar/event/EventDestroyer';
 
 describe('<App />', () => {
   let props;
+  const subscriptionSpy = sinon.spy();
+
+  const App = proxyquire.noCallThru().load('../../app/components/App', {
+    '../cable': {
+      createSubscription: subscriptionSpy
+    }
+  }).default;
 
   shared.setup('stub ReactDOM.findDOMNode');
 
@@ -25,12 +30,10 @@ describe('<App />', () => {
     sinon.stub(EventSource, 'remove').resolves([]);
     sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
     sinon.stub(FiltersHelper, 'saveFilters');
-    proxyquire('../../app/sources/EventSource', EventSource);
   });
 
   beforeEach(() => {
     props = DefaultProps.build();
-    proxyquire('../../app/helpers/FiltersHelper', FiltersHelper);
   });
 
   after(() => {
@@ -47,6 +50,11 @@ describe('<App />', () => {
   afterEach(() => {
     EventSource.fetch.reset();
     EventSource.remove.reset();
+  });
+
+  it('subscribes for websocket event notifications', () => {
+    mount(<App {...props} />);
+    expect(subscriptionSpy).to.have.been.calledOnce();
   });
 
   it('prefetches events', () => {

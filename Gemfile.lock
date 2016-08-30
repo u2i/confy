@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/mperham/sidekiq.git
+  revision: de91d3afca3cad25a079b3238e4ca9d83118b283
+  specs:
+    sidekiq (4.2.0)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (~> 1.5)
+      redis (~> 3.2, >= 3.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -211,6 +221,8 @@ GEM
       pry (>= 0.9.10)
     puma (3.4.0)
     rack (2.0.1)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.0)
@@ -247,6 +259,7 @@ GEM
       foreman
       rails (>= 3.2)
       rainbow (~> 2.1)
+    redis (3.3.1)
     representable (2.3.0)
       uber (~> 0.0.7)
     retriable (2.1.0)
@@ -254,6 +267,9 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
+    rspec-activejob (0.6.1)
+      activejob (>= 4.2)
+      rspec-mocks
     rspec-core (3.5.0)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -353,9 +369,12 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (>= 5.0.0.rc2, < 5.1)
   react_on_rails (~> 5)
+  redis (~> 3.0)
+  rspec-activejob
   rspec-rails (~> 3.4)
   sass-rails (~> 5.0)
   shoulda-matchers (~> 3.1)
+  sidekiq!
   simplecov
   spring
   spring-commands-rspec
