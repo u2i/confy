@@ -2,6 +2,8 @@ import moment from 'moment';
 
 export const DATE_PARAM_FORMAT = 'YYYY-MM-DD';
 
+export const DATE_DISPLAY_FORMAT = 'dddd Do MMM, HH:mm';
+
 export function addDateAndTime(date, time) {
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
   return date
