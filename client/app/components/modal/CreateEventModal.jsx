@@ -45,7 +45,7 @@ export default class CreateEventModal extends React.Component {
   static defaultProps = {
     initialDate: moment(),
     initialLength: 1,
-    dateFormat: 'DD/MM/YYYY HH:mm'
+    dateFormat: DateHelper.DATE_DISPLAY_FORMAT
   };
 
   constructor(props) {
