@@ -1,7 +1,7 @@
 class Channel < ApplicationRecord
   include GoogleCalendar::Timestamp
 
-  SUBSCRIPTION_BUFFER = 2.days.freeze
+  SUBSCRIPTION_BUFFER = 2.days
 
   belongs_to :conference_room
   validates_presence_of :channel_id, :resource_id, :expiration, :conference_room_id

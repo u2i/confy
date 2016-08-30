@@ -2,7 +2,7 @@ development:
   adapter: redis
 
 test:
-  adapter: redis
+  adapter: async
 
 staging:
   adapter: redis

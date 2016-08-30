@@ -16,7 +16,7 @@ class NotificationController < ApplicationController
   end
 
   def valid_request?
-    @conference_room.channel && @conference_room.channel.channel_id == channel_id
+    @conference_room.channel_id == channel_id
   end
 
   def fetch_conference_room

@@ -10,6 +10,8 @@ class ConferenceRoom < ApplicationRecord
 
   enum kind: KINDS
 
+  delegate :channel_id, to: :channel, allow_nil: true
+
   before_validation { color&.downcase! }
   validates :capacity, presence: true
   validates :color, presence: true, uniqueness: {case_sensitive: false}, format: HEX_COLOR_FORMAT
