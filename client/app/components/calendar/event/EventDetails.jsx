@@ -10,7 +10,8 @@ export default class EventDetails extends React.Component {
   };
 
   render() {
-    const creator = this.props.event.creator || { self: false };
+    const undefinedCreator = { display_name: 'private', self: false };
+    const creator = this.props.event.creator || undefinedCreator;
     return (
       <div>
         <div className="event-time">{eventTimeString(this.props.event, this.props.timeFormat)}</div>
