@@ -49,7 +49,7 @@ styles:
   jumbotron: false
   thumbnails: true
   alerts: true
-  progress-bars: false
+  progress-bars: true
   media: true
   list-group: true
   panels: true
