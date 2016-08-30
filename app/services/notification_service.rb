@@ -20,7 +20,7 @@ class NotificationService
   attr_accessor :conference_room, :channel, :client
 
   def create_subscription
-    create_new_channel
+    build_new_channel
     subscribe
   end
 
@@ -29,7 +29,7 @@ class NotificationService
     channel.google_update!(new_google_channel)
   end
 
-  def create_new_channel
+  def build_new_channel
     @channel = Channel.new(channel_id: SecureRandom.uuid, conference_room: conference_room)
   end
 
