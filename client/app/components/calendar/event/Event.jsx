@@ -18,7 +18,7 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event highlight';
+    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participate';
     return (
       <div className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
@@ -30,7 +30,7 @@ export default class Event extends React.Component {
   }
 
   _userParticipatesInEvent() {
-    return this.props.event.attendees.find(attendee => attendee.email === this.props.userEmail) !== undefined
+    return this.props.event.attendees.find(attendee => attendee.email === this.props.userEmail)
   }
 
   _eventHeight() {

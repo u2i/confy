@@ -11,6 +11,5 @@ $event-font-size: 14px;
 $event-border: 1px;
 $rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
 
-
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_mixins";

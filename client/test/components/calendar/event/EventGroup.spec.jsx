@@ -11,6 +11,7 @@ describe('<EventGroup />', () => {
   const containerHeight = 30;
   const containerWidth = 120;
   const unitEventLengthInSeconds = 30 * 60;
+  const userEmail = 'example@com';
   const onDelete = sinon.spy();
 
   it('renders correctly', () => {
@@ -21,6 +22,7 @@ describe('<EventGroup />', () => {
         containerHeight={containerHeight}
         containerWidth={containerWidth}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
+        userEmail={userEmail}
         timestamp={event.start_timestamp}
         onDelete={onDelete} />
     );
@@ -36,6 +38,7 @@ describe('<EventGroup />', () => {
         containerHeight={containerHeight}
         containerWidth={containerWidth}
         unitEventLengthInSeconds={unitEventLengthInSeconds}
+        userEmail={userEmail}
         timestamp={events[0].start_timestamp}
         onDelete={onDelete} />
     );
