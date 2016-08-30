@@ -2,7 +2,7 @@ import React from 'react';
 import EventDetails from 'components/calendar/event/EventDetails';
 import EventFactory from 'test/factories/Event';
 import UserFactory from 'test/factories/User';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 
 describe('<EventDetails />', () => {
@@ -22,8 +22,23 @@ describe('<EventDetails />', () => {
     expect(defaultWrapper.text()).to.include('2:00');
   });
 
-  it('renders event location', () => {
-    expect(defaultWrapper.text()).to.include(defaultEvent.conference_room.title);
+  context('without showLocation prop', () => {
+    it('renders event location', () => {
+      const wrapper = mount(
+        <EventDetails event={defaultEvent} />
+      );
+      expect(wrapper.text()).to.include(defaultEvent.conference_room.title);
+    });
+  });
+
+  context('props.showLocation is false', () => {
+    it('does not render event location', () => {
+      const wrapper = mount(
+        <EventDetails event={defaultEvent}
+                      showLocation={false} />
+      );
+      expect(wrapper.text()).not.to.include(defaultEvent.conference_room.title);
+    });
   });
 
   context('with event summary provided', () => {
