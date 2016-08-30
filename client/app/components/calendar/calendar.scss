@@ -9,10 +9,6 @@ $rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
 
 :export { rowHeight: $rowHeight }
 
-.container {
-  margin-top: 25px;
-}
-
 .calendar {
   display: flex;
   flex-flow: column;

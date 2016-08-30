@@ -11,6 +11,8 @@ import SideNav from './layout/SideNav';
 import NotificationStack from './shared/alert/NotificationStack';
 import CreateEventModal from './modal/CreateEventModal';
 
+import './app.scss';
+
 const { number, string, shape, array, arrayOf } = React.PropTypes;
 
 export default class App extends React.Component {
@@ -88,7 +90,7 @@ export default class App extends React.Component {
     const { events, notifications, updating } = this.state;
     return (
       <div>
-        <Grid>
+        <Grid className="calendar-container">
           <Col xs={12} md={2}>
             <SideNav onRefresh={this.handleCalendarRefresh}
                      date={this._dateOrNow()}
