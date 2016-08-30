@@ -112,5 +112,37 @@ describe('DateHelper', () => {
         expect(DateHelper.minutesFromMidnight(moment().startOf('day').add(3, 'hour'))).to.equal(180);
       });
     });
+
+    describe('#formatDuration', () => {
+
+      context('with days, months and years', () => {
+        const duration = moment.duration({
+          seconds: 1,
+          minutes: 2,
+          hours: 3,
+          days: 4,
+          months: 5,
+          years: 6
+        });
+        const format = 'Y [years], M [months], D [days], HH:mm:ss';
+
+        it('returns formatted duration', () => {
+          expect(DateHelper.formatDuration(duration, format)).to.equal('6 years, 5 months, 4 days, 03:02:01');
+        });
+      });
+
+      context('with only time provided', () => {
+        const duration = moment.duration({
+          seconds: 1,
+          minutes: 2,
+          hours: 3
+        });
+        const format = 'HH:mm:ss';
+
+        it('returns formatted duration', () => {
+          expect(DateHelper.formatDuration(duration, format)).to.equal('03:02:01');
+        });
+      });
+    });
   });
 });

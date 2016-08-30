@@ -71,3 +71,12 @@ export function eventTimeString(event, timeFormat) {
   const endTimeStr = formatTime(event.end.date_time, timeFormat);
   return `${startTimeStr} - ${endTimeStr}`;
 }
+
+export function formatDuration(duration, format) {
+  return moment([1, 0, 1, 0, 0, 0])
+    .add(duration)
+    .subtract(1, 'year')
+    .subtract(1, 'month')
+    .subtract(1, 'day')
+    .format(format);
+}
