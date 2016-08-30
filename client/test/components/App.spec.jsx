@@ -10,10 +10,8 @@ import Event from 'test/factories/Event';
 import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
 import * as FiltersHelper from 'helpers/FiltersHelper';
-
 import SideNav from 'components/layout/SideNav';
 import EventDestroyer from 'components/calendar/event/EventDestroyer';
-
 
 describe('<App />', () => {
   let props;
