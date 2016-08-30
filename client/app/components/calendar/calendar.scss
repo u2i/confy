@@ -1,6 +1,7 @@
 @function stripUnit($arg){
   @return $arg/($arg * 0 + 1)
 }
+
 $event-height: 2em;
 $event-font-size: 14px;
 $event-border: 1px;
@@ -62,8 +63,8 @@ $rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
   z-index: 3;
 
   &:hover, &:focus {
-    transition: all 0.5s, z-index 1ms;
-    height: auto;
+    transition: all 0.5s 0.25s, z-index 1ms;
+    height: 4 * $rowHeight;
     width: 100% !important;
     z-index: 100;
     left: 0 !important;

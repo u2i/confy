@@ -29,14 +29,6 @@ describe('<Event />', () => {
   const defaultEvent = EventFactory.build();
   const defaultWrapper = shallowEvent(defaultEvent);
 
-  it('renders event start time', () => {
-    expect(defaultWrapper.text()).to.include('0:00');
-  });
-
-  it('renders event end time', () => {
-    expect(defaultWrapper.text()).to.include('2:00');
-  });
-
   it('renders with correct minHeight', () => {
     expect(defaultWrapper).to.have.style('min-height').equal('120px');
   });
@@ -60,39 +52,7 @@ describe('<Event />', () => {
     expect(defaultWrapper).to.have.style('background-color').equal(defaultEvent.conference_room.color);
   });
 
-  context('with event summary provided', () => {
-    const summary = 'Summary';
-    const event = EventFactory.build({ summary });
-    const wrapper = shallowEvent(event);
-
-    it('renders event summary', () => {
-      expect(wrapper.text()).to.include(summary);
-    });
-  });
-
-  it('renders event location', () => {
-    expect(defaultWrapper.text()).to.include(defaultEvent.conference_room.title);
-  });
-
   describe('event creator', () => {
-    describe('display name', () => {
-      context('with creator display name provided', () => {
-        const creatorDisplayName = 'creator';
-        const event = EventFactory.build({ creator: UserFactory.build({ display_name: creatorDisplayName }) });
-        const wrapper = shallowEvent(event);
-
-        it('renders creator display name', () => {
-          expect(wrapper.text()).to.include(creatorDisplayName);
-        });
-      });
-
-      context('with no creator display name provided', () => {
-        it('renders creator email', () => {
-          expect(defaultWrapper.text()).to.include(defaultEvent.creator.email);
-        });
-      });
-    });
-
     describe('self', () => {
       context('when creator is the current user', () => {
         it('does not render <Overlay /> with tooltip', () => {
@@ -110,5 +70,5 @@ describe('<Event />', () => {
       });
     });
   });
-})
-;
+});
+

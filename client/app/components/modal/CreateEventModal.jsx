@@ -26,7 +26,8 @@ const INITIAL_FORM_STATE = {
   description: '',
   conferenceRoomId: null,
   attendees: [],
-  errors: {}
+  errors: {},
+  disableSaving: false
 };
 
 export default class CreateEventModal extends React.Component {
@@ -72,6 +73,8 @@ export default class CreateEventModal extends React.Component {
   }
 
   saveChanges() {
+    this.setState({ disableSaving: true });
+
     if (!this._validateParams({ presence: true })) return;
     const eventParams = {
       summary: this.state.summary,
@@ -93,6 +96,7 @@ export default class CreateEventModal extends React.Component {
         } else {
           this._showError();
         }
+        this.setState({ disableSaving: false });
       });
   }
 
@@ -122,7 +126,7 @@ export default class CreateEventModal extends React.Component {
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
-          disableSaving={this._disableSaving()} />
+          disableSaving={this._savingDisabled()} />
 
       </Modal>
     );
@@ -186,8 +190,8 @@ export default class CreateEventModal extends React.Component {
     this.setState(this._initialFormState());
   }
 
-  _disableSaving() {
-    return keys(this.state.errors).length > 0;
+  _savingDisabled() {
+    return keys(this.state.errors).length > 0 || this.state.disableSaving;
   }
 
   _updateRoomAvailability() {
