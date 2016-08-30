@@ -10,7 +10,22 @@ module GoogleCalendar
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def list_events(time_interval)
+    def by_room(time_interval, conference_room_ids)
+      list_events(time_interval, rooms(conference_room_ids))
+    end
+
+    def all(time_interval)
+      list_events(time_interval, rooms)
+    end
+
+    private
+
+    def rooms(conference_room_ids = nil)
+      return ConferenceRoom.where(id: conference_room_ids) unless conference_room_ids.nil?
+      @rooms ||= ConferenceRoom.all
+    end
+
+    def list_events(time_interval, rooms)
       all_events = []
       listing_configuration = listing_options(time_interval)
       calendar_service.batch do |service|
@@ -20,12 +35,6 @@ module GoogleCalendar
       end
       mark_user_events(all_events)
       all_events
-    end
-
-    private
-
-    def rooms
-      @rooms ||= ConferenceRoom.all
     end
 
     def mark_user_events(all_events)

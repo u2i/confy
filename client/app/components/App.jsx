@@ -1,10 +1,12 @@
 import moment from 'moment';
+import { EVENT_CHANNEL, createSubscription } from 'cable';
 import React from 'react';
 import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
 import Notification from '../models/Notification';
 import { dateParam, weekDays } from 'helpers/DateHelper';
+import { updateRoomEvents } from 'helpers/EventHelper';
 
 import Calendar from './calendar/Calendar';
 import SideNav from './layout/SideNav';
@@ -49,6 +51,7 @@ export default class App extends React.Component {
     if (!this.state.events) {
       this._fetchEvents();
     }
+    createSubscription(EVENT_CHANNEL, ({ conference_room_id }) => this._fetchEvents(conference_room_id));
   }
 
   componentDidUpdate(prevProps) {
@@ -133,12 +136,13 @@ export default class App extends React.Component {
     return dateParam(this._dateOrNow());
   }
 
-  _fetchEvents() {
+  _fetchEvents(conferenceRoomId) {
     this.setState({ updating: true });
     EventSource
-      .fetch({ date: this._dateParam() })
+      .fetch({ date: this._dateParam() }, conferenceRoomId)
       .then(({ data }) => {
-        this.setState({ events: data, updating: false });
+        const events = conferenceRoomId ? updateRoomEvents(this.state.events, data, conferenceRoomId) : data;
+        this.setState({ events, updating: false });
       })
       .catch(({ statusText, message }) => {
         const error = new Notification('danger', `Failed to fetch events: ${statusText || message}`);

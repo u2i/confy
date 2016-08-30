@@ -1,6 +1,7 @@
 import * as EventHelper from '../../app/helpers/EventHelper';
 import { expect } from 'chai';
 import Event from '../factories/Event';
+import ConferenceRoom from '../factories/ConferenceRoom';
 import moment from 'moment';
 
 describe('EventHelper', () => {
@@ -140,6 +141,27 @@ describe('EventHelper', () => {
         expect(event2.offset).to.eq(1);
         expect(event3.offset).to.eq(0);
       });
+    });
+  });
+
+  describe('#updateRoomEvents', () => {
+    const room1 = ConferenceRoom.build();
+    const room2 = ConferenceRoom.build();
+    const room1Events = Event.buildList(3, { conference_room: room1 });
+    const room2Events = Event.buildList(3, { conference_room: room2 });
+
+    const events = room1Events.concat(room2Events);
+    const newEvents = Event.buildList(2, { conference_room: room2 });
+
+    const expectedEvents = room1Events.concat(newEvents);
+
+    const updatedEvents = EventHelper.updateRoomEvents(events, newEvents, room2.id);
+    it('replaces events for given conference room', () => {
+      expect(updatedEvents).to.eql(expectedEvents);
+    });
+
+    context('with invalid conference room number', () => {
+      expect(() => EventHelper.updateRoomEvents(events, newEvents, 'lol')).to.throw(Error);
     });
   });
 });
