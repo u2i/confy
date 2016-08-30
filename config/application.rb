@@ -13,5 +13,6 @@ module Confy
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths << "#{Rails.root}/app/services"
     config.time_zone = 'Warsaw'
+    config.active_job.queue_adapter = :sidekiq
   end
 end

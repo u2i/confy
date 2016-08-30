@@ -56,10 +56,21 @@ class GoogleOauth
       service.get_userinfo.email
     end
 
+    def push_notification_client
+      Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = authorization_details }
+    end
+
+    def authorization_details
+      Google::Auth.get_application_default([CALENDAR_SCOPE]).tap do |authorization|
+        authorization.sub = ENV.fetch('APPLICATION_OWNER')
+        authorization.fetch_access_token!
+      end
+    end
+
     def user_info_service(credentials)
       Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = new_auth_client(credentials) }
     end
   end
 
-  private_class_method :user_info_service, :new_auth_client
+  private_class_method :user_info_service, :new_auth_client, :authorization_details
 end
