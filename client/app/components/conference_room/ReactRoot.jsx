@@ -1,5 +1,6 @@
 import React from 'react';
+import ConferenceRoomContainer from './ConferenceRoomContainer';
 
-export default () => (
-  <div></div>
+export default (props) => (
+  <ConferenceRoomContainer {...props} />
 );
