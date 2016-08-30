@@ -23,18 +23,6 @@ module GoogleCalendar
 
     private
 
-    def event_creator
-      @event_creator ||= GoogleCalendar::EventCreator.new(credentials, user_email)
-    end
-
-    def event_remover
-      @event_remover ||= GoogleCalendar::EventRemover.new(credentials)
-    end
-
-    def event_finder
-      @event_finder ||= GoogleCalendar::EventFinder.new(credentials, user_email)
-    end
-
     attr_accessor :credentials, :user_email
 
     def event_creator
