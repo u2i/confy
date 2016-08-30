@@ -10,10 +10,11 @@ import { expect } from 'chai';
 describe('<CalendarRow />', () => {
   const days = [moment(), moment(), moment()];
   const unitEventLengthInSeconds = 1800;
+  const userEmail = 'example@com';
   const onDelete = sinon.spy();
   const events = [];
   let time;
-  const props = { days, unitEventLengthInSeconds, onDelete, events };
+  const props = { days, unitEventLengthInSeconds, onDelete, events, userEmail };
   let wrapper = shallow(<CalendarRow time={moment()} {...props} />);
 
   beforeEach(() => {

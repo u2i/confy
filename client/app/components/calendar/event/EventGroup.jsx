@@ -5,7 +5,7 @@ import Event from './Event';
 
 import './event_group.scss';
 
-const { number, arrayOf, func } = React.PropTypes;
+const { number, arrayOf, func, string } = React.PropTypes;
 
 export default class EventGroup extends React.Component {
   static propTypes = {
@@ -13,6 +13,7 @@ export default class EventGroup extends React.Component {
     timestamp: number.isRequired,
     containerWidth: number.isRequired,
     containerHeight: number.isRequired,
+    userEmail: string.isRequired,
     unitEventLengthInSeconds: number.isRequired,
     onDelete: func.isRequired
   };

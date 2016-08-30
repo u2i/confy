@@ -13,15 +13,15 @@ describe('<Event />', () => {
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
-  const userEmail = 'user@email.com';
-  const attendee = Attendee.build({email: userEmail});
-  const attendees = [attendee];
+  const [userEmail1, userEmail2] = ['example1@com', 'example2@com'];
+  const currentUserEmail = userEmail1;
+  const attendee1 = Attendee.build({ email: userEmail1 });
+  const attendee2 = Attendee.build({ email: userEmail2 });
 
   const eventComponent = (event) => (
     <Event
       event={event}
-      userEmail={userEmail}
-      attendees={attendees}
+      userEmail={currentUserEmail}
       containerHeight={containerHeight}
       containerWidth={containerWidth}
       unitEventLengthInSeconds={unitEventLengthInSeconds}
@@ -58,9 +58,18 @@ describe('<Event />', () => {
     expect(defaultWrapper).to.have.style('background-color').equal(defaultEvent.conference_room.color);
   });
 
-  it("renders div with '.event highlight' className", () => {
-    const wrapper = shallowEvent(EventFactory.build());
-    expect(wrapper.find('.event highlight')).to.exists
+  context('currentUserEmail is not present in attendees', () => {
+    it("renders div with '.event .not-participate' className", () => {
+      const wrapper = shallowEvent(EventFactory.build({attendees: [attendee2]}));
+      expect(wrapper.find('.event .not-participate')).to.exist();
+    });
+  });
+
+  context('currentUserEmail is present in attendees', () => {
+    it("renders div with '.event' className", () => {
+      const wrapper = shallowEvent(EventFactory.build({attendees: [attendee1, attendee2]}));
+      !expect(wrapper.find('.event .not-participate')).to.not.exist();
+    });
   });
 
   describe('event creator', () => {
@@ -82,4 +91,3 @@ describe('<Event />', () => {
     });
   });
 });
-

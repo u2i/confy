@@ -26,6 +26,7 @@ export default class Calendar extends React.Component {
     days: arrayOf(instanceOfMoment).isRequired,
     times: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
+    userEmail: string.isRequired,
     timeFormat: string,
     dateFormat: string,
     roomKinds: object.isRequired,
