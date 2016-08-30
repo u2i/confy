@@ -12,25 +12,32 @@ class NotificationService
   end
 
   def unsubscribe
-    client.stop_channel(google_channel(channel))
+    client.stop_channel(google_channel)
   end
 
   private
 
   attr_accessor :conference_room, :channel, :client
 
+  def create_subscription
+    create_new_channel
+    subscribe
+  end
+
   def subscribe
-    new_google_channel = client.watch_event(channel.conference_room.email, google_channel(channel))
+    new_google_channel = google_subscription_channel
     channel.google_update!(new_google_channel)
   end
 
-  def create_subscription
-    channel = Channel.new(channel_id: SecureRandom.uuid, conference_room: conference_room)
-    google_channel = client.watch_event(conference_room.email, google_channel(channel))
-    channel.google_update!(google_channel)
+  def create_new_channel
+    @channel = Channel.new(channel_id: SecureRandom.uuid, conference_room: conference_room)
   end
 
-  def google_channel(channel)
+  def google_subscription_channel
+    client.watch_event(conference_room.email, google_channel)
+  end
+
+  def google_channel
     GoogleCalendar::ChannelFactory.build(channel)
   end
 end
