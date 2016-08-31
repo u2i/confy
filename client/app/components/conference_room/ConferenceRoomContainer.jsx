@@ -13,9 +13,9 @@ import NextEvent from './event/NextEvent';
 import './conference_room.scss';
 
 const ConferenceRoomContainer = ({
-  currentEvent: currentEvent,
-  nextEvent: nextEvent,
-  conferenceRoom: conferenceRoom,
+  currentEvent,
+  nextEvent,
+  conferenceRoom,
   onCompleted
 }) => (
   <Grid>
