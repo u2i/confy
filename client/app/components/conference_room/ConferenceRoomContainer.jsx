@@ -12,9 +12,9 @@ import NextEvent from './event/NextEvent';
 import './conference_room.scss';
 
 const ConferenceRoomContainer = ({
-  current_event: currentEvent,
-  next_event: nextEvent,
-  conference_room: conferenceRoom
+  currentEvent: currentEvent,
+  nextEvent: nextEvent,
+  conferenceRoom: conferenceRoom,
 }) => (
   <Grid>
     <Row style={{ backgroundColor: conferenceRoom.color }} className="room-header">
@@ -46,9 +46,9 @@ const ConferenceRoomContainer = ({
 );
 
 ConferenceRoomContainer.propTypes = {
-  current_event: EventSchema.except('width', 'offset'),
-  next_event: EventSchema.except('width', 'offset'),
-  conference_room: ConferenceRoomSchema.only('color').isRequired
+  currentEvent: EventSchema.except('width', 'offset'),
+  nextEvent: EventSchema.except('width', 'offset'),
+  conferenceRoom: ConferenceRoomSchema.only('color').isRequired
 };
 
 export default ConferenceRoomContainer;
