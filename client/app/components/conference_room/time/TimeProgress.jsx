@@ -11,11 +11,13 @@ export default class TimeProgress extends React.Component {
     end: React.PropTypes.number.isRequired,
     onCompleted: React.PropTypes.func.isRequired,
     label: React.PropTypes.string,
-    updateInterval: React.PropTypes.number
+    updateInterval: React.PropTypes.number,
+    animate: React.PropTypes.bool
   };
 
   static defaultProps = {
-    updateInterval: 1000
+    updateInterval: 1000,
+    animate: true
   };
 
   static progressBarOptions = {
@@ -48,7 +50,7 @@ export default class TimeProgress extends React.Component {
 
   render() {
     return (
-      <Circle progress={this.state.progress}
+      <Circle progress={this.props.animate ? this.state.progress : 1}
               text={`<h1>${formatDuration(this._timeLeft(), 'HH:mm:ss')}</h1>`}
               initialAnimate
               options={TimeProgress.progressBarOptions}

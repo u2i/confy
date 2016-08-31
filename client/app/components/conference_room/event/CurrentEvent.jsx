@@ -19,16 +19,15 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
       <EventContainer event={event}
                       label="Current Event"
                       noEventLabel="No event is currently in progress">
-        {() => (
-          <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false}/>
-        )}
+        <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false}/>
       </EventContainer>
       <If condition={typeof event !== 'undefined' || typeof nextEventStart !== 'undefined'}>
         <div className="time-progress-container">
           <TimeProgress
             start={start}
             end={end}
-            onCompleted={onCompleted}/>
+            onCompleted={onCompleted}
+            animate={typeof event !== 'undefined'} />
         </div>
       </If>
     </div>

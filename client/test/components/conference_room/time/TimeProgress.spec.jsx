@@ -18,10 +18,11 @@ describe('<TimeProgress />', () => {
   const start = moment([2016, 0, 1, 0, 0, 0]);
   const end = start.clone().add(2, 'hours');
 
-  const element = <TimeProgress start={start.unix()}
-                                end={end.unix()}
-                                onCompleted={sinon.spy()}
-                                updateInterval={1000 * 60} />;
+  const element = ({ animate } = {}) => <TimeProgress start={start.unix()}
+                                             end={end.unix()}
+                                             onCompleted={sinon.spy()}
+                                             updateInterval={1000 * 60}
+                                             animate={animate} />;
 
   before(() => {
     clock = sinon.useFakeTimers(start.valueOf());
@@ -37,18 +38,18 @@ describe('<TimeProgress />', () => {
   });
 
   it('renders <Circle /> progress bar', () => {
-    const wrapper = shallow(element);
+    const wrapper = shallow(element());
     expect(wrapper).to.have.exactly(1).descendants(DummyCircle);
   });
 
   context('progress bar', () => {
     it('starts with 100% progress', () => {
-      const wrapper = mount(element);
+      const wrapper = mount(element());
       expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(1);
     });
 
     it('decreases with time', () => {
-      const wrapper = mount(element);
+      const wrapper = mount(element());
       clock.tick(1000 * 60 * 24);
       expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(0.8);
     });
@@ -56,15 +57,23 @@ describe('<TimeProgress />', () => {
 
   context('timer', () => {
     it('displays time left to end of event', () => {
-      const wrapper = shallow(element);
+      const wrapper = shallow(element());
       wrapper.setState({ progress: 1 });
       expect(wrapper.find(DummyCircle)).to.have.prop('text').contain('02:00:00');
     });
 
     it('updates with time', () => {
-      const wrapper = mount(element);
+      const wrapper = mount(element());
       clock.tick(1000 * 60);
       expect(wrapper.find(DummyCircle)).to.have.prop('text').contain('01:59:00');
+    });
+  });
+
+  context('with animate set to false', () => {
+    it('does not change progress', () => {
+      const wrapper = mount(element({ animate: false }));
+      clock.tick(1000 * 60);
+      expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(1);
     });
   });
 });
