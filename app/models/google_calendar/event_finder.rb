@@ -32,7 +32,7 @@ module GoogleCalendar
     end
 
     def rooms(conference_room_ids = nil)
-      return ConferenceRoom.find(conference_room_ids) if conference_room_ids
+      return ConferenceRoom.where(id: conference_room_ids) if conference_room_ids
       @rooms ||= ConferenceRoom.all
     end
 
