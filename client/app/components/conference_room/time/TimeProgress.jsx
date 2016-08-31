@@ -7,9 +7,10 @@ import './time_progress.scss';
 
 export default class TimeProgress extends React.Component {
   static propTypes = {
-    start:          React.PropTypes.number.isRequired,
-    end:            React.PropTypes.number.isRequired,
-    label:          React.PropTypes.string,
+    start: React.PropTypes.number.isRequired,
+    end: React.PropTypes.number.isRequired,
+    onCompleted: React.PropTypes.func.isRequired,
+    label: React.PropTypes.string,
     updateInterval: React.PropTypes.number
   };
 
@@ -19,11 +20,11 @@ export default class TimeProgress extends React.Component {
 
   static progressBarOptions = {
     strokeWidth: 4,
-    easing:      'bounce',
-    trailColor:  '#ddd',
-    trailWidth:  1,
-    from:        { color: '#ff0000' },
-    to:          { color: '#00ff00' },
+    easing: 'bounce',
+    trailColor: '#ddd',
+    trailWidth: 1,
+    from: { color: '#ff0000' },
+    to: { color: '#00ff00' },
     step(state, circle) {
       circle.path.setAttribute('stroke', state.color);
     }
@@ -37,6 +38,7 @@ export default class TimeProgress extends React.Component {
   }
 
   componentDidMount() {
+    this._updateProgress();
     this.interval = setInterval(this._updateProgress, this.props.updateInterval);
   }
 
@@ -50,13 +52,17 @@ export default class TimeProgress extends React.Component {
               text={`<h1>${formatDuration(this._timeLeft(), 'HH:mm:ss')}</h1>`}
               initialAnimate
               options={TimeProgress.progressBarOptions}
-              containerClassName="time-progress" />
+              containerClassName="time-progress"/>
     );
   }
 
   _updateProgress() {
     const { start, end } = this.props;
-    this.setState({ progress: 1 - (moment().unix() - start) / (end - start) });
+    this.setState({ progress: 1 - (moment().unix() - start) / (end - start) }, () => {
+      if(this.state.progress <= 0) {
+        this.props.onCompleted();
+      }
+    });
   }
 
   _timeLeft() {
