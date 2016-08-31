@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProgressBar } from 'react-bootstrap';
+import { If } from 'react-if';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
@@ -10,25 +10,35 @@ import TimeProgress from '../time/TimeProgress';
 
 import './current_event.scss';
 
-const CurrentEvent = ({ event }) => (
-  <div className="current-event-container">
-    <EventContainer event={event}
-                    label="Current Event"
-                    noEventLabel="No event is currently in progress">
-      {() => (
-        <div>
-          <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false} />
-          <div className="time-progress-container">
-            <TimeProgress start={moment(event.start.date_time).unix()} end={moment(event.end.date_time).unix()} />
-          </div>
+const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
+  const start = (event ? moment(event.start.date_time) : moment()).unix();
+  const end = (event ? moment(event.end.date_time) : moment(nextEventStart)).unix();
+
+  return (
+    <div className="current-event-container">
+      <EventContainer event={event}
+                      label="Current Event"
+                      noEventLabel="No event is currently in progress">
+        {() => (
+          <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false}/>
+        )}
+      </EventContainer>
+      <If condition={typeof event !== 'undefined' || typeof nextEventStart !== 'undefined'}>
+        <div className="time-progress-container">
+          <TimeProgress
+            start={start}
+            end={end}
+            onCompleted={onCompleted}/>
         </div>
-      )}
-    </EventContainer>
-  </div>
-);
+      </If>
+    </div>
+  );
+};
 
 CurrentEvent.propTypes = {
-  event: EventSchema.except('width', 'offset')
+  event: EventSchema.except('width', 'offset'),
+  nextEventStart: React.PropTypes.string,
+  onCompleted: React.PropTypes.func
 };
 
 export default CurrentEvent;

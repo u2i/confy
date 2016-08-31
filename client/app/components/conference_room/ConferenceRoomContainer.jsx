@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import React from 'react';
 import { If, Then, Else } from 'react-if';
 import EventSchema from 'proptypes/schemas/EventSchema';
@@ -15,6 +16,7 @@ const ConferenceRoomContainer = ({
   currentEvent: currentEvent,
   nextEvent: nextEvent,
   conferenceRoom: conferenceRoom,
+  onCompleted
 }) => (
   <Grid>
     <Row style={{ backgroundColor: conferenceRoom.color }} className="room-header">
@@ -29,7 +31,9 @@ const ConferenceRoomContainer = ({
       <Then>
         <Row>
           <Col xs={12} sm={8}>
-            <CurrentEvent event={currentEvent} />
+            <CurrentEvent event={currentEvent}
+                          nextEventStart={get(nextEvent, 'start.date_time')}
+                          onCompleted={onCompleted} />
           </Col>
           <Col xs={12} sm={4}>
             <NextEvent event={nextEvent} />

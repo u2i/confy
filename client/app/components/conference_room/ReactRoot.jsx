@@ -11,6 +11,7 @@ export default class ReactRoot extends React.Component {
     super(...args);
     this.state = {};
     this._fetchCurrentAndNextEvent = this._fetchCurrentAndNextEvent.bind(this)
+    this.handleEventCompleted = this.handleEventCompleted.bind(this)
   }
 
   handleEventCompleted() {
@@ -25,7 +26,8 @@ export default class ReactRoot extends React.Component {
   render() {
     return <ConferenceRoomContainer currentEvent={this.state.currentEvent}
                                     nextEvent={this.state.nextEvent}
-                                    conferenceRoom={this.props.conference_room} />
+                                    conferenceRoom={this.props.conference_room}
+                                    onCompleted={this.handleEventCompleted} />;
   }
 
   _fetchCurrentAndNextEvent() {
