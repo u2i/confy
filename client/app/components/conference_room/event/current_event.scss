@@ -1,15 +1,16 @@
+.time-progress-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .time-progress {
+    width: 150px;
+  }
+}
+
 .current-event-container {
   padding: 5px 30px 20px;
   background-color: #eee;
   border-radius: 5px;
 
-  .time-progress-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    .time-progress {
-      width: 150px;
-    }
-  }
 }
