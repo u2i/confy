@@ -22,25 +22,25 @@ describe('EventHelper', () => {
     const startTime = moment('2016-01-01T06:00:00');
     const event1 = Event.build({}, {
       start_time: startTime.toDate(),
-      end_time:   startTime.clone().add(1, 'hours').toDate()
+      end_time: startTime.clone().add(1, 'hours').toDate()
     });
 
     describe('with mutually colliding events', () => {
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(30, 'minutes').toDate(),
-        end_time:   startTime.clone().add(2, 'hours').toDate()
+        end_time: startTime.clone().add(2, 'hours').toDate()
       });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
-        end_time:   startTime.clone().add(2, 'hours').toDate()
+        end_time: startTime.clone().add(2, 'hours').toDate()
       });
       const event4 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
-        end_time:   startTime.clone().add(3, 'hours').toDate()
+        end_time: startTime.clone().add(3, 'hours').toDate()
       });
       const event5 = Event.build({}, {
         start_time: startTime.clone().add(3, 'hours').toDate(),
-        end_time:   startTime.clone().add(5, 'hours').toDate()
+        end_time: startTime.clone().add(5, 'hours').toDate()
       });
       const events = [event1, event2, event3, event4, event5];
 
@@ -57,11 +57,11 @@ describe('EventHelper', () => {
     describe('with pairwise colliding events', () => {
       const event2 = Event.build({}, {
         start_time: startTime.clone().subtract(1, 'hours').toDate(),
-        end_time:   startTime.clone().add(2, 'hours').toDate()
+        end_time: startTime.clone().add(2, 'hours').toDate()
       });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
-        end_time:   startTime.clone().add(3, 'hours').toDate()
+        end_time: startTime.clone().add(3, 'hours').toDate()
       });
       const events = [event1, event2, event3];
 
@@ -75,11 +75,11 @@ describe('EventHelper', () => {
     describe('colliding events separated by another block', () => {
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
-        end_time:   startTime.clone().add(3, 'hours').toDate()
+        end_time: startTime.clone().add(3, 'hours').toDate()
       });
       const event3 = Event.build({}, {
         start_time: startTime.clone().toDate(),
-        end_time:   startTime.clone().add(4, 'hours').toDate()
+        end_time: startTime.clone().add(4, 'hours').toDate()
       });
       const events = [event1, event3, event2];
 
@@ -96,15 +96,15 @@ describe('EventHelper', () => {
     describe('given non colliding events', () => {
       const event1 = Event.build({}, {
         start_time: startTime.toDate(),
-        end_time:   startTime.clone().add(2, 'hours').toDate()
+        end_time: startTime.clone().add(2, 'hours').toDate()
       });
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
-        end_time:   startTime.clone().add(3, 'hours').toDate()
+        end_time: startTime.clone().add(3, 'hours').toDate()
       });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(4, 'hours').toDate(),
-        end_time:   startTime.clone().add(5, 'hours').toDate()
+        end_time: startTime.clone().add(5, 'hours').toDate()
       });
 
       const events = [event1, event2, event3];
@@ -121,15 +121,15 @@ describe('EventHelper', () => {
     describe('given pairwise colliding events', () => {
       const event1 = Event.build({}, {
         start_time: startTime.toDate(),
-        end_time:   startTime.clone().add(2, 'hours').toDate()
+        end_time: startTime.clone().add(2, 'hours').toDate()
       });
       const event2 = Event.build({}, {
         start_time: startTime.clone().add(1, 'hours').toDate(),
-        end_time:   startTime.clone().add(3, 'hours').toDate()
+        end_time: startTime.clone().add(3, 'hours').toDate()
       });
       const event3 = Event.build({}, {
         start_time: startTime.clone().add(2, 'hours').toDate(),
-        end_time:   startTime.clone().add(5, 'hours').toDate()
+        end_time: startTime.clone().add(5, 'hours').toDate()
       });
 
       const events = [event1, event2, event3];
@@ -162,6 +162,44 @@ describe('EventHelper', () => {
 
     context('with invalid conference room number', () => {
       expect(() => EventHelper.updateRoomEvents(events, newEvents, 'lol')).to.throw(Error);
+    });
+  });
+
+  describe('#currentAndNextEvent', () => {
+    context('with an ongoing event', () => {
+      const events = Event.buildList(1, {}, { start_time: new Date() });
+
+      const { current, next } = EventHelper.currentAndNextEvent(events);
+
+      it('returns it as current event', () => {
+        expect(current).to.equal(events[0]);
+        expect(next).not.to.exist();
+      });
+    });
+
+    context('with no ongoing event and a next event', () => {
+      const events = Event.buildList(1, {}, { start_time: moment().add(4, 'hours').toDate() });
+
+      const { current, next } = EventHelper.currentAndNextEvent(events);
+
+      it('returns only next event', () => {
+        expect(current).not.to.exist();
+        expect(next).to.equal(events[0]);
+      });
+    });
+
+    context('with both ongoing and next event', () => {
+      const ongoingEvent = Event.build({}, { start_time: new Date() });
+      const nextEvent = Event.build({}, { start_time: moment().add(4, 'hours').toDate() });
+      const futureEvent = Event.build({}, { start_time: moment().add(6, 'hours').toDate() });
+      const events = [ongoingEvent, nextEvent, futureEvent];
+
+      const { current, next } = EventHelper.currentAndNextEvent(events);
+
+      it('returns both events', () => {
+        expect(current).to.equal(ongoingEvent);
+        expect(next).to.equal(nextEvent);
+      });
     });
   });
 });

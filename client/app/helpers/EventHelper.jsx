@@ -1,3 +1,4 @@
+import moment from 'moment';
 import isInteger from 'lodash/isInteger';
 import sortBy from 'lodash/sortBy';
 
@@ -76,4 +77,12 @@ export function setEventsPositionAttributes(events) {
 export function updateRoomEvents(events, newEvents, roomId) {
   if (!isInteger(roomId)) throw new Error('Conference room id must be an integer');
   return events.filter(event => event.conference_room.id !== roomId).concat(newEvents);
+}
+
+export function currentAndNextEvent(events) {
+  events = sortBy(events, 'start_timestamp');
+  const currentEventIndex = events.findIndex((event) => moment(event.start.date_time).isSameOrBefore(moment()));
+  const current = events[currentEventIndex];
+  const next = currentEventIndex > -1 ? events[currentEventIndex + 1] : events[0];
+  return { current, next };
 }
