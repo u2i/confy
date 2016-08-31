@@ -3,7 +3,7 @@ import React from 'react';
 import { If, Then, Else } from 'react-if';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
 import Clock from './time/Clock';
@@ -42,7 +42,7 @@ const ConferenceRoomContainer = ({
       </Then>
       <Else>
         <Col xs={12}>
-          There are no more events for today
+          <Jumbotron>There are no more events for today</Jumbotron>
         </Col>
       </Else>
     </If>

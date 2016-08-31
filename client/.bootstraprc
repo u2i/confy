@@ -46,7 +46,7 @@ styles:
   pager: false
   labels: true
   badges: true
-  jumbotron: false
+  jumbotron: true
   thumbnails: true
   alerts: true
   progress-bars: true
