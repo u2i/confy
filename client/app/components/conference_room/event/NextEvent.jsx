@@ -5,11 +5,11 @@ import EventContainer from './EventContainer';
 import EventDetails from 'components/calendar/event/EventDetails';
 
 const NextEvent = ({ event }) => (
-  <div className="event-container">
+  <div>
     <EventContainer event={event}
                     label="Next Event"
                     noEventLabel="No more events for today">
-      {() => <EventDetails event={event} showLocation={false} />}
+      {() => <EventDetails event={event} showLocation={false} showGuests={true} />}
     </EventContainer>
   </div>
 );

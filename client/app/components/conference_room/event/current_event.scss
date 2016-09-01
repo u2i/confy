@@ -4,17 +4,13 @@
   justify-content: center;
 
   .time-progress {
-    margin-top: 20px;
-    width: 150px;
+    margin-bottom: 20px;
+    width: 140px;
   }
 }
 
-.event-container {
-  padding: 5px 30px 20px;
-}
 
 .current-event-container {
-  @extend .event-container;
   background-color: #eee;
   border-radius: 5px;
 

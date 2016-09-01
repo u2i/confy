@@ -3,7 +3,7 @@ import { If, Then, Else } from 'react-if';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
 const EventContainer = ({ event, label, noEventLabel, children }) => (
-  <div>
+  <div className="event-container">
     <h2>{label}</h2>
     <If condition={event != null}>
       <Then>
