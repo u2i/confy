@@ -10,15 +10,15 @@ import Event from 'test/factories/Event';
 import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
 import * as FiltersHelper from 'helpers/FiltersHelper';
-import SideNav from 'components/layout/SideNav';
+import SideNav from 'components/calendar/layout/SideNav';
 import EventDestroyer from 'components/calendar/event/EventDestroyer';
 
-describe('<App />', () => {
+describe('<CalendarContainer />', () => {
   let props;
   const subscriptionSpy = sinon.spy();
 
-  const App = proxyquire.noCallThru().load('../../app/components/App', {
-    '../cable': {
+  const CalendarContainer = proxyquire.noCallThru().load('../../../app/components/calendar/CalendarContainer', {
+    '../../cable': {
       createSubscription: subscriptionSpy
     }
   }).default;
@@ -53,18 +53,18 @@ describe('<App />', () => {
   });
 
   it('subscribes for websocket event notifications', () => {
-    mount(<App {...props} />);
+    mount(<CalendarContainer {...props} />);
     expect(subscriptionSpy).to.have.been.calledOnce();
   });
 
   it('prefetches events', () => {
-    mount(<App {...props} />);
+    mount(<CalendarContainer {...props} />);
     expect(EventSource.fetch).to.have.been.called();
   });
 
   describe('refresh', () => {
     it('updates events', () => {
-      const wrapper = shallow(<App {...props} />);
+      const wrapper = shallow(<CalendarContainer {...props} />);
       wrapper.find(SideNav).simulate('refresh');
       expect(EventSource.fetch).to.have.been.calledOnce();
     });
@@ -79,7 +79,7 @@ describe('<App />', () => {
 
     it('deletes event', () => {
       const event = Event.build({ creator: User.build({ self: true }) });
-      const wrapper = mount(<App {...props} initialEvents={[event]} />);
+      const wrapper = mount(<CalendarContainer {...props} initialEvents={[event]} />);
       wrapper.find('.delete-button').simulate('click');
 
       wrapper.find(EventDestroyer).props().onDelete();

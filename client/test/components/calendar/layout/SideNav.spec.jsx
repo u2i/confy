@@ -5,8 +5,8 @@ import sinon from 'sinon';
 import moment from 'moment';
 
 import { Button } from 'react-bootstrap';
-import SideNav from 'components/layout/SideNav';
-import RefreshButton from 'components/layout/RefreshButton';
+import SideNav from 'components/calendar/layout/SideNav';
+import RefreshButton from 'components/calendar/layout/RefreshButton';
 
 describe('<SideNav />', () => {
   const onRefresh = sinon.spy();

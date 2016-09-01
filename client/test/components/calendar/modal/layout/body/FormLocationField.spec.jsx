@@ -3,8 +3,8 @@ import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import { ControlLabel, FormControl } from 'react-bootstrap';
-import FormLocationField from 'components/modal/layout/body/FormLocationField';
-import RoomSelectGroup from 'components/modal/layout/body/RoomSelectGroup';
+import FormLocationField from 'components/calendar/modal/layout/body/FormLocationField';
+import RoomSelectGroup from 'components/calendar/modal/layout/body/RoomSelectGroup';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<FormLocationField />', () => {

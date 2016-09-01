@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import ModalBody from 'components/modal/layout/ModalBody';
-import FormLocationField from 'components/modal/layout/body/FormLocationField';
+import ModalBody from 'components/calendar/modal/layout/ModalBody';
+import FormLocationField from 'components/calendar/modal/layout/body/FormLocationField';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
-import GuestsField from 'components/modal/layout/body/GuestsField';
+import GuestsField from 'components/calendar/modal/layout/body/GuestsField';
 
 describe('<ModalBody />', () => {
   const updateSpy = sinon.spy();

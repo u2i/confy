@@ -10,7 +10,7 @@ import { Table } from 'react-bootstrap';
 import { loadFilters, saveFilters } from 'helpers/FiltersHelper';
 import EventSchema from 'schemas/EventSchema';
 import { setEventsPositionAttributes } from 'helpers/EventHelper';
-import RoomFilters from './filters/RoomFilters';
+import RoomFilters from '../filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 import CalendarHeader from './CalendarHeader';
 import TimeIndicatorRow from './TimeIndicatorRow';

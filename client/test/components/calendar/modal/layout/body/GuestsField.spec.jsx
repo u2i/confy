@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import GuestsField from 'components/modal/layout/body/GuestsField';
+import GuestsField from 'components/calendar/modal/layout/body/GuestsField';
 import Typeahead from 'react-bootstrap-typeahead';
 import ContactSource from 'sources/ContactSource';
 

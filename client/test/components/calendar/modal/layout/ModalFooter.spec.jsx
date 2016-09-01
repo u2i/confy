@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import ModalFooter from 'components/modal/layout/ModalFooter';
+import ModalFooter from 'components/calendar/modal/layout/ModalFooter';
 
 describe('<ModalFooter />', () => {
   const props = { closeModal: () => {}, saveChanges: () => {}, disableSaving: false };

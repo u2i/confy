@@ -3,7 +3,7 @@ import instanceOfMoment from 'proptypes/moment';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 import TimeCell from './TimeCell';
-import EventWrapper from './event/EventWrapper';
+import EventWrapper from '../event/EventWrapper';
 import { SECONDS_IN_DAY, eventGroupContaining, eventsStartingAt } from 'helpers/EventHelper';
 
 const { string, bool, number, arrayOf, func } = React.PropTypes;

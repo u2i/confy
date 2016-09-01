@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import ModalHeader from 'components/modal/layout/ModalHeader';
+import ModalHeader from 'components/calendar/modal/layout/ModalHeader';
 
 describe('<ModalHeader />', () => {
   const wrapper = shallow(<ModalHeader />);

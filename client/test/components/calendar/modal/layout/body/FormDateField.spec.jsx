@@ -4,7 +4,7 @@ import DateTimeField from 'react-bootstrap-datetimepicker';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import FormDateField from 'components/modal/layout/body/FormDateField';
+import FormDateField from 'components/calendar/modal/layout/body/FormDateField';
 
 describe('<FormDateField />', () => {
   const onChangeSpy = sinon.spy();

@@ -4,20 +4,20 @@ import React from 'react';
 import bindAll from 'lodash/bindAll';
 import { Grid, Col } from 'react-bootstrap';
 import EventSource from 'sources/EventSource';
-import Notification from '../models/Notification';
+import Notification from 'models/Notification';
 import { dateParam, weekDays } from 'helpers/DateHelper';
 import { updateRoomEvents } from 'helpers/EventHelper';
 
-import Calendar from './calendar/Calendar';
+import Calendar from './table/Calendar';
 import SideNav from './layout/SideNav';
-import NotificationStack from './shared/alert/NotificationStack';
+import NotificationStack from '../shared/alert/NotificationStack';
 import CreateEventModal from './modal/CreateEventModal';
 
 import './app.scss';
 
 const { number, string, shape, array, arrayOf } = React.PropTypes;
 
-export default class App extends React.Component {
+export default class CalendarContainer extends React.Component {
   static propTypes = {
     initialEvents: array,
     weekLength: number,

@@ -3,7 +3,7 @@ import { ControlLabel, FormControl } from 'react-bootstrap';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import FormTextField from 'components/modal/layout/body/FormTextField';
+import FormTextField from 'components/calendar/modal/layout/body/FormTextField';
 
 describe('<FormTextField />', () => {
   const onChangeSpy = sinon.spy();
