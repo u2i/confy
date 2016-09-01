@@ -9,7 +9,7 @@ const NextEvent = ({ event }) => (
     <EventContainer event={event}
                     label="Next Event"
                     noEventLabel="No more events for today">
-      <EventDetails event={event} showLocation={false}/>
+      <EventDetails event={event} showLocation={false} />
     </EventContainer>
   </div>
 );

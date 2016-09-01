@@ -25,7 +25,7 @@ const ConferenceRoomContainer = ({
         <h1>{conferenceRoom.title}</h1>
       </Col>
       <Col xs={6}>
-        <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT}/></h3>
+        <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT} /></h3>
       </Col>
     </Row>
     <If condition={!!currentEvent || !!nextEvent}>
@@ -34,7 +34,7 @@ const ConferenceRoomContainer = ({
           <Col xs={12} sm={8}>
             <CurrentEvent event={currentEvent}
                           nextEventStart={get(nextEvent, 'start.date_time')}
-                          onCompleted={onCompleted}/>
+                          onCompleted={onCompleted} />
           </Col>
           <Col xs={12} sm={4}>
             <NextEvent event={nextEvent}/>

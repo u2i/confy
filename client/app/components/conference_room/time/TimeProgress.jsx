@@ -54,14 +54,14 @@ export default class TimeProgress extends React.Component {
               text={`<h1>${formatDuration(this._timeLeft(), 'HH:mm:ss')}</h1>`}
               initialAnimate
               options={TimeProgress.progressBarOptions}
-              containerClassName="time-progress"/>
+              containerClassName="time-progress" />
     );
   }
 
   _updateProgress() {
     const { start, end } = this.props;
     this.setState({ progress: 1 - (moment().unix() - start) / (end - start) }, () => {
-      if(this.state.progress <= 0) {
+      if (this.state.progress <= 0) {
         this.props.onCompleted();
       }
     });

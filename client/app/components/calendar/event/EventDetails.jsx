@@ -30,8 +30,8 @@ const EventDetails = ({ event, timeFormat, showLocation, showGuests }) => (
         <small>attendees:</small>
         <ul>
         {flow(
-          filter(g => !g.self),
-          map(g => <li>{g.display_name || g.email}</li>)
+          filter(guest => !guest.self),
+          map((guest, i) => <li key={`attendee${i}`}>{guest.display_name || guest.email}</li>)
         )(event.attendees)}
         </ul>
       </div>
