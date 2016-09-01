@@ -16,9 +16,9 @@ module GoogleCalendar
 
       def process_params(params)
         zone = Time.now.getlocal.zone
-        params.merge(start: {date_time: datetime_parse(params[:start_time], zone)},
-                     end: {date_time: datetime_parse(params[:end_time], zone)}).
-          except(:start_time, :end_time, :conference_room_id, :permitted)
+        params[:start_time] = datetime_parse(params[:start_time], zone)
+        params[:end_time] = datetime_parse(params[:end_time], zone)
+        params.except(:permitted)
       end
 
       private

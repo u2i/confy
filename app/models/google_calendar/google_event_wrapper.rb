@@ -1,38 +1,49 @@
 module GoogleCalendar
   class GoogleEventWrapper
 
+    EventInvalidRoom = Class.new(StandardError)
+
     attr_accessor :id, :start_time, :end_time, :summary, :description, :location, :attendees, :conference_room, :creator_email
 
     def initialize(**params)
       @id = params[:id]
-      @start_time = { date_time: params[:start_time] }
-      @end_time = { date_time: params[:end_time] }
+      @start_time = params[:start_time]
+      @end_time = params[:end_time]
       @summary = params[:summary]
       @description = params[:description]
-      @location = params[:location]
-      @conference_room = ConferenceRoom.find_by(id: params[:conference_room_id])
+      @conference_room = find_conference_room(params[:conference_room_id])
       @creator_email = params[:creator_email]
       @attendees = params[:attendees] || []
     end
 
     def valid?
-      return false unless start_time.is_a?(Hash) || end_time.is_a?(Hash)
-      start_time[:date_time].present? && end_time[:date_time].present?
+      start_time.present? && end_time.present?
     end
 
     def as_google_event
       Google::Apis::CalendarV3::Event.new.tap do |google_event|
         google_event.id = id
-        google_event.start = start_time
-        google_event.end = end_time
+        google_event.start = { date_time: start_time }
+        google_event.end = { date_time: end_time }
         google_event.summary = summary
         google_event.description = description
-        google_event.location = location
+        google_event.location = google_location
         google_event.attendees = google_attendees
       end
     end
 
     private
+
+    def find_conference_room(conference_room_id)
+      return if conference_room_id.nil?
+      conference_room = ConferenceRoom.find_by(id: conference_room_id)
+      raise EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if conference_room.nil?
+      conference_room
+    end
+
+    def google_location
+      conference_room.nil? ? '' : conference_room.title
+    end
 
     def google_attendees
       attendees + [room_attendee, creator_attendee].compact
