@@ -20,7 +20,7 @@ EventContainer.propTypes = {
   event: EventSchema.except('width', 'offset'),
   label: React.PropTypes.string.isRequired,
   noEventLabel: React.PropTypes.string.isRequired,
-  children: React.PropTypes.node
+  children: React.PropTypes.oneOfType([React.PropTypes.node, React.PropTypes.func])
 };
 
 export default EventContainer;
