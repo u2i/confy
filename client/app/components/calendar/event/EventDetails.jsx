@@ -42,7 +42,8 @@ const EventDetails = ({ event, timeFormat, showLocation, showGuests }) => (
 EventDetails.propTypes = {
   event: EventSchema.except('width', 'offset').isRequired,
   timeFormat: React.PropTypes.string,
-  showLocation: React.PropTypes.bool
+  showLocation: React.PropTypes.bool,
+  showGuests: React.PropTypes.bool
 };
 
 EventDetails.defaultProps = {

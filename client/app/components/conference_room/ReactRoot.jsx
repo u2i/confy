@@ -18,20 +18,22 @@ export default class ReactRoot extends React.Component {
     this.handleEventCompleted = this.handleEventCompleted.bind(this);
   }
 
-  handleEventCompleted() {
-    this._fetchCurrentAndNextEvent();
-  }
-
   componentDidMount() {
     this._fetchCurrentAndNextEvent();
     createSubscription(EVENT_CHANNEL, this._fetchCurrentAndNextEvent);
   }
 
+  handleEventCompleted() {
+    this._fetchCurrentAndNextEvent();
+  }
+
   render() {
-    return <ConferenceRoomContainer currentEvent={this.state.currentEvent}
-                                    nextEvent={this.state.nextEvent}
-                                    conferenceRoom={this.props.conference_room}
-                                    onCompleted={this.handleEventCompleted} />;
+    return (
+      <ConferenceRoomContainer currentEvent={this.state.currentEvent}
+                               nextEvent={this.state.nextEvent}
+                               conferenceRoom={this.props.conference_room}
+                               onCompleted={this.handleEventCompleted} />
+    );
   }
 
   _fetchCurrentAndNextEvent() {
