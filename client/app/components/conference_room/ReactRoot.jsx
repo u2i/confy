@@ -1,48 +1,15 @@
 import React from 'react';
+import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
+
 import ConferenceRoomContainer from './ConferenceRoomContainer';
-import EventSource from 'sources/EventSource';
-import moment from 'moment';
-import { currentAndNextEvent } from 'helpers/EventHelper';
-import { EVENT_CHANNEL, createSubscription } from 'cable';
-import RoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
+import EventProvider from './provider/EventProvider';
 
-export default class ReactRoot extends React.Component {
-  static propTypes = {
-    conference_room: RoomSchema.isRequired
-  };
+const ReactRoot = ({ conference_room }) => (
+  <EventProvider conferenceRoom={conference_room} component={ConferenceRoomContainer} />
+);
 
-  constructor(...args) {
-    super(...args);
-    this.state = {};
-    this._fetchCurrentAndNextEvent = this._fetchCurrentAndNextEvent.bind(this);
-    this.handleEventCompleted = this.handleEventCompleted.bind(this);
-  }
+ReactRoot.propTypes = {
+  conference_room: ConferenceRoomSchema.isRequired
+};
 
-  componentDidMount() {
-    this._fetchCurrentAndNextEvent();
-    createSubscription(EVENT_CHANNEL, this._fetchCurrentAndNextEvent);
-  }
-
-  handleEventCompleted() {
-    this._fetchCurrentAndNextEvent();
-  }
-
-  render() {
-    return (
-      <ConferenceRoomContainer currentEvent={this.state.currentEvent}
-                               nextEvent={this.state.nextEvent}
-                               conferenceRoom={this.props.conference_room}
-                               onCompleted={this.handleEventCompleted} />
-    );
-  }
-
-  _fetchCurrentAndNextEvent() {
-    EventSource.fetch(
-      { start: moment().toISOString(), end: moment().endOf('day').toISOString() },
-      this.props.conference_room.id
-    ).then(response => {
-      const { current, next } = currentAndNextEvent(response.data);
-      this.setState({ nextEvent: next, currentEvent: current });
-    });
-  }
-}
+export default ReactRoot;

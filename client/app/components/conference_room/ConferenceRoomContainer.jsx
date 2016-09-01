@@ -16,7 +16,7 @@ const ConferenceRoomContainer = ({
   currentEvent,
   nextEvent,
   conferenceRoom,
-  onCompleted,
+  onUpdate,
   quote
 }) => (
   <Grid className="conference-room-container">
@@ -34,7 +34,7 @@ const ConferenceRoomContainer = ({
           <Col xs={12} sm={8}>
             <CurrentEvent event={currentEvent}
                           nextEventStart={get(nextEvent, 'start.date_time')}
-                          onCompleted={onCompleted} />
+                          onCompleted={onUpdate} />
           </Col>
           <Col xs={12} sm={4}>
             <NextEvent event={nextEvent}/>
