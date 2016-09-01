@@ -18,11 +18,11 @@ describe('<TimeProgress />', () => {
   const start = moment([2016, 0, 1, 0, 0, 0]);
   const end = start.clone().add(2, 'hours');
 
-  const element = ({ animate } = {}) => <TimeProgress start={start.unix()}
-                                             end={end.unix()}
-                                             onCompleted={sinon.spy()}
-                                             updateInterval={1000 * 60}
-                                             animate={animate} />;
+  const element = ({ animate, onCompleted } = {}) => <TimeProgress start={start.unix()}
+                                                                   end={end.unix()}
+                                                                   onCompleted={onCompleted || sinon.spy()}
+                                                                   updateInterval={1000 * 60}
+                                                                   animate={animate}/>;
 
   before(() => {
     clock = sinon.useFakeTimers(start.valueOf());
@@ -75,5 +75,12 @@ describe('<TimeProgress />', () => {
       clock.tick(1000 * 60);
       expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(1);
     });
+  });
+
+  it('invokes onCompleted callback when progress is 0 or less', () => {
+    const onCompleted = sinon.spy();
+    mount(element({ onCompleted }));
+    clock.tick(1000 * 60 * 60 * 2);
+    expect(onCompleted).to.have.been.calledOnce();
   });
 });
