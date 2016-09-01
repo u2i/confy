@@ -62,7 +62,7 @@ describe('<CurrentEvent />', () => {
 
     context('with next event', () => {
       const nextEventStart = moment().add(1, 'hour');
-      const wrapper = mount(<CurrentEvent nextEventStart={nextEventStart.toISOString()} />);
+      const wrapper = mount(<CurrentEvent nextEventStart={nextEventStart} />);
       const timeProgressWrapper = wrapper.find(DummyTimeProgress);
 
       it('renders <TimeProgress />', () => {

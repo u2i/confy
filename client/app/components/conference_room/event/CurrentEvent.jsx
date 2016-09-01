@@ -1,5 +1,6 @@
 import React from 'react';
-import { If } from 'react-if';
+import instanceOfMoment from 'proptypes/moment';
+import { If, Then } from 'react-if';
 import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
@@ -11,24 +12,28 @@ import TimeProgress from '../time/TimeProgress';
 import './current_event.scss';
 
 const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
-  const start = (event ? moment(event.start.date_time) : moment()).unix();
-  const end = (event ? moment(event.end.date_time) : moment(nextEventStart)).unix();
+  const start = event ? moment(event.start.date_time) : moment();
+  const end = event ? moment(event.end.date_time) : nextEventStart;
 
   return (
     <div className="current-event-container">
       <EventContainer event={event}
                       label="Current Event"
                       noEventLabel="No event is currently in progress">
-        {() => <EventDetails event={event} timeFormat={TIME_DISPLAY_FORMAT} showLocation={false} showGuests /> }
+        {() => <EventDetails event={event} timeFormat={TIME_DISPLAY_FORMAT} showLocation={false} showGuests/> }
       </EventContainer>
       <If condition={typeof event !== 'undefined' || typeof nextEventStart !== 'undefined'}>
-        <div className="time-progress-container">
-          <TimeProgress
-            start={start}
-            end={end}
-            onCompleted={onCompleted}
-            animate={typeof event !== 'undefined'} />
-        </div>
+        <Then>
+          {() => (
+            <div className="time-progress-container">
+              <TimeProgress
+                start={start.unix()}
+                end={end.unix()}
+                onCompleted={onCompleted}
+                animate={typeof event !== 'undefined'}/>
+            </div>
+          )}
+        </Then>
       </If>
     </div>
   );
@@ -36,7 +41,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
 
 CurrentEvent.propTypes = {
   event: EventSchema.except('width', 'offset'),
-  nextEventStart: React.PropTypes.string,
+  nextEventStart: instanceOfMoment,
   onCompleted: React.PropTypes.func
 };
 

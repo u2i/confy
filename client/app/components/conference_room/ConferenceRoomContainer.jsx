@@ -1,3 +1,4 @@
+import moment from 'moment';
 import get from 'lodash/get';
 import React from 'react';
 import { If, Then, Else } from 'react-if';
@@ -33,7 +34,7 @@ const ConferenceRoomContainer = ({
         <Row>
           <Col xs={12} sm={8}>
             <CurrentEvent event={currentEvent}
-                          nextEventStart={get(nextEvent, 'start.date_time')}
+                          nextEventStart={moment(get(nextEvent, 'start.date_time'))}
                           onCompleted={onUpdate} />
           </Col>
           <Col xs={12} sm={4}>
