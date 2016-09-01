@@ -32,6 +32,19 @@ $event-border-color: #f7f7f7;
       font-style: italic;
     }
   }
+
+  .event-guests {
+    font-size: 0.8em;
+    font-weight: bold;
+
+    ul {
+      list-style: none;
+
+      li {
+        display: inline;
+      }
+    }
+  }
 }
 
 .delete-button {

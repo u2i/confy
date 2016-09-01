@@ -17,10 +17,10 @@ const EventContainer = ({ event, label, noEventLabel, children }) => (
 );
 
 EventContainer.propTypes = {
-  event: EventSchema,
+  event: EventSchema.except('width', 'offset'),
   label: React.PropTypes.string.isRequired,
   noEventLabel: React.PropTypes.string.isRequired,
-  children: React.PropTypes.func
+  children: React.PropTypes.node
 };
 
 export default EventContainer;

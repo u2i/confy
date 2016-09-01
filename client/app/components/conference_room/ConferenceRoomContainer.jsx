@@ -16,15 +16,16 @@ const ConferenceRoomContainer = ({
   currentEvent,
   nextEvent,
   conferenceRoom,
-  onCompleted
+  onCompleted,
+  quote
 }) => (
-  <Grid>
+  <Grid className="conference-room-container">
     <Row style={{ backgroundColor: conferenceRoom.color }} className="room-header">
       <Col xs={6}>
         <h1>{conferenceRoom.title}</h1>
       </Col>
       <Col xs={6}>
-        <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT} /></h3>
+        <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT}/></h3>
       </Col>
     </Row>
     <If condition={!!currentEvent || !!nextEvent}>
@@ -33,16 +34,19 @@ const ConferenceRoomContainer = ({
           <Col xs={12} sm={8}>
             <CurrentEvent event={currentEvent}
                           nextEventStart={get(nextEvent, 'start.date_time')}
-                          onCompleted={onCompleted} />
+                          onCompleted={onCompleted}/>
           </Col>
           <Col xs={12} sm={4}>
-            <NextEvent event={nextEvent} />
+            <NextEvent event={nextEvent}/>
           </Col>
         </Row>
       </Then>
       <Else>
         <Col xs={12}>
-          <Jumbotron>There are no more events for today</Jumbotron>
+          <Jumbotron>
+            <h3>There are no more events for today</h3>
+            <p>Check back tomorrow!</p>
+          </Jumbotron>
         </Col>
       </Else>
     </If>
@@ -52,7 +56,11 @@ const ConferenceRoomContainer = ({
 ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvent: EventSchema.except('width', 'offset'),
-  conferenceRoom: ConferenceRoomSchema.only('color').isRequired
+  conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
+  quote: React.PropTypes.shape({
+    quote: React.PropTypes.string,
+    author: React.PropTypes.string
+  })
 };
 
 export default ConferenceRoomContainer;

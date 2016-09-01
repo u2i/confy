@@ -5,15 +5,17 @@ import EventContainer from './EventContainer';
 import EventDetails from 'components/calendar/event/EventDetails';
 
 const NextEvent = ({ event }) => (
-  <EventContainer event={event}
-                  label="Next Event"
-                  noEventLabel="No more events for today">
-    <EventDetails event={event} showLocation={false} />
-  </EventContainer>
+  <div className="event-container">
+    <EventContainer event={event}
+                    label="Next Event"
+                    noEventLabel="No more events for today">
+      <EventDetails event={event} showLocation={false}/>
+    </EventContainer>
+  </div>
 );
 
 NextEvent.propTypes = {
-  event: EventSchema
+  event: EventSchema.except('width', 'offset')
 };
 
 export default NextEvent;

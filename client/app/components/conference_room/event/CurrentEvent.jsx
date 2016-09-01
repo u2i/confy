@@ -1,6 +1,6 @@
 import React from 'react';
 import { If } from 'react-if';
-import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
+import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
@@ -19,7 +19,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
       <EventContainer event={event}
                       label="Current Event"
                       noEventLabel="No event is currently in progress">
-        <EventDetails event={event} timeFormat={DATE_DISPLAY_FORMAT} showLocation={false}/>
+        <EventDetails event={event} timeFormat={TIME_DISPLAY_FORMAT} showLocation={false} showGuests={true} />
       </EventContainer>
       <If condition={typeof event !== 'undefined' || typeof nextEventStart !== 'undefined'}>
         <div className="time-progress-container">

@@ -1,3 +1,6 @@
+import flow from 'lodash/fp/flow';
+import filter from 'lodash/fp/filter';
+import map from 'lodash/fp/map';
 import React from 'react';
 import { eventTimeString } from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
@@ -8,7 +11,7 @@ import './event.scss';
 const defaultCreator = { display_name: 'private', self: false };
 const creator = (event) => event.creator || defaultCreator;
 
-const EventDetails = ({ event, timeFormat, showLocation }) => (
+const EventDetails = ({ event, timeFormat, showLocation, showGuests }) => (
   <div>
     <div className="event-time">{eventTimeString(event, timeFormat)}</div>
     <div className="event-name">{event.summary}</div>
@@ -22,17 +25,29 @@ const EventDetails = ({ event, timeFormat, showLocation }) => (
         {event.conference_room.title}
       </div>
     </If>
+    <If condition={showGuests}>
+      <div className="event-guests">
+        <small>attendees:</small>
+        <ul>
+        {flow(
+          filter(g => !g.self),
+          map(g => <li>{g.display_name || g.email}</li>)
+        )(event.attendees)}
+        </ul>
+      </div>
+    </If>
   </div>
 );
 
 EventDetails.propTypes = {
-  event: EventSchema.isRequired,
+  event: EventSchema.except('width', 'offset').isRequired,
   timeFormat: React.PropTypes.string,
   showLocation: React.PropTypes.bool
 };
 
 EventDetails.defaultProps = {
-  showLocation: true
+  showLocation: true,
+  showGuests: false
 };
 
 export default EventDetails;
