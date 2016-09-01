@@ -6,8 +6,8 @@
 //= require_tree ./channels
 
 (function() {
-  this.App || (this.CalendarContainer = {});
+  this.App || (this.App = {});
 
-  CalendarContainer.cable = ActionCable.createConsumer();
+  App.cable = ActionCable.createConsumer();
 
 }).call(this);
