@@ -80,10 +80,10 @@ describe('<EventDetails />', () => {
   });
 
   context('with showGuests prop', () => {
-    const wrapper = mount(<EventDetails event={defaultEvent} showGuests/>);
+    const wrapper = mount(<EventDetails event={defaultEvent} showGuests />);
 
     it('renders <EventAttendees />', () => {
       expect(wrapper).to.have.exactly(1).descendants(EventAttendees);
-    })
+    });
   });
 });

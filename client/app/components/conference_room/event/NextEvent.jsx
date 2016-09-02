@@ -15,7 +15,8 @@ const NextEvent = ({ event, noEventLabel }) => (
 );
 
 NextEvent.propTypes = {
-  event: EventSchema.except('width', 'offset')
+  event: EventSchema.except('width', 'offset'),
+  noEventLabel: React.PropTypes.string
 };
 
 export default NextEvent;
