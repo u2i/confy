@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
