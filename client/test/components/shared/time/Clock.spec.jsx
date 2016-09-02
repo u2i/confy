@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import Clock from 'components/conference_room/time/Clock';
+import Clock from 'components/shared/time/Clock';
 
 describe('<Clock />', () => {
   let clock;

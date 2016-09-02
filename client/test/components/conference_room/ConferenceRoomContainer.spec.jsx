@@ -5,7 +5,7 @@ import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 
-import Clock from 'components/conference_room/time/Clock';
+import Clock from 'components/shared/time/Clock';
 import NextEvent from 'components/conference_room/event/NextEvent';
 
 describe('<ConferenceRoomContainer />', () => {

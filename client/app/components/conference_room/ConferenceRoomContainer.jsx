@@ -7,7 +7,7 @@ import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
 import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
-import Clock from './time/Clock';
+import Clock from 'components/shared/time/Clock';
 import CurrentEvent from './event/CurrentEvent';
 import NextEvent from './event/NextEvent';
 

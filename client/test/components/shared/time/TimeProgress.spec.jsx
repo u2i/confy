@@ -7,7 +7,7 @@ import proxyquire from 'proxyquire';
 
 const DummyCircle = () => <div></div>;
 
-const TimeProgress = proxyquire('../../../../app/components/conference_room/time/TimeProgress', {
+const TimeProgress = proxyquire('../../../../app/components/shared/time/TimeProgress', {
   'react-progressbar.js': {
     Circle: DummyCircle
   }

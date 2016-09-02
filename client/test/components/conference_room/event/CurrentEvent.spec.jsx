@@ -12,7 +12,7 @@ describe('<CurrentEvent />', () => {
   const DummyTimeProgress = () => <div></div>;
 
   const CurrentEvent = proxyquire.noCallThru().load('../../../../app/components/conference_room/event/CurrentEvent', {
-    '../time/TimeProgress': DummyTimeProgress
+    '../../shared/time/TimeProgress': DummyTimeProgress
   }).default;
 
   const event = Event.build();

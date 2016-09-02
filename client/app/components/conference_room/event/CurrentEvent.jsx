@@ -7,7 +7,7 @@ import EventSchema from 'proptypes/schemas/EventSchema';
 
 import EventContainer from './EventContainer';
 import EventDetails from 'components/calendar/event/EventDetails';
-import TimeProgress from '../time/TimeProgress';
+import TimeProgress from 'components/shared/time/TimeProgress';
 
 import './current_event.scss';
 
