@@ -17,8 +17,7 @@ const ConferenceRoomContainer = ({
   currentEvent,
   nextEvent,
   conferenceRoom,
-  onUpdate,
-  quote
+  onUpdate
 }) => (
   <Grid className="conference-room-container">
     <Row style={{ backgroundColor: conferenceRoom.color }} className="room-header">
@@ -58,10 +57,6 @@ ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvent: EventSchema.except('width', 'offset'),
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
-  quote: React.PropTypes.shape({
-    quote: React.PropTypes.string,
-    author: React.PropTypes.string
-  })
 };
 
 export default ConferenceRoomContainer;
