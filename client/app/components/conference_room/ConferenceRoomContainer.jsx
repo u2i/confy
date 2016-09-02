@@ -57,6 +57,7 @@ ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvent: EventSchema.except('width', 'offset'),
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
+  onUpdate: React.PropTypes.func
 };
 
 export default ConferenceRoomContainer;
