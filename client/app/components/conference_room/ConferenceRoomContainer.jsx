@@ -37,7 +37,7 @@ const ConferenceRoomContainer = ({
                           onCompleted={onUpdate} />
           </Col>
           <Col xs={12} sm={4}>
-            <NextEvent event={nextEvent}/>
+            <NextEvent event={nextEvent} />
           </Col>
         </Row>
       </Then>

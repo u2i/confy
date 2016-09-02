@@ -20,7 +20,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
       <EventContainer event={event}
                       label="Current Event"
                       noEventLabel="No event is currently in progress">
-        {() => <EventDetails event={event} timeFormat={TIME_DISPLAY_FORMAT} showLocation={false} showGuests/> }
+        {() => <EventDetails event={event} timeFormat={TIME_DISPLAY_FORMAT} showLocation={false} showGuests />}
       </EventContainer>
       <If condition={typeof event !== 'undefined' || typeof nextEventStart !== 'undefined'}>
         <Then>
@@ -30,7 +30,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => {
                 start={start.unix()}
                 end={end.unix()}
                 onCompleted={onCompleted}
-                animate={typeof event !== 'undefined'}/>
+                animate={typeof event !== 'undefined'} />
             </div>
           )}
         </Then>

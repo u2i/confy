@@ -22,7 +22,7 @@ describe('<TimeProgress />', () => {
                                                                    end={end.unix()}
                                                                    onCompleted={onCompleted || sinon.spy()}
                                                                    updateInterval={1000 * 60}
-                                                                   animate={animate}/>;
+                                                                   animate={animate} />;
 
   before(() => {
     clock = sinon.useFakeTimers(start.valueOf());
