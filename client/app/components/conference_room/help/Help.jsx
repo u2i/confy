@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 
 import helpText from 'texts/help.md';
 
+import './help.scss';
+
 const Header = () => (
   <Modal.Header closeButton>
     <Modal.Title>What is this?</Modal.Title>
@@ -24,7 +26,7 @@ Footer.propTypes = {
 };
 
 const Help = ({ show, onHide }) => (
-  <Modal show={show} onHide={onHide}>
+  <Modal show={show} onHide={onHide} dialogClassName="help-modal">
     <Header />
     <Body />
     <Footer onHide={onHide} />
