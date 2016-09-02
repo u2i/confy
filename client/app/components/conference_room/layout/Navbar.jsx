@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 

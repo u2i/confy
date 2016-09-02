@@ -50,6 +50,6 @@ describe('<Help />', () => {
     it('invokes onHide callback', () => {
       wrapper.find(Button).simulate('click');
       expect(onHide).to.have.been.calledOnce();
-    })
+    });
   });
 });
