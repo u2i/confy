@@ -26,6 +26,6 @@ describe('<NextEvent />', () => {
 
     it('does not render EventDetails', () => {
       expect(wrapper).not.to.have.descendants(EventDetails);
-    })
-  })
+    });
+  });
 });
