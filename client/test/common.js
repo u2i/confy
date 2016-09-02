@@ -30,3 +30,5 @@ shared.setup('stub ReactDOM.findDOMNode', ({ cb } = {}) => {
     ReactDOM.findDOMNode.restore();
   });
 });
+
+require.extensions['.md'] = () => null;
