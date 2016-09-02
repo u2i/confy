@@ -7,6 +7,7 @@ import Event from 'test/factories/Event';
 
 import Clock from 'components/shared/time/Clock';
 import NextEvent from 'components/conference_room/event/NextEvent';
+import Navbar from 'components/conference_room/layout/Navbar';
 
 describe('<ConferenceRoomContainer />', () => {
   const DummyCurrentEvent = () => <div></div>;
@@ -21,16 +22,8 @@ describe('<ConferenceRoomContainer />', () => {
   const shallowWrapper = shallow(<ConferenceRoomContainer conferenceRoom={conferenceRoom} />);
   const mountedWrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} />);
 
-  it('renders conference room title', () => {
-    expect(shallowWrapper.find('.room-header h1')).to.have.text(conferenceRoom.title);
-  });
-
-  it('renders a <Clock /> component', () => {
-    expect(shallowWrapper).to.have.exactly(1).descendants(Clock);
-  });
-
-  it('renders a header with conference room color as background', () => {
-    expect(shallowWrapper.find('.room-header')).to.have.style('background-color').equal(conferenceRoom.color);
+  it('renders <Navbar />', () => {
+    expect(shallowWrapper).to.have.exactly(1).descendants(Navbar);
   });
 
   context('with current event', () => {

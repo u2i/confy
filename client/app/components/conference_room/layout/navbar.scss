@@ -1,0 +1,14 @@
+.conference-room-navbar {
+  font-size: 1.2em;
+
+  .navbar-brand h2 {
+    font-size: 1.2em;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .navbar-brand,
+  .navbar-nav > li > a {
+    color: #000 !important;
+  }
+}
