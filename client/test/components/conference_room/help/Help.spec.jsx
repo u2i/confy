@@ -8,7 +8,7 @@ import { Modal, Button } from 'react-bootstrap';
 const helpText = 'This is very helpful';
 
 const Help = proxyquire('../../../../app/components/conference_room/help/Help', {
-  './help.md': helpText
+  '../../../texts/help.md': helpText
 }).default;
 
 describe('<Help />', () => {

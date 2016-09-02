@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import helpText from './help.md';
+import helpText from 'texts/help.md';
 
 const Header = () => (
   <Modal.Header closeButton>

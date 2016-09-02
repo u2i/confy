@@ -45,6 +45,10 @@
           "expose": "models"
         },
         {
+          "src": "./app/texts",
+          "expose": "texts"
+        },
+        {
           "src": "npm:lodash",
           "expose": "underscore"
         }
