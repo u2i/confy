@@ -1,10 +1,9 @@
-import flow from 'lodash/fp/flow';
-import filter from 'lodash/fp/filter';
-import map from 'lodash/map';
 import React from 'react';
 import { eventTimeString } from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 import { If } from 'react-if';
+
+import EventAttendees from './EventAttendees';
 
 import './event.scss';
 
@@ -26,15 +25,7 @@ const EventDetails = ({ event, timeFormat, showLocation, showGuests }) => (
       </div>
     </If>
     <If condition={showGuests}>
-      <div className="event-attendees">
-        <small>attendees:&nbsp;</small>
-        <ul>
-          {flow(
-            filter(guest => !guest.self),
-            (guests) => map(guests, (guest, i) => <li key={`attendee${i}`}>{guest.display_name || guest.email}</li>)
-          )(event.attendees)}
-        </ul>
-      </div>
+      <EventAttendees attendees={event.attendees} />
     </If>
   </div>
 );

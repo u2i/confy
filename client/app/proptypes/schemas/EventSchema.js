@@ -4,7 +4,7 @@ import schema from './Schema';
 import UserSchema from './UserSchema';
 import ConferenceRoomSchema from './ConferenceRoomSchema';
 
-const { string, number, shape, oneOfType } = PropTypes;
+const { string, number, shape, oneOfType, arrayOf } = PropTypes;
 
 const time = shape({
   date_time: string.isRequired
@@ -21,7 +21,8 @@ const EventShema = {
   name:            string,
   summary:         string,
   start_timestamp: number,
-  end_timestamp:   number
+  end_timestamp:   number,
+  attendees:       arrayOf(UserSchema)
 };
 
 export default schema(EventShema);

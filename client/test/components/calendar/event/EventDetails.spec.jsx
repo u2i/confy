@@ -5,6 +5,8 @@ import UserFactory from 'test/factories/User';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 
+import EventAttendees from 'components/calendar/event/EventAttendees';
+
 describe('<EventDetails />', () => {
   const shallowEvent = (event) => shallow(
     <EventDetails event={event}
@@ -67,5 +69,21 @@ describe('<EventDetails />', () => {
         expect(defaultWrapper.text()).to.include(defaultEvent.creator.email);
       });
     });
+  });
+
+  context('with no showGuests prop', () => {
+    const wrapper = mount(<EventDetails event={defaultEvent} />);
+
+    it('does not render <EventAttendees />', () => {
+      expect(wrapper).not.to.have.descendants(EventAttendees);
+    });
+  });
+
+  context('with showGuests prop', () => {
+    const wrapper = mount(<EventDetails event={defaultEvent} showGuests/>);
+
+    it('renders <EventAttendees />', () => {
+      expect(wrapper).to.have.exactly(1).descendants(EventAttendees);
+    })
   });
 });
