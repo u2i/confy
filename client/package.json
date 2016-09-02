@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js,.jsx ."
   },
   "dependencies": {
+    "actioncable": "^5.0.0",
     "autoprefixer": "^6.3.5",
     "axios": "^0.9.1",
     "babel-cli": "^6.6.5",

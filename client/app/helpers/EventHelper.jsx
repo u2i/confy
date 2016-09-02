@@ -1,3 +1,4 @@
+import isInteger from 'lodash/isInteger';
 import sortBy from 'lodash/sortBy';
 
 export const SECONDS_IN_DAY = 24 * 60 * 60;
@@ -70,4 +71,9 @@ export function setEventsPositionAttributes(events) {
       });
     });
   });
+}
+
+export function updateRoomEvents(events, newEvents, roomId) {
+  if (!isInteger(roomId)) throw new Error('Conference room id must be an integer');
+  return events.filter(event => event.conference_room.id !== roomId).concat(newEvents);
 }
