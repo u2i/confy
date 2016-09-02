@@ -1,0 +1,25 @@
+.conference-room-navbar {
+  font-size: 1.2em;
+
+  .navbar-brand h2,
+  .navbar-text h3 {
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-brand,
+  .navbar-nav > li > a,
+  .navbar-text {
+    color: #000 !important;
+  }
+
+  .clock-date, .clock-time {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  .clock-time {
+    font-size: 1.2em;
+  }
+}
