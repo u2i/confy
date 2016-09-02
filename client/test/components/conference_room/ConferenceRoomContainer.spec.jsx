@@ -61,7 +61,7 @@ describe('<ConferenceRoomContainer />', () => {
     });
 
     it('renders no event text', () => {
-      expect(mountedWrapper.text()).to.contain('There are no more events for today');
+      expect(mountedWrapper.text()).to.contain('No more events for today');
     });
   });
 });

@@ -13,6 +13,8 @@ import NextEvent from './event/NextEvent';
 
 import './conference_room.scss';
 
+const NO_MORE_EVENTS_TEXT = 'No more events for today';
+
 const ConferenceRoomContainer = ({
   currentEvent,
   nextEvent,
@@ -37,14 +39,14 @@ const ConferenceRoomContainer = ({
                           onCompleted={onUpdate} />
           </Col>
           <Col xs={12} sm={4}>
-            <NextEvent event={nextEvent} />
+            <NextEvent event={nextEvent} noEventLabel={NO_MORE_EVENTS_TEXT} />
           </Col>
         </Row>
       </Then>
       <Else>
         <Col xs={12}>
           <Jumbotron>
-            <h3>There are no more events for today</h3>
+            <h3>{NO_MORE_EVENTS_TEXT}</h3>
             <p>Check back tomorrow!</p>
           </Jumbotron>
         </Col>
