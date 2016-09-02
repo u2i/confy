@@ -25,7 +25,7 @@ describe('<CurrentEvent />', () => {
   });
 
   context('with event', () => {
-    const wrapper = mount(<CurrentEvent event={event}/>);
+    const wrapper = mount(<CurrentEvent event={event} />);
     const timeProgressWrapper = wrapper.find(DummyTimeProgress);
 
     it('renders <EventDetails />', () => {
@@ -47,14 +47,13 @@ describe('<CurrentEvent />', () => {
   });
 
   context('with no event', () => {
-
     it('does not render <EventDetails />', () => {
-      const wrapper = mount(<CurrentEvent/>);
+      const wrapper = mount(<CurrentEvent />);
       expect(wrapper).to.not.have.descendants(EventDetails);
     });
 
     context('with no next event', () => {
-      const wrapper = mount(<CurrentEvent/>);
+      const wrapper = mount(<CurrentEvent />);
       it('does not render <TimeProgress />', () => {
         expect(wrapper).to.not.have.descendants(DummyTimeProgress);
       });
@@ -78,5 +77,4 @@ describe('<CurrentEvent />', () => {
       });
     });
   });
-
 });
