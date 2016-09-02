@@ -39,7 +39,7 @@ describe('<ConferenceRoomContainer />', () => {
 
     it('renders <CurrentEvent />', () => {
       expect(wrapper).to.have.exactly(1).descendants(DummyCurrentEvent);
-    })
+    });
   });
 
   context('with next event', () => {
@@ -62,6 +62,6 @@ describe('<ConferenceRoomContainer />', () => {
 
     it('renders no event text', () => {
       expect(mountedWrapper.text()).to.contain('There are no more events for today');
-    })
+    });
   });
 });
