@@ -6,19 +6,19 @@ RSpec.describe GoogleCalendar::EventCreator do
   let(:credentials) { :credentials }
   let(:email) { 'mail@example.com'.freeze }
   let(:event_creator) { described_class.new(credentials, email) }
+  let!(:conference_room) { create(:conference_room) }
   before do
     allow(client).to receive(:calendar_service) { service }
     allow(GoogleCalendar::Client).to receive(:new) { client }
   end
   describe '.events_in_span' do
-    let(:conference_room) { build(:conference_room) }
     let(:start_time) { Time.now }
     let(:end_time) { Time.now + 3.hour }
 
     it 'calls calendar_service' do
       expect(service).to receive(:list_events).with(conference_room.email,
-                                                    time_min: start_time,
-                                                    time_max: end_time)
+                                                    time_min: start_time.to_s,
+                                                    time_max: end_time.to_s)
       event_creator.send(:events_in_span, conference_room, start_time, end_time)
     end
   end
@@ -26,7 +26,7 @@ RSpec.describe GoogleCalendar::EventCreator do
   describe '.create' do
     context 'given invalid params' do
       it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
-        expect { described_class.new(credentials, email).create({}) }.
+        expect { described_class.new(credentials, email).create({conference_room_id: conference_room.id}) }.
           to raise_error(GoogleCalendar::EventCreator::EventInvalidParamsError)
       end
     end
@@ -42,8 +42,8 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:event_data) do
           {
             attendees: [],
-            start_time: start_time,
-            end_time: end_time,
+            start: {date_time: start_time},
+            end: {date_time: end_time},
             conference_room_id: room.id
           }
         end
@@ -66,7 +66,7 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
         let!(:room) { create :conference_room }
-        let(:event_data) { {attendees: [], start_time: start_time, end_time: end_time} }
+        let(:event_data) { {attendees: [], start: {date_time: start_time}, end: {date_time: end_time}, conference_room_id: conference_room.id} }
 
         before do
           allow(event_creator).to receive(:events_in_span) { [] }

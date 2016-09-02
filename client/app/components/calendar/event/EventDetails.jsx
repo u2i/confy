@@ -5,7 +5,7 @@ import './event.scss';
 
 export default class EventDetails extends React.Component {
   static propTypes = {
-    event: EventSchema.isRequired,
+    event: EventSchema.except('creator').isRequired,
     timeFormat: React.PropTypes.string
   };
 

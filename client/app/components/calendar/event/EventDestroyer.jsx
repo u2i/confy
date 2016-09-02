@@ -11,7 +11,7 @@ export default class EventDestroyer extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
-    event:    EventSchema.isRequired
+    event:    EventSchema.except('creator').isRequired
   };
 
   constructor(props) {

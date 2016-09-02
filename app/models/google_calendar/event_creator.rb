@@ -9,8 +9,9 @@ module GoogleCalendar
       @user_email = user_email
     end
 
-    def create(raw_event_data = {})
-      event_wrapper = build_event_wrapper(raw_event_data)
+    def create(event_data = {})
+      event_data.merge!(user_email: user_email)
+      event_wrapper = build_event_wrapper(event_data)
       insert_event_and_return_result(event_wrapper)
     end
 
@@ -23,7 +24,7 @@ module GoogleCalendar
     end
 
     def raise_error_if_occupied(event_wrapper)
-      events = events_in_span(event_wrapper.conference_room, event_wrapper.start_time, event_wrapper.end_time)
+      events = events_in_span(event_wrapper.conference_room, event_wrapper.start_time.date_time, event_wrapper.end_time.date_time)
       return unless events.any?
       error_message = occupied_error_message(events)
       raise(EventInTimeSpanError, error_message)
@@ -37,9 +38,8 @@ module GoogleCalendar
       items.map(&:summary).join(', '.freeze)
     end
 
-    def build_event_wrapper(raw_event_data)
-      event_data = raw_event_data.to_h.deep_symbolize_keys
-      event_wrapper = GoogleCalendar::GoogleEventWrapper.new(event_data)
+    def build_event_wrapper(event_data)
+      event_wrapper = GoogleCalendar::EventWrapper::Event.new(event_data)
       raise_error_if_invalid(event_wrapper)
       event_wrapper
     end
@@ -50,10 +50,11 @@ module GoogleCalendar
     end
 
     def events_in_span(conference_room, starting, ending)
+      return [] unless conference_room
       events = calendar_service.list_events(
         conference_room.email,
-        time_min: starting,
-        time_max: ending
+        time_min: starting.to_s,
+        time_max: ending.to_s
       )
       events ? events.items : []
     end
