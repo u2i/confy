@@ -10,22 +10,21 @@ describe('<EventContainer />', () => {
 
   context('with label prop', () => {
     const label = 'Label';
-    const wrapper = shallow(<EventContainer label={label}/>);
+    const wrapper = shallow(<EventContainer label={label} />);
     it('renders label', () => {
       expect(wrapper.find('h2')).to.have.text(label);
     });
   });
 
   context('with no event', () => {
-    const label = 'No events';
-    const wrapper = mount(<EventContainer noEventLabel={label}/>);
-
     it('doest not render children', () => {
       const wrapper = mount(<EventContainer><DummyComponent /></EventContainer>);
       expect(wrapper).to.not.have.descendants(DummyComponent);
     });
 
     it('renders noEventLabel', () => {
+      const label = 'No events';
+      const wrapper = mount(<EventContainer noEventLabel={label} />);
       expect(wrapper).to.contain.text(label);
     });
   });
