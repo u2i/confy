@@ -1,10 +1,11 @@
 import React from 'react';
 import instanceOfMoment from 'proptypes/moment';
-import { formatDate } from 'helpers/DateHelper';
+import { formatDate, isToday } from 'helpers/DateHelper';
+import classNames from 'classnames';
 
-const CalendarHeader = (props) => (
-  <th className="text-center">
-    {formatDate(props.day, props.dateFormat)}
+const CalendarHeader = ({ dateFormat, day }) => (
+  <th className={classNames('text-center', { 'today-column': isToday(day) })}>
+    {formatDate(day, dateFormat)}
   </th>
 );
 
