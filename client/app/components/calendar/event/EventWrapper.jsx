@@ -3,7 +3,7 @@ import { If, Then } from 'react-if';
 import { isToday } from 'helpers/DateHelper';
 import classNames from 'classnames';
 
-import '../calendar.scss';
+import '../table/calendar.scss';
 
 import EventGroup from './EventGroup';
 
