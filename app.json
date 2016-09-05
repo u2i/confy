@@ -36,8 +36,12 @@
     "GOOGLE_PRIVATE_KEY": {
       "required": true
     },
-    "HOSTNAME": {
+    "HEROKU_APP_NAME": {
       "required": true
+    },
+    "HOSTNAME": {
+      "required": true,
+      "value": 
     },
     "LANG": {
       "required": true
