@@ -62,7 +62,8 @@ module GoogleCalendar
     end
 
     def build_event_data(google_event, conference_room)
-      event_wrapper = GoogleCalendar::EventWrapper::Builder.new(google_event, conference_room).build_rounded_event_wrapper
+      wrapper_builder = GoogleCalendar::EventWrapper::Builder.new(google_event, conference_room)
+      event_wrapper = wrapper_builder.build_rounded_event_wrapper
       event_wrapper.mark_user_event(user_email)
       event_wrapper.to_h
     end

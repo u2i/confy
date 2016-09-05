@@ -9,6 +9,18 @@ describe GoogleCalendar::EventWrapper::Event do
     it 'creates new GoogleEventWrapper' do
       expect(described_class.new).to be_instance_of described_class
     end
+
+    context 'given creator_email in params' do
+      let(:creator_email) { 'example@google.com' }
+      let(:params) { {creator_email: creator_email} }
+      let(:event_wrapper) { described_class.new(params) }
+      it 'creates new CreatorWrapper and assign it to creator field' do
+        expect(event_wrapper.creator).to be_instance_of GoogleCalendar::EventWrapper::CreatorWrapper
+        expect(event_wrapper.creator.email).to eq creator_email
+      end
+    end
+
+
   end
 
   describe '#valid?' do
@@ -31,7 +43,7 @@ describe GoogleCalendar::EventWrapper::Event do
 
     let!(:room) { create :conference_room }
     let(:user_email) { 'mail@example.com' }
-    let(:params) {{ id: '1', conference_room_id: room.id, user_email: user_email }}
+    let(:params) { {id: '1', conference_room_id: room.id, user_email: user_email} }
     let(:google_event) { described_class.new(params).as_google_event }
 
     it 'adds conference room with accepted response status to attendees' do
