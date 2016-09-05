@@ -36,6 +36,9 @@
     "GOOGLE_PRIVATE_KEY": {
       "required": true
     },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
     "HOSTNAME": {
       "required": true
     },
