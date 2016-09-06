@@ -21,7 +21,18 @@ module GoogleCalendar
       event_finder.by_room(time_interval, conference_room_ids)
     end
 
+    def confirm(conference_room_id, event_id)
+      event = Event.find_by(event_id: event_id)
+      event = save_event(conference_room_id, event_id) if event.nil?
+      event.confirm
+    end
+
     private
+
+    def save_event(conference_room_id, event_id)
+      conference_room = ConferenceRoom.find(conference_room_id)
+      Event.create(event_id: event_id, conference_room: conference_room)
+    end
 
     def event_creator
       @event_creator ||= GoogleCalendar::EventCreator.new(credentials, user_email)

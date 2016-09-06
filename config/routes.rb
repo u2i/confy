@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'oauth2callback' => 'authentication#authenticate'
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
   get 'conference_rooms/:conference_room_id/events' => 'events#room_index'
+  post 'events/confirm' => 'events#confirm'
 
 
   resources :contacts, only: [:index]
