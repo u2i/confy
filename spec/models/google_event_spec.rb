@@ -31,7 +31,7 @@ RSpec.describe GoogleCalendar::GoogleEvent do
 
     context 'given event_id that exists in db' do
       let!(:event) { create :event }
-      let(:conference_room_id) { 0 }
+      let(:conference_room_id) { event.conference_room.id }
 
       it 'confirms event' do
         google_event.confirm(conference_room_id, event.event_id)

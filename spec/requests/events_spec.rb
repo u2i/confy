@@ -89,7 +89,7 @@ RSpec.describe 'Events', type: :request do
     it 'calls google_event_client.confirm with given parameters' do
       allow_any_instance_of(EventsController).to receive(:google_event_client) { client }
       expect(client).to receive(:confirm).with(conference_room_id, event_id)
-      post events_confirm_path params: {conference_room_id: conference_room_id, event_id: event_id}
+      post confirmation_path(conference_room_id, event_id)
     end
   end
 end
