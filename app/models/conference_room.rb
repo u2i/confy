@@ -28,7 +28,7 @@ class ConferenceRoom < ApplicationRecord
 
   def self.find_or_raise(conference_room_id)
     conference_room = ConferenceRoom.find_by(id: conference_room_id)
-    raise EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if conference_room.nil?
+    raise Exceptions::EventInvalidRoom, "Undefined conference room: #{conference_room_id}" if conference_room.nil?
     conference_room
   end
 end

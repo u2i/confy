@@ -1,7 +1,6 @@
 module GoogleCalendar
   module EventWrapper
     class Event
-      EventInvalidRoom = Class.new(StandardError)
 
       attr_accessor :id, :start_time, :end_time, :summary, :description,
                     :location, :attendees, :conference_room, :creator, :current_user_email

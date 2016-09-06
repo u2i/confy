@@ -21,7 +21,7 @@ class EventsController < ApplicationController
     end
   end
 
-  rescue_from GoogleCalendar::EventWrapper::Event::EventInvalidRoom do |error|
+  rescue_from Exceptions::EventInvalidRoom do |error|
     render json: error.message, status: :unprocessable_entity
   end
 

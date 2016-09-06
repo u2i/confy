@@ -24,7 +24,7 @@ RSpec.describe 'Events', type: :request do
     end
 
     context 'given invalid conference room id' do
-      let(:error) { GoogleCalendar::EventWrapper::Event::EventInvalidRoom.new('error') }
+      let(:error) { Exceptions::EventInvalidRoom.new('error') }
       it 'responds with 422' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).and_raise(error)
         post events_path
