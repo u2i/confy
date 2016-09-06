@@ -20,7 +20,8 @@ describe('<ModalFooter />', () => {
   });
 
   it('renders <Button /> with "Save changes" string inside', () => {
-    expect(defaultWrapper.findWhere(node => node.type() === 'span' && node.text() === 'Save changes')).to.have.lengthOf(1);
+    const wrapper = mount(<ModalFooter {...props} />);
+    expect(wrapper.find('button.save-button').find('span')).text().to.eq('Save changes');
   });
 
   context('when unresolvedErrors is true', () => {
