@@ -1,16 +1,21 @@
 import flow from 'lodash/fp/flow';
 import filter from 'lodash/fp/filter';
 import map from 'lodash/map';
+import curryRight from 'lodash/fp/curryRight';
 import React from 'react';
 import UserSchema from 'proptypes/schemas/UserSchema';
+
+const filterSelf = filter(guest => !guest.self);
+const guestToListItem = (guest, i) => (<li key={`attendee${i}`}>{guest.display_name || guest.email}</li>);
+const mapToList = curryRight(map)(guestToListItem);
 
 const EventAttendees = ({ attendees }) => (
   <div className="event-attendees">
     <small>attendees:&nbsp;</small>
     <ul>
       {flow(
-        filter(guest => !guest.self),
-        (guests) => map(guests, (guest, i) => <li key={`attendee${i}`}>{guest.display_name || guest.email}</li>)
+        filterSelf,
+        mapToList
       )(attendees)}
     </ul>
   </div>
