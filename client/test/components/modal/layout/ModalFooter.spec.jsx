@@ -24,8 +24,8 @@ describe('<ModalFooter />', () => {
     expect(wrapper.find('button.save-button').find('span')).text().to.eq('Save changes');
   });
 
-  context('when unresolvedErrors is true', () => {
-    const footerComponent = <ModalFooter unresolvedErrors {...props} />;
+  context('when hasUnresolvedErrors is true', () => {
+    const footerComponent = <ModalFooter hasUnresolvedErrors {...props} />;
 
     it('renders disabled <Button />', () => {
       const wrapper = shallow(footerComponent);

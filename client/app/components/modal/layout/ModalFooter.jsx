@@ -15,7 +15,7 @@ const ModalFooter = (props) => (
     <Button className="save-button"
             bsStyle="primary"
             onClick={props.saveChanges}
-            disabled={props.unresolvedErrors || props.blockWhileSaving}>
+            disabled={props.hasUnresolvedErrors || props.blockWhileSaving}>
       <If condition={props.blockWhileSaving}>
         <span>{SAVING_TEXT}</span>
         <Else>
@@ -29,12 +29,12 @@ const ModalFooter = (props) => (
 ModalFooter.propTypes = {
   closeModal:       func.isRequired,
   saveChanges:      func.isRequired,
-  unresolvedErrors: bool,
+  hasUnresolvedErrors: bool,
   blockWhileSaving: bool
 };
 
 ModalFooter.defaultProps = {
-  unresolvedErrors: false,
+  hasUnresolvedErrors: false,
   blockWhileSaving: false
 };
 

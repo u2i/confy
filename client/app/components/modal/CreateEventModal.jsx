@@ -126,7 +126,7 @@ export default class CreateEventModal extends React.Component {
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
-          unresolvedErrors={!isEmpty(this.state.errors)}
+          hasUnresolvedErrors={!isEmpty(this.state.errors)}
           blockWhileSaving={this.state.disableSaving} />
 
       </Modal>
