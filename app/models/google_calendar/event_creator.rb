@@ -10,7 +10,7 @@ module GoogleCalendar
     end
 
     def create(event_data = {})
-      event_data.merge!(user_email: user_email)
+      event_data[:user_email] = user_email
       event_wrapper = build_event_wrapper(event_data)
       insert_event_and_return_result(event_wrapper)
     end
@@ -23,8 +23,8 @@ module GoogleCalendar
       calendar_service.insert_event('primary', google_event, send_notifications: true)
     end
 
-    def raise_error_if_occupied(event_wrapper)
-      events = events_in_span(event_wrapper.conference_room, event_wrapper.start_time.date_time, event_wrapper.end_time.date_time)
+    def raise_error_if_occupied(wrapper)
+      events = events_in_span(wrapper.conference_room, wrapper.start_time.date_time, wrapper.end_time.date_time)
       return unless events.any?
       error_message = occupied_error_message(events)
       raise(EventInTimeSpanError, error_message)

@@ -14,8 +14,8 @@ describe GoogleCalendar::EventWrapper::Event do
       let(:creator_email) { 'example@google.com' }
       let(:params) { {creator_email: creator_email} }
       let(:event_wrapper) { described_class.new(params) }
-      it 'creates new CreatorWrapper and assign it to creator field' do
-        expect(event_wrapper.creator).to be_instance_of GoogleCalendar::EventWrapper::CreatorWrapper
+      it 'creates new Event::Creator and assign it to creator field' do
+        expect(event_wrapper.creator).to be_instance_of Google::Apis::CalendarV3::Event::Creator
         expect(event_wrapper.creator.email).to eq creator_email
       end
     end

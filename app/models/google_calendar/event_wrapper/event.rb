@@ -1,17 +1,15 @@
 module GoogleCalendar
   module EventWrapper
     class Event
-
       EventInvalidRoom = Class.new(StandardError)
 
       attr_accessor :id, :start_time, :end_time, :summary, :description,
-                    :location, :attendees, :conference_room, :creator, :all_day, :current_user_email
+                    :location, :attendees, :conference_room, :creator, :current_user_email
 
       def initialize(**params)
         @id = params[:id]
         @summary = params[:summary]
         @description = params[:description]
-        @all_day = params.key?(:all_day) ? params[:all_day] : false
         @current_user_email = params[:user_email]
         @attendees = build_attendees(params[:attendees])
         @conference_room = get_conference_room(params[:conference_room_id])
@@ -39,7 +37,7 @@ module GoogleCalendar
           description: description,
           conference_room: conference_room,
           creator: creator.to_h,
-          attendees: attendees.map { |attendee| attendee.to_h },
+          attendees: attendees.map(&:to_h),
           summary: summary
         }
       end
@@ -56,10 +54,12 @@ module GoogleCalendar
 
       private
 
-      def initialize_times(**params)
-        return unless params.key?(:start) || params.key?(:end)
-        @start_time = build_time(params[:start])
-        @end_time = build_time(params[:end])
+      def build_attendees(attendees)
+        attendees.nil? ? [] : attendees.map { |attendee| new_attendee(attendee.to_h) }
+      end
+
+      def new_attendee(attendee_data)
+        Google::Apis::CalendarV3::EventAttendee.new(attendee_data)
       end
 
       def get_conference_room(conference_room_id)
@@ -67,17 +67,26 @@ module GoogleCalendar
         ConferenceRoom.find_or_raise(conference_room_id)
       end
 
-      def build_time(time_data)
-        Google::Apis::CalendarV3::EventDateTime.new(date: time_data[:date], date_time: time_data[:date_time])
-      end
-
       def build_creator(params)
-        params.key?(:creator) ? params[:creator] : CreatorWrapper.new(email: params[:creator_email])
+        params.key?(:creator) ? params[:creator] : new_creator(params[:creator_email])
       end
 
-      def build_attendees(attendees)
-        attendees.nil? ? [] :
-          attendees.map { |attendee_data| Google::Apis::CalendarV3::EventAttendee.new(attendee_data.to_h) }
+      def new_creator(creator_email)
+        Google::Apis::CalendarV3::Event::Creator.new(email: creator_email)
+      end
+
+      def initialize_times(**params)
+        return unless params.key?(:start) || params.key?(:end)
+        @start_time = build_time(params[:start])
+        @end_time = build_time(params[:end])
+      end
+
+      def build_time(time_data)
+        time_data.is_a?(Google::Apis::CalendarV3::EventDateTime) ? time_data : new_datetime(time_data)
+      end
+
+      def new_datetime(time_data)
+        Google::Apis::CalendarV3::EventDateTime.new(date: time_data[:date], date_time: time_data[:date_time])
       end
 
       def google_location
