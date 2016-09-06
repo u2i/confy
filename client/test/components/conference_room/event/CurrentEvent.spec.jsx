@@ -6,7 +6,7 @@ import proxyquire from 'proxyquire';
 import Event from 'test/factories/Event';
 
 import EventContainer from 'components/conference_room/event/EventContainer';
-import EventDetails from 'components/calendar/event/EventDetails';
+import EventDetails from 'components/calendar/event/details/EventDetails';
 
 describe('<CurrentEvent />', () => {
   const DummyTimeProgress = () => <div></div>;

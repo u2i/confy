@@ -6,7 +6,7 @@ import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
 import EventContainer from './EventContainer';
-import EventDetails from 'components/calendar/event/EventDetails';
+import EventDetails from 'components/calendar/event/details/EventDetails';
 import TimeProgress from 'components/shared/time/TimeProgress';
 
 import './current_event.scss';

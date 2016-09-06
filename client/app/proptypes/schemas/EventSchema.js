@@ -20,6 +20,7 @@ const EventShema = {
   offset:          number.isRequired,
   name:            string,
   summary:         string,
+  description:     string,
   start_timestamp: number,
   end_timestamp:   number,
   attendees:       arrayOf(UserSchema)
