@@ -1,4 +1,3 @@
-import includes from 'lodash/fp/includes';
 import React from 'react';
 import EventSchema from 'schemas/EventSchema';
 
