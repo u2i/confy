@@ -4,7 +4,6 @@ import React from 'react';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
 import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
-import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
 import Navbar from './layout/Navbar';
 import CurrentEvent from './event/CurrentEvent';
