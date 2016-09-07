@@ -4,4 +4,13 @@
   .room-header {
     margin-bottom: 10px;
   }
+
+  .clock-date, .clock-time {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  .clock-time {
+    font-size: 1.2em;
+  }
 }

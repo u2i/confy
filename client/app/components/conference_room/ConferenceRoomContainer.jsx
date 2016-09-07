@@ -27,7 +27,7 @@ const ConferenceRoomContainer = ({
         <h1>{conferenceRoom.title}</h1>
       </Col>
       <Col xs={6}>
-        <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT} /></h3>
+        <h3 className="pull-right"><Clock dateFormat="MM-DD dddd" timeFormat='HH:mm' /></h3>
       </Col>
     </Row>
     <If condition={!!currentEvent || nextEvents.length > 0}>

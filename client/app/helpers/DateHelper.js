@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const DATE_PARAM_FORMAT = 'YYYY-MM-DD';
 
-export const DATE_DISPLAY_FORMAT = 'YYYY/MM/DD HH:mm';
+export const DATE_DISPLAY_FORMAT = 'DD-MM-YYYY HH:mm';
 
 export const TIME_DISPLAY_FORMAT = 'HH:mm';
 
