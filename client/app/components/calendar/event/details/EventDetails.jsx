@@ -1,8 +1,6 @@
 import includes from 'lodash/fp/includes';
 import React from 'react';
-import { eventTimeString } from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
-import { If } from 'react-if';
 
 import EventTime from './EventTime';
 import EventSummary from './EventSummary';

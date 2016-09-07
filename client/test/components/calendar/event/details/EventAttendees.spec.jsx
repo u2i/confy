@@ -68,5 +68,4 @@ describe('<EventAttendees />', () => {
       expect(wrapper.text()).not.to.contain('Attendees:');
     });
   });
-
 });

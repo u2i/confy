@@ -1,7 +1,6 @@
 import React from 'react';
 import instanceOfMoment from 'proptypes/moment';
 import requiredIf from 'react-required-if';
-import { If, Then, Else } from 'react-if';
 import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
@@ -28,10 +27,10 @@ const NoEvent = () => <p>No event currently in progress</p>;
 
 const TimeProgressContainer = ({ event, nextEventStart, onCompleted }) => (
   <div className="text-center">
-      <TimeProgress
-        end={event ? moment(event.end.date_time) : nextEventStart}
-        suffix={event ? 'left' : 'to next event'}
-        onCompleted={onCompleted} />
+    <TimeProgress
+      end={event ? moment(event.end.date_time) : nextEventStart}
+      suffix={event ? 'left' : 'to next event'}
+      onCompleted={onCompleted} />
   </div>
 );
 
@@ -46,7 +45,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => (
     {event ? <Event event={event} /> : <NoEvent />}
     {event || nextEventStart ? <TimeProgressContainer event={event}
                                                       nextEventStart={nextEventStart}
-                                                      onCompleted={onCompleted}/> : ''}
+                                                      onCompleted={onCompleted} /> : ''}
   </div>
 );
 

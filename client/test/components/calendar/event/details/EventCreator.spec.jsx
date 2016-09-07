@@ -1,5 +1,5 @@
 import React from 'react';
-import User from 'test/factories/User'
+import User from 'test/factories/User';
 import Event from 'test/factories/Event';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';

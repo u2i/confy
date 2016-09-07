@@ -29,7 +29,7 @@ describe('<CurrentEvent.NoEvent />', () => {
 
   it('renders message', () => {
     expect(wrapper).to.have.text('No event currently in progress');
-  })
+  });
 });
 
 describe('<CurrentEvent.TimeProgressContainer />', () => {
