@@ -11,9 +11,6 @@ class CalendarController < ApplicationController
   # Index for showing events from Google calendar
   def index
     create_calendar_props
-  rescue ArgumentError
-    session.delete(:credentials)
-    redirect_to oauth2callback_path
   end
 
   private

@@ -14,7 +14,7 @@ describe GoogleCalendar::EventFinder do
     allow(GoogleCalendar::Client).to receive(:new) { client }
   end
 
-  describe '.list_events' do
+  describe '.all' do
     let!(:sample_conference_room1) { create :conference_room }
     let!(:sample_conference_room2) { create :conference_room }
     let(:sample_summary) { 'Nice summary' }
@@ -70,7 +70,7 @@ describe GoogleCalendar::EventFinder do
           google_event1.attendees.first.response_status = described_class::GOOGLE_EVENT_DECLINED_RESPONSE
         end
         it 'ignores event' do
-          expect(event_finder.send(:list_events, time_interval, rooms)).to satisfy do |response|
+          expect(event_finder.all(time_interval)).to satisfy do |response|
             response[1].blank?
           end
         end
@@ -84,7 +84,7 @@ describe GoogleCalendar::EventFinder do
           )
         end
         it 'adds event' do
-          expect(event_finder.send(:list_events, time_interval, rooms)).to satisfy do |response|
+          expect(event_finder.all(time_interval)).to satisfy do |response|
             response.each_with_index.all? do |event, i|
               event[:summary] == expected_events[i].summary
             end
@@ -100,7 +100,7 @@ describe GoogleCalendar::EventFinder do
       let(:end_time2) { start_time2 + 2.hours }
 
       it 'returns array of events' do
-        expect(event_finder.send(:list_events, time_interval, rooms)).to satisfy do |response|
+        expect(event_finder.all(time_interval)).to satisfy do |response|
           response.each_with_index.all? do |event, i|
             event[:summary] == expected_events[i].summary
           end
@@ -133,7 +133,7 @@ describe GoogleCalendar::EventFinder do
         google_event1.end = Google::Apis::CalendarV3::EventDateTime.new(date: end_time1.to_date.to_s)
       end
       it 'normalizes event' do
-        response = event_finder.send(:list_events, time_interval, rooms)
+        response = event_finder.all(time_interval)
         expect(response[0][:start][:date_time]).to eq start_time1
         expect(response[0][:end][:date_time]).to eq end_time1
       end

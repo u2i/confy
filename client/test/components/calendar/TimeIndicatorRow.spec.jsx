@@ -12,7 +12,7 @@ describe('<TimeIndicatorRow />', () => {
   let days;
   let wrapper;
   const SECONDS_IN_HOUR = 1000 * 60 * 60;
-  const TimeIndicatorRow = proxyquire('../../../app/components/calendar/TimeIndicatorRow', {
+  const TimeIndicatorRow = proxyquire('../../../app/components/calendar/table/TimeIndicatorRow', {
     './calendar.scss': style
   }).default;
 

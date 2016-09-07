@@ -7,29 +7,77 @@ $event-border-color: #f7f7f7;
   flex-basis: 0;
   flex-grow: 1;
   height: 100%;
-  overflow: hidden;
 
   > * {
     margin-left: 2%;
   }
 
   .event-time {
-    margin-top: 2%;
     font-size: 0.8em;
+  }
+
+  .event-creator,
+  .event-location,
+  .event-attendees {
+    font-size: 0.9em;
+  }
+}
+
+.event-container {
+  white-space: nowrap;
+
+  .event-summary {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.event,
+.event-container {
+  overflow: hidden;
+
+  .event-time {
+    margin-top: 2%;
     font-weight: bold;
   }
 
-  .event-name {
+  .event-summary {
     margin-bottom: 0.2em;
     margin-top: 0.2em;
   }
 
-  .event-user,
-  .event-location {
-    font-size: 0.9em;
-
+  .event-creator,
+  .event-location,
+  .event-attendees {
     > small {
       font-style: italic;
+    }
+  }
+
+  .event-attendees {
+    display: block;
+    overflow: hidden;
+    width: inherit;
+
+    ul {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      list-style: none;
+      padding-left: 0;
+
+      li {
+        display: inline;
+
+        &:after {
+          content: ',\00a0';
+        }
+
+        &:last-child:after {
+          content: '';
+        }
+      }
     }
   }
 }

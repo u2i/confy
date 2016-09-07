@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   resources :contacts, only: [:index]
 
   resources :events, only: [:create, :index, :show, :destroy]
+
+  resources :conference_rooms, only: [:show], param: :title
 end
