@@ -2,8 +2,9 @@ import React from 'react';
 import { If, Else } from 'react-if';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
-import EventDetails from 'components/calendar/event/details/EventDetails';
-
+import EventSummary from 'components/calendar/event/details/EventSummary';
+import EventTime from 'components/calendar/event/details/EventTime';
+import EventCreator from 'components/calendar/event/details/EventCreator';
 import './next_event.scss';
 
 const NextEvents = ({ events, noEventLabel }) => (
@@ -13,7 +14,9 @@ const NextEvents = ({ events, noEventLabel }) => (
       <div>
         {events.map(event => (
           <div className="event-container" key={event.id}>
-            <EventDetails event={event} fields={['time', 'summary']} />
+            <EventTime event={event} />
+            <EventSummary event={event} />
+            <EventCreator event={event} />
           </div>
         ))}
       </div>

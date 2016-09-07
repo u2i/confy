@@ -5,17 +5,22 @@ import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
-import EventDetails from 'components/calendar/event/details/EventDetails';
 import TimeProgress from 'components/shared/time/TimeProgress';
+import EventTime from 'components/calendar/event/details/EventTime';
+import EventCreator from 'components/calendar/event/details/EventCreator';
+import EventAttendees from 'components/calendar/event/details/EventAttendees';
+import EventDescription from 'components/calendar/event/details/EventDescription';
+
 
 import './current_event.scss';
 
 const Event = ({ event }) => (
   <div>
     <h2 className="event-summary">{event.summary}</h2>
-    <EventDetails event={event}
-                  timeFormat={TIME_DISPLAY_FORMAT}
-                  fields={['time', 'creator', 'attendees', 'description']} />
+    <EventTime event={event} timeFormat={TIME_DISPLAY_FORMAT} />
+    <EventCreator event={event} />
+    <EventAttendees event={event} />
+    <EventDescription event={event} />
   </div>
 );
 

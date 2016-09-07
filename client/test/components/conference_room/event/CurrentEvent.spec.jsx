@@ -7,6 +7,10 @@ import Event from 'test/factories/Event';
 import EventDetails from 'components/calendar/event/details/EventDetails';
 import CurrentEvent from 'components/conference_room/event/CurrentEvent';
 import TimeProgress from 'components/shared/time/TimeProgress';
+import EventTime from 'components/calendar/event/details/EventTime';
+import EventCreator from 'components/calendar/event/details/EventCreator';
+import EventAttendees from 'components/calendar/event/details/EventAttendees';
+import EventDescription from 'components/calendar/event/details/EventDescription';
 
 describe('<CurrentEvent.Event />', () => {
   const summary = 'Summary';
@@ -19,8 +23,10 @@ describe('<CurrentEvent.Event />', () => {
   });
 
   it('renders <EventDetails /> with time, creator, attendees and description', () => {
-    expect(wrapper).to.have.exactly(1).descendants(EventDetails);
-    expect(wrapper.find(EventDetails)).to.have.prop('fields').eql(['time', 'creator', 'attendees', 'description']);
+    expect(wrapper).to.have.exactly(1).descendants(EventTime);
+    expect(wrapper).to.have.exactly(1).descendants(EventCreator);
+    expect(wrapper).to.have.exactly(1).descendants(EventAttendees);
+    expect(wrapper).to.have.exactly(1).descendants(EventDescription);
   });
 });
 
