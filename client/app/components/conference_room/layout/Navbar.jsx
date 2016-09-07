@@ -12,11 +12,8 @@ const RoomNavbar = ({ conferenceRoom }) => (
       <Navbar.Brand>
         <a href="#"><h2>{conferenceRoom.title}</h2></a>
       </Navbar.Brand>
+      <div className="navbar-text pull-right"><h3><Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" /></h3></div>
     </Navbar.Header>
-
-    <Nav pullRight>
-      <div className="navbar-text"><h3><Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" /></h3></div>
-    </Nav>
   </Navbar>
 );
 
