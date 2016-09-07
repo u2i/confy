@@ -24,7 +24,7 @@ module GoogleCalendar
     end
 
     def raise_error_if_occupied(wrapper)
-      events = events_in_span(wrapper.conference_room, wrapper.start_time.date_time, wrapper.end_time.date_time)
+      events = events_in_span(wrapper)
       return unless events.any?
       error_message = occupied_error_message(events)
       raise(EventInTimeSpanError, error_message)
@@ -49,12 +49,12 @@ module GoogleCalendar
       raise EventInvalidParamsError, error_message unless event.valid?
     end
 
-    def events_in_span(conference_room, starting, ending)
-      return [] unless conference_room
+    def events_in_span(wrapper)
+      return [] unless wrapper.conference_room
       events = calendar_service.list_events(
-        conference_room.email,
-        time_min: starting.to_s,
-        time_max: ending.to_s
+        wrapper.conference_room.email,
+        time_min: wrapper.start_time.date_time.to_s,
+        time_max: wrapper.end_time.date_time.to_s
       )
       events ? events.items : []
     end

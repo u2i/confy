@@ -97,12 +97,12 @@ module GoogleCalendar
       end
 
       def room_attendee
-        return nil unless conference_room
+        return unless conference_room
         Google::Apis::CalendarV3::EventAttendee.new(email: conference_room.email, response_status: 'accepted')
       end
 
       def creator_attendee
-        return nil unless current_user_email
+        return unless current_user_email
         Google::Apis::CalendarV3::EventAttendee.new(email: current_user_email, response_status: 'accepted')
       end
     end

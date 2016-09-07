@@ -5,7 +5,7 @@ module GoogleCalendar
 
       def initialize(**params)
         super
-        @all_day = params.key?(:all_day) ? params[:all_day] : false
+        @all_day = params[:all_day]
         normalize_datetime
         @start_timestamp = rounded_start_time.to_i
         @end_timestamp = rounded_end_time.to_i

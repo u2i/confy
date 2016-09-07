@@ -33,7 +33,7 @@ module GoogleCalendar
       end
 
       def parse_attendees
-        return if google_event.attendees.nil?
+        return unless google_event.attendees
         google_event.attendees.reject do |attendee|
           attendee_is_creator(attendee) || attendee_is_conference_room(attendee)
         end
