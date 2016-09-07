@@ -1,9 +1,11 @@
 import React from 'react';
-import { Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
 const InProgressControls = ({ onFinish }) => (
-  <Button bsStyle="danger" onClick={onFinish}>Finish</Button>
+  <div className="event-controls">
+    <Button bsStyle="danger" bsSize="large" onClick={onFinish}>Finish</Button>
+  </div>
 );
 
 InProgressControls.propTypes = {
@@ -11,10 +13,10 @@ InProgressControls.propTypes = {
 };
 
 const UnstartedControls = ({ onConfirm, onCancel }) => (
-  <ButtonGroup>
-    <Button bsStyle="primary" onClick={onConfirm}>Confirm</Button>
-    <Button bsStyle="danger" onClick={onCancel}>Cancel</Button>
-  </ButtonGroup>
+  <div className="event-controls">
+    <Button bsStyle="primary" bsSize="large" onClick={onConfirm}>Confirm</Button>
+    <Button bsStyle="danger" bsSize="large" onClick={onCancel}>Cancel</Button>
+  </div>
 );
 
 UnstartedControls.propTypes = {

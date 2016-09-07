@@ -1,12 +1,10 @@
 import React from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const NoEventControls = ({ onStart }) => (
-  <Row>
-    <Col xs={4} xsOffset={4}>
-      <Button bsStyle="primary" disabled onClick={onStart}>Start</Button>
-    </Col>
-  </Row>
+  <div className="event-controls">
+    <Button bsStyle="primary" bsSize="large" disabled onClick={onStart}>Start</Button>
+  </div>
 );
 
 NoEventControls.propTypes = {
