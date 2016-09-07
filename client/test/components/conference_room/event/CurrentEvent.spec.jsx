@@ -2,22 +2,16 @@ import moment from 'moment';
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import proxyquire from 'proxyquire';
 import Event from 'test/factories/Event';
 
 import EventContainer from 'components/conference_room/event/EventContainer';
 import EventDetails from 'components/calendar/event/details/EventDetails';
+import CurrentEvent from 'components/conference_room/event/CurrentEvent';
+import TimeProgress from 'components/shared/time/TimeProgress';
 
 describe('<CurrentEvent />', () => {
-  const DummyTimeProgress = () => <div></div>;
-
-  const CurrentEvent = proxyquire.noCallThru().load('../../../../app/components/conference_room/event/CurrentEvent', {
-    '../../shared/time/TimeProgress': DummyTimeProgress
-  }).default;
-
   const event = Event.build();
-  const eventStart = moment(event.start.date_time).unix();
-  const eventEnd = moment(event.end.date_time).unix();
+  const eventEnd = moment(event.end.date_time);
 
   it('renders <EventContainer />', () => {
     const wrapper = shallow(<CurrentEvent />);
@@ -26,7 +20,7 @@ describe('<CurrentEvent />', () => {
 
   context('with event', () => {
     const wrapper = mount(<CurrentEvent event={event} />);
-    const timeProgressWrapper = wrapper.find(DummyTimeProgress);
+    const timeProgressWrapper = wrapper.find(TimeProgress);
 
     it('renders <EventDetails />', () => {
       expect(wrapper).to.have.exactly(1).descendants(EventDetails);
@@ -36,13 +30,8 @@ describe('<CurrentEvent />', () => {
       expect(timeProgressWrapper).to.have.lengthOf(1);
     });
 
-    it('renders <TimeProgress /> with time boundaries set to event time boundaries', () => {
-      expect(timeProgressWrapper).to.have.prop('start').equal(eventStart);
-      expect(timeProgressWrapper).to.have.prop('end').equal(eventEnd);
-    });
-
-    it('animates <TimeProgress />', () => {
-      expect(timeProgressWrapper).to.have.prop('animate').equal(true);
+    it('renders <TimeProgress /> with end prop set to event end time', () => {
+      expect(timeProgressWrapper.prop('end').isSame(eventEnd)).to.be.true();
     });
   });
 
@@ -55,25 +44,21 @@ describe('<CurrentEvent />', () => {
     context('with no next event', () => {
       const wrapper = mount(<CurrentEvent />);
       it('does not render <TimeProgress />', () => {
-        expect(wrapper).to.not.have.descendants(DummyTimeProgress);
+        expect(wrapper).to.not.have.descendants(TimeProgress);
       });
     });
 
     context('with next event', () => {
       const nextEventStart = moment().add(1, 'hour');
       const wrapper = mount(<CurrentEvent nextEventStart={nextEventStart} />);
-      const timeProgressWrapper = wrapper.find(DummyTimeProgress);
+      const timeProgressWrapper = wrapper.find(TimeProgress);
 
       it('renders <TimeProgress />', () => {
-        expect(wrapper).to.have.exactly(1).descendants(DummyTimeProgress);
+        expect(wrapper).to.have.exactly(1).descendants(TimeProgress);
       });
 
       it('sets <TimeProgress /> end to start of next event', () => {
-        expect(timeProgressWrapper).to.have.prop('end').equal(nextEventStart.unix());
-      });
-
-      it('does not animate <TimeProgress />', () => {
-        expect(timeProgressWrapper).to.have.prop('animate').equal(false);
+        expect(timeProgressWrapper.prop('end').isSame(nextEventStart)).to.be.true();
       });
     });
   });
