@@ -1,7 +1,6 @@
 import React from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
-import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
 import Clock from 'components/shared/time/Clock';
 
@@ -16,7 +15,7 @@ const RoomNavbar = ({ conferenceRoom }) => (
     </Navbar.Header>
 
     <Nav pullRight>
-      <div className="navbar-text"><h3><Clock dateFormat="MM-DD dddd" timeFormat='HH:mm' /></h3></div>
+      <div className="navbar-text"><h3><Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" /></h3></div>
     </Nav>
   </Navbar>
 );

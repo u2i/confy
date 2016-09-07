@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import { Navbar } from 'react-bootstrap';
 

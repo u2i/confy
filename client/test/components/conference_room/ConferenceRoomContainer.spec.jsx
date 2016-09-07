@@ -5,7 +5,6 @@ import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 
-import Clock from 'components/shared/time/Clock';
 import NextEvent from 'components/conference_room/event/NextEvents';
 import Navbar from 'components/conference_room/layout/Navbar';
 
@@ -28,7 +27,9 @@ describe('<ConferenceRoomContainer />', () => {
 
   context('with current event', () => {
     const event = Event.build();
-    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} currentEvent={event} nextEvents={[]} />);
+    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom}
+                                                   currentEvent={event}
+                                                   nextEvents={[]} />);
 
     it('renders <CurrentEvent />', () => {
       expect(wrapper).to.have.exactly(1).descendants(DummyCurrentEvent);
