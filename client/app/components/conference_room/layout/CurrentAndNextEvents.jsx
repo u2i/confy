@@ -7,6 +7,7 @@ import texts from '../texts';
 
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
+
 const CurrentAndNextEvents = ({ currentEvent, nextEvents, onUpdate }) => (
   <Row>
     <Col xs={12} sm={8}>

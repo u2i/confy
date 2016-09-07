@@ -1,12 +1,11 @@
 import React from 'react';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
-import { Grid, Row, Col, Jumbotron } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
 
 import Navbar from './layout/Navbar';
-import CurrentAndNextEvents from './layout/CurrentAndNextEvents'
-import NoEvents from './layout/NoEvents'
-
+import CurrentAndNextEvents from './layout/CurrentAndNextEvents';
+import NoEvents from './layout/NoEvents';
 
 import './conference_room.scss';
 
