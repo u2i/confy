@@ -69,3 +69,7 @@ export function eventTimeString(event, timeFormat) {
   const endTimeStr = formatTime(event.end.date_time, timeFormat);
   return `${startTimeStr} - ${endTimeStr}`;
 }
+
+export function normalizeDate(date, format) {
+  return moment(date, format).format();
+}

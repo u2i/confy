@@ -76,11 +76,12 @@ export default class CreateEventModal extends React.Component {
     this.setState({ disableSaving: true });
 
     if (!this._validateParams({ presence: true })) return;
+
     const eventParams = {
       summary: this.state.summary,
       description: this.state.description,
-      start_time: this.state.startTime,
-      end_time: this.state.endTime,
+      start_time: DateHelper.normalizeDate(this.state.startTime, DateHelper.DATE_DISPLAY_FORMAT),
+      end_time: DateHelper.normalizeDate(this.state.endTime, DateHelper.DATE_DISPLAY_FORMAT),
       conference_room_id: this.state.conferenceRoomId,
       attendees: this._attendeesParam()
     };

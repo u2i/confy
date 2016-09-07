@@ -15,17 +15,12 @@ module GoogleCalendar
       end
 
       def process_params(params)
-        zone = Time.now.getlocal.zone
-        params.merge(start: {date_time: datetime_parse(params[:start_time], zone)},
-                     end: {date_time: datetime_parse(params[:end_time], zone)}).
+        params.merge(start: {date_time: params[:start_time]},
+                     end: {date_time: params[:end_time]}).
           except(:start_time, :end_time, :conference_room_id, :permitted)
       end
 
       private
-
-      def datetime_parse(time, zone)
-        DateTime.parse("#{time} #{zone}").rfc3339(9)
-      end
 
       def normalize_whole_day_event(event)
         event.start.date_time = at_beginning_of_day(event.start.date)
