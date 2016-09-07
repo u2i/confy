@@ -7,8 +7,8 @@ import bindAll from 'lodash/bindAll';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
 import uniqBy from 'lodash/fp/uniqBy';
-import keys from 'lodash/fp/keys';
 import differenceBy from 'lodash/differenceBy';
+import isEmpty from 'lodash/isEmpty';
 import EventSource from 'sources/EventSource';
 import ModalHeader from './layout/ModalHeader';
 import ModalFooter from './layout/ModalFooter';
@@ -73,9 +73,8 @@ export default class CreateEventModal extends React.Component {
   }
 
   saveChanges() {
-    this.setState({ disableSaving: true });
-
     if (!this._validateParams({ presence: true })) return;
+    this.setState({ disableSaving: true });
 
     const eventParams = {
       summary: this.state.summary,
@@ -127,7 +126,8 @@ export default class CreateEventModal extends React.Component {
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
-          disableSaving={this._savingDisabled()} />
+          hasUnresolvedErrors={!isEmpty(this.state.errors)}
+          blockWhileSaving={this.state.disableSaving} />
 
       </Modal>
     );
@@ -168,7 +168,6 @@ export default class CreateEventModal extends React.Component {
       return true;
     } catch (error) {
       this._addError(error);
-
       return false;
     }
   }
@@ -189,10 +188,6 @@ export default class CreateEventModal extends React.Component {
 
   _clearForm() {
     this.setState(this._initialFormState());
-  }
-
-  _savingDisabled() {
-    return keys(this.state.errors).length > 0 || this.state.disableSaving;
   }
 
   _updateRoomAvailability() {
