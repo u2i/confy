@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import Event from 'test/factories/Event';
 
-import EventContainer from 'components/conference_room/event/EventContainer';
 import EventDetails from 'components/calendar/event/details/EventDetails';
 import CurrentEvent from 'components/conference_room/event/CurrentEvent';
 import TimeProgress from 'components/shared/time/TimeProgress';
@@ -12,11 +11,6 @@ import TimeProgress from 'components/shared/time/TimeProgress';
 describe('<CurrentEvent />', () => {
   const event = Event.build();
   const eventEnd = moment(event.end.date_time);
-
-  it('renders <EventContainer />', () => {
-    const wrapper = shallow(<CurrentEvent />);
-    expect(wrapper).to.have.exactly(1).descendants(EventContainer);
-  });
 
   context('with event', () => {
     const wrapper = mount(<CurrentEvent event={event} />);
