@@ -45,7 +45,7 @@ export default class CreateEventModal extends React.Component {
   static defaultProps = {
     initialDate: moment(),
     initialLength: 1,
-    dateFormat: 'DD/MM/YYYY HH:mm'
+    dateFormat: DateHelper.DATE_DISPLAY_FORMAT
   };
 
   constructor(props) {
@@ -79,8 +79,8 @@ export default class CreateEventModal extends React.Component {
     const eventParams = {
       summary: this.state.summary,
       description: this.state.description,
-      start_time: this.state.startTime,
-      end_time: this.state.endTime,
+      start_time: DateHelper.normalizeDate(this.state.startTime, this.props.dateFormat),
+      end_time: DateHelper.normalizeDate(this.state.endTime, this.props.dateFormat),
       conference_room_id: this.state.conferenceRoomId,
       attendees: this._attendeesParam()
     };
@@ -191,7 +191,8 @@ export default class CreateEventModal extends React.Component {
   }
 
   _updateRoomAvailability() {
-    const { startTime, endTime } = this.state;
+    const startTime = DateHelper.normalizeDate(this.state.startTime, this.props.dateFormat);
+    const endTime = DateHelper.normalizeDate(this.state.endTime, this.props.dateFormat);
     EventSource
       .fetch({ start: startTime, end: endTime })
       .then(({ data }) => {
