@@ -9,7 +9,7 @@ import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
 import Clock from 'components/shared/time/Clock';
 import CurrentEvent from './event/CurrentEvent';
-import NextEvent from './event/NextEvent';
+import NextEvents from './event/NextEvents';
 
 import './conference_room.scss';
 
@@ -17,7 +17,7 @@ const NO_MORE_EVENTS_TEXT = 'No more events for today';
 
 const ConferenceRoomContainer = ({
   currentEvent,
-  nextEvent,
+  nextEvents,
   conferenceRoom,
   onUpdate
 }) => (
@@ -30,16 +30,16 @@ const ConferenceRoomContainer = ({
         <h3 className="pull-right"><Clock format={DATE_DISPLAY_FORMAT} /></h3>
       </Col>
     </Row>
-    <If condition={!!currentEvent || !!nextEvent}>
+    <If condition={!!currentEvent || nextEvents.length > 0}>
       <Then>
         <Row>
           <Col xs={12} sm={8}>
             <CurrentEvent event={currentEvent}
-                          nextEventStart={moment(get(nextEvent, 'start.date_time'))}
+                          nextEventStart={moment(get(nextEvents[0], 'start.date_time'))}
                           onCompleted={onUpdate} />
           </Col>
           <Col xs={12} sm={4}>
-            <NextEvent event={nextEvent} noEventLabel={NO_MORE_EVENTS_TEXT} />
+            <NextEvents events={nextEvents} noEventLabel={NO_MORE_EVENTS_TEXT} />
           </Col>
         </Row>
       </Then>
@@ -57,7 +57,7 @@ const ConferenceRoomContainer = ({
 
 ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
-  nextEvent: EventSchema.except('width', 'offset'),
+  nextEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
   onUpdate: React.PropTypes.func
 };

@@ -6,7 +6,7 @@ import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 
 import Clock from 'components/shared/time/Clock';
-import NextEvent from 'components/conference_room/event/NextEvent';
+import NextEvent from 'components/conference_room/event/NextEvents';
 
 describe('<ConferenceRoomContainer />', () => {
   const DummyCurrentEvent = () => <div></div>;
@@ -18,8 +18,8 @@ describe('<ConferenceRoomContainer />', () => {
     }).default;
 
   const conferenceRoom = ConferenceRoom.build();
-  const shallowWrapper = shallow(<ConferenceRoomContainer conferenceRoom={conferenceRoom} />);
-  const mountedWrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} />);
+  const shallowWrapper = shallow(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
+  const mountedWrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
 
   it('renders conference room title', () => {
     expect(shallowWrapper.find('.room-header h1')).to.have.text(conferenceRoom.title);
@@ -35,7 +35,7 @@ describe('<ConferenceRoomContainer />', () => {
 
   context('with current event', () => {
     const event = Event.build();
-    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} currentEvent={event} />);
+    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} currentEvent={event} nextEvents={[]} />);
 
     it('renders <CurrentEvent />', () => {
       expect(wrapper).to.have.exactly(1).descendants(DummyCurrentEvent);
@@ -44,9 +44,9 @@ describe('<ConferenceRoomContainer />', () => {
 
   context('with next event', () => {
     const event = Event.build();
-    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvent={event} />);
+    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[event]} />);
 
-    it('renders <NextEvent />', () => {
+    it('renders <NextEvents />', () => {
       expect(wrapper).to.have.exactly(1).descendants(NextEvent);
     });
   });
@@ -56,7 +56,7 @@ describe('<ConferenceRoomContainer />', () => {
       expect(mountedWrapper).to.not.have.descendants(DummyCurrentEvent);
     });
 
-    it('does not render <NextEvent />', () => {
+    it('does not render <NextEvents />', () => {
       expect(mountedWrapper).to.not.have.descendants(NextEvent);
     });
 

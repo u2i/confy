@@ -165,40 +165,40 @@ describe('EventHelper', () => {
     });
   });
 
-  describe('#currentAndNextEvent', () => {
+  describe('#currentAndNextEvents', () => {
     context('with an ongoing event', () => {
       const events = Event.buildList(1, {}, { start_time: new Date() });
 
-      const { current, next } = EventHelper.currentAndNextEvent(events);
+      const { current, next } = EventHelper.currentAndNextEvents(events);
 
       it('returns it as current event', () => {
-        expect(current).to.equal(events[0]);
-        expect(next).not.to.exist();
+        expect(current).to.eql(events[0]);
+        expect(next).to.be.empty();
       });
     });
 
     context('with no ongoing event and a next event', () => {
       const events = Event.buildList(1, {}, { start_time: moment().add(4, 'hours').toDate() });
 
-      const { current, next } = EventHelper.currentAndNextEvent(events);
+      const { current, next } = EventHelper.currentAndNextEvents(events);
 
       it('returns only next event', () => {
         expect(current).not.to.exist();
-        expect(next).to.equal(events[0]);
+        expect(next).to.eql(events);
       });
     });
 
-    context('with both ongoing and next event', () => {
+    context('with both ongoing and next events', () => {
       const ongoingEvent = Event.build({}, { start_time: new Date() });
       const nextEvent = Event.build({}, { start_time: moment().add(4, 'hours').toDate() });
       const futureEvent = Event.build({}, { start_time: moment().add(6, 'hours').toDate() });
       const events = [ongoingEvent, nextEvent, futureEvent];
 
-      const { current, next } = EventHelper.currentAndNextEvent(events);
+      const { current, next } = EventHelper.currentAndNextEvents(events);
 
       it('returns both events', () => {
         expect(current).to.equal(ongoingEvent);
-        expect(next).to.equal(nextEvent);
+        expect(next).to.eql([nextEvent, futureEvent]);
       });
     });
   });
