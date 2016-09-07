@@ -5,6 +5,7 @@ import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
+import Controls from './controls/Controls';
 import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
@@ -51,6 +52,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted }) => (
     {event || nextEventStart ? <TimeProgressContainer event={event}
                                                       nextEventStart={nextEventStart}
                                                       onCompleted={onCompleted} /> : ''}
+    <Controls event={event} />
   </div>
 );
 
