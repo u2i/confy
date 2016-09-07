@@ -1,22 +1,15 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
+import ConferenceRoomContainer from 'app/components/conference_room/ConferenceRoomContainer';
 
-import NextEvent from 'components/conference_room/event/NextEvents';
+import NextEvents from 'components/conference_room/event/NextEvents';
 import Navbar from 'components/conference_room/layout/Navbar';
+import CurrentEvent from 'components/conference_room/event/CurrentEvent';
 
 describe('<ConferenceRoomContainer />', () => {
-  const DummyCurrentEvent = () => <div></div>;
-
-  const ConferenceRoomContainer = proxyquire
-    .noCallThru()
-    .load('../../../app/components/conference_room/ConferenceRoomContainer', {
-      './event/CurrentEvent': DummyCurrentEvent
-    }).default;
-
   const conferenceRoom = ConferenceRoom.build();
   const shallowWrapper = shallow(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
   const mountedWrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
@@ -32,7 +25,7 @@ describe('<ConferenceRoomContainer />', () => {
                                                    nextEvents={[]} />);
 
     it('renders <CurrentEvent />', () => {
-      expect(wrapper).to.have.exactly(1).descendants(DummyCurrentEvent);
+      expect(wrapper).to.have.exactly(1).descendants(CurrentEvent);
     });
   });
 
@@ -41,17 +34,17 @@ describe('<ConferenceRoomContainer />', () => {
     const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[event]} />);
 
     it('renders <NextEvents />', () => {
-      expect(wrapper).to.have.exactly(1).descendants(NextEvent);
+      expect(wrapper).to.have.exactly(1).descendants(NextEvents);
     });
   });
 
   context('with no current or next event', () => {
     it('does not render <CurrentEvent />', () => {
-      expect(mountedWrapper).to.not.have.descendants(DummyCurrentEvent);
+      expect(mountedWrapper).to.not.have.descendants(CurrentEvent);
     });
 
     it('does not render <NextEvents />', () => {
-      expect(mountedWrapper).to.not.have.descendants(NextEvent);
+      expect(mountedWrapper).to.not.have.descendants(NextEvents);
     });
 
     it('renders no event text', () => {
