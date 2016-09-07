@@ -5,7 +5,7 @@ import instanceOfMoment from 'proptypes/moment';
 export default class TimeProgress extends React.Component {
   static propTypes = {
     end: instanceOfMoment.isRequired,
-    onCompleted: React.PropTypes.func.isRequired,
+    onCompleted: React.PropTypes.func,
     updateInterval: React.PropTypes.number,
     suffix: React.PropTypes.string
   };
