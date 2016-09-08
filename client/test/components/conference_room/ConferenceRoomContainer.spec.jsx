@@ -5,7 +5,6 @@ import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 import ConferenceRoomContainer from 'app/components/conference_room/ConferenceRoomContainer';
 
-import Clock from 'components/shared/time/Clock';
 import NextEvents from 'components/conference_room/event/NextEvents';
 import Navbar from 'components/conference_room/layout/Navbar';
 import CurrentEvent from 'components/conference_room/event/CurrentEvent';

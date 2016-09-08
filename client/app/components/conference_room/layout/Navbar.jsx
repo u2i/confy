@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
-import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
 import Clock from 'components/shared/time/Clock';
 import Help from '../help/HelpContainer';
