@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
 import InProgress from './InProgress';
