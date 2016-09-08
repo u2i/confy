@@ -21,6 +21,10 @@ module GoogleCalendar
       event_finder.by_room(time_interval, conference_room_ids)
     end
 
+    def confirmed_events(time_interval)
+      event_finder.confirmed_events(time_interval)
+    end
+
     private
 
     attr_accessor :credentials, :user_email

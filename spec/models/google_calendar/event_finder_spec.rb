@@ -175,4 +175,20 @@ describe GoogleCalendar::EventFinder do
       end
     end
   end
+
+  describe '#confirmed_events' do
+    let(:id1) { 'id1' }
+    let(:id2) { 'id2' }
+    let(:confirmed_event_ids) { [id1] }
+    let(:confirmed_event) { double('event1', id: id1) }
+    let(:unconfirmed_event) { double('event2', id: id2) }
+
+    before do
+      allow(Event).to receive(:confirmed_event_ids) { [id1] }
+      allow(event_finder).to receive(:all) { [confirmed_event, unconfirmed_event] }
+    end
+
+    subject { event_finder.confirmed_events(nil) }
+    it { is_expected.to eq [confirmed_event] }
+  end
 end
