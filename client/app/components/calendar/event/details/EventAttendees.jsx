@@ -12,6 +12,7 @@ const mapToList = curryRight(map)(guestToListItem);
 
 const EventAttendees = ({ event }) => (
   <div className="event-attendees">
+    {/* First attendee is always the room itself */}
     <If condition={event.attendees.length > 1}>
       <div>
         <small>Attendees:&nbsp;</small>
