@@ -12,24 +12,17 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#confirm' do
+    subject { event.confirmed }
+    before { event.confirm }
+
     context 'event is not saved in database' do
       let(:event) { build :event }
-
-      it 'sets confirmed field to true' do
-        event.confirm
-
-        expect(event.confirmed).to eq true
-      end
+      it { is_expected.to eq true }
     end
 
     context 'event is saved in database' do
       let!(:event) { create :event }
-
-      it 'updates event confirmed field to true' do
-        event.confirm
-
-        expect(event.confirmed).to eq true
-      end
+      it { is_expected.to eq true }
     end
   end
 end

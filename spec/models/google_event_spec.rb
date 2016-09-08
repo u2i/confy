@@ -6,7 +6,7 @@ RSpec.describe GoogleCalendar::GoogleEvent do
   let(:google_event) { described_class.new(credentials, user_email) }
 
   describe '#confirm' do
-    context 'given event_id that doest not exist in db' do
+    context 'given event_id that does not exist in db' do
       let(:event_id) { 'invalid_event_id' }
 
       context 'given invalid conference_room_id' do
