@@ -39,7 +39,7 @@ module GoogleCalendar
     end
 
     def build_event_wrapper(event_data)
-      event_wrapper = GoogleCalendar::EventWrapper::Event.new(event_data)
+      event_wrapper = GoogleCalendar::EventWrapper::HashBuilder.new(event_data).build_event_wrapper
       raise_error_if_invalid(event_wrapper)
       event_wrapper
     end

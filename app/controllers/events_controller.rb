@@ -45,8 +45,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    event_data = GoogleCalendar::EventDataService.process_params(event_params)
-    data = google_event_client.create(event_data)
+    data = google_event_client.create(event_params.to_h)
     render json: data.to_json, status: :created
   end
 

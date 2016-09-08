@@ -1,3 +1,3 @@
 module Exceptions
-  class EventInvalidRoom < StandardError ; end
+  class EventInvalidRoom < StandardError; end
 end

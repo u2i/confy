@@ -47,8 +47,8 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:event_data) do
           {
             attendees: [],
-            start: {date_time: start_time},
-            end: {date_time: end_time},
+            start_time: start_time.to_s,
+            end_time: end_time.to_s,
             conference_room_id: room.id
           }
         end
@@ -71,7 +71,7 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
         let!(:room) { create :conference_room }
-        let(:event_data) { {attendees: [], start: {date_time: start_time}, end: {date_time: end_time}, conference_room_id: conference_room.id} }
+        let(:event_data) { {attendees: [], start_time: start_time, end_time: end_time, conference_room_id: conference_room.id} }
 
         before do
           allow(event_creator).to receive(:events_in_span) { [] }

@@ -9,7 +9,6 @@ RSpec.describe 'Events', type: :request do
 
   describe 'POST /events' do
     before do
-      allow(GoogleCalendar::EventDataService).to receive(:process_params) { |arg| arg }
       allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
       allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
     end
