@@ -13,7 +13,10 @@ export default new Factory()
   .attr('end_timestamp', ['end_time'], endTime => endTime.getTime() / 1000)
   .attr('start', ['start_time'], startTime => ({ date_time: startTime.toISOString() }))
   .attr('end', ['end_time'], endTime => ({ date_time: endTime.toISOString() }))
-  .attr('attendees', ['attendees_num'], attendeesNum => User.buildList(attendeesNum))
+  .attr('attendees', ['attendees_num'], attendeesNum => {
+    const room = User.build({ self: true });
+    return User.buildList(attendeesNum).concat([room]);
+  })
   .attrs({
     creator:         User.build(),
     conference_room: ConferenceRoom.build(),

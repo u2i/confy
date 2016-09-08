@@ -30,41 +30,39 @@ describe('<EventAttendees />', () => {
     });
 
     context('when attendee display name is available', () => {
-      const attendees = User.buildList(1, { display_name: 'bob' });
-      const event = Event.build({ attendees });
+      const attendee = User.build(1, { display_name: 'bob' });
+      const event = Event.build();
+      event.attendees.push(attendee);
       const wrapper = mountWrapper(event);
 
       it('renders display name', () => {
-        expect(wrapper.find('li')).to.have.text(attendees[0].display_name);
+        expect(wrapper.find('li')).to.have.text(attendee.display_name);
       });
     });
 
     context('when no attendee display name', () => {
-      const attendees = User.buildList(1);
-      const event = Event.build({ attendees });
+      const attendee = User.build();
+      const event = Event.build();
+      event.attendees.push(attendee);
       const wrapper = mountWrapper(event);
 
       it('renders email', () => {
-        expect(wrapper.find('li')).to.have.text(attendees[0].email);
+        expect(wrapper.find('li')).to.have.text(attendee.email);
       });
     });
 
     context('when logged in user is in attendee list', () => {
-      const attendees = User.buildList(1, { self: true });
-      const event = Event.build({ attendees });
-      const wrapper = mountWrapper(event);
-
       it('does not render a list item for current user', () => {
-        expect(wrapper).to.not.have.descendants('li');
+        expect(defaultWrapper).to.have.exactly(3).descendants('li');
       });
     });
   });
 
-  context('when no attendees', () => {
+  context('when no attendees except for conference room', () => {
     const event = Event.build();
     const wrapper = mountWrapper(event);
 
-    it('does not render Attendes: label', () => {
+    it('does not render Attendees: label', () => {
       expect(wrapper.text()).not.to.contain('Attendees:');
     });
   });
