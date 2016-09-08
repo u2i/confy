@@ -1,6 +1,7 @@
 import ReactOnRails from 'react-on-rails';
-import ReactRoot from './components/ReactRoot';
+import CalendarRoot from './components/calendar/ReactRoot';
+import ConferenceRoomRoot from './components/conference_room/ReactRoot';
 
 import './app.scss';
 
-ReactOnRails.register({ ReactRoot });
+ReactOnRails.register({ CalendarRoot, ConferenceRoomRoot });

@@ -1,0 +1,11 @@
+.next-event-container {
+  padding: 5px 30px 5px;
+}
+
+@media (min-width: $screen-sm-min) {
+  .next-event-container {
+    overflow: scroll;
+    height: 82vh;
+    padding: 0;
+  }
+}

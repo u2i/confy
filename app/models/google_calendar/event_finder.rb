@@ -1,16 +1,13 @@
 module GoogleCalendar
   class EventFinder
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
-    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, creator, attendees(self, responseStatus))'.freeze
+    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, '\
+                     'creator, attendees(self, responseStatus, displayName, email))'.freeze
 
     def initialize(credentials, user_email)
       @credentials = credentials
       @user_email = user_email
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
-    end
-
-    def by_room(time_interval, conference_room_ids)
-      list_events(time_interval, rooms(conference_room_ids))
     end
 
     def all(time_interval)
@@ -23,12 +20,11 @@ module GoogleCalendar
       all_google_events.select { |event| confirmed_ids.include?(event.id) }
     end
 
-    private
-
-    def rooms(conference_room_ids = nil)
-      return ConferenceRoom.where(id: conference_room_ids) unless conference_room_ids.nil?
-      @rooms ||= ConferenceRoom.all
+    def by_room(time_interval, conference_room_ids)
+      list_events(time_interval, rooms(conference_room_ids))
     end
+
+    private
 
     def list_events(time_interval, rooms)
       all_events = []
@@ -40,6 +36,11 @@ module GoogleCalendar
       end
       mark_user_events(all_events)
       all_events
+    end
+
+    def rooms(conference_room_ids = nil)
+      return ConferenceRoom.where(id: conference_room_ids) if conference_room_ids
+      @rooms ||= ConferenceRoom.all
     end
 
     def mark_user_events(all_events)

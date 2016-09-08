@@ -27,6 +27,8 @@ module GoogleCalendar
 
     private
 
+    attr_accessor :credentials, :user_email
+
     def event_creator
       @event_creator ||= GoogleCalendar::EventCreator.new(credentials, user_email)
     end
@@ -38,7 +40,5 @@ module GoogleCalendar
     def event_finder
       @event_finder ||= GoogleCalendar::EventFinder.new(credentials, user_email)
     end
-
-    attr_accessor :credentials, :user_email
   end
 end
