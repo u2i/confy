@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import Event from 'test/factories/event';
+import Event from 'test/factories/Event';
 
 import Controls from 'components/conference_room/layout/controls/Controls';
 import EventControls from 'components/conference_room/layout/controls/event/EventControls';
