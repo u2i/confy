@@ -1,9 +1,11 @@
+import set from 'lodash/set';
 import moment from 'moment';
 import React from 'react';
 import { EVENT_CHANNEL, createSubscription, removeSubscription } from 'cable';
 import EventSource from 'sources/EventSource';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { currentAndNextEvents } from 'helpers/EventHelper';
+import bindAll from 'lodash/bindAll';
 
 export default class EventProvider extends React.Component {
   static propTypes = {
@@ -14,8 +16,7 @@ export default class EventProvider extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { nextEvents: [] };
-    this._fetchForToday = this._fetchForToday.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
+    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent']);
   }
 
   componentDidMount() {
@@ -37,17 +38,38 @@ export default class EventProvider extends React.Component {
       <Component currentEvent={this.state.currentEvent}
                  nextEvents={this.state.nextEvents}
                  onUpdate={this.handleUpdate}
+                 onConfirm={this._confirmEvent}
                  {...props} />
     );
   }
 
   _fetchForToday() {
-    EventSource.fetch(
-      { start: moment().toISOString(), end: moment().endOf('day').toISOString() },
-      this.props.conferenceRoom.id
+    const params = {
+      start: moment().toISOString(),
+      end: moment().endOf('day').toISOString(),
+      confirmation: true
+    };
+    EventSource.fetch(params, this.props.conferenceRoom.id
     ).then(response => {
       const { current, next } = currentAndNextEvents(response.data);
       this.setState({ nextEvents: next, currentEvent: current });
+    });
+  }
+
+  _confirmEvent() {
+    if (typeof(this.state.currentEvent) === 'undefined') {
+      return;
+    }
+
+    this._toggleConfirmed();
+    EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
+      .catch(() => this._toggleConfirmed());
+  }
+
+  _toggleConfirmed() {
+    this.setState(state => {
+      const currentEvent = state.currentEvent;
+      return { currentEvent: set(currentEvent, 'confirmed', !currentEvent.confirmed) };
     });
   }
 }

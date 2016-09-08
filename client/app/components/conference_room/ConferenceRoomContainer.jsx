@@ -13,13 +13,18 @@ const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
   conferenceRoom,
-  onUpdate
+  onUpdate,
+  onConfirm
 }) => (
   <div>
     <Navbar conferenceRoom={conferenceRoom} />
     <Grid className="conference-room-container">
       {currentEvent || nextEvents.length > 0 ?
-        <CurrentAndNextEvents currentEvent={currentEvent} nextEvents={nextEvents} onUpdate={onUpdate} /> :
+        <CurrentAndNextEvents
+          currentEvent={currentEvent}
+          nextEvents={nextEvents}
+          onUpdate={onUpdate}
+          onConfirm={onConfirm} /> :
         <NoEvents />
       }
     </Grid>
@@ -30,7 +35,8 @@ ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
-  onUpdate: React.PropTypes.func
+  onUpdate: React.PropTypes.func,
+  onConfirm: React.PropTypes.func
 };
 
 export default ConferenceRoomContainer;
