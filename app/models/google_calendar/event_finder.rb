@@ -18,9 +18,9 @@ module GoogleCalendar
     end
 
     def confirmed_events(time_interval)
-      all_events = all(time_interval)
+      all_google_events = all(time_interval)
       confirmed_ids = Event.confirmed_event_ids
-      all_events.select { |event| confirmed_ids.include?(event.id) }
+      all_google_events.select { |event| confirmed_ids.include?(event.id) }
     end
 
     private
