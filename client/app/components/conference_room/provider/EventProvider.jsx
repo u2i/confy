@@ -44,12 +44,12 @@ export default class EventProvider extends React.Component {
   }
 
   _fetchForToday() {
-    EventSource.fetch({
-        start: moment().toISOString(),
-        end: moment().endOf('day').toISOString(),
-        confirmation: true
-      },
-      this.props.conferenceRoom.id
+    const params = {
+      start: moment().toISOString(),
+      end: moment().endOf('day').toISOString(),
+      confirmation: true
+    };
+    EventSource.fetch(params, this.props.conferenceRoom.id
     ).then(response => {
       const { current, next } = currentAndNextEvents(response.data);
       this.setState({ nextEvents: next, currentEvent: current });
@@ -68,7 +68,7 @@ export default class EventProvider extends React.Component {
 
   _toggleConfirmed() {
     this.setState(state => {
-      let currentEvent = state.currentEvent;
+      const currentEvent = state.currentEvent;
       return { currentEvent: set(currentEvent, 'confirmed', !currentEvent.confirmed) };
     });
   }

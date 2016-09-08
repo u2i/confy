@@ -59,7 +59,8 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm }) => (
 CurrentEvent.propTypes = {
   event: EventSchema.except('width', 'offset'),
   nextEventStart: instanceOfMoment,
-  onCompleted: React.PropTypes.func
+  onCompleted: React.PropTypes.func,
+  onConfirm: React.PropTypes.func
 };
 
 CurrentEvent.Event = Event;

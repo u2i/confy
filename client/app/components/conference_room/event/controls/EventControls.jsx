@@ -29,7 +29,7 @@ const EventControls = ({ event, onConfirm, onCancel, onFinish }) =>
     <InProgressControls onFinish={onFinish} /> :
     <UnstartedControls onCancel={onCancel} onConfirm={onConfirm} />;
 
-EventControls.proptypes = {
+EventControls.propTypes = {
   event: EventSchema.only('confirmed').isRequired,
   onConfirm: React.PropTypes.func,
   onCancel: React.PropTypes.func,
