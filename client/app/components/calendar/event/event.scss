@@ -16,7 +16,7 @@ $event-border-color: #f7f7f7;
     font-size: 0.8em;
   }
 
-  .event-user,
+  .event-creator,
   .event-location,
   .event-attendees {
     font-size: 0.9em;
@@ -24,8 +24,13 @@ $event-border-color: #f7f7f7;
 }
 
 .event-container {
-  padding: 5px 30px 5px;
   white-space: nowrap;
+
+  .event-summary {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .event,
@@ -37,12 +42,12 @@ $event-border-color: #f7f7f7;
     font-weight: bold;
   }
 
-  .event-name {
+  .event-summary {
     margin-bottom: 0.2em;
     margin-top: 0.2em;
   }
 
-  .event-user,
+  .event-creator,
   .event-location,
   .event-attendees {
     > small {

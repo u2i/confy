@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { DATE_DISPLAY_FORMAT } from 'helpers/DateHelper';
 
@@ -14,15 +14,11 @@ const RoomNavbar = ({ conferenceRoom }) => (
       <Navbar.Brand>
         <a href="#"><h2>{conferenceRoom.title}</h2></a>
       </Navbar.Brand>
+      <Navbar.Form pullRight>
+        <Help />
+      </Navbar.Form>
+      <div className="navbar-text pull-right"><h3><Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" /></h3></div>
     </Navbar.Header>
-
-    <Navbar.Form pullRight>
-      <Help />
-    </Navbar.Form>
-
-    <Nav pullRight>
-      <NavItem><Clock format={DATE_DISPLAY_FORMAT} /></NavItem>
-    </Nav>
   </Navbar>
 );
 

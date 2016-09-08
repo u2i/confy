@@ -4,7 +4,8 @@ import React from 'react';
 export default class Clock extends React.Component {
   static propTypes = {
     updateInterval: React.PropTypes.number,
-    format: React.PropTypes.string.isRequired
+    dateFormat: React.PropTypes.string,
+    timeFormat: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -27,9 +28,12 @@ export default class Clock extends React.Component {
   }
 
   render() {
+    const { dateFormat, timeFormat } = this.props;
+    const time = this.state.time;
     return (
-      <div className="clock">
-        {this.state.time.format(this.props.format)}
+      <div>
+        <p className="clock-date">{time.format(dateFormat)}</p>
+        <p className="clock-time">{time.format(timeFormat)}</p>
       </div>
     );
   }

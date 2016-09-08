@@ -3,7 +3,7 @@ import React from 'react';
 import { EVENT_CHANNEL, createSubscription, removeSubscription } from 'cable';
 import EventSource from 'sources/EventSource';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
-import { currentAndNextEvent } from 'helpers/EventHelper';
+import { currentAndNextEvents } from 'helpers/EventHelper';
 
 export default class EventProvider extends React.Component {
   static propTypes = {
@@ -13,14 +13,14 @@ export default class EventProvider extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = {};
-    this._fetchCurrentAndNextEvent = this._fetchCurrentAndNextEvent.bind(this);
+    this.state = { nextEvents: [] };
+    this._fetchForToday = this._fetchForToday.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
-    this._fetchCurrentAndNextEvent();
-    this._channelSubscription = createSubscription(EVENT_CHANNEL, this._fetchCurrentAndNextEvent);
+    this._fetchForToday();
+    this._channelSubscription = createSubscription(EVENT_CHANNEL, this._fetchForToday);
   }
 
   componentWillUnmount() {
@@ -28,26 +28,26 @@ export default class EventProvider extends React.Component {
   }
 
   handleUpdate() {
-    this._fetchCurrentAndNextEvent();
+    this._fetchForToday();
   }
 
   render() {
     const { component: Component, ...props } = this.props;
     return (
       <Component currentEvent={this.state.currentEvent}
-                 nextEvent={this.state.nextEvent}
+                 nextEvents={this.state.nextEvents}
                  onUpdate={this.handleUpdate}
                  {...props} />
     );
   }
 
-  _fetchCurrentAndNextEvent() {
+  _fetchForToday() {
     EventSource.fetch(
       { start: moment().toISOString(), end: moment().endOf('day').toISOString() },
       this.props.conferenceRoom.id
     ).then(response => {
-      const { current, next } = currentAndNextEvent(response.data);
-      this.setState({ nextEvent: next, currentEvent: current });
+      const { current, next } = currentAndNextEvents(response.data);
+      this.setState({ nextEvents: next, currentEvent: current });
     });
   }
 }

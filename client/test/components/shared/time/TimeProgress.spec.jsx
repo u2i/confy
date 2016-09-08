@@ -3,26 +3,18 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
-import proxyquire from 'proxyquire';
 
-const DummyCircle = () => <div></div>;
-
-const TimeProgress = proxyquire('../../../../app/components/shared/time/TimeProgress', {
-  'react-progressbar.js': {
-    Circle: DummyCircle
-  }
-}).default;
+import TimeProgress from 'components/shared/time/TimeProgress';
 
 describe('<TimeProgress />', () => {
   let clock;
   const start = moment([2016, 0, 1, 0, 0, 0]);
   const end = start.clone().add(2, 'hours');
 
-  const element = ({ animate, onCompleted } = {}) => <TimeProgress start={start.unix()}
-                                                                   end={end.unix()}
-                                                                   onCompleted={onCompleted || sinon.spy()}
-                                                                   updateInterval={1000 * 60}
-                                                                   animate={animate} />;
+  const element = ({ onCompleted, suffix } = {}) => <TimeProgress end={end}
+                                                          suffix={suffix}
+                                                          onCompleted={onCompleted || sinon.spy()}
+                                                          updateInterval={1000 * 60} />;
 
   before(() => {
     clock = sinon.useFakeTimers(start.valueOf());
@@ -37,50 +29,32 @@ describe('<TimeProgress />', () => {
     clock.restore();
   });
 
-  it('renders <Circle /> progress bar', () => {
-    const wrapper = shallow(element());
-    expect(wrapper).to.have.exactly(1).descendants(DummyCircle);
-  });
-
-  context('progress bar', () => {
-    it('starts with 100% progress', () => {
-      const wrapper = mount(element());
-      expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(1);
-    });
-
-    it('decreases with time', () => {
-      const wrapper = mount(element());
-      clock.tick(1000 * 60 * 24);
-      expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(0.8);
-    });
-  });
-
   context('timer', () => {
     it('displays time left to end of event', () => {
       const wrapper = shallow(element());
       wrapper.setState({ progress: 1 });
-      expect(wrapper.find(DummyCircle)).to.have.prop('text').contain('02:00:00');
+      expect(wrapper).to.have.text('2 hours left');
     });
 
     it('updates with time', () => {
       const wrapper = mount(element());
-      clock.tick(1000 * 60);
-      expect(wrapper.find(DummyCircle)).to.have.prop('text').contain('01:59:00');
+      clock.tick(1000 * 60 * 80);
+      expect(wrapper).to.have.text('40 minutes left');
     });
   });
 
-  context('with animate set to false', () => {
-    it('does not change progress', () => {
-      const wrapper = mount(element({ animate: false }));
-      clock.tick(1000 * 60);
-      expect(wrapper.find(DummyCircle)).to.have.prop('progress').equal(1);
-    });
-  });
-
-  it('invokes onCompleted callback when progress is 0 or less', () => {
+  it('invokes onCompleted callback when time is up', () => {
     const onCompleted = sinon.spy();
     mount(element({ onCompleted }));
     clock.tick(1000 * 60 * 60 * 2);
     expect(onCompleted).to.have.been.calledOnce();
+  });
+
+  context('with suffix', () => {
+    it('renders suffix after time', () => {
+      const suffix = 'to next event';
+      const wrapper = shallow(element({ suffix }));
+      expect(wrapper).to.have.text('2 hours to next event');
+    });
   });
 });

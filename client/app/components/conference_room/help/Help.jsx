@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import helpText from 'texts/help.md';
+import helpText from '../texts/help.md';
 
 import './help.scss';
 

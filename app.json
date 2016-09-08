@@ -1,0 +1,97 @@
+{
+  "name": "confy",
+  "scripts": {
+  },
+  "env": {
+    "APPLICATION_OWNER": {
+      "required": true
+    },
+    "CONFY_DATABASE": {
+      "required": true
+    },
+    "CONFY_DATABASE_PASSWORD": {
+      "required": true
+    },
+    "CONFY_DATABASE_USER": {
+      "required": true
+    },
+    "DEPLOY_TASKS": {
+      "required": true
+    },
+    "GOOGLE_ACCOUNT_TYPE": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_EMAIL": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET": {
+      "required": true
+    },
+    "GOOGLE_DEFAULT_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_PRIVATE_KEY": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HOSTNAME": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "NOTIFICATION_HOST": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_LOG_TO_STDOUT": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    },
+    "REDIS_PROVIDER": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "TZ": {
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis",
+    "scheduler"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    },
+    {
+      "url": "https://github.com/gunpowderlabs/buildpack-ruby-rake-deploy-tasks"
+    }
+  ]
+}

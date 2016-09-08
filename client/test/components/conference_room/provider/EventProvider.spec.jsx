@@ -22,7 +22,7 @@ describe('<EventProvider />', () => {
 
   const conferenceRoom = ConferenceRoom.build();
   const currentEvent = Event.build();
-  const nextEvent = Event.build();
+  const nextEvents = Event.buildList(3);
   const ownProps = { example: true };
 
   const defaultWrapper = shallow(<EventProvider conferenceRoom={conferenceRoom}
@@ -48,10 +48,10 @@ describe('<EventProvider />', () => {
     expect(defaultWrapper.find(DummyComponent)).to.have.prop('conferenceRoom').equal(conferenceRoom);
   });
 
-  it('provides <Component /> with current and next event', () => {
-    defaultWrapper.setState({ currentEvent, nextEvent });
+  it('provides <Component /> with current and next events', () => {
+    defaultWrapper.setState({ currentEvent, nextEvents });
     expect(defaultWrapper.find(DummyComponent)).to.have.prop('currentEvent').equal(currentEvent);
-    expect(defaultWrapper.find(DummyComponent)).to.have.prop('nextEvent').equal(nextEvent);
+    expect(defaultWrapper.find(DummyComponent)).to.have.prop('nextEvents').equal(nextEvents);
   });
 
   it('fetches events on update', () => {

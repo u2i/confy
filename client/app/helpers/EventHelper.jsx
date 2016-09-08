@@ -79,10 +79,10 @@ export function updateRoomEvents(events, newEvents, roomId) {
   return events.filter(event => event.conference_room.id !== roomId).concat(newEvents);
 }
 
-export function currentAndNextEvent(events) {
+export function currentAndNextEvents(events) {
   events = sortBy(events, 'start_timestamp');
   const currentEventIndex = events.findIndex((event) => moment(event.start.date_time).isSameOrBefore(moment()));
   const current = events[currentEventIndex];
-  const next = currentEventIndex > -1 ? events[currentEventIndex + 1] : events[0];
+  const next = currentEventIndex > -1 ? events.slice(currentEventIndex + 1) : events;
   return { current, next };
 }

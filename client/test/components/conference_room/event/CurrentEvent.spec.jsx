@@ -1,79 +1,111 @@
 import moment from 'moment';
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-import proxyquire from 'proxyquire';
+import { shallow } from 'enzyme';
 import Event from 'test/factories/Event';
 
-import EventContainer from 'components/conference_room/event/EventContainer';
-import EventDetails from 'components/calendar/event/EventDetails';
+import CurrentEvent from 'components/conference_room/event/CurrentEvent';
+import TimeProgress from 'components/shared/time/TimeProgress';
+import EventTime from 'components/calendar/event/details/EventTime';
+import EventCreator from 'components/calendar/event/details/EventCreator';
+import EventAttendees from 'components/calendar/event/details/EventAttendees';
+import EventDescription from 'components/calendar/event/details/EventDescription';
 
-describe('<CurrentEvent />', () => {
-  const DummyTimeProgress = () => <div></div>;
+describe('<CurrentEvent.Event />', () => {
+  const summary = 'Summary';
+  const event = Event.build({ summary });
 
-  const CurrentEvent = proxyquire.noCallThru().load('../../../../app/components/conference_room/event/CurrentEvent', {
-    '../../shared/time/TimeProgress': DummyTimeProgress
-  }).default;
+  const wrapper = shallow(<CurrentEvent.Event event={event} />);
 
-  const event = Event.build();
-  const eventStart = moment(event.start.date_time).unix();
-  const eventEnd = moment(event.end.date_time).unix();
-
-  it('renders <EventContainer />', () => {
-    const wrapper = shallow(<CurrentEvent />);
-    expect(wrapper).to.have.exactly(1).descendants(EventContainer);
+  it('renders event summary', () => {
+    expect(wrapper.text()).to.contain(summary);
   });
 
-  context('with event', () => {
-    const wrapper = mount(<CurrentEvent event={event} />);
-    const timeProgressWrapper = wrapper.find(DummyTimeProgress);
+  it('renders <EventDetails /> with time, creator, attendees and description', () => {
+    expect(wrapper).to.have.exactly(1).descendants(EventTime);
+    expect(wrapper).to.have.exactly(1).descendants(EventCreator);
+    expect(wrapper).to.have.exactly(1).descendants(EventAttendees);
+    expect(wrapper).to.have.exactly(1).descendants(EventDescription);
+  });
+});
 
-    it('renders <EventDetails />', () => {
-      expect(wrapper).to.have.exactly(1).descendants(EventDetails);
-    });
+describe('<CurrentEvent.NoEvent />', () => {
+  const wrapper = shallow(<CurrentEvent.NoEvent />);
+
+  it('renders message', () => {
+    expect(wrapper).to.have.text('No event currently in progress');
+  });
+});
+
+describe('<CurrentEvent.TimeProgressContainer />', () => {
+  const event = Event.build();
+  const eventEnd = moment(event.end.date_time);
+
+  context('with event', () => {
+    const wrapper = shallow(<CurrentEvent.TimeProgressContainer event={event} />);
+    const timeProgressWrapper = wrapper.find(TimeProgress);
 
     it('renders <TimeProgress />', () => {
       expect(timeProgressWrapper).to.have.lengthOf(1);
     });
 
-    it('renders <TimeProgress /> with time boundaries set to event time boundaries', () => {
-      expect(timeProgressWrapper).to.have.prop('start').equal(eventStart);
-      expect(timeProgressWrapper).to.have.prop('end').equal(eventEnd);
-    });
-
-    it('animates <TimeProgress />', () => {
-      expect(timeProgressWrapper).to.have.prop('animate').equal(true);
+    it('renders <TimeProgress /> with end prop set to event end time', () => {
+      expect(timeProgressWrapper.prop('end').isSame(eventEnd)).to.be.true();
     });
   });
 
   context('with no event', () => {
-    it('does not render <EventDetails />', () => {
-      const wrapper = mount(<CurrentEvent />);
-      expect(wrapper).to.not.have.descendants(EventDetails);
+    context('with next event', () => {
+      const nextEventStart = moment().add(1, 'hour');
+      const wrapper = shallow(<CurrentEvent.TimeProgressContainer nextEventStart={nextEventStart} />);
+      const timeProgressWrapper = wrapper.find(TimeProgress);
+
+      it('renders <TimeProgress />', () => {
+        expect(wrapper).to.have.exactly(1).descendants(TimeProgress);
+      });
+
+      it('sets <TimeProgress /> end to start of next event', () => {
+        expect(timeProgressWrapper.prop('end').isSame(nextEventStart)).to.be.true();
+      });
+    });
+  });
+});
+
+describe('<CurrentEvent />', () => {
+  const event = Event.build();
+
+  context('with event', () => {
+    const wrapper = shallow(<CurrentEvent event={event} />);
+
+    it('renders <CurrentEvent.Event />', () => {
+      expect(wrapper).to.have.exactly(1).descendants(CurrentEvent.Event);
+    });
+
+    it('renders <CurrentEvent.TimeProgressContainer />', () => {
+      expect(wrapper).to.have.exactly(1).descendants(CurrentEvent.TimeProgressContainer);
+    });
+  });
+
+  context('with no event', () => {
+    it('renders <CurrentEvent.NoEvent />', () => {
+      const wrapper = shallow(<CurrentEvent />);
+      expect(wrapper).to.have.exactly(1).descendants(CurrentEvent.NoEvent);
     });
 
     context('with no next event', () => {
-      const wrapper = mount(<CurrentEvent />);
-      it('does not render <TimeProgress />', () => {
-        expect(wrapper).to.not.have.descendants(DummyTimeProgress);
+      const wrapper = shallow(<CurrentEvent />);
+
+      it('does not render <CurrentEvent.TimeProgressContainer />', () => {
+        expect(wrapper).to.not.have.descendants(CurrentEvent.TimeProgressContainer);
       });
     });
 
     context('with next event', () => {
       const nextEventStart = moment().add(1, 'hour');
-      const wrapper = mount(<CurrentEvent nextEventStart={nextEventStart} />);
-      const timeProgressWrapper = wrapper.find(DummyTimeProgress);
+      const wrapper = shallow(<CurrentEvent nextEventStart={nextEventStart} />);
 
-      it('renders <TimeProgress />', () => {
-        expect(wrapper).to.have.exactly(1).descendants(DummyTimeProgress);
-      });
-
-      it('sets <TimeProgress /> end to start of next event', () => {
-        expect(timeProgressWrapper).to.have.prop('end').equal(nextEventStart.unix());
-      });
-
-      it('does not animate <TimeProgress />', () => {
-        expect(timeProgressWrapper).to.have.prop('animate').equal(false);
+      it('renders <CurrentEvent.TimeProgressContainer />', () => {
+        expect(wrapper).to.have.exactly(1).descendants(CurrentEvent.TimeProgressContainer);
       });
     });
   });
