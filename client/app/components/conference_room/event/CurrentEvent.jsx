@@ -5,7 +5,7 @@ import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
-import Controls from './controls/Controls';
+import Controls from '../layout/controls/Controls';
 import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';

@@ -1,7 +1,7 @@
 import React from 'react';
 import EventSchema from 'schemas/EventSchema';
 
-import EventControls from './EventControls';
+import EventControls from './event/EventControls';
 import NoEventControls from './NoEventControls';
 
 const Controls = ({ event, onConfirm, onStart, onCancel, onFinish }) =>
