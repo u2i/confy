@@ -38,7 +38,6 @@ module GoogleAuthentication
     session[:email] = GoogleOauth.user_email(user_credentials)
   end
 
-
   def check_authentication
     return redirect_action unless user_credentials
     redirect_action unless GoogleOauth.authenticated?(JSON.parse(user_credentials))
