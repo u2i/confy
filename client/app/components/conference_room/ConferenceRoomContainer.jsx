@@ -13,13 +13,18 @@ const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
   conferenceRoom,
-  onUpdate
+  onUpdate,
+  onConfirm
 }) => (
   <div>
     <Navbar conferenceRoom={conferenceRoom} />
     <Grid className="conference-room-container">
       {currentEvent || nextEvents.length > 0 ?
-        <CurrentAndNextEvents currentEvent={currentEvent} nextEvents={nextEvents} onUpdate={onUpdate} /> :
+        <CurrentAndNextEvents
+          currentEvent={currentEvent}
+          nextEvents={nextEvents}
+          onUpdate={onUpdate}
+          onConfirm={onConfirm} /> :
         <NoEvents />
       }
     </Grid>

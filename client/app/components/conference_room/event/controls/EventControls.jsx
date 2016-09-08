@@ -4,7 +4,7 @@ import EventSchema from 'proptypes/schemas/EventSchema';
 
 const InProgressControls = ({ onFinish }) => (
   <div className="event-controls">
-    <Button bsStyle="danger" bsSize="large" onClick={onFinish}>Finish</Button>
+    <Button bsStyle="danger" bsSize="large" onClick={onFinish} disabled>Finish</Button>
   </div>
 );
 
@@ -15,7 +15,7 @@ InProgressControls.propTypes = {
 const UnstartedControls = ({ onConfirm, onCancel }) => (
   <div className="event-controls">
     <Button bsStyle="primary" bsSize="large" onClick={onConfirm}>Confirm</Button>
-    <Button bsStyle="danger" bsSize="large" onClick={onCancel}>Cancel</Button>
+    <Button bsStyle="danger" bsSize="large" onClick={onCancel} disabled>Cancel</Button>
   </div>
 );
 

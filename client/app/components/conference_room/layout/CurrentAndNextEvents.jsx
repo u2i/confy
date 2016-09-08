@@ -8,12 +8,13 @@ import texts from '../texts';
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
 
-const CurrentAndNextEvents = ({ currentEvent, nextEvents, onUpdate }) => (
+const CurrentAndNextEvents = ({ currentEvent, nextEvents, onUpdate, onConfirm }) => (
   <Row>
     <Col xs={12} sm={8}>
       <CurrentEvent event={currentEvent}
                     nextEventStart={moment(get(nextEvents[0], 'start.date_time'))}
-                    onCompleted={onUpdate} />
+                    onCompleted={onUpdate}
+                    onConfirm={onConfirm} />
     </Col>
     <Col xs={12} sm={4}>
       <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
