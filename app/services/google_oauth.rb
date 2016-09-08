@@ -41,7 +41,7 @@ class GoogleOauth
     end
 
     def request_code_uri
-      default_client.authorization_uri.to_s
+      default_client.authorization_uri({approval_prompt: 'force', access_type: 'offline'}).to_s
     end
 
     def get_user_credentials(code)
