@@ -10,7 +10,7 @@ const Controls = ({ event, onConfirm, onStart, onCancel, onFinish }) =>
     <NoEventControls onStart={onStart} />;
 
 Controls.propTypes = {
-  event: EventSchema.only('confirmed').isRequired,
+  event: EventSchema.only('confirmed'),
   onConfirm: React.PropTypes.func,
   onStart: React.PropTypes.func,
   onCancel: React.PropTypes.func,
