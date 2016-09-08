@@ -33,7 +33,7 @@ describe('<DeleteConfirmation />', () => {
 
   it('invokes confirmHandler on Delete button press', () => {
     const wrapper = shallow(<DeleteConfirmation {...props} />);
-    wrapper.find('Button._confirmEvent-delete').simulate('click');
+    wrapper.find('Button.confirm-delete').simulate('click');
     expect(onConfirmSpy).to.be.calledOnce();
   });
 });
