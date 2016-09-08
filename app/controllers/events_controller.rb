@@ -60,7 +60,7 @@ class EventsController < ApplicationController
   def confirm
     conference_room_id = confirmation_params[:conference_room_id]
     event_id = confirmation_params[:event_id]
-    google_event_client.confirm(conference_room_id, event_id)
+    Event.confirm_or_create(conference_room_id, event_id)
   end
 
   private

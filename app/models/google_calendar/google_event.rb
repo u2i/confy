@@ -21,10 +21,8 @@ module GoogleCalendar
       event_finder.by_room(time_interval, conference_room_ids)
     end
 
-    def confirm(conference_room_id, event_id)
-      conference_room = ConferenceRoom.find(conference_room_id)
-      event = Event.find_or_create_by(conference_room: conference_room, event_id: event_id)
-      event.confirm
+    def confirmed_events(time_interval)
+      event_finder.confirmed_events(time_interval)
     end
 
     private

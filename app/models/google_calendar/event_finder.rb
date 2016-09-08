@@ -17,6 +17,12 @@ module GoogleCalendar
       list_events(time_interval, rooms)
     end
 
+    def confirmed_events(time_interval)
+      all_events = all(time_interval)
+      confirmed_ids = Event.confirmed_event_ids
+      all_events.select { |event| confirmed_ids.include?(event.id) }
+    end
+
     private
 
     def rooms(conference_room_ids = nil)
