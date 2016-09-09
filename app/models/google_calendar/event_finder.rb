@@ -41,8 +41,11 @@ module GoogleCalendar
     end
 
     def include_confirmation(events)
-      confirmed = Event.confirmed.where(event_id: events.map { |e| e[:id] }).pluck(:event_id)
-      events.each { |event| event[:confirmed] = confirmed.include?(event[:id]) }
+      events.each { |event| event[:confirmed] = confirmed_events_ids.include?(event[:id]) }
+    end
+
+    def confirmed_events_ids
+      @confirmed_events_ids ||= Event.confirmed.pluck(:event_id)
     end
 
     def rooms(conference_room_ids = nil)

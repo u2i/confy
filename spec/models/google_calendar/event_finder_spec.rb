@@ -197,15 +197,21 @@ describe GoogleCalendar::EventFinder do
     let!(:room) { create(:conference_room) }
     let(:start_time) { Time.now }
     let(:end_time) { start_time + 1.hour }
+    let(:event_start) { Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time) }
+    let(:event_creator) { Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User') }
+    let(:event_end) { Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time) }
+    let(:event_attendees) do
+      [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')]
+    end
+    let(:event_summary) { 'Event1' }
+    let(:event_description) { 'Description' }
     let(:google_event) do
-      Google::Apis::CalendarV3::Event.new(start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time),
-                                          creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
-                                          end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time),
-                                          summary: 'Event1', description: '',
-                                          attendees: [
-                                            Google::Apis::CalendarV3::EventAttendee.new(self: true,
-                                                                                        response_status: 'accepted')
-                                          ]).tap { |event| event.id = event_id }
+      Google::Apis::CalendarV3::Event.new(start: event_start,
+                                          creator: event_creator,
+                                          end: event_end,
+                                          summary: event_summary,
+                                          description: event_description,
+                                          attendees: event_attendees).tap { |event| event.id = event_id }
     end
     let(:time_interval) { double('time_interval', starting: start_time, ending: end_time) }
 
@@ -224,15 +230,18 @@ describe GoogleCalendar::EventFinder do
     end
 
     context 'with_confirmation == false' do
+      subject { event_finder.by_room(time_interval, [room.id]) }
+
       it 'does not set confirmed field' do
-        expect(event_finder.by_room(time_interval, [room.id]).first.key?(:confirmed)).to eq false
+        expect(subject.first.key?(:confirmed)).to eq false
       end
     end
 
     context 'with_confirmation' do
+      subject { event_finder.by_room(time_interval, [room.id], true) }
       context 'event not confirmed' do
         it 'sets confirmed field to false' do
-          expect(event_finder.by_room(time_interval, [room.id], true).first[:confirmed]).to eq false
+          expect(subject.first[:confirmed]).to eq false
         end
       end
 
@@ -242,7 +251,7 @@ describe GoogleCalendar::EventFinder do
         end
 
         it 'sets confirmed field to true' do
-          expect(event_finder.by_room(time_interval, [room.id], true).first[:confirmed]).to eq true
+          expect(subject.first[:confirmed]).to eq true
         end
       end
     end

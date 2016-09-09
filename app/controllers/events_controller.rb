@@ -40,11 +40,10 @@ class EventsController < ApplicationController
   end
 
   def room_index
-    with_confirmation = (params[:confirmation] == 'true'.freeze)
     events = google_event_client.find_by_room(
       time_interval_rfc3339,
       params[:conference_room_id].to_i,
-      with_confirmation
+      with_confirmation?
     )
     render json: events
   end
@@ -72,6 +71,10 @@ class EventsController < ApplicationController
 
   def confirmation_params
     params.permit(:conference_room_id, :event_id)
+  end
+
+  def with_confirmation?
+    params[:confirmation] == 'true'.freeze
   end
 
   def event_params
