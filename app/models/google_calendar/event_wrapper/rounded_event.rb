@@ -42,7 +42,6 @@ module GoogleCalendar
         start_time.date_time = at_beginning_of_day(start_time.date)
         end_time.date_time = at_beginning_of_day(end_time.date)
       end
-
     end
   end
 end
