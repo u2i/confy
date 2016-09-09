@@ -23,11 +23,15 @@ module GoogleAuthentication
   end
 
   def refresh_token_present?
-    user_credentials && JSON.parse(user_credentials)['refresh_token'].present?
+    user_credentials && parsed_user_credentials['refresh_token'].present?
   end
 
   def user_credentials
     session[:credentials]
+  end
+
+  def parsed_user_credentials
+    JSON.parse(user_credentials)
   end
 
   def update_credentials
@@ -40,7 +44,7 @@ module GoogleAuthentication
 
   def check_authentication
     return redirect_action unless user_credentials
-    redirect_action unless GoogleOauth.authenticated?(JSON.parse(user_credentials))
+    redirect_action unless GoogleOauth.authenticated?(parsed_user_credentials)
   end
 
   private
