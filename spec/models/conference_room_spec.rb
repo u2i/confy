@@ -67,18 +67,14 @@ RSpec.describe ConferenceRoom, type: :model do
   describe '.find_or_raise' do
     context 'given invalid conference_room_id' do
       let(:invalid_conference_room_id) { 0 }
-      it 'raises EventInvalidRoom' do
-        expect { described_class.find_or_raise(invalid_conference_room_id) }.
-          to raise_error(Exceptions::EventInvalidRoom)
-      end
+      subject { -> { described_class.find_or_raise(invalid_conference_room_id) } }
+      it { is_expected.to raise_error(Exceptions::EventInvalidRoom) }
     end
 
     context 'given valid conference_room_id' do
       let!(:conference_room) { create :conference_room }
-
-      it 'returns conference_room' do
-        expect(described_class.find_or_raise(conference_room.id)).to eq conference_room
-      end
+      subject { described_class.find_or_raise(conference_room.id) }
+      it { is_expected.to eq conference_room }
     end
   end
 end

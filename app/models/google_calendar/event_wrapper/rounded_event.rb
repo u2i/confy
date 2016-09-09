@@ -28,6 +28,10 @@ module GoogleCalendar
         @rounded_end_time ||= TimeRound.ceil_time(end_time.date_time)
       end
 
+      def at_beginning_of_day(date)
+        date.beginning_of_day.to_datetime
+      end
+
       private
 
       def normalize_datetime
@@ -39,9 +43,6 @@ module GoogleCalendar
         end_time.date_time = at_beginning_of_day(end_time.date)
       end
 
-      def at_beginning_of_day(date)
-        date.beginning_of_day.to_datetime
-      end
     end
   end
 end

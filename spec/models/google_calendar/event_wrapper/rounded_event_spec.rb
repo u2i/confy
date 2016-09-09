@@ -5,13 +5,15 @@ describe GoogleCalendar::EventWrapper::RoundedEvent do
   let(:end_date) { Date.parse('2016-01-02') }
   let(:start) { double('start', date: start_date, date_time: start_date.to_datetime) }
   let(:ending) { double('ending', date: end_date, date_time: end_date.to_datetime) }
+  let(:all_day) { }
+  let(:params) { {start: start, end: ending, all_day: all_day} }
   let(:event) { GoogleCalendar::EventWrapper::RoundedEvent.new(params) }
 
   describe 'initialization' do
-    let(:expected_start_result) { start_date.beginning_of_day.to_datetime }
-    let(:expected_end_result) { end_date.beginning_of_day.to_datetime }
     context 'given whole day event' do
-      let(:params) { {start: start, end: ending, all_day: true} }
+      let(:all_day) { true }
+      let(:expected_start_result) { start_date.beginning_of_day.to_datetime }
+      let(:expected_end_result) { end_date.beginning_of_day.to_datetime }
       it 'sets events start_time.date_time and end_time.date_time attributes to the beginning of day' do
         expect(start).to receive(:date_time=).with expected_start_result
         expect(ending).to receive(:date_time=).with expected_end_result
@@ -20,7 +22,7 @@ describe GoogleCalendar::EventWrapper::RoundedEvent do
     end
 
     context 'given not a whole day event' do
-      let(:params) { {start: start, end: ending, all_day: false} }
+      let(:all_day) { false }
       let(:expected_start_result) { 'result1' }
       let(:expected_end_result) { 'result2' }
       before do
