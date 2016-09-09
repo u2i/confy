@@ -22,9 +22,7 @@ module GoogleCalendar
 
     def by_room(time_interval, conference_room_ids, with_confirmation = false)
       events = list_events(time_interval, rooms(conference_room_ids))
-      if with_confirmation
-        set_confirmation(events)
-      end
+      include_confirmation(events) if with_confirmation
       events
     end
 
@@ -42,7 +40,7 @@ module GoogleCalendar
       all_events
     end
 
-    def set_confirmation(events)
+    def include_confirmation(events)
       confirmed = Event.confirmed.where(event_id: events.map { |e| e[:id] }).pluck(:event_id)
       events.each { |event| event[:confirmed] = confirmed.include?(event[:id]) }
     end
