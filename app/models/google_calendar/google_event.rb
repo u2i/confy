@@ -1,5 +1,5 @@
 module GoogleCalendar
-  class GoogleEvent
+  class  GoogleEvent
     def initialize(credentials, user_email)
       @credentials = credentials
       @user_email = user_email
