@@ -25,6 +25,10 @@ module GoogleCalendar
       event_finder.confirmed_events(time_interval)
     end
 
+    def finish(conference_room_id, event_id)
+      event_editor.finish(conference_room_id, event_id)
+    end
+
     private
 
     attr_accessor :credentials, :user_email
@@ -39,6 +43,10 @@ module GoogleCalendar
 
     def event_finder
       @event_finder ||= GoogleCalendar::EventFinder.new(credentials, user_email)
+    end
+
+    def event_editor
+      @event_editor ||= GoogleCalendar::EventEditor.new(credentials)
     end
   end
 end

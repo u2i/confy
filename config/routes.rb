@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
   get 'conference_rooms/:conference_room_id/events' => 'events#room_index'
   post 'conference_rooms/:conference_room_id/events/:event_id/confirm' => 'events#confirm', as: :confirmation
+  post 'conference_rooms/:conference_room_id/events/:event_id/finish' => 'events#finish', as: :finish
 
   resources :contacts, only: [:index]
 

@@ -10,7 +10,7 @@ RSpec.describe 'Events', type: :request do
   describe 'POST /events' do
     before do
       allow(GoogleCalendar::EventDataService).to receive(:process_params) { |arg| arg }
-      allow_any_instance_of(EventsController).to receive(:event_params) { {conference_room_id: 2} }
+      allow_any_instance_of(EventsController).to receive(:create_event_params) { {conference_room_id: 2} }
       allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
     end
 
@@ -86,9 +86,31 @@ RSpec.describe 'Events', type: :request do
     let(:conference_room_id) { '1' }
 
     it 'calls google_event_client.confirm with given parameters' do
-      allow_any_instance_of(EventsController).to receive(:google_event_client) { client }
       expect(Event).to receive(:confirm_or_create).with(conference_room_id, event_id)
       post confirmation_path(conference_room_id, event_id)
+    end
+  end
+
+  describe 'POST /conference_rooms/events/finish' do
+    let(:event_id) { '1' }
+    let(:conference_room_id) { '1' }
+    let(:client) { double('client') }
+    subject { response }
+    before { allow_any_instance_of(EventsController).to receive(:google_event_client) { client } }
+    describe 'given valid data' do
+      before do
+        allow(client).to receive(:finish) { true }
+        post finish_path(conference_room_id, event_id)
+      end
+      it { is_expected.to have_http_status :ok }
+    end
+
+    describe 'google_event_client raises ActiveRecord::RecordNotFound' do
+      before do
+        allow(client).to receive(:finish) { raise ActiveRecord::RecordNotFound }
+        post finish_path(conference_room_id, event_id)
+      end
+      it { is_expected.to have_http_status :bad_request }
     end
   end
 end

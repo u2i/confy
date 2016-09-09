@@ -45,8 +45,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    conference_room_id = event_params[:conference_room_id]
-    google_event_params = GoogleCalendar::EventDataService.process_params(event_params)
+    conference_room_id = create_event_params[:conference_room_id]
+    google_event_params = GoogleCalendar::EventDataService.process_params(create_event_params)
     data = google_event_client.create(conference_room_id, google_event_params)
     render json: data.to_json, status: :created
   end
@@ -58,18 +58,24 @@ class EventsController < ApplicationController
   end
 
   def confirm
-    conference_room_id = confirmation_params[:conference_room_id]
-    event_id = confirmation_params[:event_id]
-    Event.confirm_or_create(conference_room_id, event_id)
+    Event.confirm_or_create(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    head :ok
+  end
+
+  def finish
+    google_event_client.finish(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    head :bad_request
   end
 
   private
 
-  def confirmation_params
+  def edit_event_params
     params.permit(:conference_room_id, :event_id)
   end
 
-  def event_params
+  def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   attendees: [:email])
   end
