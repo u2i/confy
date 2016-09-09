@@ -1,6 +1,7 @@
 module GoogleCalendar
   module EventWrapper
     class HashBuilder < GoogleCalendar::EventWrapper::Builder
+      # rubocop:disable Metrics/AbcSize
       def initialize(params)
         data = params.deep_symbolize_keys
         @summary = data[:summary]
@@ -12,6 +13,7 @@ module GoogleCalendar
         @conference_room = build_conference_room(data[:conference_room_id])
         @creator = build_empty_creator
       end
+      # rubocop:enable Metrics/AbcSize
 
       def build_event_wrapper
         GoogleCalendar::EventWrapper::Event.new(default_params)

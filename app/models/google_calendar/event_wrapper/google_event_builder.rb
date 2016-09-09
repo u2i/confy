@@ -25,11 +25,15 @@ module GoogleCalendar
           description: google_event.description,
           start: google_event.start,
           end: google_event.end,
-          creator: google_event.creator || build_empty_creator,
+          creator: creator,
           conference_room: conference_room,
           attendees: parse_attendees,
           all_day: lasts_all_day?
         }
+      end
+
+      def creator
+        google_event.creator || build_empty_creator
       end
 
       def parse_attendees
