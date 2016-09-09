@@ -13,7 +13,6 @@ export default class EventGroup extends React.Component {
     timestamp: number.isRequired,
     containerWidth: number.isRequired,
     containerHeight: number.isRequired,
-    userEmail: string.isRequired,
     unitEventLengthInSeconds: number.isRequired,
     onDelete: func.isRequired
   };
@@ -25,7 +24,6 @@ export default class EventGroup extends React.Component {
       <div className="event-group">
         {this.props.events.map(event => (
           <Event event={event}
-                 userEmail={this.props.userEmail}
                  containerHeight={containerHeight}
                  containerWidth={containerWidth}
                  unitEventLengthInSeconds={unitEventLengthInSeconds}

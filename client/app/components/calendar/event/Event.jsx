@@ -7,7 +7,6 @@ import './event.scss';
 export default class Event extends React.Component {
   static propTypes = {
     event: EventSchema.isRequired,
-    userEmail: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
     containerWidth: PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
@@ -30,7 +29,7 @@ export default class Event extends React.Component {
   }
 
   _userParticipatesInEvent() {
-    return this.props.event.attendees.find(attendee => attendee.email === this.props.userEmail);
+    return this.props.event.attendees.find(attendee => attendee.email === this.context.userEmail);
   }
 
   _eventHeight() {
@@ -60,3 +59,7 @@ export default class Event extends React.Component {
     };
   }
 }
+
+Event.contextTypes = {
+  userEmail: React.PropTypes.string
+};

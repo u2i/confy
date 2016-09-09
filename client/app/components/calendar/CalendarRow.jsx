@@ -14,7 +14,6 @@ export default class CalendarRow extends React.Component {
     time: instanceOfMoment.isRequired,
     days: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
-    userEmail: string.isRequired,
     timeFormat: string,
     displayMinutes: bool,
     onDelete: func.isRequired
@@ -49,7 +48,6 @@ export default class CalendarRow extends React.Component {
 
       return (
         <EventWrapper timestamp={timestamp}
-                      userEmail={this.props.userEmail}
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       key={timestamp}
