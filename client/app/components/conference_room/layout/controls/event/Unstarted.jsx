@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 const Unstarted = ({ onConfirm, onCancel }) => (
   <div className="event-controls">
     <Button bsStyle="primary" bsSize="large" onClick={onConfirm}>Confirm</Button>
-    <Button bsStyle="danger" bsSize="large" onClick={onCancel} disabled>Cancel</Button>
+    <Button bsStyle="danger" bsSize="large" onClick={onCancel} className="hidden">Cancel</Button>
   </div>
 );
 
