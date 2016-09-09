@@ -40,7 +40,12 @@ class EventsController < ApplicationController
   end
 
   def room_index
-    events = google_event_client.find_by_room(time_interval_rfc3339, params[:conference_room_id].to_i)
+    with_confirmation = (params[:confirmation] == 'true'.freeze)
+    events = google_event_client.find_by_room(
+      time_interval_rfc3339,
+      params[:conference_room_id].to_i,
+      with_confirmation
+    )
     render json: events
   end
 

@@ -15,5 +15,8 @@ class Event < ApplicationRecord
   end
 
   scope :confirmed, -> { where(confirmed: true) }
-  scope :confirmed_event_ids, -> { confirmed.pluck(:event_id) }
+
+  def self.confirmed_event_ids
+    confirmed.pluck(:event_id)
+  end
 end

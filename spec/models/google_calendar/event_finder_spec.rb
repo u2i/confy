@@ -191,4 +191,60 @@ describe GoogleCalendar::EventFinder do
     subject { event_finder.confirmed_events(nil) }
     it { is_expected.to eq [confirmed_event] }
   end
+
+  describe '#by_room' do
+    let(:event_id) { 'sampleid'.freeze }
+    let!(:room) { create(:conference_room) }
+    let(:start_time) { Time.now }
+    let(:end_time) { start_time + 1.hour }
+    let(:google_event) do
+      Google::Apis::CalendarV3::Event.new(start: Google::Apis::CalendarV3::EventDateTime.new(date_time: start_time),
+                                          creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
+                                          end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time),
+                                          summary: 'Event1', description: '',
+                                          attendees: [
+                                            Google::Apis::CalendarV3::EventAttendee.new(self: true,
+                                                                                        response_status: 'accepted')
+                                          ]).tap { |event| event.id = event_id }
+    end
+    let(:time_interval) { double('time_interval', starting: start_time, ending: end_time) }
+
+    before do
+      events = double('events')
+      allow(GoogleOauth).to receive(:user_email) { 'example@com' }
+      allow(events).to receive(:items) { [event] }
+      allow(service).to receive(:batch).and_yield(service)
+      allow(service).to receive(:list_events) do |email, &block|
+        block.call [double('EventList', items: [google_event]), nil]
+      end
+    end
+
+    it 'gets events from room' do
+      expect(event_finder.by_room(time_interval, [room.id]).first[:summary]).to eq google_event.summary
+    end
+
+    context 'with_confirmation == false' do
+      it 'does not set confirmed field' do
+        expect(event_finder.by_room(time_interval, [room.id]).first.key?(:confirmed)).to eq false
+      end
+    end
+
+    context 'with_confirmation' do
+      context 'event not confirmed' do
+        it 'sets confirmed field to false' do
+          expect(event_finder.by_room(time_interval, [room.id], true).first[:confirmed]).to eq false
+        end
+      end
+
+      context 'event confirmed' do
+        let!(:confirmed_event) do
+          create(:event, confirmed: true, event_id: google_event.id, conference_room_id: room.id)
+        end
+
+        it 'sets confirmed field to true' do
+          expect(event_finder.by_room(time_interval, [room.id], true).first[:confirmed]).to eq true
+        end
+      end
+    end
+  end
 end
