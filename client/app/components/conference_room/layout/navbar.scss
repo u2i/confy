@@ -1,0 +1,48 @@
+.conference-room-navbar {
+  font-size: 1.2em;
+
+  .navbar-brand h2,
+  .navbar-text h3 {
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-brand,
+  .navbar-nav > li > a,
+  .navbar-text {
+    color: #000 !important;
+  }
+
+  .clock-date, .clock-time {
+    display: inline;
+    margin-right: 10px;
+  }
+
+  .clock-time {
+    font-size: 1.2em;
+  }
+
+  .navbar-text {
+    margin: 0;
+    padding: 12px;
+  }
+
+  .navbar-header {
+    float: none;
+  }
+
+  .navbar-right {
+    float: right;
+  }
+
+  .navbar-form {
+    width: auto;
+    border: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-shadow: none;
+  }
+}

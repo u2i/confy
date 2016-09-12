@@ -1,3 +1,5 @@
+import moment from 'moment';
+import isInteger from 'lodash/isInteger';
 import sortBy from 'lodash/sortBy';
 
 export const SECONDS_IN_DAY = 24 * 60 * 60;
@@ -70,4 +72,17 @@ export function setEventsPositionAttributes(events) {
       });
     });
   });
+}
+
+export function updateRoomEvents(events, newEvents, roomId) {
+  if (!isInteger(roomId)) throw new Error('Conference room id must be an integer');
+  return events.filter(event => event.conference_room.id !== roomId).concat(newEvents);
+}
+
+export function currentAndNextEvents(events) {
+  events = sortBy(events, 'start_timestamp');
+  const currentEventIndex = events.findIndex((event) => moment(event.start.date_time).isSameOrBefore(moment()));
+  const current = events[currentEventIndex];
+  const next = currentEventIndex > -1 ? events.slice(currentEventIndex + 1) : events;
+  return { current, next };
 }

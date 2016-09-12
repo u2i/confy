@@ -2,7 +2,9 @@
 <html>
 <head>
   <title>Confy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
 
   <%= env_stylesheet_link_tag(
       static: 'application',

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
 import EventDestroyer from './EventDestroyer';
-import EventDetails from './EventDetails';
+import EventDetails from './details/EventDetails';
 import './event.scss';
 
 export default class Event extends React.Component {

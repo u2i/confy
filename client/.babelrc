@@ -9,6 +9,10 @@
       "module-alias",
       [
         {
+          "src": "./app/cable",
+          "expose": "cable"
+        },
+        {
           "src": "./app",
           "expose": "app"
         },
@@ -39,6 +43,10 @@
         {
           "src": "./app/models",
           "expose": "models"
+        },
+        {
+          "src": "./app/texts",
+          "expose": "texts"
         },
         {
           "src": "npm:lodash",

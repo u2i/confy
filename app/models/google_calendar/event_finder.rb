@@ -1,8 +1,8 @@
 module GoogleCalendar
   class EventFinder
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
-    LISTING_FIELDS =
-      'items(id, start, end, summary, recurrence, creator, attendees(self, email, responseStatus))'.freeze
+    LISTING_FIELDS = 'items(id, start, end, summary, recurrence, '\
+                     'creator, attendees(self, responseStatus, displayName, email))'.freeze
 
     def initialize(credentials, user_email)
       @credentials = credentials
@@ -10,7 +10,23 @@ module GoogleCalendar
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def list_events(time_interval)
+    def all(time_interval)
+      list_events(time_interval, rooms)
+    end
+
+    def confirmed_events(time_interval)
+      all_google_events = all(time_interval)
+      confirmed_ids = Event.confirmed_event_ids
+      all_google_events.select { |event| confirmed_ids.include?(event.id) }
+    end
+
+    def by_room(time_interval, conference_room_ids)
+      list_events(time_interval, rooms(conference_room_ids))
+    end
+
+    private
+
+    def list_events(time_interval, rooms)
       all_events = []
       listing_configuration = listing_options(time_interval)
       calendar_service.batch do |service|
@@ -22,9 +38,8 @@ module GoogleCalendar
       all_events
     end
 
-    private
-
-    def rooms
+    def rooms(conference_room_ids = nil)
+      return ConferenceRoom.where(id: conference_room_ids) if conference_room_ids
       @rooms ||= ConferenceRoom.all
     end
 

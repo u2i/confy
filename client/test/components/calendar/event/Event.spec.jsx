@@ -21,7 +21,6 @@ describe('<Event />', () => {
   const eventComponent = (event) => (
     <Event
       event={event}
-      userEmail={currentUserEmail}
       containerHeight={containerHeight}
       containerWidth={containerWidth}
       unitEventLengthInSeconds={unitEventLengthInSeconds}
@@ -29,8 +28,10 @@ describe('<Event />', () => {
       onDelete={onDelete} />
   );
 
-  const shallowEvent = (event) => shallow(eventComponent(event));
-  const mountEvent = (event) => mount(eventComponent(event));
+  const options = { context: { userEmail: currentUserEmail } };
+
+  const shallowEvent = (event) => shallow(eventComponent(event), options);
+  const mountEvent = (event) => mount(eventComponent(event), options);
 
   const defaultEvent = EventFactory.build();
   const defaultWrapper = shallowEvent(defaultEvent);
