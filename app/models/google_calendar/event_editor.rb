@@ -13,6 +13,8 @@ module GoogleCalendar
 
     private
 
+    attr_accessor :event_id, :calendar_service, :conference_room_email, :event
+
     def get_event(event_id)
       calendar_service.get_event(conference_room_email, event_id)
     end
@@ -38,7 +40,5 @@ module GoogleCalendar
     def current_time
       DateTime.now
     end
-
-    attr_accessor :event_id, :calendar_service, :conference_room_email, :event
   end
 end
