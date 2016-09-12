@@ -18,7 +18,7 @@ const EventDetails = ({ event, timeFormat }) => (
 );
 
 EventDetails.propTypes = {
-  event: EventSchema.except('width', 'offset').isRequired,
+  event: EventSchema.except('creator', 'width', 'offset').isRequired,
   timeFormat: React.PropTypes.string
 };
 

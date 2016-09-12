@@ -6,6 +6,7 @@ import { Navbar } from 'react-bootstrap';
 
 import RoomNavbar from 'components/conference_room/layout/Navbar';
 import Clock from 'components/shared/time/Clock';
+import HelpContainer from 'components/conference_room/help/HelpContainer';
 
 describe('<Navbar />', () => {
   const conferenceRoom = ConferenceRoom.build();
@@ -25,5 +26,9 @@ describe('<Navbar />', () => {
 
   it('renders a header with conference room color as background', () => {
     expect(wrapper.find(Navbar)).to.have.style('background-color').equal(conferenceRoom.color);
+  });
+
+  it('renders <HelpContainer />', () => {
+    expect(wrapper).to.have.exactly(1).descendants(HelpContainer);
   });
 });

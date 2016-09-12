@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import EventFactory from 'test/factories/Event';
 import UserFactory from 'test/factories/User';
+import Attendee from 'test/factories/Attendee';
 import Event from 'components/calendar/event/Event';
 
 describe('<Event />', () => {
@@ -12,6 +13,10 @@ describe('<Event />', () => {
   const unitEventLengthInSeconds = 30 * 60;
   const timeFormat = 'HH:mm';
   const onDelete = sinon.spy();
+  const [userEmail1, userEmail2] = ['mail1@example.com', 'mail2@example.com'];
+  const currentUserEmail = userEmail1;
+  const attendee1 = Attendee.build({ email: userEmail1 });
+  const attendee2 = Attendee.build({ email: userEmail2 });
 
   const eventComponent = (event) => (
     <Event
@@ -23,8 +28,10 @@ describe('<Event />', () => {
       onDelete={onDelete} />
   );
 
-  const shallowEvent = (event) => shallow(eventComponent(event));
-  const mountEvent = (event) => mount(eventComponent(event));
+  const options = { context: { userEmail: currentUserEmail } };
+
+  const shallowEvent = (event) => shallow(eventComponent(event), options);
+  const mountEvent = (event) => mount(eventComponent(event), options);
 
   const defaultEvent = EventFactory.build();
   const defaultWrapper = shallowEvent(defaultEvent);
@@ -52,6 +59,20 @@ describe('<Event />', () => {
     expect(defaultWrapper).to.have.style('background-color').equal(defaultEvent.conference_room.color);
   });
 
+  context('currentUserEmail is not present in attendees', () => {
+    it("renders div with '.event .not-participating' className", () => {
+      const wrapper = shallowEvent(EventFactory.build({ attendees: [attendee2] }));
+      expect(wrapper.find('.event .not-participating')).to.exist();
+    });
+  });
+
+  context('currentUserEmail is present in attendees', () => {
+    it("renders div with '.event' className", () => {
+      const wrapper = shallowEvent(EventFactory.build({ attendees: [attendee1, attendee2] }));
+      expect(wrapper.find('.event .not-participating')).to.not.exist();
+    });
+  });
+
   describe('event creator', () => {
     describe('self', () => {
       context('when creator is the current user', () => {
@@ -71,4 +92,3 @@ describe('<Event />', () => {
     });
   });
 });
-

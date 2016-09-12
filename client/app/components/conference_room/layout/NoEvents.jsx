@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Jumbotron } from 'react-bootstrap';
-import texts from '../texts';
+import texts from '../texts/texts';
 
 export default () => (
   <Row>

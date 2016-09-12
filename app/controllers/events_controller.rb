@@ -21,7 +21,7 @@ class EventsController < ApplicationController
     end
   end
 
-  rescue_from GoogleCalendar::EventCreator::EventInvalidRoom do |error|
+  rescue_from Exceptions::EventInvalidRoom do |error|
     render json: error.message, status: :unprocessable_entity
   end
 
@@ -45,9 +45,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    conference_room_id = create_event_params[:conference_room_id]
-    google_event_params = GoogleCalendar::EventDataService.process_params(create_event_params)
-    data = google_event_client.create(conference_room_id, google_event_params)
+    data = google_event_client.create(create_event_params.to_h)
     render json: data.to_json, status: :created
   end
 
