@@ -1,11 +1,10 @@
 module GoogleCalendar
   module EventWrapper
     class RoundedEvent < GoogleCalendar::EventWrapper::Event
-      attr_accessor :start_timestamp, :end_timestamp, :all_day
+      attr_accessor :start_timestamp, :end_timestamp
 
-      def initialize(**params)
+      def initialize(google_event, params={})
         super
-        @all_day = params[:all_day]
         normalize_datetime
         @start_timestamp = rounded_start_time.to_i
         @end_timestamp = rounded_end_time.to_i
@@ -21,7 +20,7 @@ module GoogleCalendar
       end
 
       def rounded_start_time
-        @rounded_start_time ||= TimeRound.floor_time(start_time.date_time)
+        @rounded_start_time ||= TimeRound.floor_time(start.date_time)
       end
 
       def rounded_end_time
@@ -35,11 +34,11 @@ module GoogleCalendar
       private
 
       def normalize_datetime
-        normalize_whole_day_event if all_day
+        normalize_whole_day_event if all_day?
       end
 
       def normalize_whole_day_event
-        start_time.date_time = at_beginning_of_day(start_time.date)
+        start.date_time = at_beginning_of_day(start.date)
         end_time.date_time = at_beginning_of_day(end_time.date)
       end
     end

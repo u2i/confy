@@ -39,7 +39,7 @@ module GoogleCalendar
     end
 
     def build_event_wrapper(event_data)
-      event_wrapper = GoogleCalendar::EventWrapper::HashBuilder.new(event_data).build_event_wrapper
+      event_wrapper = GoogleCalendar::EventWrapper::Builder.new(event_data).build_event_wrapper
       raise_error_if_invalid(event_wrapper)
       event_wrapper
     end
@@ -53,7 +53,7 @@ module GoogleCalendar
       return [] unless wrapper.conference_room
       events = calendar_service.list_events(
         wrapper.conference_room.email,
-        time_min: wrapper.start_time.date_time.to_s,
+        time_min: wrapper.start.date_time.to_s,
         time_max: wrapper.end_time.date_time.to_s
       )
       events ? events.items : []

@@ -17,7 +17,7 @@ RSpec.describe GoogleCalendar::EventCreator do
     let(:start_date_time) { double('date_time', date_time: start_time) }
     let(:end_date_time) { double('date_time', date_time: end_time) }
     let(:wrapper) { double('wrapper', conference_room: conference_room,
-                           start_time: start_date_time,
+                           start: start_date_time,
                            end_time: end_date_time) }
 
     it 'calls calendar_service' do
