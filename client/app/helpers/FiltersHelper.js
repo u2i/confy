@@ -11,7 +11,7 @@ export function loadFilters(conferenceRooms = []) {
   if (filteredRooms) {
     return new Map(JSON.parse(filteredRooms));
   }
-  const initialFilteredRooms = new Map(conferenceRooms.map(r => [r.id, true]));
+  const initialFilteredRooms = new Map(conferenceRooms.map(room => [room.id, true]));
   saveFilters(initialFilteredRooms);
   return initialFilteredRooms;
 }
