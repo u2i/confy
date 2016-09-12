@@ -19,6 +19,7 @@ describe GoogleCalendar::EventWrapper::Event do
       let(:ending) { double('end', date_time: '2016-01-02') }
       let(:google_event) { double('event', start: starting, end: ending) }
       let(:event) { described_class.new(google_event) }
+
       subject { event.valid? }
       it { is_expected.to be true }
     end
@@ -43,6 +44,23 @@ describe GoogleCalendar::EventWrapper::Event do
         event_wrapper.mark_user_event
       end
       it { is_expected.to have_received(:self=).with true }
+    end
+  end
+
+  describe '#all_day?' do
+    let(:google_event) { double('google_event', start: start) }
+    subject { described_class.new(google_event).all_day? }
+
+    context 'given google_event without start.date' do
+      let(:start) { double('start', date: nil) }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'given google_event with start.date' do
+      let(:start) { double('start', date: Date.today) }
+
+      it { is_expected.to eq true }
     end
   end
 end
