@@ -1,12 +1,3 @@
-@function stripUnit($arg){
-  @return $arg/($arg * 0 + 1)
-}
-
-$event-height: 2em;
-$event-font-size: 14px;
-$event-border: 1px;
-$rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
-
 :export { rowHeight: $rowHeight }
 
 .calendar {
@@ -52,20 +43,6 @@ $rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
 
 .event-group {
   width: 100%;
-}
-
-.event {
-  //Fix hover not triggering
-  z-index: 3;
-
-  &:hover, &:focus {
-    transition: all 0.5s 0.25s, z-index 1ms;
-    height: 4 * $rowHeight;
-    width: 100% !important;
-    z-index: 100;
-    left: 0 !important;
-    box-shadow: 0px 0px 10px 4px rgba(0,0,0,0.22);
-  }
 }
 
 #time-indicator-row {

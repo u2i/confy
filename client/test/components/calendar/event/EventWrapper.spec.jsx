@@ -4,11 +4,11 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import moment from 'moment';
 import Event from 'test/factories/Event';
-
 import EventWrapper from 'components/calendar/event/EventWrapper';
 import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventWrapper />', () => {
+  const userEmail = 'mail@example.com';
   const eventProps = {
     eventsInGroup: 1,
     offset: 0,
@@ -17,7 +17,10 @@ describe('<EventWrapper />', () => {
   };
   const onDelete = sinon.spy();
 
-  const mountEventWrapper = (events) => mount(<EventWrapper events={events} {...eventProps} onDelete={onDelete} />);
+  const mountEventWrapper = (events) => mount(<EventWrapper userEmail={userEmail}
+                                                            events={events}
+                                                            {...eventProps}
+                                                            onDelete={onDelete} />);
 
   const events = Event.buildList(1);
   const shallowEventWrapper = (timestamp) =>
