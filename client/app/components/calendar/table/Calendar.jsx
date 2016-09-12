@@ -60,8 +60,8 @@ export default class Calendar extends React.Component {
   }
 
   handleToggleAllFilters() {
-    const value = this.state.filteredRooms.first();
-    this.setState({ filteredRooms: new Map(this.props.conferenceRooms.map(room => [room.id, !value])) },
+    const value = this.state.filteredRooms.some(val => !val)
+    this.setState({ filteredRooms: new Map(this.props.conferenceRooms.map(room => [room.id, value])) },
       () => saveFilters(this.state.filteredRooms)
     );
   }
