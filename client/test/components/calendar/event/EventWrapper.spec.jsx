@@ -1,24 +1,30 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import moment from 'moment';
 import Event from 'test/factories/Event';
-
 import EventWrapper from 'components/calendar/event/EventWrapper';
 import EventGroup from 'components/calendar/event/EventGroup';
 
 describe('<EventWrapper />', () => {
+  const userEmail = 'mail@example.com';
   const eventProps = {
-    eventsInGroup:            1,
-    offset:                   0,
-    timestamp:                new Date().getTime(),
+    eventsInGroup: 1,
+    offset: 0,
+    timestamp: new Date().getTime(),
     unitEventLengthInSeconds: 60
   };
   const onDelete = sinon.spy();
 
-  const mountEventWrapper = (events) => mount(<EventWrapper events={events} {...eventProps} onDelete={onDelete} />);
+  const mountEventWrapper = (events) => mount(<EventWrapper userEmail={userEmail}
+                                                            events={events}
+                                                            {...eventProps}
+                                                            onDelete={onDelete} />);
 
   const events = Event.buildList(1);
+  const shallowEventWrapper = (timestamp) =>
+    shallow(<EventWrapper events={events} onDelete={onDelete} timestamp={timestamp} />);
 
   context('when events prop is not empty', () => {
     it('renders <EventGroup />', () => {
@@ -67,6 +73,24 @@ describe('<EventWrapper />', () => {
 
       expect(spy).to.have.been.called();
       expect(spyArg(0)).to.include.all.keys('width', 'height');
+    });
+  });
+
+  context('given today timestamp', () => {
+    const todayTimestamp = moment().unix();
+    const wrapper = shallowEventWrapper(todayTimestamp);
+
+    it('renders <td /> with today-column className', () => {
+      expect(wrapper.find('.today-column')).to.exist();
+    });
+  });
+
+  context('given not today timestamp', () => {
+    const tomorrowTimestamp = moment().add(1, 'days').unix();
+    const wrapper = shallowEventWrapper(tomorrowTimestamp);
+
+    it('renders <td /> without today-column className', () => {
+      expect(wrapper.find('.today-column')).not.to.exist();
     });
   });
 });

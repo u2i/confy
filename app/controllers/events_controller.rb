@@ -55,7 +55,17 @@ class EventsController < ApplicationController
     head :ok
   end
 
+  def confirm
+    conference_room_id = confirmation_params[:conference_room_id]
+    event_id = confirmation_params[:event_id]
+    Event.confirm_or_create(conference_room_id, event_id)
+  end
+
   private
+
+  def confirmation_params
+    params.permit(:conference_room_id, :event_id)
+  end
 
   def event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,

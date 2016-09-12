@@ -1,0 +1,63 @@
+:export { rowHeight: $rowHeight }
+
+.calendar {
+  display: flex;
+  flex-flow: column;
+  height: 90vh;
+  width: 100%;
+
+  > thead > tr, > tbody > tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+
+    > td.time-cell, > th.time-cell {
+      padding-right: 0.5em;
+      width: 50px;
+    }
+  }
+
+  > thead {
+    flex: 0 0 auto;
+    width: 100%;
+
+    > tr > th {
+      border-width: 0 1px 1px 0;
+    }
+  }
+
+  > tbody {
+    flex: 1 1 auto;
+    overflow-y: overlay;
+
+    > tr > td {
+      position: relative;
+      overflow: visible;
+      height: $event-height;
+      padding: 0;
+      font-size: $event-font-size;
+      border-width: 0 $event-border $event-border 0;
+    }
+  }
+}
+
+.event-group {
+  width: 100%;
+}
+
+#time-indicator-row {
+  td {
+    height: 0;
+  }
+}
+
+#time-marker {
+  border-bottom: 2px solid red;
+  width: 100%;
+  z-index: 99;
+  position: absolute;
+}
+
+.today-column {
+  background-color: rgba(53, 147, 247, 0.1);
+}

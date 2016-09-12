@@ -1,0 +1,7 @@
+.help-modal.modal-dialog {
+  margin-top: 5px;
+
+  @media (min-height: 480px) {
+    margin-top: 30px;
+  }
+}

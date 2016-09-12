@@ -2,18 +2,19 @@ import moment from 'moment';
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import CalendarRow from 'components/calendar/CalendarRow';
+import CalendarRow from 'components/calendar/table/CalendarRow';
 import EventWrapper from 'components/calendar/event/EventWrapper';
-import TimeCell from 'components/calendar/TimeCell';
+import TimeCell from 'components/calendar/table/TimeCell';
 import { expect } from 'chai';
 
 describe('<CalendarRow />', () => {
   const days = [moment(), moment(), moment()];
   const unitEventLengthInSeconds = 1800;
+  const userEmail = 'mail@example.com';
   const onDelete = sinon.spy();
   const events = [];
   let time;
-  const props = { days, unitEventLengthInSeconds, onDelete, events };
+  const props = { days, unitEventLengthInSeconds, onDelete, events, userEmail };
   let wrapper = shallow(<CalendarRow time={moment()} {...props} />);
 
   beforeEach(() => {

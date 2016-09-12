@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import EventSchema from 'schemas/EventSchema';
-import EventDetails from './EventDetails';
+import EventDetails from './details/EventDetails';
 
 const DeleteConfirmation = ({ onHide, show, onCancel, onConfirm, event }) => (
   <Modal show={show}

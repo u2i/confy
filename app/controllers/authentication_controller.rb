@@ -1,7 +1,7 @@
 class AuthenticationController < ApplicationController
   def authenticate
     set_session
-    redirect_to root_path
+    redirect_to redirect_path
   rescue
     session.delete(:email)
     session.delete(:credentials)
@@ -9,6 +9,10 @@ class AuthenticationController < ApplicationController
   end
 
   private
+
+  def redirect_path
+    session.delete(:redirect_to) || root_path
+  end
 
   def set_session
     session[:credentials] = GoogleOauth.get_user_credentials(params[:code])

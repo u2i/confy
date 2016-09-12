@@ -11,9 +11,6 @@ class CalendarController < ApplicationController
   # Index for showing events from Google calendar
   def index
     create_calendar_props
-  rescue ArgumentError
-    session.delete(:credentials)
-    redirect_to oauth2callback_path
   end
 
   private
@@ -21,6 +18,7 @@ class CalendarController < ApplicationController
   def create_calendar_props
     @props = {conferenceRooms: ConferenceRoom.all,
               initialEvents: events,
+              userEmail: session[:email],
               times: calendar_times,
               unitEventLengthInSeconds: TimeRound::GRANULARITY,
               date: params[:date],
