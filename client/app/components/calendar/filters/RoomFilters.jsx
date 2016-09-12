@@ -10,7 +10,7 @@ export default class RoomFilters extends React.Component {
   static propTypes = {
     conferenceRooms: PropTypes.arrayOf(ConferenceRoomSchema.only('id')).isRequired,
     onFilterToggle: PropTypes.func.isRequired,
-    onToggleAll: PropTypes.func,
+    onToggleAll: PropTypes.func.isRequired,
     filters: PropTypes.instanceOf(Map).isRequired,
     roomKinds: PropTypes.object.isRequired
   };
