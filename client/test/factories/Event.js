@@ -1,6 +1,5 @@
 import { Factory } from 'rosie';
 import User from './User';
-import Attendee from './Attendee';
 import ConferenceRoom from './ConferenceRoom';
 
 export default new Factory()

@@ -1,11 +1,9 @@
 import React from 'react';
 import EventSchema from 'schemas/EventSchema';
-
 import Event from './Event';
-
 import './event_group.scss';
 
-const { number, arrayOf, func, string } = React.PropTypes;
+const { number, arrayOf, func } = React.PropTypes;
 
 export default class EventGroup extends React.Component {
   static propTypes = {

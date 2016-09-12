@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
-
 import CalendarContainer from './CalendarContainer';
 
 const wrapComponent = (Component, railsProps) => class extends React.Component {
@@ -9,7 +8,7 @@ const wrapComponent = (Component, railsProps) => class extends React.Component {
   };
 
   getChildContext() {
-    return {userEmail: railsProps.userEmail};
+    return { userEmail: railsProps.userEmail };
   }
 
   render() {
