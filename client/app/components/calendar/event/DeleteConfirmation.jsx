@@ -33,7 +33,7 @@ DeleteConfirmation.propTypes = {
   show:      React.PropTypes.bool.isRequired,
   onCancel:  React.PropTypes.func.isRequired,
   onConfirm: React.PropTypes.func.isRequired,
-  event:     EventSchema.isRequired
+  event:     EventSchema.except('creator').isRequired
 };
 
 export default DeleteConfirmation;

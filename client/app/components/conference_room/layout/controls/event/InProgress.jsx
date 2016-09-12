@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 
 const InProgress = ({ onFinish }) => (
   <div className="event-controls">
-    <Button bsStyle="danger" bsSize="large" onClick={onFinish} disabled>Finish</Button>
+    <Button bsStyle="danger" bsSize="large" onClick={onFinish} className="hidden">Finish</Button>
   </div>
 );
 

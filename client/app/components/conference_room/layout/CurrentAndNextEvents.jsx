@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import EventSchema from 'proptypes/schemas/EventSchema';
-import texts from '../texts';
+import texts from '../texts/texts';
 
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';

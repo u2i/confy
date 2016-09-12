@@ -10,6 +10,10 @@ RSpec.describe ApplicationController, type: :controller do
       render json: 'fake controller'
     end
   end
+
+  before do
+    allow(controller).to receive(:refresh_token_present?) { true }
+  end
   describe 'before each action' do
     it 'checks authentication' do
       allow(controller).to receive(:check_authentication) { true }

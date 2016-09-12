@@ -1,3 +1,7 @@
+@function stripUnit($arg){
+  @return $arg/($arg * 0 + 1)
+}
+
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 $font-size-h1: 1.8em;
@@ -6,6 +10,11 @@ $font-size-h3: 1.5em;
 $font-size-h4: 1.4em;
 $font-size-h5: 1.2em;
 $font-size-h6: 1em;
+
+$event-height: 2em;
+$event-font-size: 14px;
+$event-border: 1px;
+$rowHeight: stripUnit($event-height) * $event-font-size + $event-border;
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_mixins";

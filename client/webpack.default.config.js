@@ -34,9 +34,9 @@ module.exports = {
       { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
       { test: /\.(ttf|eot)$/, loader: 'file' },
       { test: /\.(jpe?g|png|gif|svg|ico)$/, loader: 'url?limit=10000' },
+      { test: /\.md$/, loader: 'html!markdown' },
       { test: require.resolve('jquery'), loader: 'expose?jQuery' },
-      { test: require.resolve('jquery'), loader: 'expose?$' },
-      { test: require.resolve('turbolinks'), loader: 'imports?this=>window' }
+      { test: require.resolve('jquery'), loader: 'expose?$' }
     ]
   },
   postcss:       [autoprefixer],

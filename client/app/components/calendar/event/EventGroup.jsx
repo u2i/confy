@@ -1,8 +1,6 @@
 import React from 'react';
 import EventSchema from 'schemas/EventSchema';
-
 import Event from './Event';
-
 import './event_group.scss';
 
 const { number, arrayOf, func } = React.PropTypes;
