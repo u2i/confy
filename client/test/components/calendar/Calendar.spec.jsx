@@ -90,12 +90,12 @@ describe('<Calendar />', () => {
       times: [moment({ hours: 8 }), moment({ hours: 9 })],
       onDelete: () => {
       },
-      conferenceRooms: [1, 2 ,3].map( id => RoomFactory.build({ id }))
+      conferenceRooms: [1, 2, 3].map(id => RoomFactory.build({ id }))
     });
 
     let toggleWrapper;
     before(() => {
-      toggleWrapper =  shallow(<Calendar {...toggleProps} />);
+      toggleWrapper = shallow(<Calendar {...toggleProps} />);
     });
 
     context('with at least one disabled filter', () => {
@@ -111,7 +111,7 @@ describe('<Calendar />', () => {
 
     context('with all filters enabled', () => {
       before(() => {
-        toggleWrapper.setState({ filteredRooms: new Map([1, 2, 3].map(id => [id, true ])) });
+        toggleWrapper.setState({ filteredRooms: new Map([1, 2, 3].map(id => [id, true])) });
       });
 
       it('disables all filters', () => {
