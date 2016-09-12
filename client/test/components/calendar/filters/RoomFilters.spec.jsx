@@ -13,14 +13,14 @@ describe('<RoomFilters />', () => {
     { title: 'Krakow', kind: 'big' }
   ];
   const conferenceRooms = titles.map(({ title, kind }) => ConferenceRoom.build({ title, kind }));
-  const filters = new Map();
+  const defaultFilters = new Map();
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
     onDisabled: () => {},
     roomKinds: { narnia: 0, big: 1 }
   };
-  const defaultWrapper = shallow(<RoomFilters filters={filters} {...props} />);
+  const defaultWrapper = shallow(<RoomFilters filters={defaultFilters} {...props} />);
 
   describe('#render()', () => {
     it('renders .filter-container', () => {

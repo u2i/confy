@@ -1,5 +1,4 @@
 import React from 'react';
-import { Map } from 'immutable';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -28,7 +27,7 @@ describe('<CalendarContainer />', () => {
   before(() => {
     sinon.stub(EventSource, 'fetch').resolves([]);
     sinon.stub(EventSource, 'remove').resolves([]);
-    sinon.stub(FiltersHelper, 'loadFilters').returns({ get: function() { return true; }});
+    sinon.stub(FiltersHelper, 'loadFilters').returns({ get() { return true; } });
     sinon.stub(FiltersHelper, 'saveFilters');
   });
 

@@ -92,16 +92,16 @@ export default class Calendar extends React.Component {
                      roomKinds={this.props.roomKinds} />
         <Table bordered striped responsive className="calendar">
           <thead>
-          <tr>
-            <th className="time-cell" />
-            {headerNodes}
-          </tr>
+            <tr>
+              <th className="time-cell" />
+              {headerNodes}
+            </tr>
           </thead>
           <tbody>
-          <TimeIndicatorRow
-            days={this.props.days}
-            unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
-          {rowNodes}
+            <TimeIndicatorRow
+              days={this.props.days}
+              unitEventLengthInSeconds={this.props.unitEventLengthInSeconds} />
+            {rowNodes}
           </tbody>
         </Table>
       </div>
