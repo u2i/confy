@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Filter from 'components/calendar/filters/Filter';
@@ -12,13 +13,14 @@ describe('<RoomFilters />', () => {
     { title: 'Krakow', kind: 'big' }
   ];
   const conferenceRooms = titles.map(({ title, kind }) => ConferenceRoom.build({ title, kind }));
+  const filters = new Map();
   const props = {
     conferenceRooms,
     onEnabled:  () => {},
     onDisabled: () => {},
     roomKinds: { narnia: 0, big: 1 }
   };
-  const defaultWrapper = shallow(<RoomFilters {...props} />);
+  const defaultWrapper = shallow(<RoomFilters filters={filters} {...props} />);
 
   describe('#render()', () => {
     it('renders .filter-container', () => {
@@ -30,7 +32,8 @@ describe('<RoomFilters />', () => {
     });
 
     it('renders <Filter /> with appropriate enabled prop', () => {
-      const wrapper = shallow(<RoomFilters filters={[conferenceRooms[0].id]} {...props} />);
+      const filters = new Map([[conferenceRooms[0].id, true]]);
+      const wrapper = shallow(<RoomFilters filters={filters} {...props} />);
       expect(wrapper.find(Filter).filterWhere(node => node.props().enabled)).to.have.lengthOf(1);
     });
 

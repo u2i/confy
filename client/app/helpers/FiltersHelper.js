@@ -1,12 +1,11 @@
-import { Map, fromJS } from 'immutable';
+import { Map } from 'immutable';
 import * as LocalStorageHelper from 'helpers/LocalStorageHelper';
 
 export function saveFilters(filteredRooms) {
-  console.log(filteredRooms.toJS());
   LocalStorageHelper.setItem('filteredRooms', JSON.stringify(filteredRooms.entrySeq()));
 }
 
-export function loadFilters(conferenceRooms) {
+export function loadFilters(conferenceRooms = []) {
   const filteredRooms = LocalStorageHelper.getItem('filteredRooms');
 
   if (filteredRooms) {
