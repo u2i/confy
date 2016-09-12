@@ -46,10 +46,10 @@ styles:
   pager: false
   labels: true
   badges: true
-  jumbotron: false
+  jumbotron: true
   thumbnails: true
   alerts: true
-  progress-bars: false
+  progress-bars: true
   media: true
   list-group: true
   panels: true

@@ -26,6 +26,9 @@ const EventSource = {
   },
   create(params) {
     return axios.post(EVENT_PATH, { event: params });
+  },
+  confirm(conferenceRoomId, eventId) {
+    return axios.post(`${eventPath(conferenceRoomId)}/${eventId}/confirm`);
   }
 };
 

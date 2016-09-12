@@ -2,6 +2,10 @@ import moment from 'moment';
 
 export const DATE_PARAM_FORMAT = 'YYYY-MM-DD';
 
+export const DATE_DISPLAY_FORMAT = 'DD-MM-YYYY HH:mm';
+
+export const TIME_DISPLAY_FORMAT = 'HH:mm';
+
 export function addDateAndTime(date, time) {
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
   return date
@@ -68,4 +72,17 @@ export function eventTimeString(event, timeFormat) {
   const startTimeStr = formatTime(event.start.date_time, timeFormat);
   const endTimeStr = formatTime(event.end.date_time, timeFormat);
   return `${startTimeStr} - ${endTimeStr}`;
+}
+
+export function formatDuration(duration, format) {
+  return moment([1, 0, 1, 0, 0, 0])
+    .add(duration)
+    .subtract(1, 'year')
+    .subtract(1, 'month')
+    .subtract(1, 'day')
+    .format(format);
+}
+
+export function sameDay(date, other) {
+  return moment(date).day() === moment(other).day();
 }

@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
 import EventDestroyer from './EventDestroyer';
-import EventDetails from './EventDetails';
+import EventDetails from './details/EventDetails';
 import './event.scss';
 
 export default class Event extends React.Component {
   static propTypes = {
     event: EventSchema.isRequired,
-    userEmail: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
     containerWidth: PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,
@@ -18,7 +17,7 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participating';
+    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participate';
     return (
       <div className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
@@ -30,8 +29,7 @@ export default class Event extends React.Component {
   }
 
   _userParticipatesInEvent() {
-    return this.props.event.attendees &&
-           this.props.event.attendees.find(attendee => attendee.email === this.props.userEmail);
+    return this.props.event.attendees.find(attendee => attendee.email === this.context.userEmail);
   }
 
   _eventHeight() {
@@ -61,3 +59,7 @@ export default class Event extends React.Component {
     };
   }
 }
+
+Event.contextTypes = {
+  userEmail: React.PropTypes.string
+};

@@ -19,6 +19,7 @@ class ConferenceRoom < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   has_one :channel, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   scope :without_channel, -> { left_outer_joins(:channel).where(channels: {id: nil}) }
 
