@@ -11,10 +11,6 @@ module GoogleCalendar
         @conference_room = params[:conference_room]
       end
 
-      def as_google_event
-        google_event
-      end
-
       def to_h
         {
           id: id,

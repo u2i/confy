@@ -19,7 +19,7 @@ module GoogleCalendar
 
     def insert_event_and_return_result(event_wrapper)
       raise_error_if_occupied(event_wrapper)
-      google_event = event_wrapper.as_google_event
+      google_event = event_wrapper.google_event
       calendar_service.insert_event('primary', google_event, send_notifications: true)
     end
 

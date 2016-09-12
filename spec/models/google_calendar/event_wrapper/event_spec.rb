@@ -6,7 +6,7 @@ describe GoogleCalendar::EventWrapper::Event do
   let(:attendees) { [] }
   let(:google_event) { double('google_event', id: id, summary: summary, attendees: attendees) }
   let(:default_wrapper) { described_class.new(google_event) }
-  let(:default_google_event) { default_wrapper.as_google_event }
+  let(:default_google_event) { default_wrapper.google_event }
 
   describe '.new' do
     subject { described_class.new(google_event) }
@@ -24,7 +24,7 @@ describe GoogleCalendar::EventWrapper::Event do
     end
   end
 
-  describe '#as_google_event' do
+  describe '#google_event' do
     subject { default_google_event.summary }
     it { is_expected.to eq summary }
   end
