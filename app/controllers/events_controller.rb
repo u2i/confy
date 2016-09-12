@@ -21,7 +21,7 @@ class EventsController < ApplicationController
     end
   end
 
-  rescue_from Exceptions::EventInvalidRoom do |error|
+  rescue_from ActiveRecord::RecordNotFound do |error|
     render json: error.message, status: :unprocessable_entity
   end
 

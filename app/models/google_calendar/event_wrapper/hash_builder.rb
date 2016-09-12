@@ -50,7 +50,7 @@ module GoogleCalendar
 
       def build_conference_room(conference_room_id)
         return if conference_room_id.nil?
-        ConferenceRoom.find_or_raise(conference_room_id)
+        ConferenceRoom.find(conference_room_id)
       end
 
       def default_params
