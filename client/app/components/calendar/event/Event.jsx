@@ -29,8 +29,16 @@ export default class Event extends React.Component {
   }
 
   _userParticipatesInEvent() {
+    return this._userIsAttendee() || this._userIsCreator();
+  }
+
+  _userIsAttendee() {
     return this.props.event.attendees &&
            this.props.event.attendees.find(attendee => attendee.email === this.context.userEmail);
+  }
+
+  _userIsCreator() {
+    return this.props.event.creator && this.props.event.creator.email === this.context.userEmail;
   }
 
   _eventHeight() {
