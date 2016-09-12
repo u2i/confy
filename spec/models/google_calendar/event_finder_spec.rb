@@ -129,30 +129,14 @@ describe GoogleCalendar::EventFinder do
       let(:start_time2) { DateTime.now.beginning_of_week + 1.days }
       let(:end_time2) { start_time2 + 2.hours }
       before do
-        google_event1.start = Google::Apis::CalendarV3::EventDateTime.new(date: start_time1.to_date.to_s)
-        google_event1.end = Google::Apis::CalendarV3::EventDateTime.new(date: end_time1.to_date.to_s)
+        google_event1.start = Google::Apis::CalendarV3::EventDateTime.new(date: start_time1.to_date)
+        google_event1.end = Google::Apis::CalendarV3::EventDateTime.new(date: end_time1.to_date)
       end
       it 'normalizes event' do
         response = event_finder.all(time_interval)
         expect(response[0][:start][:date_time]).to eq start_time1
         expect(response[0][:end][:date_time]).to eq end_time1
       end
-    end
-  end
-
-  describe '.mark_user_events' do
-    let(:credentials) { {} }
-    let(:user_email) { 'user@example.com' }
-    let(:not_user_email) { 'not_user@example.com' }
-    let(:event1) { {creator: {email: user_email}} }
-    let(:event2) { {creator: {email: not_user_email}} }
-    let(:all_events) { [event1, event2] }
-
-    it 'sets event[:creator][:self] flag to true if user is creator of the event' do
-      allow(GoogleOauth).to receive(:user_email) { user_email }
-      event_finder.send(:mark_user_events, all_events)
-      expect(event1[:creator][:self]).to eq true
-      expect(event2[:creator][:self]).to eq false
     end
   end
 

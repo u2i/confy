@@ -6,119 +6,52 @@ RSpec.describe GoogleCalendar::EventCreator do
   let(:credentials) { :credentials }
   let(:email) { 'mail@example.com'.freeze }
   let(:event_creator) { described_class.new(credentials, email) }
+  let!(:conference_room) { create(:conference_room) }
   before do
     allow(client).to receive(:calendar_service) { service }
     allow(GoogleCalendar::Client).to receive(:new) { client }
   end
   describe '.events_in_span' do
-    let(:conference_room) { {email: 'email@sample.com'.freeze, key: :value} }
     let(:start_time) { Time.now }
     let(:end_time) { Time.now + 3.hour }
+    let(:start_date_time) { double('date_time', date_time: start_time) }
+    let(:end_date_time) { double('date_time', date_time: end_time) }
+    let(:wrapper) { double('wrapper', conference_room: conference_room,
+                           start_time: start_date_time,
+                           end_time: end_date_time) }
 
     it 'calls calendar_service' do
-      expect(service).to receive(:list_events).with(conference_room[:email],
-                                                    time_min: start_time,
-                                                    time_max: end_time)
-      event_creator.send(:events_in_span, conference_room, start_time, end_time)
-    end
-  end
-
-  describe '.add_room_to_event' do
-    context 'given valid conference room id' do
-      let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
-      let!(:first_room) { create(:conference_room, email: mordor_email) }
-      let(:expected_result) do
-        {
-          attendees: [
-            {email: mordor_email, response_status: described_class::ACCEPTED_RESPONSE}
-          ],
-          location: first_room.title
-        }
-      end
-      let(:params) { {attendees: []} }
-      it 'adds attendess and location keys with appropriate values' do
-        described_class.new(credentials, email).send(:add_room_to_event, params, first_room.id)
-        expect(params).to eq expected_result
-      end
-    end
-
-    context 'given invalid conference room id' do
-      let(:invalid_id) { 1 }
-      let(:params) { {attendees: []} }
-      it 'raises GoogleCalendar::Adding::EventInvalidRoom error' do
-        allow(ConferenceRoom).to receive(:find_by) { nil }
-        expect { described_class.new(credentials, email).send(:add_room_to_event, params, invalid_id) }.
-          to raise_error(GoogleCalendar::EventCreator::EventInvalidRoom)
-      end
-    end
-
-    context 'attendees exists' do
-      let(:mordor_email) { 'u2i.com_2d3631343934393033313035@resource.calendar.google.com' }
-      let!(:first_room) { create(:conference_room, email: mordor_email) }
-      let(:params) { {attendees: [{email: 'adam@example.com'.freeze}]} }
-
-      it 'adds room as first attendee' do
-        described_class.new(credentials, email).send(:add_room_to_event, params, first_room.id)
-        expect(params[:attendees].first[:email]).to eq(mordor_email)
-      end
-    end
-  end
-
-  describe 'EVENT_SCHEMA' do
-    let(:schema) { GoogleCalendar::EventCreator::EVENT_SCHEMA }
-    let(:time1) { Faker::Time.forward 5 }
-    let(:time2) { Faker::Time.forward 5 }
-    let(:params) { {start: {date_time: time1}, end: {date_time: time2}} }
-    context 'valid' do
-      it { expect(schema.call(params).success?).to eq true }
-    end
-    context 'no start' do
-      it 'is invalid' do
-        expect(schema.call(end: {date_time: 'asdf'}).messages[:start]).to be_present
-      end
-    end
-    context 'no end' do
-      it 'is invalid' do
-        expect(schema.call(start: {date_time: 'asdf'}).messages[:end]).to be_present
-      end
-    end
-
-    context 'no end datetime' do
-      it 'is invalid' do
-        expect(schema.call(start: {date_time: time1}, end: {test: nil}).messages[:end]).to be_present
-      end
-    end
-    context 'no start datetime' do
-      it 'is invalid' do
-        expect(schema.call(end: {date_time: time1}, start: {test: nil}).messages[:start]).to be_present
-      end
+      expect(service).to receive(:list_events).with(conference_room.email,
+                                                    time_min: start_time.to_s,
+                                                    time_max: end_time.to_s)
+      event_creator.send(:events_in_span, wrapper)
     end
   end
 
   describe '.create' do
     context 'given invalid params' do
-      let(:invalid_event_response) { [false, {start: ['is missing'], end: ['is missing']}] }
       it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
-        expect { described_class.new(credentials, email).create(0, {}) }.
+        expect { described_class.new(credentials, email).create({conference_room_id: conference_room.id}) }.
           to raise_error(GoogleCalendar::EventCreator::EventInvalidParamsError)
       end
     end
 
     context 'valid params' do
-      context 'other events exitis' do
+      context 'other events exists' do
         let(:credentials) { :credentials }
         let(:first_event) { double('Event', summary: 'Summary') }
         let(:second_event) { double('Event', summary: 'Meeting') }
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
+        let!(:room) { create :conference_room }
         let(:event_data) do
           {
             attendees: [],
-            start: {date_time: start_time},
-            end: {date_time: end_time}
+            start_time: start_time.to_s,
+            end_time: end_time.to_s,
+            conference_room_id: room.id
           }
         end
-        let!(:room) { create :conference_room }
 
         before do
           allow(event_creator).to receive(:events_in_span) { [first_event, second_event] }
@@ -126,7 +59,7 @@ RSpec.describe GoogleCalendar::EventCreator do
 
         it 'raises EventInTimeSpanError' do
           expect do
-            event_creator.create(room.id, event_data)
+            event_creator.create(event_data)
           end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
                              'Already 2 events in time span(Summary, Meeting).')
         end
@@ -137,14 +70,8 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:service) { double(:calendar_service) }
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
-        let(:event_data) do
-          {
-            attendees: [],
-            start: {date_time: start_time},
-            end: {date_time: end_time}
-          }
-        end
         let!(:room) { create :conference_room }
+        let(:event_data) { {attendees: [], start_time: start_time, end_time: end_time, conference_room_id: conference_room.id} }
 
         before do
           allow(event_creator).to receive(:events_in_span) { [] }
@@ -157,7 +84,7 @@ RSpec.describe GoogleCalendar::EventCreator do
             Google::Apis::CalendarV3::Event,
             send_notifications: true
           )
-          event_creator.create(room.id, event_data)
+          event_creator.create(event_data)
         end
       end
     end

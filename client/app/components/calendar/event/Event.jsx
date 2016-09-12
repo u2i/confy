@@ -6,7 +6,7 @@ import './event.scss';
 
 export default class Event extends React.Component {
   static propTypes = {
-    event: EventSchema.isRequired,
+    event: EventSchema.except('creator').isRequired,
     containerHeight: PropTypes.number.isRequired,
     containerWidth: PropTypes.number.isRequired,
     unitEventLengthInSeconds: PropTypes.number.isRequired,

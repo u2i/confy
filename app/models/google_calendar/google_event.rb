@@ -5,8 +5,8 @@ module GoogleCalendar
       @user_email = user_email
     end
 
-    def create(conference_room_id, raw_event_data = {})
-      event_creator.create(conference_room_id, raw_event_data)
+    def create(event_data = {})
+      event_creator.create(event_data)
     end
 
     def delete(event_id)
