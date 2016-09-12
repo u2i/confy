@@ -81,7 +81,8 @@ module GoogleCalendar
     end
 
     def rounded_event_wrapper(google_event, conference_room)
-      GoogleCalendar::EventWrapper::RoundedEvent.new google_event, conference_room: conference_room, user_email: user_email
+      params = {conference_room: conference_room, user_email: user_email}
+      GoogleCalendar::EventWrapper::RoundedEvent.new google_event, params
     end
 
     attr_accessor :credentials, :user_email, :calendar_service

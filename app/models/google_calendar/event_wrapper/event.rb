@@ -1,10 +1,9 @@
 module GoogleCalendar
   module EventWrapper
     class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
-
       attr_accessor :conference_room, :user_email, :google_event
 
-      def initialize(google_event, params={})
+      def initialize(google_event, params = {})
         super(google_event)
         @google_event = google_event
         @user_email = params[:user_email]

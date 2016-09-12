@@ -1,7 +1,6 @@
 module GoogleCalendar
   module EventWrapper
     class Builder
-
       # rubocop:disable Metrics/AbcSize
       def initialize(params)
         data = params.deep_symbolize_keys

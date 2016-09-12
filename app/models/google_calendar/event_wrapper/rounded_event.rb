@@ -3,7 +3,7 @@ module GoogleCalendar
     class RoundedEvent < GoogleCalendar::EventWrapper::Event
       attr_accessor :start_timestamp, :end_timestamp
 
-      def initialize(google_event, params={})
+      def initialize(google_event, params = {})
         super
         normalize_datetime
         @start_timestamp = rounded_start_time.to_i
