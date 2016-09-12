@@ -11,8 +11,10 @@ describe('<Filter />', () => {
   const conferenceRoom = ConferenceRoom.build();
   const defaultProps = {
     color: conferenceRoom.color,
-    onEnabled: () => {},
-    onDisabled: () => {},
+    onEnabled: () => {
+    },
+    onDisabled: () => {
+    },
     key: conferenceRoom.id,
     enabled: false
   };
@@ -26,36 +28,17 @@ describe('<Filter />', () => {
     expect(defaultWrapper.find('.filter-box').props().style.backgroundColor).to.eq(conferenceRoom.color);
   });
 
-  describe('props.enabled === true', () => {
-    it('triggers onDisabled on change', () => {
-      const onEnabled = sinon.spy();
-      const onDisabled = sinon.spy();
-      const props = {
-        color: conferenceRoom.color,
-        onEnabled,
-        onDisabled,
-        enabled: false
-      };
-      const wrapper = mount(<Filter {...props}>{conferenceRoom.title}</Filter>);
+  it('triggers onToggle callback', () => {
+    const onToggle = sinon.spy();
+    const props = {
+      onToggle,
+      color: conferenceRoom.color,
+      enabled: false
+    };
 
-      wrapper.find('input').simulate('change');
-      expect(onDisabled).to.have.been.calledOnce();
-    });
-  });
+    const wrapper = mount(<Filter {...props} />);
 
-  describe('props.enabled === false', () => {
-    it('triggers onEnabled on change', () => {
-      const onEnabled = sinon.spy();
-      const onDisabled = sinon.spy();
-      const props = {
-        color: conferenceRoom.color,
-        onEnabled,
-        onDisabled,
-        enabled: true
-      };
-      const wrapper = mount(<Filter {...props} >{conferenceRoom.title}</Filter>);
-      wrapper.find('input').simulate('change');
-      expect(onEnabled).to.have.been.calledOnce();
-    });
+    wrapper.find('input').simulate('change');
+    expect(onToggle).to.have.been.calledOnce();
   });
 });
