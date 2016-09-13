@@ -7,37 +7,27 @@ module GoogleCalendar
 
     def finish(conference_room_id, event_id)
       conference_room_email = ConferenceRoom.find(conference_room_id).email
-      event = get_event(event_id, conference_room_email)
-      finish_event(event, conference_room_email)
+      event_wrapper = get_event_wrapper(event_id, conference_room_email)
+      finish_event(event_wrapper, conference_room_email)
     end
 
     private
 
     attr_accessor :event_id, :calendar_service, :conference_room_email, :event
 
-    def get_event(event_id, conference_room_email)
-      calendar_service.get_event(conference_room_email, event_id)
+    def get_event_wrapper(event_id, conference_room_email)
+      google_event = calendar_service.get_event(conference_room_email, event_id)
+      GoogleCalendar::EventWrapper::Event.new(google_event)
     end
 
-    def finish_event(event, conference_room_email)
-      return if event_not_started?(event) || event_finished?(event)
-      event.end.date_time = current_time
-      update_event(event, conference_room_email)
+    def finish_event(event_wrapper, conference_room_email)
+      return unless event_wrapper.in_progress?
+      event_wrapper.finish
+      update_event(event_wrapper, conference_room_email)
     end
 
-    def event_not_started?(event)
-      event.start.date_time > current_time
-    end
-
-    def event_finished?(event)
-      event.end.date_time < current_time
-    end
-
-    def current_time
-      DateTime.now
-    end
-
-    def update_event(event, conference_room_email)
+    def update_event(event_wrapper, conference_room_email)
+      event = event_wrapper.google_event
       calendar_service.update_event(conference_room_email, event.id, event)
     end
   end

@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import moment from 'moment';
 import React from 'react';
 import shared from 'mocha-shared';
@@ -5,21 +6,19 @@ import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import DefaultProps from '../../factories/DefaultProps';
+import RoomFactory from '../../factories/ConferenceRoom';
 import { Table } from 'react-bootstrap';
 import Calendar from 'components/calendar/table/Calendar';
 import CalendarHeader from 'components/calendar/table/CalendarHeader';
 import CalendarRow from 'components/calendar/table/CalendarRow';
 import RoomFilters from 'components/calendar/filters/RoomFilters';
 import * as FiltersHelper from 'helpers/FiltersHelper';
-import proxyquire from 'proxyquire';
-import { Set } from 'immutable';
 
 describe('<Calendar />', () => {
 
   before(() => {
-    sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
+    sinon.stub(FiltersHelper, 'loadFilters').returns(new Map());
     sinon.stub(FiltersHelper, 'saveFilters');
-    proxyquire('../../../app/helpers/FiltersHelper', FiltersHelper);
   });
 
   after(() => {
@@ -63,17 +62,10 @@ describe('<Calendar />', () => {
       expect(wrapper.state('filteredRooms').size).to.equal(0);
     });
 
-    it('updates filter set after enabling a filter', () => {
-      wrapper.find(RoomFilters).simulate('enabled', 1);
-      expect(wrapper.state('filteredRooms').size).to.equal(1);
-      expect(wrapper.state('filteredRooms').includes(1)).to.be.true();
-    });
-
-    it('updates filter set after disabling a filter', () => {
-      wrapper.find(RoomFilters).simulate('enabled', 1);
-      wrapper.find(RoomFilters).simulate('disabled', 1);
-      expect(wrapper.state('filteredRooms').size).to.equal(0);
-      expect(wrapper.state('filteredRooms').includes(1)).to.be.false();
+    it('updates filter map after enabling a filter', () => {
+      wrapper.setState({ filteredRooms: new Map([[1, false]]) });
+      wrapper.find(RoomFilters).simulate('filterToggle', 1);
+      expect(wrapper.state('filteredRooms').get(1)).to.eq(true);
     });
   });
 
@@ -86,8 +78,46 @@ describe('<Calendar />', () => {
     });
 
     it('scrolls calendar to row with scrollTo time', () => {
+      FiltersHelper.loadFilters.returns(new Map([[1, true]]));
+
       wrapper = mount(<Calendar {...props} scrollTo={{ hours: 8, minutes: 0 }} />);
       expect(scrollSpy).to.have.been.called();
+    });
+  });
+
+  describe('toggle all filters', () => {
+    const toggleProps = DefaultProps.build({
+      times: [moment({ hours: 8 }), moment({ hours: 9 })],
+      onDelete: () => {
+      },
+      conferenceRooms: [1, 2, 3].map(id => RoomFactory.build({ id }))
+    });
+
+    let toggleWrapper;
+    before(() => {
+      toggleWrapper = shallow(<Calendar {...toggleProps} />);
+    });
+
+    context('with at least one disabled filter', () => {
+      before(() => {
+        toggleWrapper.setState({ filteredRooms: new Map([[1, true], [2, true], [3, false]]) });
+      });
+
+      it('enables all filters', () => {
+        toggleWrapper.find(RoomFilters).simulate('toggleAll');
+        expect(toggleWrapper.state('filteredRooms').every(value => value)).to.be.true();
+      });
+    });
+
+    context('with all filters enabled', () => {
+      before(() => {
+        toggleWrapper.setState({ filteredRooms: new Map([1, 2, 3].map(id => [id, true])) });
+      });
+
+      it('disables all filters', () => {
+        toggleWrapper.find(RoomFilters).simulate('toggleAll');
+        expect(toggleWrapper.state('filteredRooms').every(value => !value)).to.be.true();
+      });
     });
   });
 });

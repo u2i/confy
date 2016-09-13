@@ -17,8 +17,8 @@ module GoogleCalendar
       event_finder.all(time_interval)
     end
 
-    def find_by_room(time_interval, conference_room_ids)
-      event_finder.by_room(time_interval, conference_room_ids)
+    def find_by_room(time_interval, conference_room_ids, with_confirmation = false)
+      event_finder.by_room(time_interval, conference_room_ids, with_confirmation)
     end
 
     def confirmed_events(time_interval)

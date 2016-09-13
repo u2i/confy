@@ -1,48 +1,23 @@
 module GoogleCalendar
   module EventWrapper
-    class Event
-      attr_accessor :id, :start_time, :end_time, :summary, :description,
-                    :location, :attendees, :conference_room, :creator, :current_user_email
+    class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
+      attr_accessor :conference_room, :user_email, :google_event
+      FIELDS = %i(id start end description creator attendees summary).freeze
 
-      def initialize(**params)
-        @id = params[:id]
-        @summary = params[:summary]
-        @description = params[:description]
-        @current_user_email = params[:user_email]
-        @attendees = params[:attendees]
+      def initialize(google_event, params = {})
+        super(google_event)
+        @google_event = google_event
+        @user_email = params[:user_email]
         @conference_room = params[:conference_room]
-        @start_time = params[:start]
-        @end_time = params[:end]
-        @creator = params[:creator]
-      end
-
-      def as_google_event
-        Google::Apis::CalendarV3::Event.new.tap do |google_event|
-          google_event.start = start_time
-          google_event.end = end_time
-          google_event.summary = summary
-          google_event.description = description
-          google_event.location = google_location
-          google_event.attendees = google_attendees
-        end
       end
 
       def to_h
-        {
-          id: id,
-          start: start_time.to_h,
-          end: end_time.to_h,
-          description: description,
-          conference_room: conference_room,
-          creator: creator.to_h,
-          attendees: attendees.map(&:to_h),
-          summary: summary
-        }
+        super.slice(*FIELDS).merge(conference_room: conference_room)
       end
 
-      def mark_user_event(current_user_email)
+      def mark_user_event
         return if creator.nil?
-        creator.self = (current_user_email == creator.email)
+        creator.self = (user_email == creator.email)
       end
 
       def valid?
@@ -50,24 +25,30 @@ module GoogleCalendar
         start_time.date_time.present? && end_time.date_time.present?
       end
 
+      def all_day?
+        start.date.present?
+      end
+
+      def in_progress?
+        current_time >= start_time.date_time && current_time <= end_time.date_time
+      end
+
+      def finish
+        end_time.date_time = current_time
+      end
+
       private
 
-      def google_location
-        conference_room.try(:title) || ''
+      def end_time
+        send(:end)
       end
 
-      def google_attendees
-        attendees + [room_attendee, creator_attendee].compact
+      def start_time
+        send(:start)
       end
 
-      def room_attendee
-        return unless conference_room
-        Google::Apis::CalendarV3::EventAttendee.new(email: conference_room.email, response_status: 'accepted')
-      end
-
-      def creator_attendee
-        return unless current_user_email
-        Google::Apis::CalendarV3::EventAttendee.new(email: current_user_email, response_status: 'accepted')
+      def current_time
+        DateTime.now
       end
     end
   end
