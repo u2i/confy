@@ -2,6 +2,7 @@ module GoogleCalendar
   module EventWrapper
     class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
       attr_accessor :conference_room, :user_email, :google_event
+      FIELDS = %i{id start end description creator attendees summary}
 
       def initialize(google_event, params = {})
         super(google_event)
@@ -11,16 +12,7 @@ module GoogleCalendar
       end
 
       def to_h
-        {
-          id: id,
-          start: start.to_h,
-          end: end_time.to_h,
-          description: description,
-          conference_room: conference_room,
-          creator: creator.try(:to_h),
-          attendees: attendees.map(&:to_h),
-          summary: summary
-        }
+        super.slice(*FIELDS).merge conference_room: conference_room
       end
 
       def mark_user_event
