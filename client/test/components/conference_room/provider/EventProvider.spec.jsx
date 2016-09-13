@@ -65,6 +65,7 @@ describe('<EventProvider />', () => {
   });
 
   describe('reloading page on next day', () => {
+    const MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     context('on 00:00 AM', () => {
       let clock;
       before(() => {
@@ -79,7 +80,7 @@ describe('<EventProvider />', () => {
         mount(<EventProvider conferenceRoom={conferenceRoom}
                              component={DummyComponent} {...ownProps} />);
         EventSource.fetch.reset();
-        clock.tick(1000 * 60 * 60 * 24);
+        clock.tick(MILLISECONDS_IN_DAY);
         expect(EventSource.fetch).to.have.been.calledOnce();
       });
     });
@@ -100,7 +101,7 @@ describe('<EventProvider />', () => {
         mount(<EventProvider conferenceRoom={conferenceRoom}
                              component={DummyComponent} {...ownProps} />);
         EventSource.fetch.reset();
-        clock.tick(1000 * 60 * 60 * 24 - timeStamp);
+        clock.tick(MILLISECONDS_IN_DAY - timeStamp);
         expect(EventSource.fetch).to.have.been.calledOnce();
       });
     });
