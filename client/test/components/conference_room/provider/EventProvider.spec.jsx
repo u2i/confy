@@ -6,6 +6,7 @@ import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 import EventSource from 'sources/EventSource';
+import moment from 'moment';
 
 describe('<EventProvider />', () => {
   const subscriptionSpy = sinon.spy();
@@ -85,7 +86,8 @@ describe('<EventProvider />', () => {
 
     context('on 01:52 PM', () => {
       let clock;
-      const timeStamp = 1000 * 60 * 52 + 1000 * 60 * 60 * 10;
+      const timeStamp = moment(0).add(13, 'hours').add(52, 'minutes').valueOf();
+
       before(() => {
         clock = sinon.useFakeTimers(timeStamp);
       });
