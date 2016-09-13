@@ -21,12 +21,16 @@ module GoogleCalendar
       end
 
       def valid?
-        return false unless start.present? || end_time.present?
-        start.date_time.present? && end_time.date_time.present?
+        return false unless start_time.present? || end_time.present?
+        start_time.date_time.present? && end_time.date_time.present?
       end
 
       def end_time
         send(:end)
+      end
+
+      def start_time
+        send(:start)
       end
 
       def all_day?

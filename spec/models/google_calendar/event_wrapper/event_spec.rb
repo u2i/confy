@@ -14,14 +14,22 @@ describe GoogleCalendar::EventWrapper::Event do
   end
 
   describe '#valid?' do
-    context 'given start_time and end_time in params' do
+    let(:google_event) { double('event', start: starting, end: ending) }
+    let(:event) { described_class.new(google_event) }
+    subject { event.valid? }
+
+    context 'google_event has start and end fields' do
       let(:starting) { double('start', date_time: '2016-01-01') }
       let(:ending) { double('end', date_time: '2016-01-02') }
-      let(:google_event) { double('event', start: starting, end: ending) }
-      let(:event) { described_class.new(google_event) }
 
-      subject { event.valid? }
       it { is_expected.to be true }
+    end
+
+    context 'google_event does not have start and end fields' do
+      let(:starting) { nil }
+      let(:ending) { nil }
+
+      it { is_expected.to be false }
     end
   end
 

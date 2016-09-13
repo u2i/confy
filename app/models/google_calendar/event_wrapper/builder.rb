@@ -1,6 +1,8 @@
 module GoogleCalendar
   module EventWrapper
     class Builder
+      ACCEPTED_STATUS = 'accepted'.freeze
+
       # rubocop:disable Metrics/AbcSize
       def initialize(params)
         data = params.deep_symbolize_keys
@@ -16,11 +18,11 @@ module GoogleCalendar
       # rubocop:enable Metrics/AbcSize
 
       def build_event_wrapper
-        GoogleCalendar::EventWrapper::Event.new google_event, additional_params
+        GoogleCalendar::EventWrapper::Event.new(google_event, additional_params)
       end
 
       def build_rounded_event_wrapper
-        GoogleCalendar::EventWrapper::RoundedEvent.new google_event, additional_params
+        GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, additional_params)
       end
 
       private
@@ -47,12 +49,12 @@ module GoogleCalendar
 
       def room_attendee
         return unless conference_room
-        new_attendee email: conference_room.email, response_status: 'accepted'
+        new_attendee email: conference_room.email, response_status: ACCEPTED_STATUS
       end
 
       def creator_attendee
         return unless user_email
-        new_attendee email: user_email, response_status: 'accepted'
+        new_attendee email: user_email, response_status: ACCEPTED_STATUS
       end
 
       def new_attendee(attendee_data)
