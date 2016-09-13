@@ -36,10 +36,11 @@ export default class EventProvider extends React.Component {
 
   setEndOfDayTimeout() {
     const now = moment();
+    const timeToBeginningOfTheNextDay = now.clone().add(1, 'day').startOf('day') - now;
     this.endOfDayTimeout = setTimeout(() => {
       this._fetchForToday();
       this.setEndOfDayTimeout();
-    }, now.clone().add(1, 'day').startOf('day') - now);
+    }, timeToBeginningOfTheNextDay);
   }
 
   render() {
