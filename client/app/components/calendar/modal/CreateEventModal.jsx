@@ -44,7 +44,7 @@ export default class CreateEventModal extends React.Component {
 
   static defaultProps = {
     initialDate: moment(),
-    initialLength: 1,
+    initialLength: 30,
     dateFormat: DateHelper.DATE_DISPLAY_FORMAT
   };
 
@@ -54,7 +54,7 @@ export default class CreateEventModal extends React.Component {
     this.state = this._initialFormState();
 
     bindAll(this,
-      ['saveChanges', 'updateParam', 'handleCloseModal']);
+      ['saveChanges', 'updateParam', 'handleCloseModal', 'setTimes']);
   }
 
   componentDidMount() {
@@ -102,6 +102,13 @@ export default class CreateEventModal extends React.Component {
 
   updateParam(key, value) {
     this.setState({ [key]: value }, () => this._validateParams());
+  }
+
+  setTimes(startTime, endTime) {
+    this.setState({
+      startTime: startTime.format(this.props.dateFormat),
+      endTime: endTime.format(this.props.dateFormat)
+    });
   }
 
   render() {

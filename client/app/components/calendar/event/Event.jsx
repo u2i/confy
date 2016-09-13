@@ -4,6 +4,8 @@ import EventDestroyer from './EventDestroyer';
 import EventDetails from './details/EventDetails';
 import './event.scss';
 
+const onEventClick = (event) => event.stopPropagation();
+
 export default class Event extends React.Component {
   static propTypes = {
     event: EventSchema.except('creator').isRequired,
@@ -19,7 +21,7 @@ export default class Event extends React.Component {
     const creator = event.creator || { self: false };
     const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participating';
     return (
-      <div className={eventClassName} style={this._eventStyle()}>
+      <div onClick={onEventClick} className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />

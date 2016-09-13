@@ -16,7 +16,8 @@ export default class CalendarRow extends React.Component {
     unitEventLengthInSeconds: number.isRequired,
     timeFormat: string,
     displayMinutes: bool,
-    onDelete: func.isRequired
+    onDelete: func.isRequired,
+    onAddClick: func
   };
 
   static defaultProps = {
@@ -51,7 +52,8 @@ export default class CalendarRow extends React.Component {
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       key={timestamp}
-                      onDelete={this.props.onDelete} />
+                      onDelete={this.props.onDelete}
+                      onAddClick={this.props.onAddClick} />
       );
     });
   }
