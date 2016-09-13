@@ -62,7 +62,7 @@ class EventsController < ApplicationController
   end
 
   def confirmed
-    @confirmed_events = google_event_client.confirmed_events since_beginning_of_epoch.to_rfc3339
+    @confirmed_events = google_event_client.confirmed_events TimeInterval.since_beginning_of_epoch.to_rfc3339
   end
 
   private
@@ -90,9 +90,5 @@ class EventsController < ApplicationController
 
   def time_interval_rfc3339
     span_param.to_rfc3339
-  end
-
-  def since_beginning_of_epoch
-    TimeInterval.new(Time.at(0), Time.now)
   end
 end
