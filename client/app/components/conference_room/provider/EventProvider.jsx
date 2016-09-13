@@ -30,6 +30,10 @@ export default class EventProvider extends React.Component {
     window.clearTimeout(this.updateTimeout);
   }
 
+  handleUpdate() {
+    this._fetchForToday();
+  }
+
   updateEvents() {
     this._fetchForToday();
     this.setUpdateTimeout();
@@ -38,10 +42,6 @@ export default class EventProvider extends React.Component {
   setUpdateTimeout() {
     const now = moment();
     this.updateTimeout = setTimeout(this.updateEvents, now.clone().add(1, 'day').startOf('day') - now);
-  }
-
-  handleUpdate() {
-    this._fetchForToday();
   }
 
   render() {
