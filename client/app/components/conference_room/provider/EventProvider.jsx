@@ -16,32 +16,30 @@ export default class EventProvider extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { nextEvents: [] };
-    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent', 'updateEvents']);
+    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent']);
   }
 
   componentDidMount() {
     this._fetchForToday();
     this._channelSubscription = createSubscription(EVENT_CHANNEL, this._fetchForToday);
-    this.setUpdateTimeout();
+    this.setEndOfDayTimeout();
   }
 
   componentWillUnmount() {
     removeSubscription(this._channelSubscription);
-    window.clearTimeout(this.updateTimeout);
+    window.clearTimeout(this.endOfDayTimeout);
   }
 
   handleUpdate() {
     this._fetchForToday();
   }
 
-  updateEvents() {
-    this._fetchForToday();
-    this.setUpdateTimeout();
-  }
-
-  setUpdateTimeout() {
+  setEndOfDayTimeout() {
     const now = moment();
-    this.updateTimeout = setTimeout(this.updateEvents, now.clone().add(1, 'day').startOf('day') - now);
+    this.endOfDayTimeout = setTimeout(() => {
+      this._fetchForToday();
+      this.setEndOfDayTimeout();
+    }, now.clone().add(1, 'day').startOf('day') - now);
   }
 
   render() {
