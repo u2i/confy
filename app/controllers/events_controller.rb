@@ -21,7 +21,7 @@ class EventsController < ApplicationController
     end
   end
 
-  rescue_from Exceptions::EventInvalidRoom do |error|
+  rescue_from ActiveRecord::RecordNotFound do |error|
     render json: error.message, status: :unprocessable_entity
   end
 
@@ -40,7 +40,11 @@ class EventsController < ApplicationController
   end
 
   def room_index
-    events = google_event_client.find_by_room(time_interval_rfc3339, params[:conference_room_id].to_i)
+    events = google_event_client.find_by_room(
+      time_interval_rfc3339,
+      params[:conference_room_id].to_i,
+      with_confirmation?
+    )
     render json: events
   end
 
@@ -65,6 +69,10 @@ class EventsController < ApplicationController
 
   def confirmation_params
     params.permit(:conference_room_id, :event_id)
+  end
+
+  def with_confirmation?
+    params[:confirmation] == 'true'.freeze
   end
 
   def event_params

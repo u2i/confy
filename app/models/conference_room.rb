@@ -26,10 +26,4 @@ class ConferenceRoom < ApplicationRecord
   scope :with_expired_channel, -> { left_outer_joins(:channel).where(channels: {id: Channel.expired}) }
 
   scope :without_active_channel, -> { without_channel.or with_expired_channel }
-
-  def self.find_or_raise(conference_room_id)
-    conference_room = ConferenceRoom.find_by(id: conference_room_id)
-    raise Exceptions::EventInvalidRoom, "Undefined conference room: #{conference_room_id}" unless conference_room
-    conference_room
-  end
 end

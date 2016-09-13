@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import moment from 'moment';
 import flow from 'lodash/fp/flow';
 import keys from 'lodash/fp/keys';
@@ -40,15 +41,29 @@ export default class Calendar extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { filteredRooms: loadFilters() };
+    this.state = { filteredRooms: loadFilters(this.props.conferenceRooms) };
     this.rows = {};
 
-    this._addFilter = this._addFilter.bind(this);
-    this._removeFilter = this._removeFilter.bind(this);
+    this.handleFilterToggle = this.handleFilterToggle.bind(this);
+    this.handleToggleAllFilters = this.handleToggleAllFilters.bind(this);
   }
 
   componentDidMount() {
     this._scrollToRow();
+  }
+
+  handleFilterToggle(conferenceRoomId) {
+    const value = this.state.filteredRooms.get(conferenceRoomId);
+    this.setState({ filteredRooms: this.state.filteredRooms.set(conferenceRoomId, !value) },
+      () => saveFilters(this.state.filteredRooms)
+    );
+  }
+
+  handleToggleAllFilters() {
+    const value = this.state.filteredRooms.some(val => !val);
+    this.setState({ filteredRooms: new Map(this.props.conferenceRooms.map(room => [room.id, value])) },
+      () => saveFilters(this.state.filteredRooms)
+    );
   }
 
   render() {
@@ -70,10 +85,10 @@ export default class Calendar extends React.Component {
 
     return (
       <div>
-        <RoomFilters onEnabled={this._addFilter}
-                     onDisabled={this._removeFilter}
+        <RoomFilters onFilterToggle={this.handleFilterToggle}
+                     onToggleAll={this.handleToggleAllFilters}
                      conferenceRooms={this.props.conferenceRooms}
-                     filters={this.state.filteredRooms.toArray()}
+                     filters={this.state.filteredRooms}
                      roomKinds={this.props.roomKinds} />
         <Table bordered striped responsive className="calendar">
           <thead>
@@ -93,24 +108,13 @@ export default class Calendar extends React.Component {
     );
   }
 
-  _addFilter(conferenceRoomId) {
-    const filters = this.state.filteredRooms.add(conferenceRoomId);
-    saveFilters(filters);
-    this.setState({ filteredRooms: filters });
-  }
-
-  _removeFilter(conferenceRoomId) {
-    const filters = this.state.filteredRooms.delete(conferenceRoomId);
-    saveFilters(filters);
-    this.setState({ filteredRooms: filters });
-  }
 
   _filterEvents() {
-    return this.props.events.filter((event) => !this._eventIsFiltered(event));
+    return this.props.events.filter((event) => this._eventVisible(event));
   }
 
-  _eventIsFiltered(event) {
-    return this.state.filteredRooms.has(event.conference_room.id);
+  _eventVisible(event) {
+    return this.state.filteredRooms.get(event.conference_room.id);
   }
 
   _findRow(hours, minutes) {
