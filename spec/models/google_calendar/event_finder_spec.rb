@@ -209,8 +209,10 @@ describe GoogleCalendar::EventFinder do
       end
     end
 
+    subject { event_finder.by_room(time_interval, [room.id]) }
+
     it 'gets events from room' do
-      expect(event_finder.by_room(time_interval, [room.id]).first[:summary]).to eq google_event.summary
+      expect(subject.first[:summary]).to eq google_event.summary
     end
 
     context 'with_confirmation == false' do
