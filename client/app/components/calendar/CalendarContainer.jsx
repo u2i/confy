@@ -90,8 +90,9 @@ export default class CalendarContainer extends React.Component {
 
   handleAddClick(startTime, endTime) {
     this.openModal();
-    if (this.modal)
+    if (this.modal) {
       this.modal.setTimes(startTime, endTime);
+    }
   }
 
   render() {
