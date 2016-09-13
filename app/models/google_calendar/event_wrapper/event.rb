@@ -2,7 +2,7 @@ module GoogleCalendar
   module EventWrapper
     class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
       attr_accessor :conference_room, :user_email, :google_event
-      FIELDS = %i{id start end description creator attendees summary}
+      FIELDS = %i(id start end description creator attendees summary).freeze
 
       def initialize(google_event, params = {})
         super(google_event)
