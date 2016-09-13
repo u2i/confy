@@ -13,7 +13,7 @@ module GoogleCalendar
 
     private
 
-    attr_accessor :event_id, :calendar_service, :conference_room_email, :event
+    attr_accessor :calendar_service
 
     def get_event_wrapper(event_id, conference_room_email)
       google_event = calendar_service.get_event(conference_room_email, event_id)
