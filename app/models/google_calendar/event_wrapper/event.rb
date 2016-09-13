@@ -12,7 +12,7 @@ module GoogleCalendar
       end
 
       def to_h
-        super.slice(*FIELDS).merge conference_room: conference_room
+        super.slice(*FIELDS).merge(conference_room: conference_room)
       end
 
       def mark_user_event
