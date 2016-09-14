@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import EventAttendees from './EventAttendees';
 import EventDescription from './EventDescription';
 import EventSchema from 'proptypes/schemas/EventSchema';
