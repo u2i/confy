@@ -70,23 +70,12 @@ export default class ModalBody extends React.Component {
           <FormTextField
             name={"description"}
             onChange={this.handleTextFieldChange} />
-          <section className="row">
-            <Col xs={12} md={6}>
-              <FormDateField
-                label={"Start time"}
-                value={this.props.startTime}
-                dateFormat={this.props.dateFormat}
-                onChange={this.handleStartTimeChange}
-                errors={this.props.errors.start_time || []} />
-            </Col>
-            <Col xs={12} md={6} className="pull-right">
-              <FormDateField
-                label={"End time"}
-                value={this.props.endTime}
-                dateFormat={this.props.dateFormat}
-                onChange={this.handleEndTimeChange} />
-            </Col>
-          </section>
+          <FormDateField
+            label={"When"}
+            value={this.props.startTime}
+            dateFormat={this.props.dateFormat}
+            onChange={this.handleStartTimeChange}
+            errors={this.props.errors.start_time || []} />
           <FormLocationField
             available={this.props.availableLocations}
             unavailable={this.props.unavailableLocations}

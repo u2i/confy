@@ -1,8 +1,7 @@
 import React from 'react';
 import { FormGroup, ControlLabel } from 'react-bootstrap';
-import DateTimeField from 'react-bootstrap-datetimepicker';
 import { If } from 'react-if';
-import 'react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
+import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 
 const { string, func, array } = React.PropTypes;
 
@@ -11,11 +10,7 @@ const FormDateField = ({ label, value, dateFormat, onChange, errors }) => (
     <ControlLabel>
       {label}:
     </ControlLabel>
-    <DateTimeField
-      dateTime={value}
-      format={dateFormat}
-      inputFormat={dateFormat}
-      onChange={onChange} />
+    <DateRangePicker />
     <If condition={errors !== undefined}>
       <div className="text-danger">{errors[0]}</div>
     </If>
