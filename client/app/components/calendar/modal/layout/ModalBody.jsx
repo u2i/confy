@@ -67,9 +67,6 @@ export default class ModalBody extends React.Component {
           <FormTextField
             name={"summary"}
             onChange={this.handleTextFieldChange} />
-          <FormTextField
-            name={"description"}
-            onChange={this.handleTextFieldChange} />
           <FormDateField
             label={"When"}
             value={this.props.startTime}
@@ -88,6 +85,9 @@ export default class ModalBody extends React.Component {
           <GuestsField
             onChange={this.handleGuestsChange}
             onError={this.props.onError} />
+          <FormTextField
+            name={"description"}
+            onChange={this.handleTextFieldChange} />
         </form>
       </Modal.Body>
     );
