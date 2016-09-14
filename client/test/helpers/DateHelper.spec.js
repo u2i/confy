@@ -144,4 +144,40 @@ describe('DateHelper', () => {
       });
     });
   });
+
+  describe('#roundedTime', () => {
+    context('with time equal to a multiple of granularity', () => {
+      const time = moment([2016, 1, 1, 10]);
+      const granularity = moment.duration(30, 'minutes').asSeconds();
+
+      const roundedTime = DateHelper.roundedTime(time, granularity);
+      it('returns unchanged time', () => {
+        expect(roundedTime.isSame(time)).to.be.true();
+      });
+    });
+
+    context('with time almost equal to a multiple of granularity', () => {
+      const time = moment([2016, 1, 1, 10, 0, 15]);
+      const granularity = moment.duration(30, 'minutes').asSeconds();
+
+      const expectedTime = moment([2016, 1, 1, 10, 0, 0]);
+
+      const roundedTime = DateHelper.roundedTime(time, granularity);
+      it('rounds time down', () => {
+        expect(roundedTime.isSame(expectedTime)).to.be.true();
+      });
+    });
+
+    context('with time not equal to a multiple of granularity', () => {
+      const time = moment([2016, 1, 1, 10, 10]);
+      const granularity = moment.duration(30, 'minutes').asSeconds();
+
+      const expectedTime = time.clone().minutes(30);
+
+      const roundedTime = DateHelper.roundedTime(time, granularity);
+      it('rounds time up', () => {
+        expect(roundedTime.isSame(expectedTime)).to.be.true();
+      });
+    });
+  });
 });

@@ -86,3 +86,12 @@ export function formatDuration(duration, format) {
 export function sameDay(date, other) {
   return moment(date).day() === moment(other).day();
 }
+
+export function roundedTime(date, granularity) {
+  const diff = date.unix() % granularity;
+  if (diff > 60) {
+    return date.clone().add(granularity - diff, 'seconds');
+  } else {
+    return date.clone().subtract(diff, 'seconds');
+  }
+}
