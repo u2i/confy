@@ -3,12 +3,12 @@ import { FormGroup, ControlLabel } from 'react-bootstrap';
 import { If } from 'react-if';
 import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 
-const { string, func, array } = React.PropTypes;
+const { string, func, array, bool } = React.PropTypes;
 
-const FormDateField = ({ label, value, dateFormat, onChange, errors }) => (
+const FormDateField = ({ label, value, dateFormat, onChange, errors, required }) => (
   <FormGroup>
     <ControlLabel>
-      {label}:
+      {label}:{required ? '*' : ''}
     </ControlLabel>
     <DateRangePicker />
     <If condition={errors !== undefined}>
@@ -22,7 +22,8 @@ FormDateField.propTypes = {
   label: string.isRequired,
   value: string.isRequired,
   onChange: func.isRequired,
-  errors: array
+  errors: array,
+  required: bool
 };
 
 FormDateField.defaultProps = {

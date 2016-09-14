@@ -75,14 +75,16 @@ export default class ModalBody extends React.Component {
             value={this.props.startTime}
             dateFormat={this.props.dateFormat}
             onChange={this.handleStartTimeChange}
-            errors={this.props.errors.start_time || []} />
+            errors={this.props.errors.start_time || []}
+            required />
           <FormLocationField
             available={this.props.availableLocations}
             unavailable={this.props.unavailableLocations}
             selected={this.props.selectedLocation}
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
-            errors={this.props.errors.conference_room_id || []} />
+            errors={this.props.errors.conference_room_id || []}
+            required />
           <GuestsField
             onChange={this.handleGuestsChange}
             onError={this.props.onError} />

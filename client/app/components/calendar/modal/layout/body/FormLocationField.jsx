@@ -4,7 +4,7 @@ import { If } from 'react-if';
 
 import RoomSelectGroup from './RoomSelectGroup';
 
-const { array, number, func } = React.PropTypes;
+const { array, number, func, bool } = React.PropTypes;
 
 import './form_location_field.scss';
 
@@ -14,7 +14,8 @@ export default class FormLocationField extends React.Component {
     unavailable: array,
     onChange: func.isRequired,
     selected: number,
-    errors: array
+    errors: array,
+    required: bool
   };
 
   static defaultProps = {
@@ -27,7 +28,7 @@ export default class FormLocationField extends React.Component {
     const { available, unavailable, selected, onChange, errors } = this.props;
     return (
       <FormGroup>
-        <ControlLabel>Location:</ControlLabel>
+        <ControlLabel>Location:{this.props.required ? '*' : ''}</ControlLabel>
         <FormControl componentClass="select"
                      onChange={onChange}
                      name="location"

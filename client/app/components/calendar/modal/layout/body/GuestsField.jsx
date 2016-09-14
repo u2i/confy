@@ -17,7 +17,8 @@ class EventGuest {
 export default class GuestsField extends React.Component {
   static propTypes = {
     onChange: React.PropTypes.func.isRequired,
-    onError: React.PropTypes.func.isRequired
+    onError: React.PropTypes.func.isRequired,
+    required: React.PropTypes.bool
   };
 
   constructor(props) {
@@ -29,7 +30,7 @@ export default class GuestsField extends React.Component {
   render() {
     return (
       <FormGroup>
-        <ControlLabel>Guests:</ControlLabel>
+        <ControlLabel>Guests:{this.props.required ? '*' : ''}</ControlLabel>
         <Typeahead
           multiple
           allowNew
