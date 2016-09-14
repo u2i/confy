@@ -5,7 +5,7 @@ import icon from './hangouts_icon.png';
 
 const EventHangoutLink = ({ event }) => (
   <div className="event-hangout-link">
-    <a href={event.hangout_link}><img src={icon} />&nbsp;Hangouts</a>
+    <a href={event.hangout_link}><img src={icon} role="presentation" />&nbsp;Hangouts</a>
   </div>
 );
 
