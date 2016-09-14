@@ -18,7 +18,7 @@ RSpec.describe GoogleCalendar::EventCreator do
     let(:end_date_time) { double('date_time', date_time: end_time) }
     let(:wrapper) { double('wrapper', conference_room: conference_room,
                            start: start_date_time,
-                           end_time: end_date_time) }
+                           end: end_date_time) }
 
     it 'calls calendar_service' do
       expect(service).to receive(:list_events).with(conference_room.email,

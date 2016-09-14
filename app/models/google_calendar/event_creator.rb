@@ -54,7 +54,7 @@ module GoogleCalendar
       events = calendar_service.list_events(
         wrapper.conference_room.email,
         time_min: wrapper.start.date_time.to_s,
-        time_max: wrapper.end_time.date_time.to_s
+        time_max: wrapper.end.date_time.to_s
       )
       events ? events.items : []
     end

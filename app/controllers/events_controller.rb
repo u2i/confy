@@ -42,7 +42,7 @@ class EventsController < ApplicationController
   def room_index
     events = google_event_client.find_by_room(
       time_interval_rfc3339,
-      params[:conference_room_id].to_i,
+      params[:id].to_i,
       with_confirmation?
     )
     render json: events
@@ -67,8 +67,6 @@ class EventsController < ApplicationController
   def finish
     google_event_client.finish(edit_event_params[:conference_room_id], edit_event_params[:event_id])
     head :ok
-  rescue ActiveRecord::RecordNotFound
-    head :bad_request
   end
 
   private

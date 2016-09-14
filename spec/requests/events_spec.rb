@@ -86,7 +86,7 @@ RSpec.describe 'Events', type: :request do
 
     it 'calls google_event_client.confirm with given parameters' do
       expect(Event).to receive(:confirm_or_create).with(conference_room_id, event_id)
-      post confirmation_path(conference_room_id, event_id)
+      post confirm_conference_room_event_path(conference_room_id, event_id)
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe 'Events', type: :request do
     describe 'given valid data' do
       before do
         allow(client).to receive(:finish) { true }
-        post finish_path(conference_room_id, event_id)
+        post finish_conference_room_event_path(conference_room_id, event_id)
       end
       it { is_expected.to have_http_status :ok }
     end
@@ -107,9 +107,9 @@ RSpec.describe 'Events', type: :request do
     describe 'google_event_client raises ActiveRecord::RecordNotFound' do
       before do
         allow(client).to receive(:finish) { raise ActiveRecord::RecordNotFound }
-        post finish_path(conference_room_id, event_id)
+        post finish_conference_room_event_path(conference_room_id, event_id)
       end
-      it { is_expected.to have_http_status :bad_request }
+      it { is_expected.to have_http_status :unprocessable_entity }
     end
   end
 end
