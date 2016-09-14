@@ -8,7 +8,7 @@ import { If } from 'react-if';
 const EventAdditionalDetails = ({ event }) => (
   <div>
     <If condition={event.description != null}>
-      <EventDescription event={event} />
+      <EventDescription description={event.description} />
     </If>
     <EventAttendees event={event} />
     <EventHangoutLink event={event} />

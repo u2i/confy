@@ -1,11 +1,10 @@
 import React from 'react';
 import { If } from 'react-if';
-import EventSchema from 'proptypes/schemas/EventSchema';
 
 const SHORT_DESCRIPTION_LENGTH = 50;
 export default class EventDescription extends React.Component {
   static propTypes = {
-    event: EventSchema.only('description').isRequired
+    description: React.PropTypes.string
   };
 
   constructor(...args) {
@@ -18,13 +17,11 @@ export default class EventDescription extends React.Component {
   render() {
     return (
       <div className="event-description">
-        <If condition={typeof this.props.event.description !== 'undefined'}>
-          <div>
-            <small>Description:&nbsp;</small>
-            <p style={{ display: 'inline' }}>{this._descriptionContent()}</p>
-            <a onClick={this._handleDescriptionLength}>{this._expansionMessage()}</a>
-          </div>
-        </If>
+        <div>
+          <small>Description:&nbsp;</small>
+          <p style={{ display: 'inline' }}>{this._descriptionContent()}</p>
+          <a onClick={this._handleDescriptionLength}>{this._expansionMessage()}</a>
+        </div>
       </div>
     );
   }
@@ -37,11 +34,11 @@ export default class EventDescription extends React.Component {
   }
 
   _fullDescription() {
-    return this.props.event.description;
+    return this.props.description;
   }
 
   _shortDescription() {
-    return `${this.props.event.description.slice(0, SHORT_DESCRIPTION_LENGTH)}...`;
+    return `${this.props.description.slice(0, SHORT_DESCRIPTION_LENGTH)}...`;
   }
 
   _handleDescriptionLength(event) {
