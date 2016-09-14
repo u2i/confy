@@ -41,7 +41,7 @@ export default class EventDescription extends React.Component {
   }
 
   _shortDescription() {
-    return this.props.event.description.slice(0, SHORT_DESCRIPTION_LENGTH) + '...';
+    return `${this.props.event.description.slice(0, SHORT_DESCRIPTION_LENGTH)}...`;
   }
 
   _handleDescriptionLength(event) {

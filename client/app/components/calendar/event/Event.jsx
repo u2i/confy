@@ -57,7 +57,7 @@ export default class Event extends React.Component {
       'event',
       {
         'not-participating': !this._userParticipatesInEvent(),
-        'expanded': this.state.expanded
+        expanded: this.state.expanded
       }
     );
   }
