@@ -2,7 +2,7 @@ module GoogleCalendar
   class EventFinder
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, recurrence, '\
-                     'creator, attendees(self, responseStatus, displayName, email))'.freeze
+                     'creator, attendees(self, responseStatus, displayName, email), hangoutLink)'.freeze
 
     def initialize(credentials, user_email)
       @credentials = credentials
