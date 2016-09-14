@@ -25,21 +25,21 @@ export default class EventDescription extends React.Component {
     return this._shortDescription();
   }
 
-  _shortDescription() {
-    return this.props.event.description.slice(0,DESCRIPTION_LENGTH) + '...';
-  }
-
   _fullDescription() {
     return this.props.event.description;
   }
 
-  _changeDescriptionLength() {
-    this.setState({ fullDescription: !this.state.fullDescription });
+  _shortDescription() {
+    return this.props.event.description.slice(0,DESCRIPTION_LENGTH) + '...';
   }
 
   _handleFullDescription(event) {
     event.stopPropagation();
     this._changeDescriptionLength();
+  }
+
+  _changeDescriptionLength() {
+    this.setState({ fullDescription: !this.state.fullDescription });
   }
 
   _expansionMessage() {
