@@ -98,7 +98,6 @@ $event-border-color: #f7f7f7;
 }
 
 .expanded {
-  //transition: all 0.25s 0s, z-index 1ms, opacity 1ms, height 0s 0.5s;
   height: auto;
   width: 100% !important;
   z-index: 100;
@@ -143,5 +142,4 @@ $event-border-color: #f7f7f7;
 
 .not-participating {
   background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255, 255, 255, .3) 15px, rgba(255, 255, 255, .3) 30px);
-  background-attachment: fixed;
 }
