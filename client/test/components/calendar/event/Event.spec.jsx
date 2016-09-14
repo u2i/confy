@@ -61,7 +61,7 @@ describe('<Event />', () => {
 
   context('currentUserEmail is not present in attendees', () => {
     it("renders div with '.event .not-participating' className", () => {
-      const wrapper = shallowEvent(EventFactory.build({ attendees: [attendee2] }));
+      const wrapper = mountEvent(EventFactory.build({ attendees: [attendee2] }));
       expect(wrapper.find('.event .not-participating')).to.exist();
     });
   });
