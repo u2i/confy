@@ -33,11 +33,14 @@ export default class Event extends React.Component {
     const event = this.props.event;
     const creator = event.creator || { self: false };
     return (
-      <div className={this._className()} style={this._eventStyle()} onClick={this._toggleDetails}>
+      <div className={this._className()} 
+           style={this._eventStyle()} 
+           onClick={this._toggleDetails}>
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
-        <EventDetails event={event} timeFormat={this.props.timeFormat} />
+        <EventDetails event={event} 
+                      timeFormat={this.props.timeFormat} />
         <If condition={this.state.expanded}>
           <EventAdditionalDetails event={event} />
         </If>
