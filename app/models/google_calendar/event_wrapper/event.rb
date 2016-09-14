@@ -25,6 +25,20 @@ module GoogleCalendar
         start_time.date_time.present? && end_time.date_time.present?
       end
 
+      def all_day?
+        start.date.present?
+      end
+
+      def in_progress?
+        current_time >= start_time.date_time && current_time <= end_time.date_time
+      end
+
+      def finish
+        end_time.date_time = current_time
+      end
+
+      private
+
       def end_time
         send(:end)
       end
@@ -33,8 +47,8 @@ module GoogleCalendar
         send(:start)
       end
 
-      def all_day?
-        start.date.present?
+      def current_time
+        DateTime.now
       end
     end
   end
