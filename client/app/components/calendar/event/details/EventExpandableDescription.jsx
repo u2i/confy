@@ -1,5 +1,4 @@
 import React from 'react';
-import { If } from 'react-if';
 
 const SHORT_DESCRIPTION_LENGTH = 50;
 export default class EventExpandableDescription extends React.Component {

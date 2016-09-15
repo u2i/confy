@@ -1,5 +1,4 @@
 import React from 'react';
-import { If } from 'react-if';
 
 const EventFullDescription = ({ description }) => (
   <div className="event-description">
