@@ -70,7 +70,7 @@ class EventsController < ApplicationController
   end
 
   def confirmed
-    @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_beginning_of_epoch.to_rfc3339)
+    @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_first_confirmed_event.to_rfc3339)
   end
 
   private
