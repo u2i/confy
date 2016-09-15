@@ -19,10 +19,12 @@ describe('<EventProvider />', () => {
       }
     }).default;
 
-  const DummyComponent = ({ onFinish, onConfirm }) => <div>
-    <button id="finish" onClick={onFinish} />
-    <button id="confirm" onClick={onConfirm} />
-  </div>;
+  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint react/prop-types: 0
+    <div>
+      <button id="finish" onClick={onFinish} />
+      <button id="confirm" onClick={onConfirm} />
+    </div>
+  );
 
   const conferenceRoom = ConferenceRoom.build();
   const currentEvent = Event.build();
@@ -177,14 +179,14 @@ describe('<EventProvider />', () => {
       const event = Event.build();
 
       before(() => {
-        wrapper.setState({ currentEvent: event  });
+        wrapper.setState({ currentEvent: event });
         EventSource.finish.rejects();
         componentWrapper.find('button#finish').simulate('click');
       });
 
       it('does not remove current event', () => {
         expect(componentWrapper.prop('currentEvent')).to.equal(event);
-      })
-    })
+      });
+    });
   });
 });

@@ -114,5 +114,5 @@ describe('<CurrentEvent />', () => {
   it('renders <Controls />', () => {
     const wrapper = shallow(<CurrentEvent event={event} />);
     expect(wrapper).to.have.exactly(1).descendants(Controls);
-  })
+  });
 });
