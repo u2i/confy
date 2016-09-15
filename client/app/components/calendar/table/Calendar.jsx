@@ -32,7 +32,7 @@ export default class Calendar extends React.Component {
     roomKinds: object.isRequired,
     onDelete: func.isRequired,
     scrollTo: shape({ hours: number, minutes: number }),
-    onAddClick: func
+    onCellClick: func
   };
 
   static defaultProps = {
@@ -82,7 +82,7 @@ export default class Calendar extends React.Component {
                    unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                    onDelete={this.props.onDelete}
                    ref={(ref) => this.rows[time.unix()] = ref}
-                   onAddClick={this.props.onAddClick} />
+                   onCellClick={this.props.onCellClick} />
     ));
 
     return (

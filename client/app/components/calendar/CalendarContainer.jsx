@@ -46,7 +46,7 @@ export default class CalendarContainer extends React.Component {
 
     bindAll(this,
       ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete',
-      'notifyError', 'handleAddClick']);
+      'notifyError', 'handleCellClick']);
   }
 
   componentDidMount() {
@@ -88,7 +88,7 @@ export default class CalendarContainer extends React.Component {
     this._addNotification(notification);
   }
 
-  handleAddClick(startTime, endTime) {
+  handleCellClick(startTime, endTime) {
     this.openModal();
     if (this.modal) {
       this.modal.setTimes(startTime, endTime);
@@ -113,7 +113,7 @@ export default class CalendarContainer extends React.Component {
                       days={weekDays(this._dateOrNow(), this.props.weekLength)}
                       times={this.props.times.map(time => moment(time))}
                       onDelete={this.handleEventDelete}
-                      onAddClick={this.handleAddClick} />
+                      onCellClick={this.handleCellClick} />
           </Col>
         </Grid>
         <CreateEventModal ref={(ref) => this.modal = ref}
