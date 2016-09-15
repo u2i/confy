@@ -5,6 +5,7 @@ import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { dateParam, nextWeek, previousWeek } from 'helpers/DateHelper';
 
 import RefreshButton from './RefreshButton';
+import SideCalendar from './SideCalendar';
 
 export default class SideNav extends React.Component {
   static propTypes = {
@@ -37,6 +38,7 @@ export default class SideNav extends React.Component {
           <Button className="btn-block">Previous Week</Button>
         </LinkContainer>
         <RefreshButton onRefresh={this.props.onRefresh} animate={this.props.updating} />
+        <SideCalendar />
       </aside>
     );
   }
