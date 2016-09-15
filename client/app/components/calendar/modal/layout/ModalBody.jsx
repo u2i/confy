@@ -15,9 +15,6 @@ export default class ModalBody extends React.Component {
     availableLocations: array,
     unavailableLocations: array,
     selectedLocation: number,
-    startTime: string.isRequired,
-    endTime: string.isRequired,
-    dateFormat: string.isRequired,
     errors: object,
     showErrorMessage: bool,
     onError: func.isRequired
@@ -32,8 +29,7 @@ export default class ModalBody extends React.Component {
     super(props);
 
     bindAll(this,
-      ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange',
-        'handleGuestsChange']);
+      ['handleTextFieldChange', 'handleLocationChange', 'handleTimeChange', 'handleGuestsChange']);
   }
 
   handleTextFieldChange(e) {
@@ -47,12 +43,9 @@ export default class ModalBody extends React.Component {
     this.props.updateParam('conferenceRoomId', parseInt(e.target.value, 10));
   }
 
-  handleStartTimeChange(e) {
-    this._updateDateParam('startTime', e);
-  }
-
-  handleEndTimeChange(e) {
-    this._updateDateParam('endTime', e);
+  handleTimeChange(e) {
+    this.props.updateParam('startTime', e.start);
+    this.props.updateParam('endTime', e.end);
   }
 
   handleGuestsChange(e) {
@@ -69,9 +62,7 @@ export default class ModalBody extends React.Component {
             onChange={this.handleTextFieldChange} />
           <FormDateField
             label={"When"}
-            value={this.props.startTime}
-            dateFormat={this.props.dateFormat}
-            onChange={this.handleStartTimeChange}
+            onChange={this.handleTimeChange}
             errors={this.props.errors.start_time || []}
             required />
           <FormLocationField
@@ -91,11 +82,5 @@ export default class ModalBody extends React.Component {
         </form>
       </Modal.Body>
     );
-  }
-
-  _updateDateParam(key, value) {
-    if (value !== 'Invalid date') {
-      this.props.updateParam(key, value);
-    }
   }
 }

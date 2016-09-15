@@ -14,6 +14,10 @@ const INITIAL_STATE = {
 };
 
 export default class DateRangePicker extends React.Component {
+  static propTypes = {
+    onChange: React.PropTypes.func
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -22,6 +26,16 @@ export default class DateRangePicker extends React.Component {
     this.handleStartTimeChange = (value) => this.handleStartChange(this.state.start, moment(value));
     this.handleEndTimeChange = (value) => this.handleEndChange(this.state.end, moment(value));
     this.handleEndDateChange = (value) => this.handleEndChange(moment(value), this.state.end);
+  }
+
+  componentDidMount() {
+    this._notifyChange();
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (!prevState.start.isSame(this.state.start) || !prevState.end.isSame(this.state.end)) {
+      this._notifyChange();
+    }
   }
 
   handleStartChange(date, time) {
@@ -54,4 +68,9 @@ export default class DateRangePicker extends React.Component {
     return start.clone().add(diff, 'ms');
   }
 
+  _notifyChange() {
+    if (this.props.onChange) {
+      this.props.onChange({ start: this.state.start.format(), end: this.state.end.format() });
+    }
+  }
 }

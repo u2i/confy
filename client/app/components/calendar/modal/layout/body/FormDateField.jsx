@@ -5,12 +5,12 @@ import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 
 const { string, func, array, bool } = React.PropTypes;
 
-const FormDateField = ({ label, value, onChange, errors, required }) => (
+const FormDateField = ({ label, onChange, errors, required }) => (
   <FormGroup>
     <ControlLabel>
       {label}:{required ? '*' : ''}
     </ControlLabel>
-    <DateRangePicker />
+    <DateRangePicker onChange={onChange} />
     <If condition={errors !== undefined}>
       <div className="text-danger">{errors[0]}</div>
     </If>
@@ -19,7 +19,6 @@ const FormDateField = ({ label, value, onChange, errors, required }) => (
 
 FormDateField.propTypes = {
   label: string.isRequired,
-  value: string.isRequired,
   onChange: func.isRequired,
   errors: array,
   required: bool
