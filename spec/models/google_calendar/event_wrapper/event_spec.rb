@@ -71,4 +71,35 @@ describe GoogleCalendar::EventWrapper::Event do
       it { is_expected.to eq true }
     end
   end
+
+  describe '#in_progress?' do
+    let(:current_time) { DateTime.now }
+    let(:start_time) { double('start_time', date_time: start_date_time) }
+    let(:end_time) { double('end_time', date_time: end_date_time) }
+    let(:google_event) { double('google_event', start: start_time, end: end_time) }
+
+    before { allow(default_wrapper).to receive(:current_time) { current_time } }
+
+    subject { default_wrapper.in_progress? }
+    context 'event did not start' do
+      let(:start_date_time) { current_time + 1.hours }
+      let(:end_date_time) { current_time + 2.hours }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'event has finished' do
+      let(:start_date_time) { current_time - 2.hours }
+      let(:end_date_time) { current_time - 1.hours }
+
+      it { is_expected.to eq false }
+    end
+
+    context 'event is taking place' do
+      let(:start_date_time) { current_time - 1.hours }
+      let(:end_date_time) { current_time + 1.hours }
+
+      it { is_expected.to eq true }
+    end
+  end
 end
