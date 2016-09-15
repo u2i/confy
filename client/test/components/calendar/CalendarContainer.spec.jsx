@@ -1,5 +1,4 @@
 import React from 'react';
-import { Set } from 'immutable';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -28,7 +27,7 @@ describe('<CalendarContainer />', () => {
   before(() => {
     sinon.stub(EventSource, 'fetch').resolves([]);
     sinon.stub(EventSource, 'remove').resolves([]);
-    sinon.stub(FiltersHelper, 'loadFilters').returns(new Set());
+    sinon.stub(FiltersHelper, 'loadFilters').returns({ get() { return true; } });
     sinon.stub(FiltersHelper, 'saveFilters');
   });
 
@@ -80,7 +79,6 @@ describe('<CalendarContainer />', () => {
     it('deletes event', () => {
       const event = Event.build({ creator: User.build({ self: true }) });
       const wrapper = mount(<CalendarContainer {...props} initialEvents={[event]} />);
-      wrapper.find('.delete-button').simulate('click');
 
       wrapper.find(EventDestroyer).props().onDelete();
       expect(EventSource.remove).to.have.been.calledOnce();
