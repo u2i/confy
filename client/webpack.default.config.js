@@ -15,9 +15,7 @@ module.exports = {
       'timepicker/jquery.timepicker',
       'timepicker/jquery.timepicker.css',
       'bootstrap-datepicker',
-      'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css',
-      'datepair.js',
-      'datepair.js/dist/jquery.datepair'
+      'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'
     ],
     app: [
       './app/Register.jsx'

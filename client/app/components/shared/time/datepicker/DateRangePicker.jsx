@@ -1,26 +1,57 @@
 import moment from 'moment';
 import React from 'react';
 import { FormGroup } from 'react-bootstrap';
-import { roundedTime } from 'helpers/DateHelper';
+import { roundedTime, addDateAndTime } from 'helpers/DateHelper';
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';
 
 import './datepicker.scss';
 
+const INITIAL_TIME = roundedTime(moment(), 60 * 30);
+const INITIAL_STATE = {
+  start: INITIAL_TIME,
+  end: INITIAL_TIME.clone().add(1, 'hour')
+};
+
 export default class DateRangePicker extends React.Component {
-  componentDidMount() {
-    new Datepair($(this.fieldGroup)[0]);
+  constructor(...args) {
+    super(...args);
+
+    this.state = INITIAL_STATE;
+    this.handleStartDateChange = (value) => this.handleStartChange(moment(value), this.state.start);
+    this.handleStartTimeChange = (value) => this.handleStartChange(this.state.start, moment(value));
+    this.handleEndTimeChange = (value) => this.handleEndChange(this.state.end, moment(value));
+    this.handleEndDateChange = (value) => this.handleEndChange(moment(value), this.state.end);
+  }
+
+  handleStartChange(date, time) {
+    const start = addDateAndTime(date, time);
+    const end = this._calculateEnd(start);
+    this.setState({ start, end });
+  }
+
+  handleEndChange(date, time) {
+    this.setState({ end: addDateAndTime(date, time) });
   }
 
   render() {
     return (
-      <div className="datetimepicker form-inline" ref={ref => this.fieldGroup = ref}>
-        <DateInput className="start" />
-        <TimeInput className="start" initialDate={roundedTime(moment())} />
+      <div className="datetimepicker form-inline">
+        <DateInput className="start" value={this.state.start.toDate()} onChange={this.handleStartDateChange}
+                   minDate={this.state.start.toDate()} />
+        <TimeInput className="start" value={this.state.start.toDate()} onChange={this.handleStartTimeChange} />
         &nbsp;to&nbsp;
-        <TimeInput className="end" />
-        <DateInput className="end" />
+        <TimeInput className="end" value={this.state.end.toDate()} onChange={this.handleEndTimeChange} showDuration
+                   minTime={this.state.start.toDate()} />
+        <DateInput className="end" value={this.state.end.toDate()} onChange={this.handleEndDateChange}
+                   minDate={this.state.start.toDate()} />
       </div>
     );
   }
+
+  _calculateEnd(start) {
+    const diff = this.state.end.diff(this.state.start);
+    return start.clone().add(diff, 'ms');
+  }
+
 }

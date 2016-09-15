@@ -5,7 +5,7 @@ import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 
 const { string, func, array, bool } = React.PropTypes;
 
-const FormDateField = ({ label, value, dateFormat, onChange, errors, required }) => (
+const FormDateField = ({ label, value, onChange, errors, required }) => (
   <FormGroup>
     <ControlLabel>
       {label}:{required ? '*' : ''}
@@ -18,7 +18,6 @@ const FormDateField = ({ label, value, dateFormat, onChange, errors, required })
 );
 
 FormDateField.propTypes = {
-  dateFormat: string.isRequired,
   label: string.isRequired,
   value: string.isRequired,
   onChange: func.isRequired,

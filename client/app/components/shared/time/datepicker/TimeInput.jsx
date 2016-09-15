@@ -1,28 +1,54 @@
+import assign from 'lodash/assign';
 import React from 'react';
+
+const { string, func, instanceOf, bool } = React.PropTypes;
+
+const PICKER_OPTIONS = {
+  timeFormat: 'G:i'
+};
 
 export default class TimeInput extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string,
-    onChange: React.PropTypes.func,
-    value: React.PropTypes.instanceOf(Date)
+    className: string,
+    onChange: func,
+    value: instanceOf(Date),
+    minTime: instanceOf(Date),
+    showDuration: bool
   };
 
   componentDidMount() {
-    this.input.timepicker({
-      timeFormat: 'G:i',
-      showDuration: true,
-      scrollDefault: this.props.value
-    });
+    this._initPicker();
+    this._bindChangeListener();
+    this._updatePicker(this.props.value);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.input.timepicker('setTime', nextProps.value);
+    if (nextProps.value.getTime() !== this.props.value.getTime()) {
+      this._updatePicker(nextProps.value);
+    }
   }
 
   render() {
     return <input type="text"
                   className={`time form-control ${this.props.className}`}
-                  ref={ref => this.input = $(ref)}
-                  onChange={this.props.onChange} />;
+                  ref={ref => this.input = $(ref)} />;
+  }
+
+  _initPicker() {
+    this.input.timepicker(assign({}, PICKER_OPTIONS, {
+      showDuration: this.props.showDuration,
+      scrollDefault: this.props.value,
+      minTime: this.props.minTime
+    }));
+  }
+
+  _bindChangeListener() {
+    this.input.on('change', () => {
+      this.props.onChange(this.input.timepicker('getTime'))
+    });
+  }
+
+  _updatePicker(value) {
+    this.input.timepicker('setTime', value);
   }
 }

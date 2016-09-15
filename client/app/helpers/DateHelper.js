@@ -9,6 +9,7 @@ export const TIME_DISPLAY_FORMAT = 'HH:mm';
 export function addDateAndTime(date, time) {
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
   return date
+    .clone()
     .hours(hours)
     .minutes(minutes)
     .seconds(seconds);
