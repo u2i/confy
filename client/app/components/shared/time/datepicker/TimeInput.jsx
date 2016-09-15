@@ -29,9 +29,11 @@ export default class TimeInput extends React.Component {
   }
 
   render() {
-    return <input type="text"
-                  className={`time form-control ${this.props.className}`}
-                  ref={ref => this.input = $(ref)} />;
+    return (
+      <input type="text"
+             className={`time form-control ${this.props.className}`}
+             ref={ref => this.input = $(ref)} />
+    );
   }
 
   _initPicker() {

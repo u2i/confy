@@ -48,8 +48,7 @@ export default class DateInput extends React.Component {
     this.input.datepicker().on('changeDate', () => {
       if (this._isValid() && this.props.onChange) {
         this.props.onChange(this.input.datepicker('getDate'));
-      }
-      else if (this.props.onError) {
+      } else if (this.props.onError) {
         this.props.onChange();
       }
     });

@@ -56,8 +56,7 @@ export default class DateRangePicker extends React.Component {
                    minDate={this.state.start.toDate()} />
         <TimeInput className="start"
                    value={this.state.start.toDate()}
-                   onChange={this.handleStartTimeChange}
-                   onError={this.props.onError} />
+                   onChange={this.handleStartTimeChange} />
         &nbsp;to&nbsp;
         <TimeInput className="end"
                    value={this.state.end.toDate()}
