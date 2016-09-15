@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 const { string, func, bool } = React.PropTypes;
 
-const FormTextField = ({ name, onChange, required}) => (
+const FormTextField = ({ name, onChange, required }) => (
   <FormGroup>
     <ControlLabel>
       {_.capitalize(name)}:{required ? '*' : ''}
@@ -17,7 +17,7 @@ const FormTextField = ({ name, onChange, required}) => (
 );
 
 FormTextField.propTypes = {
-  name:     string.isRequired,
+  name: string.isRequired,
   onChange: func.isRequired,
   required: bool
 };

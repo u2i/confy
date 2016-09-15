@@ -43,7 +43,7 @@ export default class DateInput extends React.Component {
 
   _bindChangeListener() {
     this.input.datepicker().on('changeDate', () => {
-      this.props.onChange(this.input.datepicker('getDate'))
+      this.props.onChange(this.input.datepicker('getDate'));
     });
   }
 

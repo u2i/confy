@@ -92,7 +92,6 @@ export function roundedTime(date, granularity) {
   const diff = date.unix() % granularity;
   if (diff > 60) {
     return date.clone().add(granularity - diff, 'seconds');
-  } else {
-    return date.clone().subtract(diff, 'seconds');
   }
+  return date.clone().subtract(diff, 'seconds');
 }

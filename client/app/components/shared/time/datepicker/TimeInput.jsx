@@ -44,7 +44,7 @@ export default class TimeInput extends React.Component {
 
   _bindChangeListener() {
     this.input.on('change', () => {
-      this.props.onChange(this.input.timepicker('getTime'))
+      this.props.onChange(this.input.timepicker('getTime'));
     });
   }
 
