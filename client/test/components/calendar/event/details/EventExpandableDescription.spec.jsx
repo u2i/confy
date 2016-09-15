@@ -27,7 +27,7 @@ describe('<EventExpandableDescription />', () => {
     const subject = wrapper.find('p');
 
     it('initially renders shortened description', () => {
-      const shortenedDescription = `${description.slice(0,MAX_DESCRIPTION_LENGTH)}...`;
+      const shortenedDescription = `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
 
       expect(subject).to.have.text(shortenedDescription);
     });

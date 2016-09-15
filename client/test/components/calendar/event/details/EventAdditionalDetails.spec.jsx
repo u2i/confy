@@ -8,7 +8,7 @@ import EventFullDescription from 'components/calendar/event/details/EventFullDes
 import EventExpandableDescription from 'components/calendar/event/details/EventExpandableDescription';
 
 describe('<EventAdditionalDetails />', () => {
-  const buildEvent = (description) => EventFactory.build({ description: description });
+  const buildEvent = (description) => EventFactory.build({ description });
   const mountComponent = (event) => mount(<EventAdditionalDetails event={event} />);
 
   context('with description shorter than EventHelper.MAX_DESCRIPTION_LENGTH', () => {
@@ -30,8 +30,6 @@ describe('<EventAdditionalDetails />', () => {
       const wrapper = mountComponent(event);
 
       expect(wrapper.find(EventExpandableDescription)).to.exist();
-    })
+    });
   });
-
-
 });
