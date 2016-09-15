@@ -1,6 +1,5 @@
 import moment from 'moment';
 import React from 'react';
-import { FormGroup } from 'react-bootstrap';
 import { roundedTime, addDateAndTime } from 'helpers/DateHelper';
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';

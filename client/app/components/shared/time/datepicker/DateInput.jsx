@@ -1,7 +1,7 @@
 import assign from 'lodash/assign';
 import React from 'react';
 
-const { func, instanceOf } = React.PropTypes;
+const { string, func, instanceOf } = React.PropTypes;
 
 const PICKER_OPTIONS = {
   format: 'dd-mm-yyyy',
@@ -14,7 +14,8 @@ export default class DateInput extends React.Component {
   static propTypes = {
     value: instanceOf(Date),
     minDate: instanceOf(Date),
-    onChange: func
+    onChange: func,
+    className: string
   };
 
   componentDidMount() {
@@ -30,9 +31,9 @@ export default class DateInput extends React.Component {
   }
 
   render() {
-    return <input type="text"
+    return (<input type="text"
                   className={`date form-control ${this.props.className}`}
-                  ref={ref => this.input = $(ref)} />;
+                  ref={ref => this.input = $(ref)} />);
   }
 
   _initPicker() {
