@@ -1,6 +1,6 @@
 import React from 'react';
+import { MAX_DESCRIPTION_LENGTH } from 'helpers/EventHelper';
 
-const SHORT_DESCRIPTION_LENGTH = 50;
 export default class EventExpandableDescription extends React.Component {
   static propTypes = {
     description: React.PropTypes.string
@@ -37,7 +37,7 @@ export default class EventExpandableDescription extends React.Component {
   }
 
   _shortDescription() {
-    return `${this.props.description.slice(0, SHORT_DESCRIPTION_LENGTH)}...`;
+    return `${this.props.description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
   }
 
   _handleDescriptionLength(event) {
