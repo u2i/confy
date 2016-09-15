@@ -4,3 +4,10 @@
                    overflow: scroll;
                    box-shadow: none;
                  }
+                 .rc-calendar-year-select, .rc-calendar-month-select, .rc-calendar-day-select {
+                   color: #333;
+                 }
+
+                 .rc-calendar-disabled-cell .rc-calendar-date {
+                   background: #f9f9f9;
+                 }
