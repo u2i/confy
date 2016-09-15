@@ -112,7 +112,7 @@ export default class CreateEventModal extends React.Component {
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
-          onError={this.props.onError} />
+          onGuestsError={this.props.onError} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

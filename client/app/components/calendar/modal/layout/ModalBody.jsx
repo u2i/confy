@@ -17,7 +17,7 @@ export default class ModalBody extends React.Component {
     selectedLocation: number,
     errors: object,
     showErrorMessage: bool,
-    onError: func.isRequired
+    onGuestsError: func.isRequired
   };
 
   static defaultProps = {
@@ -75,7 +75,7 @@ export default class ModalBody extends React.Component {
             required />
           <GuestsField
             onChange={this.handleGuestsChange}
-            onError={this.props.onError} />
+            onError={this.props.onGuestsError} />
           <FormTextField
             name={"description"}
             onChange={this.handleTextFieldChange} />

@@ -1,10 +1,12 @@
 import assign from 'lodash/assign';
 import React from 'react';
+import moment from 'moment';
 
 const { string, func, instanceOf } = React.PropTypes;
 
+const FORMAT = 'dd-mm-yyyy';
 const PICKER_OPTIONS = {
-  format: 'dd-mm-yyyy',
+  format: FORMAT,
   autoclose: true,
   todayHighlight: true,
   weekStart: 1
@@ -44,8 +46,17 @@ export default class DateInput extends React.Component {
 
   _bindChangeListener() {
     this.input.datepicker().on('changeDate', () => {
-      this.props.onChange(this.input.datepicker('getDate'));
+      if (this._isValid() && this.props.onChange) {
+        this.props.onChange(this.input.datepicker('getDate'));
+      }
+      else if (this.props.onError) {
+        this.props.onChange();
+      }
     });
+  }
+
+  _isValid() {
+    return moment(this.input.datepicker('getDate'), FORMAT).isValid();
   }
 
   _updatePicker(value) {

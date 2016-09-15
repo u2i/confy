@@ -50,13 +50,23 @@ export default class DateRangePicker extends React.Component {
   render() {
     return (
       <div className="datetimepicker form-inline">
-        <DateInput className="start" value={this.state.start.toDate()} onChange={this.handleStartDateChange}
+        <DateInput className="start"
+                   value={this.state.start.toDate()}
+                   onChange={this.handleStartDateChange}
                    minDate={this.state.start.toDate()} />
-        <TimeInput className="start" value={this.state.start.toDate()} onChange={this.handleStartTimeChange} />
+        <TimeInput className="start"
+                   value={this.state.start.toDate()}
+                   onChange={this.handleStartTimeChange}
+                   onError={this.props.onError} />
         &nbsp;to&nbsp;
-        <TimeInput className="end" value={this.state.end.toDate()} onChange={this.handleEndTimeChange} showDuration
+        <TimeInput className="end"
+                   value={this.state.end.toDate()}
+                   onChange={this.handleEndTimeChange}
+                   showDuration
                    minTime={this.state.start.toDate()} />
-        <DateInput className="end" value={this.state.end.toDate()} onChange={this.handleEndDateChange}
+        <DateInput className="end"
+                   value={this.state.end.toDate()}
+                   onChange={this.handleEndDateChange}
                    minDate={this.state.start.toDate()} />
       </div>
     );

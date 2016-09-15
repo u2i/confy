@@ -5,6 +5,7 @@ import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import FormDateField from 'components/calendar/modal/layout/body/FormDateField';
+import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 
 describe('<FormDateField />', () => {
   const onChangeSpy = sinon.spy();
@@ -27,17 +28,10 @@ describe('<FormDateField />', () => {
     expect(wrapper.find(DateTimeField)).to.exist;
   });
 
-  it('invokes onChange handler on input', () => {
+  it('invokes onChange handler on DateRange', () => {
     const wrapper =
       mount(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    wrapper.find('input').simulate('change', { target: { value: '01/01/2016 20:30' } });
-    expect(onChangeSpy).to.be.calledOnce();
-  });
-
-  it('returns error for invalid date', () => {
-    const wrapper =
-      mount(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    wrapper.find('input').simulate('change', { target: { value: '01/01/2016' } });
-    expect(onChangeSpy).to.be.calledWith('Invalid date');
+    wrapper.find(DateRangePicker).simulate('change');
+    expect(onChangeSpy).to.be.called();
   });
 });
