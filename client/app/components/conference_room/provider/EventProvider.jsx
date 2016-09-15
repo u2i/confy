@@ -85,7 +85,7 @@ export default class EventProvider extends React.Component {
 
     const currentEvent = this.state.currentEvent;
     this.setState({ currentEvent: undefined });
-    EventSource.finish(this.props.conferenceRoom.id, this.state.currentEvent.id)
+    EventSource.finish(this.props.conferenceRoom.id, currentEvent.id)
       .catch(() => this.setState({ currentEvent }));
   }
 
