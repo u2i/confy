@@ -1,20 +1,17 @@
 import React from 'react';
 import { If } from 'react-if';
-import EventSchema from 'proptypes/schemas/EventSchema';
 
-const EventFullDescription = ({ event }) => (
+const EventFullDescription = ({ description }) => (
   <div className="event-description">
-    <If condition={typeof event.description !== 'undefined'}>
-      <div>
-        <small>Description:&nbsp;</small>
-        <p>{event.description}</p>
-      </div>
-    </If>
+    <div>
+      <small>Description:&nbsp;</small>
+      <p>{description}</p>
+    </div>
   </div>
 );
 
 EventFullDescription.propTypes = {
-  event: EventSchema.only('description').isRequired
+  description: React.PropTypes.string.isRequired
 };
 
 export default EventFullDescription;

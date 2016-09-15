@@ -4,15 +4,13 @@ import requiredIf from 'react-required-if';
 import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
-
 import Controls from '../layout/controls/Controls';
 import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
 import EventAttendees from 'components/calendar/event/details/EventAttendees';
 import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
-
-
+import { If } from 'react-if';
 import './current_event.scss';
 
 const Event = ({ event }) => (
@@ -21,7 +19,9 @@ const Event = ({ event }) => (
     <EventTime event={event} timeFormat={TIME_DISPLAY_FORMAT} />
     <EventCreator event={event} />
     <EventAttendees event={event} />
-    <EventFullDescription event={event} />
+    <If condition={event.description != null}>
+      <EventFullDescription description={event.description} />
+    </If>
   </div>
 );
 
