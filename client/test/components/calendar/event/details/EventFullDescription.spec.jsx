@@ -3,13 +3,13 @@ import Event from 'test/factories/Event';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 
-import EventDescription from 'components/calendar/event/details/EventDescription';
+import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
 
-describe('<EventDescription />', () => {
+describe('<EventFullDescription />', () => {
   context('when event has description', () => {
     const description = 'very important event';
     const event = Event.build({ description });
-    const wrapper = mount(<EventDescription event={event} />);
+    const wrapper = mount(<EventFullDescription event={event} />);
 
     it('renders event description', () => {
       expect(wrapper.text()).to.contain(description);
@@ -18,7 +18,7 @@ describe('<EventDescription />', () => {
 
   context('when no description', () => {
     const event = Event.build();
-    const wrapper = mount(<EventDescription event={event} />);
+    const wrapper = mount(<EventFullDescription event={event} />);
 
     it('does not render label', () => {
       expect(wrapper.text()).to.be.empty();

@@ -1,6 +1,6 @@
 import React from 'react';
 import EventAttendees from './EventAttendees';
-import EventDescription from './EventDescription';
+import EventExpandableDescription from './EventExpandableDescription';
 import EventHangoutLink from './EventHangoutLink';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import { If } from 'react-if';
@@ -8,7 +8,7 @@ import { If } from 'react-if';
 const EventAdditionalDetails = ({ event }) => (
   <div>
     <If condition={event.description != null}>
-      <EventDescription description={event.description} />
+      <EventExpandableDescription description={event.description} />
     </If>
     <EventAttendees event={event} />
     <EventHangoutLink event={event} />

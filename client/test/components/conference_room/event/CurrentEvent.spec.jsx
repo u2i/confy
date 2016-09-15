@@ -9,7 +9,7 @@ import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
 import EventAttendees from 'components/calendar/event/details/EventAttendees';
-import EventDescription from 'components/calendar/event/details/EventDescription';
+import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
 
 describe('<CurrentEvent.Event />', () => {
   const summary = 'Summary';
@@ -25,7 +25,7 @@ describe('<CurrentEvent.Event />', () => {
     expect(wrapper).to.have.exactly(1).descendants(EventTime);
     expect(wrapper).to.have.exactly(1).descendants(EventCreator);
     expect(wrapper).to.have.exactly(1).descendants(EventAttendees);
-    expect(wrapper).to.have.exactly(1).descendants(EventDescription);
+    expect(wrapper).to.have.exactly(1).descendants(EventFullDescription);
   });
 });
 

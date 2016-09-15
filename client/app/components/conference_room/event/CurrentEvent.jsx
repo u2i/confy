@@ -10,7 +10,7 @@ import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
 import EventAttendees from 'components/calendar/event/details/EventAttendees';
-import EventDescription from 'components/calendar/event/details/EventDescription';
+import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
 
 
 import './current_event.scss';
@@ -21,7 +21,7 @@ const Event = ({ event }) => (
     <EventTime event={event} timeFormat={TIME_DISPLAY_FORMAT} />
     <EventCreator event={event} />
     <EventAttendees event={event} />
-    <EventDescription event={event} />
+    <EventFullDescription event={event} />
   </div>
 );
 
