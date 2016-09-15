@@ -10,6 +10,7 @@ import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
 import EventAttendees from 'components/calendar/event/details/EventAttendees';
 import EventDescription from 'components/calendar/event/details/EventDescription';
+import Controls from 'components/conference_room/layout/controls/Controls';
 
 describe('<CurrentEvent.Event />', () => {
   const summary = 'Summary';
@@ -109,4 +110,9 @@ describe('<CurrentEvent />', () => {
       });
     });
   });
+
+  it('renders <Controls />', () => {
+    const wrapper = shallow(<CurrentEvent event={event} />);
+    expect(wrapper).to.have.exactly(1).descendants(Controls);
+  })
 });

@@ -16,7 +16,7 @@ export default class EventProvider extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { nextEvents: [] };
-    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent']);
+    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent', '_finishEvent']);
   }
 
   componentDidMount() {
@@ -50,6 +50,7 @@ export default class EventProvider extends React.Component {
                  nextEvents={this.state.nextEvents}
                  onUpdate={this.handleUpdate}
                  onConfirm={this._confirmEvent}
+                 onFinish={this._finishEvent}
                  {...props} />
     );
   }
@@ -60,11 +61,11 @@ export default class EventProvider extends React.Component {
       end: moment().endOf('day').toISOString(),
       confirmation: true
     };
-    EventSource.fetch(params, this.props.conferenceRoom.id
-    ).then(response => {
-      const { current, next } = currentAndNextEvents(response.data);
-      this.setState({ nextEvents: next, currentEvent: current });
-    });
+    EventSource.fetch(params, this.props.conferenceRoom.id)
+      .then(response => {
+        const { current, next } = currentAndNextEvents(response.data);
+        this.setState({ nextEvents: next, currentEvent: current });
+      });
   }
 
   _confirmEvent() {
@@ -75,6 +76,17 @@ export default class EventProvider extends React.Component {
     this._toggleConfirmed();
     EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
       .catch(() => this._toggleConfirmed());
+  }
+
+  _finishEvent() {
+    if (typeof(this.state.currentEvent) === 'undefined') {
+      return;
+    }
+
+    const currentEvent = this.state.currentEvent;
+    this.setState({ currentEvent: undefined });
+    EventSource.finish(this.props.conferenceRoom.id, this.state.currentEvent.id)
+      .catch(() => this.setState({ currentEvent }));
   }
 
   _toggleConfirmed() {
