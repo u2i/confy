@@ -1,11 +1,17 @@
 import React from 'react';
 import { ControlLabel } from 'react-bootstrap';
-import DateTimeField from 'react-bootstrap-datetimepicker';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import FormDateField from 'components/calendar/modal/layout/body/FormDateField';
-import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
+import proxyquire from 'proxyquire';
+
+const DummyDatePicker = ({ onChange }) =>
+  <input onChange={onChange} id="picker" />; // eslint-disable-line react/prop-types
+const FormDateField = proxyquire
+  .noCallThru()
+  .load('../../../../../../app/components/calendar/modal/layout/body/FormDateField', {
+    '../../../../shared/time/datepicker/DateRangePicker': DummyDatePicker
+  }).default;
 
 describe('<FormDateField />', () => {
   const onChangeSpy = sinon.spy();
@@ -13,7 +19,7 @@ describe('<FormDateField />', () => {
   it('renders <ControlLabel />', () => {
     const wrapper =
       shallow(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    expect(wrapper.find(ControlLabel)).to.exist;
+    expect(wrapper.find(ControlLabel)).to.exist();
   });
 
   it('renders <ControlLabel /> with label prop as text', () => {
@@ -22,16 +28,16 @@ describe('<FormDateField />', () => {
     expect(wrapper.find(ControlLabel)).to.have.text('DateLabel:');
   });
 
-  it('renders <DateTimeField />', () => {
+  it('renders <DateRangePicker />', () => {
     const wrapper =
       shallow(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    expect(wrapper.find(DateTimeField)).to.exist;
+    expect(wrapper.find(DummyDatePicker)).to.exist();
   });
 
   it('invokes onChange handler on DateRange', () => {
     const wrapper =
       mount(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    wrapper.find(DateRangePicker).simulate('change');
+    wrapper.find('input#picker').simulate('change');
     expect(onChangeSpy).to.be.called();
   });
 });
