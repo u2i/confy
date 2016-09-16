@@ -17,13 +17,14 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participating';
+    const eventClassName = this._userParticipatesInEvent() ? 'event participating' : 'event';
     return (
       <div className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
-        <EventDetails event={event} timeFormat={this.props.timeFormat} />
+        <EventDetails event={event}
+                      timeFormat={this.props.timeFormat} />
       </div>
     );
   }
@@ -34,7 +35,15 @@ export default class Event extends React.Component {
 
   _userIsAttendee() {
     return this.props.event.attendees &&
-           this.props.event.attendees.find(attendee => attendee.email === this.context.userEmail);
+           this.props.event.attendees.find(attendee => this._isCurrentUser(attendee) && this._notDeclined(attendee));
+  }
+
+  _isCurrentUser(attendee) {
+    return attendee.email === this.context.userEmail;
+  }
+
+  _notDeclined(attendee) {
+    return attendee.response_status !== 'declined';
   }
 
   _userIsCreator() {

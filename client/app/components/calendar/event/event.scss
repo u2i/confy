@@ -24,6 +24,11 @@ $event-border-color: #f7f7f7;
   .event-attendees {
     font-size: 0.9em;
   }
+
+  .event-hangout-link {
+    transition: visibility 0s 0s;
+    visibility: hidden;
+  }
 }
 
 .event-container {
@@ -58,16 +63,6 @@ $event-border-color: #f7f7f7;
     }
   }
 
-  &:hover, &:focus {
-    transition: all 0.5s 0.25s, z-index 1ms, opacity 1ms;
-    height: 4 * $rowHeight;
-    width: 100% !important;
-    z-index: 100;
-    left: 0 !important;
-    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.22);
-    opacity: 1;
-  }
-
   .event-attendees {
     display: block;
     overflow: hidden;
@@ -91,6 +86,23 @@ $event-border-color: #f7f7f7;
           content: '';
         }
       }
+    }
+  }
+}
+
+.event {
+  &:hover, &:focus {
+    transition: all 0.5s 0.25s, z-index 1ms, opacity 1ms;
+    height: 5 * $rowHeight;
+    width: 100% !important;
+    z-index: 100;
+    left: 0 !important;
+    box-shadow: 0px 0px 10px 4px rgba(0, 0, 0, 0.22);
+    opacity: 1;
+
+    .event-hangout-link {
+      transition: visibility 0s 0.5s;
+      visibility: visible;
     }
   }
 }
@@ -125,6 +137,7 @@ $event-border-color: #f7f7f7;
   }
 }
 
-.not-participating {
-  background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,255,.3) 15px, rgba(255,255,255,.3) 30px);
+.participating {
+  z-index: 5;
+  box-shadow: 0 0 2px 3px rgba(0, 0, 0, 0.3);
 }

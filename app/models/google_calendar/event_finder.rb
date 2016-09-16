@@ -2,7 +2,7 @@ module GoogleCalendar
   class EventFinder
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, recurrence, '\
-                     'creator, attendees(self, responseStatus, displayName, email))'.freeze
+                     'creator, attendees(self, responseStatus, displayName, email), hangoutLink)'.freeze
 
     def initialize(credentials, user_email)
       @credentials = credentials
@@ -17,11 +17,13 @@ module GoogleCalendar
     def confirmed_events(time_interval)
       all_google_events = all(time_interval)
       confirmed_ids = Event.confirmed_event_ids
-      all_google_events.select { |event| confirmed_ids.include?(event.id) }
+      all_google_events.select { |event| confirmed_ids.include?(event[:id]) }
     end
 
-    def by_room(time_interval, conference_room_ids)
-      list_events(time_interval, rooms(conference_room_ids))
+    def by_room(time_interval, conference_room_ids, with_confirmation = false)
+      events = list_events(time_interval, rooms(conference_room_ids))
+      include_confirmation(events) if with_confirmation
+      events
     end
 
     private
@@ -34,6 +36,15 @@ module GoogleCalendar
         end
       end
       all_events
+    end
+
+    def include_confirmation(events)
+      confirmed_ids = confirmed_events_ids(events)
+      events.each { |event| event[:confirmed] = confirmed_ids.include?(event[:id]) }
+    end
+
+    def confirmed_events_ids(events)
+      Event.confirmed.where(event_id: events.map { |event| event[:id] }).pluck(:event_id)
     end
 
     def all_events
@@ -76,12 +87,13 @@ module GoogleCalendar
 
     def build_event_data(google_event, conference_room)
       event_wrapper = rounded_event_wrapper(google_event, conference_room)
-      event_wrapper.mark_user_event(user_email)
+      event_wrapper.mark_user_event
       event_wrapper.to_h
     end
 
     def rounded_event_wrapper(google_event, conference_room)
-      GoogleCalendar::EventWrapper::GoogleEventBuilder.new(google_event, conference_room).build_rounded_event_wrapper
+      params = {conference_room: conference_room, user_email: user_email}
+      GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, params)
     end
 
     attr_accessor :credentials, :user_email, :calendar_service

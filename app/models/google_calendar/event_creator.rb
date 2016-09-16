@@ -19,7 +19,7 @@ module GoogleCalendar
 
     def insert_event_and_return_result(event_wrapper)
       raise_error_if_occupied(event_wrapper)
-      google_event = event_wrapper.as_google_event
+      google_event = event_wrapper.google_event
       calendar_service.insert_event('primary', google_event, send_notifications: true)
     end
 
@@ -39,7 +39,7 @@ module GoogleCalendar
     end
 
     def build_event_wrapper(event_data)
-      event_wrapper = GoogleCalendar::EventWrapper::HashBuilder.new(event_data).build_event_wrapper
+      event_wrapper = GoogleCalendar::EventWrapper::Builder.new(event_data).build_event_wrapper
       raise_error_if_invalid(event_wrapper)
       event_wrapper
     end
@@ -51,12 +51,8 @@ module GoogleCalendar
 
     def events_in_span(wrapper)
       return [] unless wrapper.conference_room
-      events = calendar_service.list_events(
-        wrapper.conference_room.email,
-        time_min: wrapper.start_time.date_time.to_s,
-        time_max: wrapper.end_time.date_time.to_s
-      )
-      events ? events.items : []
+      event_interval = TimeInterval.new(wrapper.start.date_time, wrapper.end.date_time).to_rfc3339
+      GoogleCalendar::EventFinder.new(credentials, user_email).by_room(event_interval, wrapper.conference_room.id)
     end
 
     attr_accessor :credentials, :calendar_service, :user_email
