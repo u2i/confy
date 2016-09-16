@@ -17,7 +17,7 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event' : 'event not-participating';
+    const eventClassName = this._userParticipatesInEvent() ? 'event participating' : 'event';
     return (
       <div className={eventClassName} style={this._eventStyle()}>
         <EventDestroyer onDelete={this.props.onDelete}
