@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-const CONFERENCE_ROOM_PATH = '/conference_rooms';
-const EVENT_PATH = '/events';
+const CONFERENCE_ROOMS_PATH = '/conference_rooms';
+const EVENTS_PATH = '/events';
 
-const eventPath = (roomId) => roomId ? `${CONFERENCE_ROOM_PATH}/${roomId}/events` : EVENT_PATH;
+const eventsPath = (roomId) => roomId ? `${CONFERENCE_ROOMS_PATH}/${roomId}/events` : EVENTS_PATH;
+const eventPath = (roomId, eventId) => `${eventsPath(roomId)}/${eventId}`;
+const confirmPath = (roomId, eventId) => `${eventPath(roomId, eventId)}/confirm`;
+const finishPath = (roomId, eventId) => `${eventPath(roomId, eventId)}/finish`;
 
 const getCSRFToken = (config) => {
   const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -19,19 +22,19 @@ axios.interceptors.request.use(getCSRFToken, (error) => Promise.reject(error));
 
 const EventSource = {
   fetch(params, conferenceRoomId) {
-    return axios.get(eventPath(conferenceRoomId), { params });
+    return axios.get(eventsPath(conferenceRoomId), { params });
   },
   remove(id) {
-    return axios.delete(`${EVENT_PATH}/${id}`);
+    return axios.delete(`${EVENTS_PATH}/${id}`);
   },
   create(params) {
-    return axios.post(EVENT_PATH, { event: params });
+    return axios.post(EVENTS_PATH, { event: params });
   },
   confirm(conferenceRoomId, eventId) {
-    return axios.post(`${eventPath(conferenceRoomId)}/${eventId}/confirm`);
+    return axios.post(confirmPath(conferenceRoomId, eventId));
   },
   finish(conferenceRoomId, eventId) {
-    return axios.post(`${eventPath(conferenceRoomId)}/${eventId}/finish`);
+    return axios.post(finishPath(conferenceRoomId, eventId));
   }
 };
 
