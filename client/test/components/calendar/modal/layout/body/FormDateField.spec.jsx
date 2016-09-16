@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { ControlLabel } from 'react-bootstrap';
 import sinon from 'sinon';
@@ -5,8 +6,8 @@ import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import proxyquire from 'proxyquire';
 
-const DummyDatePicker = ({ onChange }) =>
-  <input onChange={onChange} id="picker" />; // eslint-disable-line react/prop-types
+const DummyDatePicker = ({ onChange }) => <input onChange={onChange} id="picker" />;
+
 const FormDateField = proxyquire
   .noCallThru()
   .load('../../../../../../app/components/calendar/modal/layout/body/FormDateField', {
