@@ -42,14 +42,14 @@ class EventsController < ApplicationController
   def room_index
     events = google_event_client.find_by_room(
       time_interval_rfc3339,
-      params[:conference_room_id].to_i,
+      params[:id].to_i,
       with_confirmation?
     )
     render json: events
   end
 
   def create
-    data = google_event_client.create(event_params.to_h)
+    data = google_event_client.create(create_event_params.to_h)
     render json: data.to_json, status: :created
   end
 
@@ -60,14 +60,22 @@ class EventsController < ApplicationController
   end
 
   def confirm
-    conference_room_id = confirmation_params[:conference_room_id]
-    event_id = confirmation_params[:event_id]
-    Event.confirm_or_create(conference_room_id, event_id)
+    Event.confirm_or_create(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    head :ok
+  end
+
+  def finish
+    google_event_client.finish(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    head :ok
+  end
+
+  def confirmed
+    @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_first_confirmed_event.to_rfc3339)
   end
 
   private
 
-  def confirmation_params
+  def edit_event_params
     params.permit(:conference_room_id, :event_id)
   end
 
@@ -75,7 +83,7 @@ class EventsController < ApplicationController
     params[:confirmation] == 'true'.freeze
   end
 
-  def event_params
+  def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   attendees: [:email])
   end

@@ -22,14 +22,25 @@ export default class EventProvider extends React.Component {
   componentDidMount() {
     this._fetchForToday();
     this._channelSubscription = createSubscription(EVENT_CHANNEL, this._fetchForToday);
+    this.setEndOfDayTimeout();
   }
 
   componentWillUnmount() {
     removeSubscription(this._channelSubscription);
+    window.clearTimeout(this.endOfDayTimeout);
   }
 
   handleUpdate() {
     this._fetchForToday();
+  }
+
+  setEndOfDayTimeout() {
+    const now = moment();
+    const timeToBeginningOfTheNextDay = now.clone().add(1, 'day').startOf('day') - now;
+    this.endOfDayTimeout = setTimeout(() => {
+      this._fetchForToday();
+      this.setEndOfDayTimeout();
+    }, timeToBeginningOfTheNextDay);
   }
 
   render() {
