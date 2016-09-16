@@ -19,7 +19,12 @@ describe('<EventProvider />', () => {
       }
     }).default;
 
-  const DummyComponent = () => <div></div>;
+  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint-disable-line react/prop-types
+    <div>
+      <button id="finish" onClick={onFinish} />
+      <button id="confirm" onClick={onConfirm} />
+    </div>
+  );
 
   const conferenceRoom = ConferenceRoom.build();
   const currentEvent = Event.build();
@@ -103,6 +108,84 @@ describe('<EventProvider />', () => {
         EventSource.fetch.reset();
         clock.tick(MILLISECONDS_IN_DAY - timeStamp);
         expect(EventSource.fetch).to.have.been.calledOnce();
+      });
+    });
+  });
+
+  describe('confirming event', () => {
+    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const componentWrapper = wrapper.find(DummyComponent);
+    const confirmButton = componentWrapper.find('button#confirm');
+
+    before(() => {
+      sinon.stub(EventSource, 'confirm');
+    });
+
+    after(() => {
+      EventSource.confirm.restore();
+    });
+
+    context('with successful request', () => {
+      before(() => {
+        wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
+        EventSource.confirm.resolves();
+        confirmButton.simulate('click');
+      });
+
+      it('toggles current event\'s confirmation', () => {
+        expect(componentWrapper.prop('currentEvent').confirmed).to.be.true();
+      });
+    });
+
+    context('with unsuccessful request', () => {
+      before(() => {
+        wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
+        EventSource.confirm.rejects();
+        confirmButton.simulate('click');
+      });
+
+      it('does not toggle current event\'s confirmation', () => {
+        expect(componentWrapper.prop('currentEvent').confirmed).to.be.false();
+      });
+    });
+  });
+
+  describe('finishing event', () => {
+    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const componentWrapper = wrapper.find(DummyComponent);
+    const finishButton = componentWrapper.find('button#finish');
+
+    before(() => {
+      sinon.stub(EventSource, 'finish');
+    });
+
+    after(() => {
+      EventSource.finish.restore();
+    });
+
+    context('with successful request', () => {
+      before(() => {
+        wrapper.setState({ currentEvent: Event.build() });
+        EventSource.finish.resolves();
+        finishButton.simulate('click');
+      });
+
+      it('removes current event', () => {
+        expect(componentWrapper.prop('currentEvent')).not.to.exist();
+      });
+    });
+
+    context('with unsuccessful request', () => {
+      const event = Event.build();
+
+      before(() => {
+        wrapper.setState({ currentEvent: event });
+        EventSource.finish.rejects();
+        finishButton.simulate('click');
+      });
+
+      it('does not remove current event', () => {
+        expect(componentWrapper.prop('currentEvent')).to.equal(event);
       });
     });
   });
