@@ -69,6 +69,10 @@ class EventsController < ApplicationController
     head :ok
   end
 
+  def confirmed
+    @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_first_confirmed_event.to_rfc3339)
+  end
+
   private
 
   def edit_event_params
