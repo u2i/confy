@@ -15,15 +15,15 @@ export default class SideCalendar extends React.Component {
     this._setMondayAsFirstWeekDay();
     this.state = { value: moment() };
 
-    bindAll(this, ['onSelect', 'onChange']);
+    bindAll(this, ['onSelect', 'updateSelectedDate']);
   }
 
   onSelect(date) {
     this._routeToSelectedDate(date);
-    this.setState({ value: moment(date) });
+    this.updateSelectedDate(date);
   }
 
-  onChange(date) {
+  updateSelectedDate(date) {
     this.setState({ value: moment(date) });
   }
 
@@ -38,7 +38,7 @@ export default class SideCalendar extends React.Component {
                 showDateInput={false}
                 disabledDate={this.disableWeekend}
                 onSelect={this.onSelect}
-                onChange={this.onChange} />
+                onChange={this.updateSelectedDate} />
     );
   }
 
