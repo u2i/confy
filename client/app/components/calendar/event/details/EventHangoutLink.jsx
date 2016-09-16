@@ -12,7 +12,7 @@ const extractHangoutName = (link) => {
 
 const EventHangoutLink = ({ event }) => (
   <div className="event-hangout-link">
-    <a href={event.hangout_link}> 
+    <a href={event.hangout_link} target="_blank" rel="noopener noreferrer">
       <img src={icon} role="presentation" />&nbsp;{extractHangoutName(event.hangout_link || '')}
     </a>
   </div>
