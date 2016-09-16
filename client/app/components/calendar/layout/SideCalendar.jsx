@@ -13,13 +13,13 @@ export default class SideCalendar extends React.Component {
   constructor(...args) {
     super(...args);
     this._setMondayAsFirstWeekDay();
-
     this.state = { value: moment() };
+
     bindAll(this, ['onSelect', 'onChange']);
   }
 
   onSelect(date) {
-    this.context.router.push(`/?date=${date.format('YYYY-MM-DD')}`);
+    this._routeToSelectedDate(date);
     this.setState({ value: moment(date) });
   }
 
@@ -48,5 +48,10 @@ export default class SideCalendar extends React.Component {
         dow: 1
       }
     });
+  }
+
+  _routeToSelectedDate(date) {
+    const query = `/?date=${date.format('YYYY-MM-DD')}`;
+    this.context.router.push(query);
   }
 }
