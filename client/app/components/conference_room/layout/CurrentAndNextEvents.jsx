@@ -27,7 +27,8 @@ CurrentAndNextEvents.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvents: React.PropTypes.arrayOf(EventSchema.only('start')),
   onUpdate: React.PropTypes.func,
-  onConfirm: React.PropTypes.func
+  onConfirm: React.PropTypes.func,
+  onFinish: React.PropTypes.func
 };
 
 export default CurrentAndNextEvents;
