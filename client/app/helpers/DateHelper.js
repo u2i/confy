@@ -88,19 +88,18 @@ export function sameDay(date, other) {
 }
 
 function pluralize(string, number, includeNumber) {
-  const word = (number == 1 ? string : string + 's');
+  const word = (number === 1 ? string : string + 's');
   return includeNumber ? `${number} ${word}` : word;
 }
 
 export function humanizeTime(duration) {
   if (duration.hours() > 0) {
-    if(duration.minutes() > 0) {
-      return `${pluralize('hour', duration.hours(), true)} and ${pluralize('minute', duration.minutes(), true)}`
+    if (duration.minutes() > 0) {
+      return `${pluralize('hour', duration.hours(), true)} and ${pluralize('minute', duration.minutes(), true)}`;
     }
     return pluralize('hour', duration.hours(), true);
   } else if (duration.minutes() > 0) {
     return pluralize('minute', duration.minutes(), true);
-  } else {
-    return pluralize('second', Math.max(duration.seconds(), 0), true);
   }
+  return pluralize('second', Math.max(duration.seconds(), 0), true);
 }

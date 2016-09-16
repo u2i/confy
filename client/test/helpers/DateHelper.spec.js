@@ -153,8 +153,8 @@ describe('DateHelper', () => {
         context('no minutes', () => {
           it('does not contain minutes', () => {
             expect(DateHelper.humanizeTime(moment('12.12.2013 02:00'))).to.equal('2 hours');
-          })
-        })
+          });
+        });
       });
 
       context('above 1 minute', () => {
