@@ -1,5 +1,5 @@
 import React from 'react';
-import SideCalendar from  'components/calendar/layout/SideCalendar';
+import SideCalendar from 'components/calendar/layout/SideCalendar';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
