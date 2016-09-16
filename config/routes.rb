@@ -21,7 +21,11 @@ Rails.application.routes.draw do
 
   resources :contacts, only: [:index]
 
-  resources :events, only: [:create, :index, :show, :destroy]
+  resources :events, only: [:create, :index, :show, :destroy] do
+    collection do
+      get 'confirmed'
+    end
+  end
 
   resources :conference_rooms, only: [:show], param: :title
 end
