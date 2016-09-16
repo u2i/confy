@@ -88,7 +88,7 @@ export function sameDay(date, other) {
 }
 
 function pluralize(string, number, includeNumber) {
-  const word = (number === 1 ? string : string + 's');
+  const word = (number === 1 ? string : `${string}s`);
   return includeNumber ? `${number} ${word}` : word;
 }
 
