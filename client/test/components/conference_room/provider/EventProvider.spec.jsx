@@ -115,6 +115,7 @@ describe('<EventProvider />', () => {
   describe('confirming event', () => {
     const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
     const componentWrapper = wrapper.find(DummyComponent);
+    const confirmButton = componentWrapper.find('button#confirm');
 
     before(() => {
       sinon.stub(EventSource, 'confirm');
@@ -128,7 +129,7 @@ describe('<EventProvider />', () => {
       before(() => {
         wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
         EventSource.confirm.resolves();
-        componentWrapper.find('button#confirm').simulate('click');
+        confirmButton.simulate('click');
       });
 
       it('toggles current event\'s confirmation', () => {
@@ -140,7 +141,7 @@ describe('<EventProvider />', () => {
       before(() => {
         wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
         EventSource.confirm.rejects();
-        componentWrapper.find('button#confirm').simulate('click');
+        confirmButton.simulate('click');
       });
 
       it('does not toggle current event\'s confirmation', () => {
@@ -152,6 +153,7 @@ describe('<EventProvider />', () => {
   describe('finishing event', () => {
     const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
     const componentWrapper = wrapper.find(DummyComponent);
+    const finishButton = componentWrapper.find('button#finish');
 
     before(() => {
       sinon.stub(EventSource, 'finish');
@@ -165,12 +167,10 @@ describe('<EventProvider />', () => {
       before(() => {
         wrapper.setState({ currentEvent: Event.build() });
         EventSource.finish.resolves();
-        componentWrapper.find('button#finish').simulate('click');
+        finishButton.simulate('click');
       });
 
       it('removes current event', () => {
-        EventSource.finish.resolves();
-        componentWrapper.find('button#finish').simulate('click');
         expect(componentWrapper.prop('currentEvent')).not.to.exist();
       });
     });
@@ -181,7 +181,7 @@ describe('<EventProvider />', () => {
       before(() => {
         wrapper.setState({ currentEvent: event });
         EventSource.finish.rejects();
-        componentWrapper.find('button#finish').simulate('click');
+        finishButton.simulate('click');
       });
 
       it('does not remove current event', () => {
