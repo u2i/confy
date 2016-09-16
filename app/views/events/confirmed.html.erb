@@ -1,0 +1,10 @@
+<h1>Confirmed events:</h1>
+<ul>
+  <% @confirmed_events.each do |e| %>
+      <li>
+        <%= e[:summary] %>
+        (<%= e[:start][:date_time].strftime('%d/%m/%Y %H:%M') %>)
+        in <%= e[:conference_room][:title] %>
+      </li>
+  <% end %>
+</ul>

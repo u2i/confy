@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GoogleCalendar::EventCreator do
   let(:client) { double(:client) }
-  let(:service) { double(:calendar_service) }
+  let(:service) { double(:calendar_service, batch: nil) }
   let(:credentials) { :credentials }
   let(:email) { 'mail@example.com'.freeze }
   let(:event_creator) { described_class.new(credentials, email) }
@@ -18,12 +18,10 @@ RSpec.describe GoogleCalendar::EventCreator do
     let(:end_date_time) { double('date_time', date_time: end_time) }
     let(:wrapper) { double('wrapper', conference_room: conference_room,
                            start: start_date_time,
-                           end_time: end_date_time) }
+                           end: end_date_time) }
 
     it 'calls calendar_service' do
-      expect(service).to receive(:list_events).with(conference_room.email,
-                                                    time_min: start_time.to_s,
-                                                    time_max: end_time.to_s)
+      expect(service).to receive(:batch)
       event_creator.send(:events_in_span, wrapper)
     end
   end

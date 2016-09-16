@@ -25,7 +25,8 @@ export default class Event extends React.Component {
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
-        <EventDetails event={event} timeFormat={this.props.timeFormat} />
+        <EventDetails event={event}
+                      timeFormat={this.props.timeFormat} />
       </div>
     );
   }

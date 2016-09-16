@@ -2,7 +2,7 @@ module GoogleCalendar
   module EventWrapper
     class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
       attr_accessor :conference_room, :user_email, :google_event
-      FIELDS = %i(id start end description creator attendees summary).freeze
+      FIELDS = %i(id start end description creator attendees summary hangout_link).freeze
 
       def initialize(google_event, params = {})
         super(google_event)
@@ -25,6 +25,20 @@ module GoogleCalendar
         start_time.date_time.present? && end_time.date_time.present?
       end
 
+      def all_day?
+        start.date.present?
+      end
+
+      def in_progress?
+        current_time >= start_time.date_time && current_time <= end_time.date_time
+      end
+
+      def finish
+        end_time.date_time = current_time
+      end
+
+      private
+
       def end_time
         send(:end)
       end
@@ -33,8 +47,8 @@ module GoogleCalendar
         send(:start)
       end
 
-      def all_day?
-        start.date.present?
+      def current_time
+        DateTime.now
       end
     end
   end

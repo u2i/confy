@@ -6,12 +6,26 @@ Rails.application.routes.draw do
   root 'calendar#index'
   get 'oauth2callback' => 'authentication#authenticate'
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
-  get 'conference_rooms/:conference_room_id/events' => 'events#room_index'
-  post 'conference_rooms/:conference_room_id/events/:event_id/confirm' => 'events#confirm', as: :confirmation
+
+  resources :conference_rooms, only: [] do
+    member do
+      get 'events', controller: 'events', action: 'room_index'
+    end
+    resources :events, only: [], param: :event_id do
+      member do
+        post 'confirm'
+        post 'finish'
+      end
+    end
+  end
 
   resources :contacts, only: [:index]
 
-  resources :events, only: [:create, :index, :show, :destroy]
+  resources :events, only: [:create, :index, :show, :destroy] do
+    collection do
+      get 'confirmed'
+    end
+  end
 
   resources :conference_rooms, only: [:show], param: :title
 end

@@ -1,11 +1,12 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 import Event from 'test/factories/Event';
 import EventSource from 'sources/EventSource';
+import moment from 'moment';
 
 describe('<EventProvider />', () => {
   const subscriptionSpy = sinon.spy();
@@ -36,6 +37,10 @@ describe('<EventProvider />', () => {
     EventSource.fetch.restore();
   });
 
+  afterEach(() => {
+    EventSource.fetch.reset();
+  });
+
   it('renders <Component />', () => {
     expect(defaultWrapper).to.have.exactly(1).descendants(DummyComponent);
   });
@@ -57,5 +62,48 @@ describe('<EventProvider />', () => {
   it('fetches events on update', () => {
     defaultWrapper.find(DummyComponent).simulate('update');
     expect(EventSource.fetch).to.have.been.calledOnce();
+  });
+
+  describe('reloading page on next day', () => {
+    const MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
+    context('on 00:00 AM', () => {
+      let clock;
+      before(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      after(() => {
+        clock.restore();
+      });
+
+      it('reloads page on next day', () => {
+        mount(<EventProvider conferenceRoom={conferenceRoom}
+                             component={DummyComponent} {...ownProps} />);
+        EventSource.fetch.reset();
+        clock.tick(MILLISECONDS_IN_DAY);
+        expect(EventSource.fetch).to.have.been.calledOnce();
+      });
+    });
+
+    context('on 01:52 PM', () => {
+      let clock;
+      const timeStamp = moment(0).add(13, 'hours').add(52, 'minutes').valueOf();
+
+      before(() => {
+        clock = sinon.useFakeTimers(timeStamp);
+      });
+
+      after(() => {
+        clock.restore();
+      });
+
+      it('reloads page on next day', () => {
+        mount(<EventProvider conferenceRoom={conferenceRoom}
+                             component={DummyComponent} {...ownProps} />);
+        EventSource.fetch.reset();
+        clock.tick(MILLISECONDS_IN_DAY - timeStamp);
+        expect(EventSource.fetch).to.have.been.calledOnce();
+      });
+    });
   });
 });
