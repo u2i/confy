@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import Calendar from 'rc-calendar';
-import { browserHistory } from 'react-router';
+import bindAll from 'lodash/bindAll';
 import 'rc-calendar/assets/index.css';
 import './side_calendar.scss';
 
@@ -12,17 +12,10 @@ export default class SideCalendar extends React.Component {
 
   constructor(...args) {
     super(...args);
-    moment.updateLocale('en', {
-      week: {
-        dow: 1
-      }
-    });
+    this._setMondayAsFirstWeekDay();
 
     this.state = { value: moment() };
-  }
-
-  disableWeekend(date) {
-    return date.day() == 0 || date.day() == 6;
+    bindAll(this, ['onSelect', 'onChange']);
   }
 
   onSelect(date) {
@@ -34,15 +27,26 @@ export default class SideCalendar extends React.Component {
     this.setState({ value: moment(date) });
   }
 
+  disableWeekend(date) {
+    return date.day() === 0 || date.day() === 6;
+  }
+
   render() {
     return (
       <Calendar value={this.state.value}
                 className="side-calendar"
                 showDateInput={false}
                 disabledDate={this.disableWeekend}
-                onSelect={this.onSelect.bind(this)}
-                onChange={this.onChange.bind(this)}
-      />
+                onSelect={this.onSelect}
+                onChange={this.onChange} />
     );
+  }
+
+  _setMondayAsFirstWeekDay() {
+    moment.updateLocale('en', {
+      week: {
+        dow: 1
+      }
+    });
   }
 }

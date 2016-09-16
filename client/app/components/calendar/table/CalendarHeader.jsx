@@ -11,6 +11,7 @@ const CalendarHeader = ({ dateFormat, selected, day }) => (
 
 CalendarHeader.propTypes = {
   day:        instanceOfMoment.isRequired,
+  selected:   React.PropTypes.bool,
   dateFormat: React.PropTypes.string
 };
 
