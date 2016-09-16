@@ -19,7 +19,7 @@ describe('<EventProvider />', () => {
       }
     }).default;
 
-  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint react/prop-types: 0
+  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint-disable-line react/prop-types
     <div>
       <button id="finish" onClick={onFinish} />
       <button id="confirm" onClick={onConfirm} />
