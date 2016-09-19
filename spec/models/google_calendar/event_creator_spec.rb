@@ -37,8 +37,8 @@ RSpec.describe GoogleCalendar::EventCreator do
     context 'valid params' do
       context 'other events exists' do
         let(:credentials) { :credentials }
-        let(:first_event) { double('Event', summary: 'Summary') }
-        let(:second_event) { double('Event', summary: 'Meeting') }
+        let(:first_event) { {summary: 'Summary'} }
+        let(:second_event) { {summary: 'Meeting'} }
         let(:start_time) { Time.now }
         let(:end_time) { Time.now + 3.hour }
         let!(:room) { create :conference_room }

@@ -2,6 +2,7 @@ module GoogleCalendar
   module EventWrapper
     class Builder
       ACCEPTED_STATUS = 'accepted'.freeze
+      DEFAULT_TIME_ZONE = ENV.fetch('TZ')
 
       # rubocop:disable Metrics/AbcSize
       def initialize(params)
@@ -9,11 +10,13 @@ module GoogleCalendar
         @summary = data[:summary]
         @description = data[:description]
         @user_email = data[:user_email]
+        @time_zone = build_time_zone(data[:time_zone])
         @start_time = build_date_time(data[:start_time])
         @end_time = build_date_time(data[:end_time])
         @conference_room = build_conference_room(data[:conference_room_id])
         @attendees = build_attendees(data[:attendees])
         @location = build_location
+        @recurrence = build_recurrence(data[:recurrence])
       end
       # rubocop:enable Metrics/AbcSize
 
@@ -27,19 +30,25 @@ module GoogleCalendar
 
       private
 
-      attr_accessor :summary, :description, :location, :start_time,
-                    :end_time, :attendees, :conference_room, :user_email, :creator
+      attr_accessor :summary, :description, :location, :start_time, :end_time, :attendees,
+                    :conference_room, :user_email, :creator, :time_zone, :recurrence
+
+      def build_time_zone(time_zone)
+        time_zone ? time_zone : DEFAULT_TIME_ZONE
+      end
 
       def build_date_time(date_time)
-        Google::Apis::CalendarV3::EventDateTime.new(date_time: format_date_time(date_time)) if date_time
+        if date_time
+          Google::Apis::CalendarV3::EventDateTime.new(time_zone: time_zone, date_time: format_date_time(date_time))
+        end
       end
 
       def format_date_time(time)
-        DateTime.parse("#{time} #{time_zone}")
+        DateTime.parse("#{time} #{local_time_zone}")
       end
 
-      def time_zone
-        @time_zone ||= Time.now.getlocal.zone
+      def local_time_zone
+        @local_time_zone ||= Time.now.getlocal.zone
       end
 
       def build_attendees(attendees)
@@ -70,6 +79,17 @@ module GoogleCalendar
         conference_room.try(:title) || ''
       end
 
+      def build_recurrence(recurrence)
+        case recurrence
+          when 'none'
+            []
+          when 'daily', 'weekly', 'monthly'
+            ["RRULE:FREQ=#{recurrence.upcase}"]
+          when 'every_other_week'
+            ['RRULE:FREQ=WEEKLY;INTERVAL=2']
+        end
+      end
+
       def google_event
         Google::Apis::CalendarV3::Event.new.tap do |event|
           event.summary = summary
@@ -78,6 +98,7 @@ module GoogleCalendar
           event.start = start_time
           event.end = end_time
           event.attendees = attendees
+          event.recurrence = recurrence
         end
       end
 
