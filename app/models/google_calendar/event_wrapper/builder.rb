@@ -31,11 +31,7 @@ module GoogleCalendar
                     :end_time, :attendees, :conference_room, :user_email, :creator
 
       def build_date_time(date_time)
-        Google::Apis::CalendarV3::EventDateTime.new(date_time: format_date_time(date_time)) if date_time
-      end
-
-      def format_date_time(time)
-        DateTime.parse("#{time} #{time_zone}")
+        Google::Apis::CalendarV3::EventDateTime.new(date_time: date_time)
       end
 
       def time_zone
