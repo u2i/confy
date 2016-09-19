@@ -4,6 +4,7 @@ import EventDestroyer from './EventDestroyer';
 import EventDetails from './details/EventDetails';
 import EventAdditionalDetails from './details/EventAdditionalDetails';
 import classNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
 import { If } from 'react-if';
 import './event.scss';
 
@@ -55,7 +56,7 @@ export default class Event extends React.Component {
     return classNames(
       'event',
       {
-        'participating': this._userParticipatesInEvent(),
+        participating: this._userParticipatesInEvent(),
         expanded: this.state.expanded
       }
     );
@@ -109,6 +110,7 @@ export default class Event extends React.Component {
   }
 }
 
+module.exports = enhanceWithClickOutside(Event);
 
 Event.contextTypes = {
   userEmail: React.PropTypes.string

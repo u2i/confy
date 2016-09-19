@@ -8,9 +8,9 @@ export default class EventExpandableDescription extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { fullDescription: false };
+    this.state = { showFullDescription: false };
 
-    this._handleDescriptionLength = this._handleDescriptionLength.bind(this);
+    this._toggleFullDescription = this._toggleFullDescription.bind(this);
   }
 
   render() {
@@ -19,14 +19,14 @@ export default class EventExpandableDescription extends React.Component {
         <div>
           <small>Description:&nbsp;</small>
           <p style={{ display: 'inline' }}>{this._descriptionContent()}</p>
-          <a onClick={this._handleDescriptionLength}>{this._expansionMessage()}</a>
+          <a onClick={this._toggleFullDescription}>{this._expansionMessage()}</a>
         </div>
       </div>
     );
   }
 
   _descriptionContent() {
-    if (this.state.fullDescription) {
+    if (this.state.showFullDescription) {
       return this._fullDescription();
     }
     return this._shortDescription();
@@ -40,16 +40,12 @@ export default class EventExpandableDescription extends React.Component {
     return `${this.props.description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
   }
 
-  _handleDescriptionLength(event) {
+  _toggleFullDescription(event) {
     event.stopPropagation();
-    this._changeDescriptionLength();
-  }
-
-  _changeDescriptionLength() {
-    this.setState({ fullDescription: !this.state.fullDescription });
+    this.setState({ showFullDescription: !this.state.showFullDescription });
   }
 
   _expansionMessage() {
-    return this.state.fullDescription ? ' Less' : ' More';
+    return this.state.showFullDescription ? ' Less' : ' More';
   }
 }
