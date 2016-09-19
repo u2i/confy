@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import { Modal } from 'react-bootstrap';
 import moment from 'moment';
 import defaults from 'lodash/defaults';

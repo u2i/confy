@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
 import { dateParam, nextWeek, previousWeek } from 'helpers/DateHelper';

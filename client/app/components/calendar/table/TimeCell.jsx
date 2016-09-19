@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import { If } from 'react-if';
 import { formatTime } from 'helpers/DateHelper';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { If } from 'react-if';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import style from './calendar.scss';
 import { isToday, minutesFromMidnight } from 'helpers/DateHelper';
 

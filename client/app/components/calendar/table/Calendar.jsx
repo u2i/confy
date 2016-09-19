@@ -6,7 +6,7 @@ import map from 'lodash/fp/map';
 import find from 'lodash/fp/find';
 import ReactDOM from 'react-dom';
 import React, { PropTypes } from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import { Table } from 'react-bootstrap';
 import { loadFilters, saveFilters } from 'helpers/FiltersHelper';
 import EventSchema from 'schemas/EventSchema';

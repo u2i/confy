@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import requiredIf from 'react-required-if';
 import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';

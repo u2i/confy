@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 import TimeCell from './TimeCell';
