@@ -2,18 +2,19 @@ import React from 'react';
 import moment from 'moment';
 import Calendar from 'rc-calendar';
 import bindAll from 'lodash/bindAll';
+import instanceOfMoment from 'proptypes/moment';
 import 'rc-calendar/assets/index.css';
 import './side_calendar.scss';
 
 export default class SideCalendar extends React.Component {
   static contextTypes = {
-    router: React.PropTypes.object
+    router: React.PropTypes.object,
+    date: instanceOfMoment.isRequired
   };
 
   constructor(...args) {
     super(...args);
-    this._setMondayAsFirstWeekDay();
-    this.state = { value: moment() };
+    this.state = { value: moment(this.props.date) };
 
     bindAll(this, ['onSelect', 'updateSelectedDate']);
   }
@@ -40,14 +41,6 @@ export default class SideCalendar extends React.Component {
                 onSelect={this.onSelect}
                 onChange={this.updateSelectedDate} />
     );
-  }
-
-  _setMondayAsFirstWeekDay() {
-    moment.updateLocale('en', {
-      week: {
-        dow: 1
-      }
-    });
   }
 
   _routeToSelectedDate(date) {

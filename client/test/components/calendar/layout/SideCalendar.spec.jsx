@@ -8,7 +8,8 @@ import moment from 'moment';
 describe('<SideCalendar />', () => {
   const spy = sinon.spy();
   const routerContext = { router: { push: spy } };
-  const wrapper = shallow(<SideCalendar />, { context: routerContext });
+  const initialDate = moment();
+  const wrapper = shallow(<SideCalendar date={initialDate} />, { context: routerContext });
   const stringDate = '2015-01-01';
   const date = moment(stringDate);
 
