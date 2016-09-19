@@ -51,12 +51,8 @@ module GoogleCalendar
 
     def events_in_span(wrapper)
       return [] unless wrapper.conference_room
-      events = calendar_service.list_events(
-        wrapper.conference_room.email,
-        time_min: wrapper.start.date_time.to_s,
-        time_max: wrapper.end.date_time.to_s
-      )
-      events ? events.items : []
+      event_interval = TimeInterval.new(wrapper.start.date_time, wrapper.end.date_time).to_rfc3339
+      GoogleCalendar::EventFinder.new(credentials, user_email).by_room(event_interval, wrapper.conference_room.id)
     end
 
     attr_accessor :credentials, :calendar_service, :user_email

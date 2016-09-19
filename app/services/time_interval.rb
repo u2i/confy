@@ -10,6 +10,10 @@ class TimeInterval
       TimeInterval.new(date.at_beginning_of_day, date.at_end_of_day)
     end
 
+    def since_first_confirmed_event
+      TimeInterval.new(Time.at(Event.where(confirmed: true).order(:updated_at).first.updated_at), Time.now)
+    end
+
     private
 
     def week_start(date)

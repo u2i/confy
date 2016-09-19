@@ -164,8 +164,8 @@ describe GoogleCalendar::EventFinder do
     let(:id1) { 'id1' }
     let(:id2) { 'id2' }
     let(:confirmed_event_ids) { [id1] }
-    let(:confirmed_event) { double('event1', id: id1) }
-    let(:unconfirmed_event) { double('event2', id: id2) }
+    let(:confirmed_event) {{ id: id1 }}
+    let(:unconfirmed_event) {{ id: id2 }}
 
     before do
       allow(Event).to receive(:confirmed_event_ids) { [id1] }

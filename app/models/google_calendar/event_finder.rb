@@ -17,7 +17,7 @@ module GoogleCalendar
     def confirmed_events(time_interval)
       all_google_events = all(time_interval)
       confirmed_ids = Event.confirmed_event_ids
-      all_google_events.select { |event| confirmed_ids.include?(event.id) }
+      all_google_events.select { |event| confirmed_ids.include?(event[:id]) }
     end
 
     def by_room(time_interval, conference_room_ids, with_confirmation = false)
