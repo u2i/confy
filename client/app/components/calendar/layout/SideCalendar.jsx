@@ -8,7 +8,10 @@ import './side_calendar.scss';
 
 export default class SideCalendar extends React.Component {
   static contextTypes = {
-    router: React.PropTypes.object,
+    router: React.PropTypes.object
+  };
+
+  static propTypes = {
     date: instanceOfMoment.isRequired
   };
 
