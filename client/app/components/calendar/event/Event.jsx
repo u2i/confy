@@ -4,7 +4,6 @@ import EventDestroyer from './EventDestroyer';
 import EventDetails from './details/EventDetails';
 import EventAdditionalDetails from './details/EventAdditionalDetails';
 import classNames from 'classnames';
-import enhanceWithClickOutside from 'react-click-outside';
 import { If } from 'react-if';
 import './event.scss';
 
@@ -32,11 +31,11 @@ export default class Event extends React.Component {
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event participating' : 'event';
     return (
       <div className={this._className()}
            style={this._eventStyle()}
-           onClick={this._toggleDetails}>        <EventDestroyer onDelete={this.props.onDelete}
+           onClick={this._toggleDetails}>
+        <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
         <EventDetails event={event}
@@ -56,7 +55,7 @@ export default class Event extends React.Component {
     return classNames(
       'event',
       {
-        'not-participating': !this._userParticipatesInEvent(),
+        'participating': this._userParticipatesInEvent(),
         expanded: this.state.expanded
       }
     );
@@ -110,7 +109,6 @@ export default class Event extends React.Component {
   }
 }
 
-module.exports = enhanceWithClickOutside(Event);
 
 Event.contextTypes = {
   userEmail: React.PropTypes.string
