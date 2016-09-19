@@ -60,16 +60,16 @@ describe('<Event />', () => {
   });
 
   context('currentUserEmail is not present in attendees', () => {
-    it("renders div with '.event .not-participating' className", () => {
+    it("does not div with '.event .-participating' className", () => {
       const wrapper = shallowEvent(EventFactory.build({ attendees: [attendee2] }));
-      expect(wrapper.find('.event .not-participating')).to.exist();
+      expect(wrapper.find('.event .participating')).not.to.exist();
     });
   });
 
   context('currentUserEmail is present in attendees', () => {
-    it("renders div with '.event' className", () => {
+    it("renders div with '.event .participating' className", () => {
       const wrapper = shallowEvent(EventFactory.build({ attendees: [attendee1, attendee2] }));
-      expect(wrapper.find('.event .not-participating')).to.not.exist();
+      expect(wrapper.find('.event .participating')).to.exist();
     });
   });
 
