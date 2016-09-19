@@ -15,9 +15,12 @@
     justify-content: space-around;
     margin-bottom: 10px;
     margin-top: 10px;
+    flex-wrap: wrap;
 
     button {
-      width: 30%;
+      margin: 5px 10px;
+      max-width: 30%;
+      flex-grow: 1;
     }
   }
 }

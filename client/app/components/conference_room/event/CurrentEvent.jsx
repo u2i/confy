@@ -52,7 +52,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish 
     {event || nextEventStart ? <TimeProgressContainer event={event}
                                                       nextEventStart={nextEventStart}
                                                       onCompleted={onCompleted} /> : ''}
-    <Controls event={event} onConfirm={onConfirm} onFinish={onFinish} />
+    <Controls event={event} onConfirm={onConfirm} onFinish={onFinish} nextEventStart={nextEventStart} />
   </div>
 );
 
