@@ -85,7 +85,7 @@ module GoogleCalendar
             []
           when 'daily', 'weekly', 'monthly'
             ["RRULE:FREQ=#{recurrence.upcase}"]
-          when 'every_other_week'
+          when 'every other week'
             ['RRULE:FREQ=WEEKLY;INTERVAL=2']
         end
       end

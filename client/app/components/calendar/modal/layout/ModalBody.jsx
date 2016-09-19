@@ -61,8 +61,8 @@ export default class ModalBody extends React.Component {
     this.props.updateParam('attendees', e);
   }
 
-  handleRecurrenceChange(e) {
-    this.props.updateParam('recurrence', e.target.value);
+  handleRecurrenceChange(option) {
+    this.props.updateParam('recurrence', option);
   }
 
   render() {
