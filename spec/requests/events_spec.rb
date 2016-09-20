@@ -52,11 +52,23 @@ RSpec.describe 'Events', type: :request do
     end
 
     context 'successfully added new event' do
+      let(:event_id) { 'id1' }
+      before do
+        allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { { id: event_id } }
+      end
 
       it 'repond with 200' do
-        allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { {} }
         post events_path, params: { event: attributes_for(:event, conference_room_id: room.id) }
         expect(response).to have_http_status(:created)
+      end
+
+      context 'with event.confimed' do
+        it 'confirms event' do
+          expect do
+            post events_path, params: { event: attributes_for(:event, conference_room_id: room.id, confirmed: true) }
+          end.to change { Event.confirmed.count }.by(1)
+          expect(Event.confirmed.find_by_event_id(event_id)).to be_present
+        end
       end
     end
   end
