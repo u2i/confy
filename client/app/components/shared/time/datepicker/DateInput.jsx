@@ -17,6 +17,7 @@ export default class DateInput extends React.Component {
     value: instanceOf(Date),
     minDate: instanceOf(Date),
     onChange: func,
+    onError: func,
     className: string
   };
 
@@ -34,8 +35,8 @@ export default class DateInput extends React.Component {
 
   render() {
     return (<input type="text"
-                  className={`date form-control ${this.props.className}`}
-                  ref={ref => this.input = $(ref)} />);
+                   className={`date form-control ${this.props.className}`}
+                   ref={ref => this.input = $(ref)} />);
   }
 
   _initPicker() {
@@ -46,10 +47,10 @@ export default class DateInput extends React.Component {
 
   _bindChangeListener() {
     this.input.datepicker().on('changeDate', () => {
-      if (this._isValid() && this.props.onChange) {
-        this.props.onChange(this.input.datepicker('getDate'));
+      if (this._isValid()) {
+        if (this.props.onChange) this.props.onChange(this.input.datepicker('getDate'));
       } else {
-        this.props.onChange();
+        if (this.prop.onError) this.props.onError();
       }
     });
   }

@@ -88,7 +88,6 @@ export function sameDay(date, other) {
   return moment(date).day() === moment(other).day();
 }
 
-
 export function roundedTime(date, granularity) {
   const diff = date.unix() % granularity;
   if (diff > 60) {

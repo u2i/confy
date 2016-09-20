@@ -15,7 +15,8 @@ const INITIAL_STATE = {
 
 export default class DateRangePicker extends React.Component {
   static propTypes = {
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    onError: React.PropTypes.func
   };
 
   constructor(...args) {
@@ -48,27 +49,35 @@ export default class DateRangePicker extends React.Component {
     this.setState({ end: addDateAndTime(date, time) });
   }
 
+  handleError(key, error) {
+    if (this.props.onError) this.props.onError(key, error);
+  }
+
   render() {
     return (
       <div className="datetimepicker form-inline">
         <DateInput className="start"
                    value={this.state.start.toDate()}
                    onChange={this.handleStartDateChange}
+                   onError={() => this.handleError('start_time', 'Invalid date')}
                    minDate={this.state.start.toDate()} />
         <TimeInput className="start"
                    value={this.state.start.toDate()}
                    onChange={this.handleStartTimeChange}
+                   onError={() => this.handleError('start_time', 'Invalid time')}
                    step={TIME_STEP_IN_SECONDS / 60} />
         &nbsp;to&nbsp;
         <TimeInput className="end"
                    value={this.state.end.toDate()}
                    onChange={this.handleEndTimeChange}
+                   onError={() => this.handleError('end_time', 'Invalid time')}
                    showDuration
                    minTime={this.state.start.toDate()}
                    step={TIME_STEP_IN_SECONDS / 60} />
         <DateInput className="end"
                    value={this.state.end.toDate()}
                    onChange={this.handleEndDateChange}
+                   onError={() => this.handleError('end_time', 'Invalid date')}
                    minDate={this.state.start.toDate()} />
       </div>
     );

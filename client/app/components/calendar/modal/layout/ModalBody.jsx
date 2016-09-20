@@ -17,7 +17,8 @@ export default class ModalBody extends React.Component {
     selectedLocation: number,
     errors: object,
     showErrorMessage: bool,
-    onGuestsError: func.isRequired
+    onGuestsError: func.isRequired,
+    onDateError: func
   };
 
   static defaultProps = {
@@ -63,7 +64,8 @@ export default class ModalBody extends React.Component {
           <FormDateField
             label={"When"}
             onChange={this.handleTimeChange}
-            errors={this.props.errors.start_time || []}
+            onError={this.props.onDateError}
+            errors={(this.props.errors.start_time || []).concat(this.props.errors.end_time)}
             required />
           <FormLocationField
             available={this.props.availableLocations}

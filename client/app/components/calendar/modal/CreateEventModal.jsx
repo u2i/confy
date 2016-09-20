@@ -47,7 +47,7 @@ export default class CreateEventModal extends React.Component {
     this.state = INITIAL_FORM_STATE;
 
     bindAll(this,
-      ['saveChanges', 'updateParam', 'handleCloseModal']);
+      ['saveChanges', 'updateParam', 'handleCloseModal', 'handleDateError']);
   }
 
   componentDidMount() {
@@ -63,6 +63,10 @@ export default class CreateEventModal extends React.Component {
   handleCloseModal() {
     this._clearForm();
     this.props.closeModal();
+  }
+
+  handleDateError(key, message) {
+    this._addError({ key, message });
   }
 
   saveChanges() {
@@ -112,7 +116,8 @@ export default class CreateEventModal extends React.Component {
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
-          onGuestsError={this.props.onError} />
+          onGuestsError={this.props.onError}
+          onDateError={this.handleDateError} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

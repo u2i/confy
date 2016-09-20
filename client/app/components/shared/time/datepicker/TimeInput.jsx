@@ -11,6 +11,7 @@ export default class TimeInput extends React.Component {
   static propTypes = {
     className: string,
     onChange: func,
+    onError: func,
     value: instanceOf(Date),
     minTime: instanceOf(Date),
     showDuration: bool,
@@ -51,7 +52,7 @@ export default class TimeInput extends React.Component {
       if (this.props.onChange) this.props.onChange(this.input.timepicker('getTime'));
     });
     this.input.on('timeFormatError', () => {
-      this.props.onChange();
+      if (this.props.onError) this.props.onError();
     });
   }
 
