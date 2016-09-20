@@ -1,8 +1,9 @@
 import React from 'react';
 import { If, Else } from 'react-if';
 import { instanceOfMoment } from 'proptypes/moment';
-import { Button } from 'react-bootstrap';
+
 import NewEventControls from './new_event/NewEventControls';
+import StartButton from './StartButton';
 
 export default class NoEventControls extends React.Component {
   static propTypes = {
@@ -32,9 +33,7 @@ export default class NoEventControls extends React.Component {
                           onCreate={this.props.onCreate}
                           onCancel={this.handleCancelClick} />
         <Else>
-          <div className="event-controls">
-            <Button bsStyle="primary" bsSize="large" onClick={this.handleStartClick}>Start</Button>
-          </div>
+          <StartButton onClick={this.handleStartClick} />
         </Else>
       </If>
     );
