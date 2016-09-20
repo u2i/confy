@@ -8,8 +8,6 @@ import enhanceWithClickOutside from 'react-click-outside';
 import { If } from 'react-if';
 import './event.scss';
 
-const onEventClick = (event) => event.stopPropagation();
-
 export default class Event extends React.Component {
   static propTypes = {
     event: EventSchema.except('creator').isRequired,
