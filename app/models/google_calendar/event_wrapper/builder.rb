@@ -81,12 +81,12 @@ module GoogleCalendar
 
       def build_recurrence(recurrence)
         case recurrence
-          when 'none'
-            []
-          when 'daily', 'weekly', 'monthly'
-            ["RRULE:FREQ=#{recurrence.upcase}"]
-          when 'every other week'
-            ['RRULE:FREQ=WEEKLY;INTERVAL=2']
+        when 'none'
+          []
+        when 'daily', 'weekly', 'monthly'
+          ["RRULE:FREQ=#{recurrence.upcase}"]
+        when 'every other week'
+          ['RRULE:FREQ=WEEKLY;INTERVAL=2']
         end
       end
 
