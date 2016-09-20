@@ -104,7 +104,7 @@ describe('<EventWrapper />', () => {
 
     it('calls onCellClick with startTime and endTime', () => {
       wrapper.find('td').simulate('click');
-      expect(onCellClick.calledWith(startTime, endTime)).to.eq(true)
+      expect(onCellClick.calledWith(startTime, endTime)).to.eq(true);
     });
   });
 });
