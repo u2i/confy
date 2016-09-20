@@ -1,7 +1,7 @@
 import assign from 'lodash/assign';
 import React from 'react';
 
-const { string, func, instanceOf, bool } = React.PropTypes;
+const { string, func, instanceOf, bool, number } = React.PropTypes;
 
 const PICKER_OPTIONS = {
   timeFormat: 'G:i'
@@ -13,7 +13,8 @@ export default class TimeInput extends React.Component {
     onChange: func,
     value: instanceOf(Date),
     minTime: instanceOf(Date),
-    showDuration: bool
+    showDuration: bool,
+    stepInMinutes: number
   };
 
   componentDidMount() {
@@ -40,7 +41,8 @@ export default class TimeInput extends React.Component {
     this.input.timepicker(assign({}, PICKER_OPTIONS, {
       showDuration: this.props.showDuration,
       scrollDefault: this.props.value,
-      minTime: this.props.minTime
+      minTime: this.props.minTime,
+      step: this.props.stepInMinutes
     }));
   }
 

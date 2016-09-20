@@ -6,7 +6,8 @@ import TimeInput from './TimeInput';
 
 import './datepicker.scss';
 
-const INITIAL_TIME = roundedTime(moment(), 60 * 30);
+const TIME_STEP_IN_SECONDS = 30 * 60;
+const INITIAL_TIME = roundedTime(moment(), TIME_STEP_IN_SECONDS);
 const INITIAL_STATE = {
   start: INITIAL_TIME,
   end: INITIAL_TIME.clone().add(1, 'hour')
@@ -56,13 +57,15 @@ export default class DateRangePicker extends React.Component {
                    minDate={this.state.start.toDate()} />
         <TimeInput className="start"
                    value={this.state.start.toDate()}
-                   onChange={this.handleStartTimeChange} />
+                   onChange={this.handleStartTimeChange}
+                   step={TIME_STEP_IN_SECONDS / 60} />
         &nbsp;to&nbsp;
         <TimeInput className="end"
                    value={this.state.end.toDate()}
                    onChange={this.handleEndTimeChange}
                    showDuration
-                   minTime={this.state.start.toDate()} />
+                   minTime={this.state.start.toDate()}
+                   step={TIME_STEP_IN_SECONDS / 60} />
         <DateInput className="end"
                    value={this.state.end.toDate()}
                    onChange={this.handleEndDateChange}
