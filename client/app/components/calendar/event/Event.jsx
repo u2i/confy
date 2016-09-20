@@ -27,7 +27,10 @@ export default class Event extends React.Component {
     this._toggleDetails = this._toggleDetails.bind(this);
   }
 
-  handleClickOutside() {
+  handleClickOutside(event) {
+    if (this.state.expanded) {
+      event.stopPropagation();
+    }
     this.setState({ expanded: false });
   }
 
