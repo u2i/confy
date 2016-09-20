@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { ControlLabel } from 'react-bootstrap';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import proxyquire from 'proxyquire';
+import RequiredFieldLabel from 'components/calendar/modal/layout/body/RequiredFieldLabel';
 
 const DummyDatePicker = ({ onChange }) => <input onChange={onChange} id="picker" />;
 
@@ -20,13 +20,13 @@ describe('<FormDateField />', () => {
   it('renders <ControlLabel />', () => {
     const wrapper =
       shallow(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    expect(wrapper.find(ControlLabel)).to.exist();
+    expect(wrapper.find(RequiredFieldLabel)).to.exist();
   });
 
   it('renders <ControlLabel /> with label prop as text', () => {
     const wrapper =
       mount(<FormDateField label={"DateLabel"} onChange={onChangeSpy} />);
-    expect(wrapper.find(ControlLabel)).to.have.text('DateLabel:');
+    expect(wrapper.find(RequiredFieldLabel)).to.have.text('DateLabel:');
   });
 
   it('renders <DateRangePicker />', () => {

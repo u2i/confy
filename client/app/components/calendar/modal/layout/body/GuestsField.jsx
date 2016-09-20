@@ -2,6 +2,7 @@ import React from 'react';
 import { FormGroup, ControlLabel } from 'react-bootstrap';
 import Typeahead from 'react-bootstrap-typeahead';
 import ContactSource from 'sources/ContactSource';
+import RequiredFieldLabel from './RequiredFieldLabel';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Token.css';
@@ -30,7 +31,7 @@ export default class GuestsField extends React.Component {
   render() {
     return (
       <FormGroup>
-        <ControlLabel>Guests:{this.props.required ? '*' : ''}</ControlLabel>
+        <RequiredFieldLabel label="Guests" required={this.props.required} />
         <Typeahead
           multiple
           allowNew

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import RequiredFieldLabel from './RequiredFieldLabel';
 import { If } from 'react-if';
 
 import RoomSelectGroup from './RoomSelectGroup';
@@ -25,10 +26,10 @@ export default class FormLocationField extends React.Component {
   };
 
   render() {
-    const { available, unavailable, selected, onChange, errors } = this.props;
+    const { available, unavailable, selected, onChange, errors, required } = this.props;
     return (
       <FormGroup>
-        <ControlLabel>Location:{this.props.required ? '*' : ''}</ControlLabel>
+        <RequiredFieldLabel label="Location" required={required} />
         <FormControl componentClass="select"
                      onChange={onChange}
                      name="location"
