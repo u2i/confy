@@ -64,7 +64,9 @@ export default class EventDestroyer extends React.Component {
     return false;
   }
 
-  _handleOnClick() {
+  _handleOnClick(event) {
+    event.stopPropagation();
+
     if (!this.props.disabled) {
       return this._handleOnClickEnabled();
     }

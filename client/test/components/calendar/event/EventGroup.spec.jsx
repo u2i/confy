@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import EventFactory from 'test/factories/Event';
@@ -14,7 +14,7 @@ describe('<EventGroup />', () => {
 
   it('renders correctly', () => {
     const event = EventFactory.build();
-    const wrapper = shallow(
+    const wrapper = mount(
       <EventGroup
         events={[event]}
         containerHeight={containerHeight}
@@ -30,7 +30,7 @@ describe('<EventGroup />', () => {
 
   it('renders multiple events', () => {
     const events = [EventFactory.build(), EventFactory.build()];
-    const wrapper = shallow(
+    const wrapper = mount(
       <EventGroup
         events={events}
         containerHeight={containerHeight}
