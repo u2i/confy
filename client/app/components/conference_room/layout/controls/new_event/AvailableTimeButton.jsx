@@ -1,4 +1,3 @@
-import moment from 'moment';
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
@@ -6,13 +5,14 @@ import { Button } from 'react-bootstrap';
 const AvailableTimeButton = ({ onClick, nextEventStart }) => (
   <Button bsStyle="primary"
           bsSize="large"
-          onClick={() => {if (onClick) onClick(nextEventStart)}}>
+          onClick={() => { if (onClick) onClick(nextEventStart); }}>
     Until next event
   </Button>
 );
 
 AvailableTimeButton.propTypes = {
-  nextEventStart: instanceOfMoment.isRequired
+  nextEventStart: instanceOfMoment.isRequired,
+  onClick: React.PropTypes.func
 };
 
 export default AvailableTimeButton;

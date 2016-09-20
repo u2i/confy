@@ -7,7 +7,6 @@ import TimeChoiceButton from 'components/conference_room/layout/controls/new_eve
 import AvailableTimeButton from 'components/conference_room/layout/controls/new_event/AvailableTimeButton';
 
 describe('<NewEventControls />', () => {
-
   it('renders time buttons', () => {
     const wrapper = shallow(<NewEventControls />);
     expect(wrapper.find(TimeChoiceButton)).to.have.lengthOf(3);

@@ -7,7 +7,6 @@ import StartButton from 'components/conference_room/layout/controls/StartButton'
 import NewEventControls from 'components/conference_room/layout/controls/new_event/NewEventControls';
 
 describe('<NoEventControls />', () => {
-
   it('renders <StartButton /> by default', () => {
     const wrapper = mount(<NoEventControls />);
     expect(wrapper).to.have.exactly(1).descendants(StartButton);
@@ -43,4 +42,4 @@ describe('<NoEventControls />', () => {
       expect(wrapper).not.to.have.descendants(NewEventControls);
     });
   });
-}); 
+});

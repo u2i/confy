@@ -1,5 +1,4 @@
 import React from 'react';
-import { instanceOfMoment } from 'proptypes/moment';
 import { Row, Col, Jumbotron } from 'react-bootstrap';
 import texts from '../texts/texts';
 import NoEventControls from 'components/conference_room/layout/controls/NoEventControls';

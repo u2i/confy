@@ -66,7 +66,7 @@ export default class EventProvider extends React.Component {
     };
 
     EventSource.create(event)
-      .then(({ data }) => this.setState({ currentEvent: tap(data, (e) => e.attendees = []) }))
+      .then(({ data }) => this.setState({ currentEvent: tap(data, (e) => e.attendees = []) }));
   }
 
   setEndOfDayTimeout() {

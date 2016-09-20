@@ -204,7 +204,7 @@ describe('<EventProvider />', () => {
       clock = sinon.useFakeTimers(currentTime.valueOf());
       expectedEvent = {
         start_time: currentTime.format(),
-          end_time: endTime.format(),
+        end_time: endTime.format(),
         confirmed: true,
         conference_room_id: conferenceRoom.id,
         summary: 'Anonymous event created by Confy'

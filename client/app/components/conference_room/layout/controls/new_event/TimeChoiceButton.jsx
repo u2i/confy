@@ -26,7 +26,7 @@ export default class TimeChoiceButton extends React.Component {
 
   handleClick() {
     if (this.props.onClick) {
-      this.props.onClick(moment().add(this.props.duration))
+      this.props.onClick(moment().add(this.props.duration));
     }
   }
 
