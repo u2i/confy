@@ -147,25 +147,25 @@ describe('DateHelper', () => {
     describe('#humanizeTime', () => {
       context('above 1 hour', () => {
         it('returns string representation of time', () => {
-          expect(DateHelper.humanizeTime(moment('12.12.2013 01:33'))).to.equal('1 hour and 33 minutes');
+          expect(DateHelper.humanizeTime(moment('2013-12-12 01:33'))).to.equal('1 hour and 33 minutes');
         });
 
         context('no minutes', () => {
           it('does not contain minutes', () => {
-            expect(DateHelper.humanizeTime(moment('12.12.2013 02:00'))).to.equal('2 hours');
+            expect(DateHelper.humanizeTime(moment('2013-12-12 02:00'))).to.equal('2 hours');
           });
         });
       });
 
       context('above 1 minute', () => {
         it('returns string representation of time', () => {
-          expect(DateHelper.humanizeTime(moment('12.12.2013 00:13'))).to.equal('13 minutes');
+          expect(DateHelper.humanizeTime(moment('2013-12-12 00:13'))).to.equal('13 minutes');
         });
       });
 
       context('under 1 minute', () => {
         it('returns string representation of time', () => {
-          expect(DateHelper.humanizeTime(moment('12.12.2013 00:00:13'))).to.equal('13 seconds');
+          expect(DateHelper.humanizeTime(moment('2013-12-12 00:00:13'))).to.equal('13 seconds');
         });
       });
     });
