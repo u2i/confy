@@ -2,6 +2,10 @@ import React, { PropTypes } from 'react';
 import EventSchema from 'schemas/EventSchema';
 import EventDestroyer from './EventDestroyer';
 import EventDetails from './details/EventDetails';
+import EventAdditionalDetails from './details/EventAdditionalDetails';
+import classNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
+import { If } from 'react-if';
 import './event.scss';
 
 export default class Event extends React.Component {
@@ -14,18 +18,47 @@ export default class Event extends React.Component {
     onDelete: PropTypes.func.isRequired
   };
 
+  constructor(...args) {
+    super(...args);
+    this.state = { expanded: false };
+
+    this._toggleDetails = this._toggleDetails.bind(this);
+  }
+
+  handleClickOutside() {
+    this.setState({ expanded: false });
+  }
+
   render() {
     const event = this.props.event;
     const creator = event.creator || { self: false };
-    const eventClassName = this._userParticipatesInEvent() ? 'event participating' : 'event';
     return (
-      <div className={eventClassName} style={this._eventStyle()}>
+      <div className={this._className()}
+           style={this._eventStyle()}
+           onClick={this._toggleDetails}>
         <EventDestroyer onDelete={this.props.onDelete}
                         disabled={!creator.self}
                         event={this.props.event} />
         <EventDetails event={event}
                       timeFormat={this.props.timeFormat} />
+        <If condition={this.state.expanded}>
+          <EventAdditionalDetails event={event} />
+        </If>
       </div>
+    );
+  }
+
+  _toggleDetails() {
+    this.setState({ expanded: !this.state.expanded });
+  }
+
+  _className() {
+    return classNames(
+      'event',
+      {
+        participating: this._userParticipatesInEvent(),
+        expanded: this.state.expanded
+      }
     );
   }
 
@@ -45,7 +78,6 @@ export default class Event extends React.Component {
   _notDeclined(attendee) {
     return attendee.response_status !== 'declined';
   }
-
   _userIsCreator() {
     return this.props.event.creator && this.props.event.creator.email === this.context.userEmail;
   }
@@ -77,6 +109,8 @@ export default class Event extends React.Component {
     };
   }
 }
+
+module.exports = enhanceWithClickOutside(Event);
 
 Event.contextTypes = {
   userEmail: React.PropTypes.string

@@ -5,7 +5,6 @@ import EventTime from './EventTime';
 import EventSummary from './EventSummary';
 import EventCreator from './EventCreator';
 import EventLocation from './EventLocation';
-import EventHangoutLink from './EventHangoutLink';
 
 import '../event.scss';
 
@@ -15,7 +14,6 @@ const EventDetails = ({ event, timeFormat }) => (
     <EventSummary event={event} />
     <EventCreator event={event} />
     <EventLocation event={event} />
-    <EventHangoutLink event={event} />
   </div>
 );
 
