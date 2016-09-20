@@ -10,7 +10,7 @@ const FormDateField = ({ label, onChange, onError, errors, required }) => (
   <FormGroup>
     <RequiredFieldLabel label={label} required={required} />
     <DateRangePicker onChange={onChange} onError={onError} errors={errors} />
-    <If condition={errors != null}>
+    <If condition={errors && errors.length > 0}>
       <div className="text-danger">{errors[0]}</div>
     </If>
   </FormGroup>
