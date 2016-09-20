@@ -19,10 +19,12 @@ describe('<EventProvider />', () => {
       }
     }).default;
 
-  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint-disable-line react/prop-types
+  const endTime = moment().add(30, 'minutes');
+  const DummyComponent = ({ onFinish, onConfirm, onCreate }) => ( // eslint-disable-line react/prop-types
     <div>
       <button id="finish" onClick={onFinish} />
       <button id="confirm" onClick={onConfirm} />
+      <button id="create" onClick={() => onCreate(endTime)} />
     </div>
   );
 
@@ -187,6 +189,38 @@ describe('<EventProvider />', () => {
       it('does not remove current event', () => {
         expect(componentWrapper.prop('currentEvent')).to.equal(event);
       });
+    });
+  });
+
+  describe('creating event', () => {
+    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const createButton = wrapper.find(DummyComponent).find('button#create');
+    let clock;
+    let currentTime;
+    let expectedEvent;
+
+    before(() => {
+      currentTime = moment();
+      clock = sinon.useFakeTimers(currentTime.valueOf());
+      expectedEvent = {
+        start_time: currentTime.format(),
+          end_time: endTime.format(),
+        confirmed: true,
+        conference_room_id: conferenceRoom.id,
+        summary: 'Anonymous event created by Confy'
+      };
+      sinon.stub(EventSource, 'create').resolves();
+      createButton.simulate('click');
+    });
+
+    after(() => {
+      EventSource.create.restore();
+      clock.restore();
+    });
+
+    it('creates event starting at current time', () => {
+      expect(EventSource.create).to.have.been.calledOnce();
+      expect(EventSource.create).to.have.been.calledWith(expectedEvent);
     });
   });
 });

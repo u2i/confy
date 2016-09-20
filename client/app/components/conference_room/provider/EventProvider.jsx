@@ -8,6 +8,8 @@ import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { currentAndNextEvents } from 'helpers/EventHelper';
 import bindAll from 'lodash/bindAll';
 
+const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
+
 export default class EventProvider extends React.Component {
   static propTypes = {
     conferenceRoom: ConferenceRoomSchema.isRequired,
@@ -60,7 +62,7 @@ export default class EventProvider extends React.Component {
       end_time: end.format(),
       confirmed: true,
       conference_room_id: this.props.conferenceRoom.id,
-      summary: 'Anonymous event created by Confy'
+      summary: NEW_EVENT_SUMMARY
     };
 
     EventSource.create(event)
