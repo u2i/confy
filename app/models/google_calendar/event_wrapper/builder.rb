@@ -34,13 +34,15 @@ module GoogleCalendar
                     :conference_room, :user_email, :creator, :time_zone, :recurrence
 
       def build_time_zone(time_zone)
-        time_zone ? time_zone : DEFAULT_TIME_ZONE
+        time_zone || DEFAULT_TIME_ZONE
       end
 
       def build_date_time(date_time)
-        if date_time
-          Google::Apis::CalendarV3::EventDateTime.new(time_zone: time_zone, date_time: format_date_time(date_time))
-        end
+        new_datetime(format_date_time(date_time)) if date_time
+      end
+
+      def new_datetime(date_time)
+        Google::Apis::CalendarV3::EventDateTime.new(time_zone: time_zone, date_time: date_time)
       end
 
       def format_date_time(time)
