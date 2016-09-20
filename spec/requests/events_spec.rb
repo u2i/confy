@@ -8,8 +8,10 @@ RSpec.describe 'Events', type: :request do
   end
 
   describe 'POST /events' do
+    let!(:room) { create(:conference_room) }
+
     before do
-      allow_any_instance_of(EventsController).to receive(:create_event_params) { {conference_room_id: 2} }
+      allow_any_instance_of(EventsController).to receive(:create_event_params) { {conference_room_id: room.id} }
       allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
     end
 
@@ -50,9 +52,10 @@ RSpec.describe 'Events', type: :request do
     end
 
     context 'successfully added new event' do
+
       it 'repond with 200' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { {} }
-        post events_path
+        post events_path, params: { event: attributes_for(:event, conference_room_id: room.id) }
         expect(response).to have_http_status(:created)
       end
     end
