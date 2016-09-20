@@ -6,6 +6,8 @@ import instanceOfMoment from 'proptypes/moment';
 import 'rc-calendar/assets/index.css';
 import './side_calendar.scss';
 
+const isWeekend = (date) => date.day() === 0 || date.day() === 6;
+
 export default class SideCalendar extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object
@@ -31,16 +33,12 @@ export default class SideCalendar extends React.Component {
     this.setState({ value: moment(date) });
   }
 
-  disableWeekend(date) {
-    return date.day() === 0 || date.day() === 6;
-  }
-
   render() {
     return (
       <Calendar value={this.state.value}
                 className="side-calendar"
                 showDateInput={false}
-                disabledDate={this.disableWeekend}
+                disabledDate={isWeekend}
                 onSelect={this.onSelect}
                 onChange={this.updateSelectedDate} />
     );
