@@ -5,7 +5,7 @@ import { If } from 'react-if';
 
 import RoomSelectGroup from './RoomSelectGroup';
 
-const { array, number, func, bool } = React.PropTypes;
+const { string, array, number, func, bool } = React.PropTypes;
 
 import './form_location_field.scss';
 
@@ -15,18 +15,17 @@ export default class FormLocationField extends React.Component {
     unavailable: array,
     onChange: func.isRequired,
     selected: number,
-    errors: array,
+    error: string,
     required: bool
   };
 
   static defaultProps = {
-    errors: [],
     available: [],
     unavailable: []
   };
 
   render() {
-    const { available, unavailable, selected, onChange, errors, required } = this.props;
+    const { available, unavailable, selected, onChange, error, required } = this.props;
     return (
       <FormGroup>
         <RequiredFieldLabel label="Location" required={required} />
@@ -38,8 +37,8 @@ export default class FormLocationField extends React.Component {
           <RoomSelectGroup rooms={available} label="Available" />
           <RoomSelectGroup rooms={unavailable} label="Unavailable" />
         </FormControl>
-        <If condition={errors != null}>
-          <div className="text-danger">{errors[0]}</div>
+        <If condition={typeof error !== 'undefined'}>
+          <div className="text-danger">{error}</div>
         </If>
       </FormGroup>
     );

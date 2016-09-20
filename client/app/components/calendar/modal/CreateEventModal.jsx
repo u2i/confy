@@ -165,7 +165,7 @@ export default class CreateEventModal extends React.Component {
 
   _addError({ key, message }) {
     const errors = this.state.errors;
-    errors[key] = errors[key] ? errors[key].concat([message]) : [message];
+    errors[key] = message;
     this.setState({ errors });
   }
 
