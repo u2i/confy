@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { If, Then } from 'react-if';
 import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 import TimeChoiceButton from './TimeChoiceButton';
@@ -13,13 +14,17 @@ const DURATIONS = [
 
 const NewEventControls = ({ onCreate, onCancel, nextEventStart }) => (
   <div className="event-controls">
-    <AvailableTimeButton nextEventStart={nextEventStart} />
     {DURATIONS.map(duration => (
       <TimeChoiceButton nextEventStart={nextEventStart}
                         duration={duration}
                         onClick={onCreate}
                         key={duration} />
     ))}
+    <If condition={typeof nextEventStart !== 'undefined'}>
+      <Then>
+        {() => <AvailableTimeButton nextEventStart={nextEventStart} onClick={onCreate} />}
+      </Then>
+    </If>
     <Button bsSize="large" onClick={onCancel}>Cancel</Button>
   </div>
 );
@@ -27,7 +32,7 @@ const NewEventControls = ({ onCreate, onCancel, nextEventStart }) => (
 NewEventControls.propTypes = {
   onCreate: React.PropTypes.func,
   onCancel: React.PropTypes.func,
-  nextEventStart: instanceOfMoment.isRequired
+  nextEventStart: instanceOfMoment
 };
 
 export default NewEventControls;

@@ -20,7 +20,7 @@ const ConferenceRoomContainer = ({
   onUpdate,
   onConfirm,
   onFinish,
-  onStart
+  onCreate
 }) => (
   <div>
     <Navbar conferenceRoom={conferenceRoom} />
@@ -33,8 +33,8 @@ const ConferenceRoomContainer = ({
           onUpdate={onUpdate}
           onConfirm={onConfirm}
           onFinish={onFinish}
-          onStart={onStart} /> :
-        <NoEvents onStart={onStart} nextEventStart={nextEventStart(nextEvents)} />
+          onCreate={onCreate} /> :
+        <NoEvents onCreate={onCreate} />
       }
     </Grid>
   </div>

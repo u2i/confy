@@ -1,4 +1,5 @@
 import set from 'lodash/set';
+import tap from 'lodash/tap';
 import moment from 'moment';
 import React from 'react';
 import { EVENT_CHANNEL, createSubscription, removeSubscription } from 'cable';
@@ -16,7 +17,7 @@ export default class EventProvider extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { nextEvents: [] };
-    bindAll(this, ['_fetchForToday', 'handleUpdate', '_confirmEvent', '_finishEvent']);
+    bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate']);
   }
 
   componentDidMount() {
@@ -34,6 +35,38 @@ export default class EventProvider extends React.Component {
     this._fetchForToday();
   }
 
+  handleConfirm() {
+    if (typeof(this.state.currentEvent) === 'undefined') return;
+
+    this._toggleConfirmed();
+    EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
+      .catch(() => this._toggleConfirmed());
+  }
+
+  handleFinish() {
+    if (typeof(this.state.currentEvent) === 'undefined') return;
+
+    const currentEvent = this.state.currentEvent;
+    this.setState({ currentEvent: undefined });
+    EventSource.finish(this.props.conferenceRoom.id, currentEvent.id)
+      .catch(() => this.setState({ currentEvent }));
+  }
+
+  handleCreate(end) {
+    if (this.state.currentEvent) return;
+
+    const event = {
+      start_time: moment().format(),
+      end_time: end.format(),
+      confirmed: true,
+      conference_room_id: this.props.conferenceRoom.id,
+      summary: 'Anonymous event created by Confy'
+    };
+
+    EventSource.create(event)
+      .then(({ data }) => this.setState({ currentEvent: tap(data, (e) => e.attendees = []) }))
+  }
+
   setEndOfDayTimeout() {
     const now = moment();
     const timeToBeginningOfTheNextDay = now.clone().add(1, 'day').startOf('day') - now;
@@ -49,8 +82,9 @@ export default class EventProvider extends React.Component {
       <Component currentEvent={this.state.currentEvent}
                  nextEvents={this.state.nextEvents}
                  onUpdate={this.handleUpdate}
-                 onConfirm={this._confirmEvent}
-                 onFinish={this._finishEvent}
+                 onConfirm={this.handleConfirm}
+                 onFinish={this.handleFinish}
+                 onCreate={this.handleCreate}
                  {...props} />
     );
   }
@@ -66,27 +100,6 @@ export default class EventProvider extends React.Component {
         const { current, next } = currentAndNextEvents(response.data);
         this.setState({ nextEvents: next, currentEvent: current });
       });
-  }
-
-  _confirmEvent() {
-    if (typeof(this.state.currentEvent) === 'undefined') {
-      return;
-    }
-
-    this._toggleConfirmed();
-    EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
-      .catch(() => this._toggleConfirmed());
-  }
-
-  _finishEvent() {
-    if (typeof(this.state.currentEvent) === 'undefined') {
-      return;
-    }
-
-    const currentEvent = this.state.currentEvent;
-    this.setState({ currentEvent: undefined });
-    EventSource.finish(this.props.conferenceRoom.id, currentEvent.id)
-      .catch(() => this.setState({ currentEvent }));
   }
 
   _toggleConfirmed() {

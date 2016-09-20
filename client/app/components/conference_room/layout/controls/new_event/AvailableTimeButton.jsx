@@ -3,12 +3,10 @@ import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 
-const timeUntilNextEvent = (nextEventStart) => moment.duration(nextEventStart.diff(moment()));
-
 const AvailableTimeButton = ({ onClick, nextEventStart }) => (
   <Button bsStyle="primary"
           bsSize="large"
-          onClick={() => onClick(timeUntilNextEvent(nextEventStart))}>
+          onClick={() => {if (onClick) onClick(nextEventStart)}}>
     Until next event
   </Button>
 );

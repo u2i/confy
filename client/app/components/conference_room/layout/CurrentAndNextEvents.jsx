@@ -7,14 +7,23 @@ import texts from '../texts/texts';
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
 
-const CurrentAndNextEvents = ({ currentEvent, nextEvents, nextEventStart, onUpdate, onConfirm, onFinish }) => (
+const CurrentAndNextEvents = ({
+  currentEvent,
+  nextEvents,
+  nextEventStart,
+  onUpdate,
+  onConfirm,
+  onFinish,
+  onCreate
+}) => (
   <Row>
     <Col xs={12} sm={8}>
       <CurrentEvent event={currentEvent}
                     nextEventStart={nextEventStart}
                     onCompleted={onUpdate}
                     onConfirm={onConfirm}
-                    onFinish={onFinish} />
+                    onFinish={onFinish}
+                    onCreate={onCreate} />
     </Col>
     <Col xs={12} sm={4}>
       <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
@@ -28,7 +37,8 @@ CurrentAndNextEvents.propTypes = {
   nextEventStart: instanceOfMoment,
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  onFinish: React.PropTypes.func
+  onFinish: React.PropTypes.func,
+  onCreate: React.PropTypes.func
 };
 
 export default CurrentAndNextEvents;

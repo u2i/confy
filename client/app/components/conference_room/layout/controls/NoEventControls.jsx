@@ -6,9 +6,8 @@ import NewEventControls from './new_event/NewEventControls';
 
 export default class NoEventControls extends React.Component {
   static propTypes = {
-    onStart: React.PropTypes.func,
     onCreate: React.PropTypes.func,
-    nextEventStart: instanceOfMoment.isRequired
+    nextEventStart: instanceOfMoment
   };
 
   constructor(...args) {
@@ -20,7 +19,6 @@ export default class NoEventControls extends React.Component {
 
   handleStartClick() {
     this.setState({ showTimeButtons: true });
-    if (this.props.onStart) this.props.onStart();
   }
 
   handleCancelClick() {
@@ -30,7 +28,9 @@ export default class NoEventControls extends React.Component {
   render() {
     return (
       <If condition={this.state.showTimeButtons}>
-        <NewEventControls nextEventStart={this.props.nextEventStart} onCancel={this.handleCancelClick} />
+        <NewEventControls nextEventStart={this.props.nextEventStart}
+                          onCreate={this.props.onCreate}
+                          onCancel={this.handleCancelClick} />
         <Else>
           <div className="event-controls">
             <Button bsStyle="primary" bsSize="large" onClick={this.handleStartClick}>Start</Button>
