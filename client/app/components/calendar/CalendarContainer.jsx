@@ -110,6 +110,7 @@ export default class CalendarContainer extends React.Component {
           <Col xs={12} md={10}>
             <Calendar {...calendarProps}
                       events={events}
+                      date={this._dateOrNow()}
                       days={weekDays(this._dateOrNow(), this.props.weekLength)}
                       times={this.props.times.map(time => moment(time))}
                       onDelete={this.handleEventDelete}
