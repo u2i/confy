@@ -49,8 +49,12 @@ class EventsController < ApplicationController
   end
 
   def create
-    data = google_event_client.create(create_event_params.to_h)
-    render json: data.to_json, status: :created
+    data = google_event_client.create(create_event_params.to_h).to_h
+    if params[:event][:confirmed].present?
+      data[:confirmed] = Event.confirm_or_create(create_event_params[:conference_room_id], data[:id])
+    end
+    data[:conference_room] = ConferenceRoom.find(create_event_params[:conference_room_id])
+    render json: data, status: :created
   end
 
   def destroy
