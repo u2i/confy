@@ -1,24 +1,24 @@
 import React from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import _ from 'lodash';
+import RequiredFieldLabel from './RequiredFieldLabel';
+import capitalize from 'lodash/capitalize';
 
-const { string, func } = React.PropTypes;
+const { string, func, bool } = React.PropTypes;
 
-const FormTextField = (props) => (
+const FormTextField = ({ name, onChange, required }) => (
   <FormGroup>
-    <ControlLabel>
-      {_.capitalize(props.name)}:
-    </ControlLabel>
+    <RequiredFieldLabel label={capitalize(name)} required={required} />
     <FormControl
       type="text"
-      onChange={props.onChange}
-      name={props.name} />
+      onChange={onChange}
+      name={name} />
   </FormGroup>
 );
 
 FormTextField.propTypes = {
-  name:     string.isRequired,
-  onChange: func.isRequired
+  name: string.isRequired,
+  onChange: func.isRequired,
+  required: bool
 };
 
 export default FormTextField;
