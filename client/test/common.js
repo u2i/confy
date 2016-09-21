@@ -32,3 +32,9 @@ shared.setup('stub ReactDOM.findDOMNode', ({ cb } = {}) => {
 });
 
 require.extensions['.md'] = () => null;
+
+const vendor = require('../webpack.default.config').entry.vendor;
+vendor.splice(vendor.indexOf('bootstrap-loader'), 1);
+vendor.forEach(module => require(module));
+
+global.$ = require('jquery');

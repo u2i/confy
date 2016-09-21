@@ -9,6 +9,7 @@ export const TIME_DISPLAY_FORMAT = 'HH:mm';
 export function addDateAndTime(date, time) {
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
   return date
+    .clone()
     .hours(hours)
     .minutes(minutes)
     .seconds(seconds);
@@ -85,4 +86,30 @@ export function formatDuration(duration, format) {
 
 export function sameDay(date, other) {
   return moment(date).day() === moment(other).day();
+}
+
+export function roundedTime(date, granularity) {
+  const diff = date.unix() % granularity;
+  if (diff > 60) {
+    return date.clone().add(granularity - diff, 'seconds');
+  }
+  return date.clone().subtract(diff, 'seconds');
+}
+
+
+function pluralize(string, number, includeNumber) {
+  const word = (number === 1 ? string : `${string}s`);
+  return includeNumber ? `${number} ${word}` : word;
+}
+
+export function humanizeTime(duration) {
+  if (duration.hours() > 0) {
+    if (duration.minutes() > 0) {
+      return `${pluralize('hour', duration.hours(), true)} and ${pluralize('minute', duration.minutes(), true)}`;
+    }
+    return pluralize('hour', duration.hours(), true);
+  } else if (duration.minutes() > 0) {
+    return pluralize('minute', duration.minutes(), true);
+  }
+  return pluralize('second', Math.max(duration.seconds(), 0), true);
 }

@@ -16,12 +16,10 @@ export default class ModalBody extends React.Component {
     availableLocations: array,
     unavailableLocations: array,
     selectedLocation: number,
-    startTime: string.isRequired,
-    endTime: string.isRequired,
-    dateFormat: string.isRequired,
     errors: object,
     showErrorMessage: bool,
-    onError: func.isRequired
+    onGuestsError: func.isRequired,
+    onDateError: func
   };
 
   static defaultProps = {
@@ -33,7 +31,7 @@ export default class ModalBody extends React.Component {
     super(props);
 
     bindAll(this,
-      ['handleTextFieldChange', 'handleLocationChange', 'handleStartTimeChange', 'handleEndTimeChange',
+      ['handleTextFieldChange', 'handleLocationChange', 'handleTimeChange',
         'handleGuestsChange', 'handleRecurrenceChange']);
   }
 
@@ -49,12 +47,9 @@ export default class ModalBody extends React.Component {
     this.props.updateParam('conferenceRoomId', parseInt(e.target.value, 10));
   }
 
-  handleStartTimeChange(e) {
-    this._updateDateParam('startTime', e);
-  }
-
-  handleEndTimeChange(e) {
-    this._updateDateParam('endTime', e);
+  handleTimeChange(e) {
+    this.props.updateParam('startTime', e.start);
+    this.props.updateParam('endTime', e.end);
   }
 
   handleGuestsChange(e) {
@@ -73,26 +68,12 @@ export default class ModalBody extends React.Component {
           <FormTextField
             name={"summary"}
             onChange={this.handleTextFieldChange} />
-          <FormTextField
-            name={"description"}
-            onChange={this.handleTextFieldChange} />
-          <section className="row">
-            <Col xs={12} md={6}>
-              <FormDateField
-                label={"Start time"}
-                value={this.props.startTime}
-                dateFormat={this.props.dateFormat}
-                onChange={this.handleStartTimeChange}
-                errors={this.props.errors.start_time || []} />
-            </Col>
-            <Col xs={12} md={6} className="pull-right">
-              <FormDateField
-                label={"End time"}
-                value={this.props.endTime}
-                dateFormat={this.props.dateFormat}
-                onChange={this.handleEndTimeChange} />
-            </Col>
-          </section>
+          <FormDateField
+            label={"When"}
+            onChange={this.handleTimeChange}
+            onError={this.props.onDateError}
+            error={this.props.errors.start_time || this.props.errors.end_time}
+            required />
           <RecurrenceComponent onChange={this.handleRecurrenceChange} />
           <FormLocationField
             available={this.props.availableLocations}
@@ -100,18 +81,16 @@ export default class ModalBody extends React.Component {
             selected={this.props.selectedLocation}
             onChange={this.handleLocationChange}
             validationState={!!this.props.errors.conference_room_id}
-            errors={this.props.errors.conference_room_id || []} />
+            error={this.props.errors.conference_room_id}
+            required />
           <GuestsField
             onChange={this.handleGuestsChange}
-            onError={this.props.onError} />
+            onError={this.props.onGuestsError} />
+          <FormTextField
+            name={"description"}
+            onChange={this.handleTextFieldChange} />
         </form>
       </Modal.Body>
     );
-  }
-
-  _updateDateParam(key, value) {
-    if (value !== 'Invalid date') {
-      this.props.updateParam(key, value);
-    }
   }
 }

@@ -2,6 +2,8 @@ import moment from 'moment';
 import React from 'react';
 import instanceOfMoment from 'proptypes/moment';
 
+import { humanizeTime } from 'helpers/DateHelper';
+
 export default class TimeProgress extends React.Component {
   static propTypes = {
     end: instanceOfMoment.isRequired,
@@ -36,7 +38,7 @@ export default class TimeProgress extends React.Component {
   }
 
   _timeLeft() {
-    return this.props.end.fromNow(true);
+    return humanizeTime(moment.duration(this.props.end.diff(moment())));
   }
 
   _update() {

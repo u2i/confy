@@ -38,15 +38,11 @@ module GoogleCalendar
       end
 
       def build_date_time(date_time)
-        new_datetime(format_date_time(date_time)) if date_time
+        new_datetime(date_time) if date_time
       end
 
       def new_datetime(date_time)
         Google::Apis::CalendarV3::EventDateTime.new(time_zone: time_zone, date_time: date_time)
-      end
-
-      def format_date_time(time)
-        DateTime.parse("#{time} #{local_time_zone}")
       end
 
       def local_time_zone
