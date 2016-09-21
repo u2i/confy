@@ -7,23 +7,38 @@ import sinon from 'sinon';
 
 describe('<RecurrenceComponent />', () => {
   const onChange = sinon.spy();
-  const wrapper = mount(<RecurrenceComponent onChange={onChange}/>);
+  const mountRecurrenceWrapper = () => mount(<RecurrenceComponent onChange={onChange} />);
+  let wrapper;
 
   it('renders <Radio /> for each recurrence option', () => {
+    wrapper = mountRecurrenceWrapper();
     expect(wrapper.find('Radio')).to.have.lengthOf(5);
   });
 
-  it('renders <Radio />  with "none" value initiallty checked', () => {
+  it('renders <Radio />  with "none" value initially checked', () => {
+    wrapper = mountRecurrenceWrapper();
     const noneRadio = wrapper.find('Radio').filterWhere(node => node.prop('value') === 'none');
 
     expect(noneRadio.props().checked).to.eq(true);
   });
 
   it('renders remaining <Radio /> initially unchecked', () => {
+    wrapper = mountRecurrenceWrapper();
     const remainingRadios = wrapper.find('Radio').filterWhere(node => node.prop('value') !== 'none');
 
     remainingRadios.forEach(radio => {
       expect(radio.props().checked).to.eq(false);
     })
+  });
+
+  context('invoked change event on <Radio />', () => {
+    wrapper = mountRecurrenceWrapper();
+    const recurrenceOption = 'daily';
+    const recurrenceRadio = wrapper.find('Radio').filterWhere(node => node.prop('value') === recurrenceOption);
+
+    it('calls onChange prop with <Radio /> value', () => {
+      recurrenceRadio.find('input[type="radio"]').simulate('change');
+      expect(onChange.calledWith(recurrenceOption)).to.eq(true);
+    });
   });
 });
