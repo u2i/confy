@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { instanceOfMoment } from 'proptypes/moment';
 import { Modal } from 'react-bootstrap';
 import bindAll from 'lodash/bindAll';
 import flow from 'lodash/fp/flow';
