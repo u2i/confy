@@ -35,7 +35,7 @@ class EventsController < ApplicationController
   end
 
   rescue_from ActionController::ParameterMissing do |message|
-    render json: { missing_key: message }, status: :unprocessable_entity
+    render json: {missing_key: message}, status: :unprocessable_entity
   end
 
   def index
