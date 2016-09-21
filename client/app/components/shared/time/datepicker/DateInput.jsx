@@ -40,9 +40,7 @@ export default class DateInput extends React.Component {
   }
 
   _initPicker() {
-    this.input.datepicker(assign({}, PICKER_OPTIONS, {
-      startDate: this.props.minDate
-    }));
+    this.input.datepicker(assign({}, PICKER_OPTIONS));
   }
 
   _bindChangeListener() {
@@ -50,7 +48,7 @@ export default class DateInput extends React.Component {
       if (this._isValid()) {
         if (this.props.onChange) this.props.onChange(this.input.datepicker('getDate'));
       } else {
-        if (this.prop.onError) this.props.onError();
+        if (this.props.onError) this.props.onError();
       }
     });
   }
