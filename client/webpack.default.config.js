@@ -11,9 +11,11 @@ module.exports = {
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'jquery',
-      'jquery-ujs',
-      'turbolinks',
-      'bootstrap-loader'
+      'bootstrap-loader',
+      'timepicker/jquery.timepicker',
+      'timepicker/jquery.timepicker.css',
+      'bootstrap-datepicker',
+      'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'
     ],
     app: [
       './app/Register.jsx'

@@ -1,0 +1,18 @@
+.datetimepicker {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .date, .time {
+    width: 22%;
+  }
+}
+
+.datepicker.datepicker-dropdown.datepicker-orient-bottom {
+  margin-top: 30px;
+}
+
+.ui-timepicker-wrapper {
+  border-radius: 4px;
+}
