@@ -3,6 +3,7 @@ import moment from 'moment';
 import { If, Then } from 'react-if';
 import { isToday } from 'helpers/DateHelper';
 import classNames from 'classnames';
+import bindAll from 'lodash/bindAll';
 
 import '../table/calendar.scss';
 
@@ -23,9 +24,7 @@ class EventWrapper extends React.Component {
     super(...args);
     this.state = { height: 0, width: 0 };
 
-    this.handleContainerMounted = this.handleContainerMounted.bind(this);
-    this.handleResize = this.handleResize.bind(this);
-    this._handleCellClick = this._handleCellClick.bind(this);
+    bindAll(this, ['handleContainerMounted', 'handleResize', '_handleCellClick']);
   }
 
   componentDidMount() {
