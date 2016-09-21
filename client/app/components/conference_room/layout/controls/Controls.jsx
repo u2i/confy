@@ -7,10 +7,12 @@ import NoEventControls from './NoEventControls';
 
 import './controls.scss';
 
-const Controls = ({ event, onConfirm, onCreate, onCancel, onFinish, nextEventStart }) =>
-  event ?
-    <EventControls event={event} onConfirm={onConfirm} onCancel={onCancel} onFinish={onFinish} /> :
-    <NoEventControls onCreate={onCreate} nextEventStart={nextEventStart} />;
+const Controls = ({ event, onConfirm, onCreate, onCancel, onFinish, nextEventStart }) => {
+  if (event) {
+    return <EventControls event={event} onConfirm={onConfirm} onCancel={onCancel} onFinish={onFinish} />;
+  }
+  return <NoEventControls onCreate={onCreate} nextEventStart={nextEventStart} />;
+};
 
 Controls.propTypes = {
   event: EventSchema.only('confirmed'),
