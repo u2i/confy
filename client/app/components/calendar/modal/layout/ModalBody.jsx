@@ -6,6 +6,7 @@ import FormDateField from './body/FormDateField';
 import FormLocationField from './body/FormLocationField';
 import ErrorField from './ErrorField';
 import GuestsField from './body/GuestsField';
+import RecurrenceComponent from './body/RecurrenceComponent';
 
 const { func, array, object, bool, number, string } = React.PropTypes;
 
@@ -30,7 +31,8 @@ export default class ModalBody extends React.Component {
     super(props);
 
     bindAll(this,
-      ['handleTextFieldChange', 'handleLocationChange', 'handleTimeChange', 'handleGuestsChange']);
+      ['handleTextFieldChange', 'handleLocationChange', 'handleTimeChange',
+        'handleGuestsChange', 'handleRecurrenceChange']);
   }
 
   handleTextFieldChange(e) {
@@ -39,6 +41,7 @@ export default class ModalBody extends React.Component {
 
     this.props.updateParam(name, value);
   }
+
 
   handleLocationChange(e) {
     this.props.updateParam('conferenceRoomId', parseInt(e.target.value, 10));
@@ -51,6 +54,10 @@ export default class ModalBody extends React.Component {
 
   handleGuestsChange(e) {
     this.props.updateParam('attendees', e);
+  }
+
+  handleRecurrenceChange(option) {
+    this.props.updateParam('recurrence', option);
   }
 
   render() {
@@ -67,6 +74,7 @@ export default class ModalBody extends React.Component {
             onError={this.props.onDateError}
             error={this.props.errors.start_time || this.props.errors.end_time}
             required />
+          <RecurrenceComponent onChange={this.handleRecurrenceChange} />
           <FormLocationField
             available={this.props.availableLocations}
             unavailable={this.props.unavailableLocations}

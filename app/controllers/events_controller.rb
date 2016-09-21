@@ -95,7 +95,7 @@ class EventsController < ApplicationController
 
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
-                                  :confirmed, attendees: [:email])
+                                  :confirmed, :recurrence, attendees: [:email])
   end
 
   def date_param
