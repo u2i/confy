@@ -51,6 +51,7 @@ export default class EventProvider extends React.Component {
                  onUpdate={this.handleUpdate}
                  onConfirm={this._confirmEvent}
                  onFinish={this._finishEvent}
+                 onCancel={this._finishEvent}
                  {...props} />
     );
   }
