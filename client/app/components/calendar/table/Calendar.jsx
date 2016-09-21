@@ -15,7 +15,6 @@ import RoomFilters from '../filters/RoomFilters';
 import CalendarRow from './CalendarRow';
 import CalendarHeader from './CalendarHeader';
 import TimeIndicatorRow from './TimeIndicatorRow';
-
 import './calendar.scss';
 
 const { string, number, shape, array, arrayOf, func, object } = PropTypes;
@@ -24,6 +23,7 @@ export default class Calendar extends React.Component {
   static propTypes = {
     events: arrayOf(EventSchema.only('start_timestamp', 'end_timestamp', 'conference_room')).isRequired,
     conferenceRooms: array,
+    date: instanceOfMoment,
     days: arrayOf(instanceOfMoment).isRequired,
     times: arrayOf(instanceOfMoment).isRequired,
     unitEventLengthInSeconds: number.isRequired,
@@ -66,9 +66,13 @@ export default class Calendar extends React.Component {
     );
   }
 
+  isSelectedDay(day) {
+    return day.isSame(this.props.date, 'day');
+  }
+
   render() {
     let headerNodes = this.props.days.map(day => (
-      <CalendarHeader day={day} dateFormat={this.props.dateFormat} key={day} />
+      <CalendarHeader day={day} selected={this.isSelectedDay(day)} dateFormat={this.props.dateFormat} key={day} />
     ));
 
     const filteredEvents = this._filterEvents();

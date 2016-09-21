@@ -3,6 +3,7 @@ import isInteger from 'lodash/isInteger';
 import sortBy from 'lodash/sortBy';
 
 export const SECONDS_IN_DAY = 24 * 60 * 60;
+export const MAX_DESCRIPTION_LENGTH = 50;
 
 export function eventsStartingAt(timestamp, events) {
   return events.filter(event => event.start_timestamp === timestamp);
