@@ -59,7 +59,7 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish,
               onCreate={onCreate}
               nextEventStart={nextEventStart}
               onCancel={onCancel} />
-    </div>
+  </div>
 );
 
 CurrentEvent.propTypes = {

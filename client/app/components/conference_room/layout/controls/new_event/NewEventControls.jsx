@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { If, Then } from 'react-if';
+import { If } from 'react-if';
 import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 import TimeChoiceButton from './TimeChoiceButton';

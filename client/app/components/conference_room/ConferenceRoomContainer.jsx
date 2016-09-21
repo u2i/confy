@@ -35,8 +35,8 @@ const ConferenceRoomContainer = ({
           onConfirm={onConfirm}
           onFinish={onFinish}
           onCreate={onCreate}
-          onCancel={onCancel}/> :
-        <NoEvents onCreate={onCreate}/>
+          onCancel={onCancel} /> :
+        <NoEvents onCreate={onCreate} />
       }
     </Grid>
   </div>

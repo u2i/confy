@@ -1,5 +1,4 @@
 import React from 'react';
-import { instanceOfMoment } from 'proptypes/moment';
 import { Button } from 'react-bootstrap';
 
 const AvailableTimeButton = ({ onClick }) => (
