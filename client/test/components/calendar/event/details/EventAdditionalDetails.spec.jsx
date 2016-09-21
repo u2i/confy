@@ -6,6 +6,8 @@ import { MAX_DESCRIPTION_LENGTH } from 'helpers/EventHelper';
 import EventAdditionalDetails from 'components/calendar/event/details/EventAdditionalDetails';
 import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
 import EventExpandableDescription from 'components/calendar/event/details/EventExpandableDescription';
+import EventEditLink from 'components/calendar/event/details/EventEditLink';
+import EventHangoutLink from 'components/calendar/event/details/EventHangoutLink';
 
 describe('<EventAdditionalDetails />', () => {
   const buildEvent = (description) => EventFactory.build({ description });
@@ -31,5 +33,13 @@ describe('<EventAdditionalDetails />', () => {
 
       expect(wrapper.find(EventExpandableDescription)).to.exist();
     });
+  });
+
+  it('renders link to google', () => {
+    expect(mountComponent(buildEvent('Description')).find(EventEditLink)).to.have.lengthOf(1);
+  });
+
+  it('renders link to google', () => {
+    expect(mountComponent(buildEvent('Description')).find(EventHangoutLink)).to.have.lengthOf(1);
   });
 });

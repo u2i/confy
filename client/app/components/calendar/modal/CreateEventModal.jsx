@@ -74,6 +74,7 @@ export default class CreateEventModal extends React.Component {
 
   saveChanges() {
     if (!this._validateParams({ presence: true })) return;
+
     this.setState({ disableSaving: true });
 
     const eventParams = {
@@ -125,7 +126,7 @@ export default class CreateEventModal extends React.Component {
           onDateError={this.handleDateError} />
         <ModalFooter
           closeModal={this.props.closeModal}
-          saveChanges={this.saveChanges}
+          onSave={this.saveChanges}
           hasUnresolvedErrors={!isEmpty(this.state.errors)}
           blockWhileSaving={this.state.disableSaving} />
 
