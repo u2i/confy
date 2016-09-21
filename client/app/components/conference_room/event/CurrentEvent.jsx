@@ -61,7 +61,8 @@ CurrentEvent.propTypes = {
   nextEventStart: instanceOfMoment,
   onCompleted: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  onFinish: React.PropTypes.func
+  onFinish: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 CurrentEvent.Event = Event;

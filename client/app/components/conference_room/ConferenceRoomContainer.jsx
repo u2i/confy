@@ -41,7 +41,8 @@ ConferenceRoomContainer.propTypes = {
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  onFinish: React.PropTypes.func
+  onFinish: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 export default ConferenceRoomContainer;
