@@ -50,7 +50,7 @@ class EventsController < ApplicationController
 
   def create
     data = google_event_client.create(create_event_params.to_h)
-    render json: data.to_json, status: :created
+    render json: data.to_h, status: :created
   end
 
   def destroy

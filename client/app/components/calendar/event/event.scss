@@ -30,6 +30,11 @@ $event-border-color: #f7f7f7;
     transition: visibility 0s 0s;
     visibility: hidden;
   }
+
+  .event-edit-link {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .event-container {
