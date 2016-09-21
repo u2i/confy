@@ -14,7 +14,8 @@ const CurrentAndNextEvents = ({
   onUpdate,
   onConfirm,
   onFinish,
-  onCreate
+  onCreate,
+  onCancel
 }) => (
   <Row>
     <Col xs={12} sm={8}>
@@ -23,7 +24,8 @@ const CurrentAndNextEvents = ({
                     onCompleted={onUpdate}
                     onConfirm={onConfirm}
                     onFinish={onFinish}
-                    onCreate={onCreate} />
+                    onCreate={onCreate}
+                    onCancel={onCancel} />
     </Col>
     <Col xs={12} sm={4}>
       <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
@@ -38,7 +40,8 @@ CurrentAndNextEvents.propTypes = {
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
-  onCreate: React.PropTypes.func
+  onCreate: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 export default CurrentAndNextEvents;

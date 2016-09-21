@@ -87,6 +87,7 @@ export default class EventProvider extends React.Component {
                  onConfirm={this.handleConfirm}
                  onFinish={this.handleFinish}
                  onCreate={this.handleCreate}
+                 onCancel={this.handleFinish}
                  {...props} />
     );
   }

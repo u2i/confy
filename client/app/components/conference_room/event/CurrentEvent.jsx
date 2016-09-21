@@ -46,7 +46,8 @@ TimeProgressContainer.propTypes = {
   onCompleted: React.PropTypes.func
 };
 
-const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish, onCreate }) => (
+
+const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish, onCreate, onCancel }) => (
   <div className="current-event-container event-container">
     {event ? <Event event={event} /> : <NoEvent />}
     {event || nextEventStart ? <TimeProgressContainer event={event}
@@ -56,8 +57,9 @@ const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish,
               onConfirm={onConfirm}
               onFinish={onFinish}
               onCreate={onCreate}
-              nextEventStart={nextEventStart} />
-  </div>
+              nextEventStart={nextEventStart}
+              onCancel={onCancel} />
+    </div>
 );
 
 CurrentEvent.propTypes = {
@@ -66,7 +68,8 @@ CurrentEvent.propTypes = {
   onCompleted: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
-  onCreate: React.PropTypes.func
+  onCreate: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 CurrentEvent.Event = Event;

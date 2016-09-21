@@ -20,7 +20,8 @@ const ConferenceRoomContainer = ({
   onUpdate,
   onConfirm,
   onFinish,
-  onCreate
+  onCreate,
+  onCancel
 }) => (
   <div>
     <Navbar conferenceRoom={conferenceRoom} />
@@ -33,8 +34,9 @@ const ConferenceRoomContainer = ({
           onUpdate={onUpdate}
           onConfirm={onConfirm}
           onFinish={onFinish}
-          onCreate={onCreate} /> :
-        <NoEvents onCreate={onCreate} />
+          onCreate={onCreate}
+          onCancel={onCancel}/> :
+        <NoEvents onCreate={onCreate}/>
       }
     </Grid>
   </div>
@@ -47,7 +49,8 @@ ConferenceRoomContainer.propTypes = {
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
-  onCreate: React.PropTypes.func
+  onCreate: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 export default ConferenceRoomContainer;
