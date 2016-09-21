@@ -21,9 +21,7 @@ const NewEventControls = ({ onCreate, onCancel, nextEventStart }) => (
                         key={duration} />
     ))}
     <If condition={typeof nextEventStart !== 'undefined'}>
-      <Then>
-        {() => <AvailableTimeButton nextEventStart={nextEventStart} onClick={onCreate} />}
-      </Then>
+      <AvailableTimeButton onClick={() => onCreate(nextEventStart)} />
     </If>
     <Button bsSize="large" onClick={onCancel}>Cancel</Button>
   </div>
