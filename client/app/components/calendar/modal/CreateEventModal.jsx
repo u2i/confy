@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react';
-import instanceOfMoment from 'proptypes/moment';
 import { Modal } from 'react-bootstrap';
-import moment from 'moment';
-import defaults from 'lodash/defaults';
 import bindAll from 'lodash/bindAll';
 import flow from 'lodash/fp/flow';
 import map from 'lodash/fp/map';
@@ -15,7 +12,7 @@ import ModalFooter from './layout/ModalFooter';
 import ModalBody from './layout/ModalBody';
 import * as DateHelper from 'helpers/DateHelper';
 
-const { func, bool, array, number, string } = PropTypes;
+const { func, bool, array } = PropTypes;
 const DATE_ERROR_TEXT = 'Start time must be lower than end time';
 const NO_LOCATION_ERROR = 'You must select a location';
 const LOCATION_ERROR = 'This room is not available during the selected time.';
@@ -35,15 +32,11 @@ export default class CreateEventModal extends React.Component {
     closeModal: func.isRequired,
     showModal: bool.isRequired,
     conferenceRooms: array.isRequired,
-    initialDate: instanceOfMoment,
-    initialLength: number,
-    dateFormat: string,
     refresh: func.isRequired,
     onError: func.isRequired
   };
 
   static defaultProps = {
-    initialDate: moment(),
     initialLength: 1,
     dateFormat: DateHelper.DATE_DISPLAY_FORMAT
   };
@@ -51,10 +44,10 @@ export default class CreateEventModal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = this._initialFormState();
+    this.state = INITIAL_FORM_STATE;
 
     bindAll(this,
-      ['saveChanges', 'updateParam', 'handleCloseModal']);
+      ['saveChanges', 'updateParam', 'handleCloseModal', 'handleDateError']);
   }
 
   componentDidMount() {
@@ -70,6 +63,10 @@ export default class CreateEventModal extends React.Component {
   handleCloseModal() {
     this._clearForm();
     this.props.closeModal();
+  }
+
+  handleDateError(key, message) {
+    this._addError({ key, message });
   }
 
   saveChanges() {
@@ -116,13 +113,11 @@ export default class CreateEventModal extends React.Component {
           availableLocations={this.state.availableRooms}
           unavailableLocations={this.state.unavailableRooms}
           selectedLocation={this.state.conferenceRoomId}
-          startTime={this.state.startTime}
-          endTime={this.state.endTime}
-          dateFormat={this.props.dateFormat}
           updateParam={this.updateParam}
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
-          onError={this.props.onError} />
+          onGuestsError={this.props.onError}
+          onDateError={this.handleDateError} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}
@@ -131,14 +126,6 @@ export default class CreateEventModal extends React.Component {
 
       </Modal>
     );
-  }
-
-  _initialFormState() {
-    const startTime = this.props.initialDate.format(this.props.dateFormat);
-    const endTime = DateHelper
-      .addTime(this.props.initialDate, this.props.initialLength, 'minutes')
-      .format(this.props.dateFormat);
-    return defaults({}, INITIAL_FORM_STATE, { startTime, endTime });
   }
 
   _validateTimeRange() {
@@ -178,7 +165,7 @@ export default class CreateEventModal extends React.Component {
 
   _addError({ key, message }) {
     const errors = this.state.errors;
-    errors[key] = errors[key] ? errors[key].concat([message]) : [message];
+    errors[key] = message;
     this.setState({ errors });
   }
 
@@ -187,7 +174,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   _clearForm() {
-    this.setState(this._initialFormState());
+    this.setState(INITIAL_FORM_STATE);
   }
 
   _updateRoomAvailability() {

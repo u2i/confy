@@ -2,8 +2,9 @@ import React from 'react';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
-import { ControlLabel, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import FormLocationField from 'components/calendar/modal/layout/body/FormLocationField';
+import RequiredFieldLabel from 'components/calendar/modal/layout/body/RequiredFieldLabel';
 import RoomSelectGroup from 'components/calendar/modal/layout/body/RoomSelectGroup';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
@@ -31,12 +32,12 @@ describe('<FormLocationField />', () => {
 
   it('renders <ControlLabel />', () => {
     const wrapper = shallowWrapper();
-    expect(wrapper.find(ControlLabel)).to.exist();
+    expect(wrapper.find(RequiredFieldLabel)).to.exist();
   });
 
   it('renders <ControlLabel /> with "Location:" text', () => {
     const wrapper = mountWrapper();
-    expect(wrapper.find(ControlLabel)).to.have.text('Location:');
+    expect(wrapper.find(RequiredFieldLabel)).to.have.text('Location:');
   });
 
   it('renders <FormControl />', () => {

@@ -37,8 +37,8 @@ describe('<ModalBody />', () => {
     expect(wrapper.find({ name: 'description' })).to.exist();
   });
 
-  it('renders two date fields', () => {
-    expect(wrapper.find('FormDateField')).to.have.lengthOf(2);
+  it('renders a date field', () => {
+    expect(wrapper.find('FormDateField')).to.have.lengthOf(1);
   });
 
   it('renders Location select field', () => {
