@@ -119,7 +119,7 @@ export default class CalendarContainer extends React.Component {
                           conferenceRooms={this.props.conferenceRooms}
                           refresh={this.handleCalendarRefresh}
                           onError={this.notifyError}
-                          onSuccess={this.notifySuccess}/>
+                          onSuccess={this.notifySuccess} />
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );

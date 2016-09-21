@@ -46,7 +46,7 @@ describe('<CreateEventModal />', () => {
     const closeSpy = sinon.spy();
     const refreshSpy = sinon.spy();
     const successSpy = sinon.spy();
-    const wrapper = shallow(<CreateEventModal
+    const createWrapper = shallow(<CreateEventModal
       closeModal={closeSpy}
       showModal={sinon.spy()}
       conferenceRooms={[ConferenceRoom.build()]}
@@ -57,13 +57,13 @@ describe('<CreateEventModal />', () => {
     context('with successful request', () => {
       before(() => {
         sinon.stub(EventSource, 'create').resolves({ data: event });
-        wrapper.setState({
+        createWrapper.setState({
           conferenceRoomId: event.conference_room.id,
           start_time: event.start_time,
           end_time: event.end_time,
           availableRooms: [event.conference_room]
         });
-        wrapper.find(ModalFooter).simulate('save')
+        createWrapper.find(ModalFooter).simulate('save');
       });
 
       it('invokes onSuccess callback', () => {
