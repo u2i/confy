@@ -30,7 +30,7 @@ const INITIAL_FORM_STATE = {
   errors: {},
   disableSaving: false,
   startTime: INITIAL_TIME,
-  endTime: INITIAL_TIME.clone().add(1, 'hour'),
+  endTime: INITIAL_TIME.clone().add(30, 'minutes'),
   recurrence: 'none'
 };
 
