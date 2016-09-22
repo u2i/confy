@@ -17,24 +17,24 @@ export default class DateRangePicker extends React.Component {
   constructor(...args) {
     super(...args);
 
-    this.handleStartDateChange = (value) => this.handleStartChange(moment(value), this.props.start);
-    this.handleStartTimeChange = (value) => this.handleStartChange(this.props.start, moment(value));
-    this.handleEndTimeChange = (value) => this.handleEndChange(this.props.end, moment(value));
-    this.handleEndDateChange = (value) => this.handleEndChange(moment(value), this.props.end);
+    this.handleStartDateChange = (value) => this.handleStartChange(moment(value), this.props.startTime);
+    this.handleStartTimeChange = (value) => this.handleStartChange(this.props.startTime, moment(value));
+    this.handleEndTimeChange = (value) => this.handleEndChange(this.props.endTime, moment(value));
+    this.handleEndDateChange = (value) => this.handleEndChange(moment(value), this.props.endTime);
   }
 
   shouldComponentUpdate(nextProps) {
-    return !moment(nextProps.start).isSame(this.props.start) || !moment(nextProps.end).isSame(this.props.end);
+    return !moment(nextProps.startTime).isSame(this.props.startTime) || !moment(nextProps.endTime).isSame(this.props.endTime);
   }
 
   handleStartChange(date, time) {
-    const start = addDateAndTime(date, time);
-    const end = this._calculateEnd(start);
-    this._notifyChange(start, end);
+    const startTime = addDateAndTime(date, time);
+    const endTime = this._calculateEnd(startTime);
+    this._notifyChange(startTime, endTime);
   }
 
   handleEndChange(date, time) {
-    this.props.onChange({ startTime: this.props.start, endTime: addDateAndTime(date, time) });
+    this.props.onChange({ startTime: this.props.startTime, endTime: addDateAndTime(date, time) });
   }
 
   handleError(key, error) {
@@ -45,39 +45,39 @@ export default class DateRangePicker extends React.Component {
     return (
       <div className="datetimepicker form-inline">
         <DateInput className="start"
-                   value={this.props.start.toDate()}
+                   value={this.props.startTime.toDate()}
                    onChange={this.handleStartDateChange}
                    onError={() => this.handleError('start_time', 'Invalid date')} />
         <TimeInput className="start"
-                   value={this.props.start.toDate()}
+                   value={this.props.startTime.toDate()}
                    onChange={this.handleStartTimeChange}
                    onError={() => this.handleError('start_time', 'Invalid time')}
                    step={TIME_STEP_IN_MINUTES} />
         &nbsp;to&nbsp;
         <TimeInput className="end"
-                   value={this.props.end.toDate()}
+                   value={this.props.endTime.toDate()}
                    onChange={this.handleEndTimeChange}
                    onError={() => this.handleError('end_time', 'Invalid time')}
                    showDuration
-                   minTime={this.props.start.toDate()}
+                   minTime={this.props.startTime.toDate()}
                    step={TIME_STEP_IN_MINUTES} />
         <DateInput className="end"
-                   value={this.props.end.toDate()}
+                   value={this.props.endTime.toDate()}
                    onChange={this.handleEndDateChange}
                    onError={() => this.handleError('end_time', 'Invalid date')}
-                   minDate={this.props.start.toDate()} />
+                   minDate={this.props.startTime.toDate()} />
       </div>
     );
   }
 
   _calculateEnd(start) {
-    const diff = this.props.end.diff(this.props.start);
+    const diff = this.props.endTime.diff(this.props.startTime);
     return start.clone().add(diff, 'ms');
   }
 
-  _notifyChange(start, end) {
+  _notifyChange(startTime, endTime) {
     if (this.props.onChange) {
-      this.props.onChange({ startTime: start, endTime: end });
+      this.props.onChange({ startTime, endTime });
     }
   }
 }

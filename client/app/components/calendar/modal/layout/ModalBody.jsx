@@ -66,8 +66,8 @@ export default class ModalBody extends React.Component {
             onChange={this.handleTimeChange}
             onError={this.props.onDateError}
             error={this.props.errors.start_time || this.props.errors.end_time}
-            start={this.props.start}
-            end={this.props.end}
+            startTime={this.props.startTime}
+            endTime={this.props.endTime}
             required />
           <FormLocationField
             available={this.props.availableLocations}

@@ -131,8 +131,8 @@ export default class CreateEventModal extends React.Component {
           errors={this.state.errors}
           onGuestsError={this.props.onError}
           onDateError={this.handleDateError}
-          start={this.state.startTime}
-          end={this.state.endTime} />
+          startTime={this.state.startTime}
+          endTime={this.state.endTime} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

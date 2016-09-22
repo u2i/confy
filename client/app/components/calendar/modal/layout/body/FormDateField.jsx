@@ -6,13 +6,13 @@ import RequiredFieldLabel from './RequiredFieldLabel';
 
 const { string, func, bool } = React.PropTypes;
 
-const FormDateField = ({ label, onChange, onError, error, start, end, required }) => (
+const FormDateField = ({ label, onChange, onError, error, startTime, endTime, required }) => (
   <FormGroup>
     <RequiredFieldLabel label={label} required={required} />
     <DateRangePicker onChange={onChange}
                      onError={onError}
-                     start={start}
-                     end={end} />
+                     startTime={startTime}
+                     endTime={endTime} />
     <If condition={typeof error !== 'undefined'}>
       <div className="text-danger">{error}</div>
     </If>
