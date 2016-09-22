@@ -110,10 +110,7 @@ export default class CreateEventModal extends React.Component {
   }
 
   setTimes(startTime, endTime) {
-    this.setState({
-      startTime: startTime,
-      endTime: endTime
-    });
+    this.setState({ startTime, endTime });
   }
 
   render() {
