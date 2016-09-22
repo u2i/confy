@@ -72,7 +72,8 @@ export default class EventProvider extends React.Component {
         this.setState({
           currentEvent: tap(data, (e) => e.attendees = []),
           creating: false
-        }));
+        }))
+      .catch(() => this.setState({ creating: false }));
   }
 
   setEndOfDayTimeout() {
