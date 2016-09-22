@@ -33,11 +33,15 @@ module GoogleCalendar
         current_time >= start_time.date_time && current_time <= end_time.date_time
       end
 
-      def finish
-        end_time.date_time = current_time
+      def update_end_time(ending)
+        end_time.date_time = ending
       end
 
       private
+
+      def current_time
+        DateTime.now
+      end
 
       def end_time
         send(:end)
@@ -45,10 +49,6 @@ module GoogleCalendar
 
       def start_time
         send(:start)
-      end
-
-      def current_time
-        DateTime.now
       end
     end
   end
