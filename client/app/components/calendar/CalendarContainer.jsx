@@ -46,7 +46,7 @@ export default class CalendarContainer extends React.Component {
 
     bindAll(this,
       ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete',
-      'notifyError']);
+      'notifyError', 'handleCellClick']);
   }
 
   componentDidMount() {
@@ -88,6 +88,10 @@ export default class CalendarContainer extends React.Component {
     this._addNotification(notification);
   }
 
+  handleCellClick(startTime, endTime) {
+    this.setState({ showModal: true }, () => this.modal.setTimes(startTime, endTime));
+  }
+
   render() {
     const { initialEvents: _, ...calendarProps } = this.props;
     const { events, notifications, updating } = this.state;
@@ -106,10 +110,12 @@ export default class CalendarContainer extends React.Component {
                       date={this._dateOrNow()}
                       days={weekDays(this._dateOrNow(), this.props.weekLength)}
                       times={this.props.times.map(time => moment(time))}
-                      onDelete={this.handleEventDelete} />
+                      onDelete={this.handleEventDelete}
+                      onCellClick={this.handleCellClick} />
           </Col>
         </Grid>
-        <CreateEventModal closeModal={this.closeModal}
+        <CreateEventModal ref={(ref) => this.modal = ref}
+                          closeModal={this.closeModal}
                           showModal={this.state.showModal}
                           conferenceRooms={this.props.conferenceRooms}
                           refresh={this.handleCalendarRefresh}

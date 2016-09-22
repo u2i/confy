@@ -16,6 +16,7 @@ describe('<EventWrapper />', () => {
     unitEventLengthInSeconds: 60
   };
   const onDelete = sinon.spy();
+  const onCellClick = sinon.spy();
 
   const mountEventWrapper = (events) => mount(<EventWrapper userEmail={userEmail}
                                                             events={events}
@@ -24,7 +25,7 @@ describe('<EventWrapper />', () => {
 
   const events = Event.buildList(1);
   const shallowEventWrapper = (timestamp) =>
-    shallow(<EventWrapper events={events} onDelete={onDelete} timestamp={timestamp} />);
+    shallow(<EventWrapper events={events} onDelete={onDelete} onCellClick={onCellClick} timestamp={timestamp} />);
 
   context('when events prop is not empty', () => {
     it('renders <EventGroup />', () => {
@@ -91,6 +92,19 @@ describe('<EventWrapper />', () => {
 
     it('renders <td /> without today-column className', () => {
       expect(wrapper.find('.today-column')).not.to.exist();
+    });
+  });
+
+  context('<td /> clicked', () => {
+    const timestamp = moment().unix();
+    const wrapper = shallowEventWrapper(timestamp);
+    const timestampInMilis = timestamp * 1000;
+    const startTime = moment(timestampInMilis);
+    const endTime = startTime.clone().add(30, 'minutes');
+
+    it('calls onCellClick with startTime and endTime', () => {
+      wrapper.find('td').simulate('click');
+      expect(onCellClick.calledWith(startTime, endTime)).to.eq(true);
     });
   });
 });

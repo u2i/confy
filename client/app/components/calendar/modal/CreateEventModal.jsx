@@ -6,6 +6,7 @@ import map from 'lodash/fp/map';
 import uniqBy from 'lodash/fp/uniqBy';
 import differenceBy from 'lodash/differenceBy';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 import EventSource from 'sources/EventSource';
 import ModalHeader from './layout/ModalHeader';
 import ModalFooter from './layout/ModalFooter';
@@ -17,6 +18,9 @@ const DATE_ERROR_TEXT = 'Start time must be lower than end time';
 const NO_LOCATION_ERROR = 'You must select a location';
 const LOCATION_ERROR = 'This room is not available during the selected time.';
 
+const TIME_STEP_IN_MINUTES = 30;
+const INITIAL_TIME = DateHelper.roundedTime(moment(), TIME_STEP_IN_MINUTES * 60);
+
 const INITIAL_FORM_STATE = {
   showErrorMessage: false,
   summary: '',
@@ -25,6 +29,8 @@ const INITIAL_FORM_STATE = {
   attendees: [],
   errors: {},
   disableSaving: false,
+  startTime: INITIAL_TIME,
+  endTime: INITIAL_TIME.clone().add(30, 'minutes'),
   recurrence: 'none'
 };
 
@@ -48,7 +54,7 @@ export default class CreateEventModal extends React.Component {
     this.state = INITIAL_FORM_STATE;
 
     bindAll(this,
-      ['saveChanges', 'updateParam', 'handleCloseModal', 'handleDateError']);
+      ['saveChanges', 'updateParam', 'handleCloseModal', 'handleDateError', 'setTimes']);
   }
 
   componentDidMount() {
@@ -103,6 +109,10 @@ export default class CreateEventModal extends React.Component {
     this.setState({ [key]: value }, () => this._validateParams());
   }
 
+  setTimes(startTime, endTime) {
+    this.setState({ startTime, endTime });
+  }
+
   render() {
     return (
       <Modal
@@ -119,7 +129,9 @@ export default class CreateEventModal extends React.Component {
           showErrorMessage={this.state.showErrorMessage}
           errors={this.state.errors}
           onGuestsError={this.props.onError}
-          onDateError={this.handleDateError} />
+          onDateError={this.handleDateError}
+          startTime={this.state.startTime}
+          endTime={this.state.endTime} />
         <ModalFooter
           closeModal={this.props.closeModal}
           saveChanges={this.saveChanges}

@@ -25,7 +25,10 @@ export default class Event extends React.Component {
     this._toggleDetails = this._toggleDetails.bind(this);
   }
 
-  handleClickOutside() {
+  handleClickOutside(event) {
+    if (this.state.expanded) {
+      event.stopPropagation();
+    }
     this.setState({ expanded: false });
   }
 
@@ -48,7 +51,8 @@ export default class Event extends React.Component {
     );
   }
 
-  _toggleDetails() {
+  _toggleDetails(event) {
+    event.stopPropagation();
     this.setState({ expanded: !this.state.expanded });
   }
 
@@ -68,7 +72,7 @@ export default class Event extends React.Component {
 
   _userIsAttendee() {
     return this.props.event.attendees &&
-           this.props.event.attendees.find(attendee => this._isCurrentUser(attendee) && this._notDeclined(attendee));
+      this.props.event.attendees.find(attendee => this._isCurrentUser(attendee) && this._notDeclined(attendee));
   }
 
   _isCurrentUser(attendee) {
@@ -78,6 +82,7 @@ export default class Event extends React.Component {
   _notDeclined(attendee) {
     return attendee.response_status !== 'declined';
   }
+
   _userIsCreator() {
     return this.props.event.creator && this.props.event.creator.email === this.context.userEmail;
   }
