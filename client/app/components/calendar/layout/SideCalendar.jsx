@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Calendar from 'rc-calendar';
 import bindAll from 'lodash/bindAll';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import 'rc-calendar/assets/index.css';
 import './side_calendar.scss';
 

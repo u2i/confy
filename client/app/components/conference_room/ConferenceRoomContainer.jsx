@@ -1,3 +1,5 @@
+import moment from 'moment';
+import get from 'lodash/get';
 import React from 'react';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
@@ -9,6 +11,8 @@ import NoEvents from './layout/NoEvents';
 
 import './conference_room.scss';
 
+const nextEventStart = (nextEvents) => moment(get(nextEvents[0], 'start.date_time'));
+
 const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
@@ -16,6 +20,7 @@ const ConferenceRoomContainer = ({
   onUpdate,
   onConfirm,
   onFinish,
+  onCreate,
   onCancel
 }) => (
   <div>
@@ -25,11 +30,13 @@ const ConferenceRoomContainer = ({
         <CurrentAndNextEvents
           currentEvent={currentEvent}
           nextEvents={nextEvents}
+          nextEventStart={nextEventStart(nextEvents)}
           onUpdate={onUpdate}
           onConfirm={onConfirm}
           onFinish={onFinish}
+          onCreate={onCreate}
           onCancel={onCancel} /> :
-        <NoEvents />
+        <NoEvents onCreate={onCreate} />
       }
     </Grid>
   </div>
@@ -42,6 +49,7 @@ ConferenceRoomContainer.propTypes = {
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
+  onCreate: React.PropTypes.func,
   onCancel: React.PropTypes.func
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import requiredIf from 'react-required-if';
 import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
 import moment from 'moment';
@@ -46,13 +46,19 @@ TimeProgressContainer.propTypes = {
   onCompleted: React.PropTypes.func
 };
 
-const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish, onCancel }) => (
+
+const CurrentEvent = ({ event, nextEventStart, onCompleted, onConfirm, onFinish, onCreate, onCancel }) => (
   <div className="current-event-container event-container">
     {event ? <Event event={event} /> : <NoEvent />}
     {event || nextEventStart ? <TimeProgressContainer event={event}
                                                       nextEventStart={nextEventStart}
                                                       onCompleted={onCompleted} /> : ''}
-    <Controls event={event} onConfirm={onConfirm} onFinish={onFinish} onCancel={onCancel} />
+    <Controls event={event}
+              onConfirm={onConfirm}
+              onFinish={onFinish}
+              onCreate={onCreate}
+              nextEventStart={nextEventStart}
+              onCancel={onCancel} />
   </div>
 );
 
@@ -62,6 +68,7 @@ CurrentEvent.propTypes = {
   onCompleted: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
+  onCreate: React.PropTypes.func,
   onCancel: React.PropTypes.func
 };
 

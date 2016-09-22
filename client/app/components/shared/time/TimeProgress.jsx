@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 
 import { humanizeTime } from 'helpers/DateHelper';
 

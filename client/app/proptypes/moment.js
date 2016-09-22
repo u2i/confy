@@ -1,14 +1,24 @@
 import moment from 'moment';
 import createChainableTypeChecker from './chainableTypeChecker';
 
-const instanceOfMoment = (props, propName, componentName) => {
-  if (!moment.isMoment(props[propName])) {
-    return new Error(
-      `Invalid prop \`${propName}\` supplied to \`${componentName}\`.
+export const instanceOfMoment = createChainableTypeChecker(
+  (props, propName, componentName) => {
+    if (!moment.isMoment(props[propName])) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`.
       Expected prop of type \`Moment\` and found \`${typeof props[propName]}\`.`
-    );
-  }
-  return null;
-};
+      );
+    }
+    return null;
+  });
 
-export default createChainableTypeChecker(instanceOfMoment);
+export const instanceOfDuration = createChainableTypeChecker(
+  (props, propName, componentName) => {
+    if (!moment.isDuration(props[propName])) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`.
+      Expected prop of type \`Moment.Duration\` and found \`${typeof props[propName]}\`.`
+      );
+    }
+    return null;
+  });
