@@ -15,7 +15,8 @@ const ConferenceRoomContainer = ({
   conferenceRoom,
   onUpdate,
   onConfirm,
-  onFinish
+  onFinish,
+  onCancel
 }) => (
   <div>
     <Navbar conferenceRoom={conferenceRoom} />
@@ -26,7 +27,8 @@ const ConferenceRoomContainer = ({
           nextEvents={nextEvents}
           onUpdate={onUpdate}
           onConfirm={onConfirm}
-          onFinish={onFinish} /> :
+          onFinish={onFinish}
+          onCancel={onCancel} /> :
         <NoEvents />
       }
     </Grid>
@@ -39,7 +41,8 @@ ConferenceRoomContainer.propTypes = {
   conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
-  onFinish: React.PropTypes.func
+  onFinish: React.PropTypes.func,
+  onCancel: React.PropTypes.func
 };
 
 export default ConferenceRoomContainer;

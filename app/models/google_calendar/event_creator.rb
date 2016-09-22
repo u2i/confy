@@ -35,7 +35,7 @@ module GoogleCalendar
     end
 
     def items_list(items)
-      items.map(&:summary).join(', '.freeze)
+      items.map { |item| item[:summary] }.join(', '.freeze)
     end
 
     def build_event_wrapper(event_data)

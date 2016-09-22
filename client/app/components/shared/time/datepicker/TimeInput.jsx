@@ -28,6 +28,9 @@ export default class TimeInput extends React.Component {
     if (nextProps.value.getTime() !== this.props.value.getTime()) {
       this._updatePicker(nextProps.value);
     }
+    if (nextProps.minTime !== this.props.minTime) {
+      this.input.timepicker('option', 'minTime', nextProps.minTime);
+    }
   }
 
   render() {

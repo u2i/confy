@@ -30,7 +30,8 @@ const INITIAL_FORM_STATE = {
   errors: {},
   disableSaving: false,
   startTime: INITIAL_TIME,
-  endTime: INITIAL_TIME.clone().add(1, 'hour')
+  endTime: INITIAL_TIME.clone().add(1, 'hour'),
+  recurrence: 'none'
 };
 
 export default class CreateEventModal extends React.Component {
@@ -85,7 +86,8 @@ export default class CreateEventModal extends React.Component {
       start_time: this.state.startTime,
       end_time: this.state.endTime,
       conference_room_id: this.state.conferenceRoomId,
-      attendees: this._attendeesParam()
+      attendees: this._attendeesParam(),
+      recurrence: this.state.recurrence
     };
 
     EventSource.create(eventParams)
