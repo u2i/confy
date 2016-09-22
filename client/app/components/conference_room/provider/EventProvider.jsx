@@ -18,7 +18,7 @@ export default class EventProvider extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { nextEvents: [] };
+    this.state = { nextEvents: [], creating: false };
     bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate']);
   }
 
@@ -56,6 +56,7 @@ export default class EventProvider extends React.Component {
 
   handleCreate(end) {
     if (this.state.currentEvent) return;
+    if (this.state.creating) return;
 
     const event = {
       start_time: moment().format(),
@@ -65,8 +66,13 @@ export default class EventProvider extends React.Component {
       summary: NEW_EVENT_SUMMARY
     };
 
+    this.setState({ creating: true });
     EventSource.create(event)
-      .then(({ data }) => this.setState({ currentEvent: tap(data, (e) => e.attendees = []) }));
+      .then(({ data }) =>
+        this.setState({
+          currentEvent: tap(data, (e) => e.attendees = []),
+          creating: false
+        }));
   }
 
   setEndOfDayTimeout() {
