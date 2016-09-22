@@ -3,6 +3,7 @@ import { FormGroup, ControlLabel } from 'react-bootstrap';
 import { If } from 'react-if';
 import DateRangePicker from 'components/shared/time/datepicker/DateRangePicker';
 import RequiredFieldLabel from './RequiredFieldLabel';
+import instanceOfMoment from 'proptypes/moment';
 
 const { string, func, bool } = React.PropTypes;
 
@@ -24,7 +25,9 @@ FormDateField.propTypes = {
   onChange: func,
   onError: func,
   error: string,
-  required: bool
+  required: bool,
+  startTime: instanceOfMoment,
+  endTime: instanceOfMoment
 };
 
 export default FormDateField;

@@ -3,6 +3,7 @@ import React from 'react';
 import { roundedTime, addDateAndTime } from 'helpers/DateHelper';
 import DateInput from './DateInput';
 import TimeInput from './TimeInput';
+import instanceOfMoment from 'proptypes/moment';
 
 import './datepicker.scss';
 
@@ -11,7 +12,9 @@ const TIME_STEP_IN_MINUTES = 30;
 export default class DateRangePicker extends React.Component {
   static propTypes = {
     onChange: React.PropTypes.func,
-    onError: React.PropTypes.func
+    onError: React.PropTypes.func,
+    startTime: instanceOfMoment,
+    endTime: instanceOfMoment
   };
 
   constructor(...args) {
@@ -24,7 +27,8 @@ export default class DateRangePicker extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !moment(nextProps.startTime).isSame(this.props.startTime) || !moment(nextProps.endTime).isSame(this.props.endTime);
+    return !moment(nextProps.startTime).isSame(this.props.startTime) ||
+           !moment(nextProps.endTime).isSame(this.props.endTime);
   }
 
   handleStartChange(date, time) {

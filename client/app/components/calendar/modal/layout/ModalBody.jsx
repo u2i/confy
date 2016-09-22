@@ -7,8 +7,9 @@ import FormLocationField from './body/FormLocationField';
 import ErrorField from './ErrorField';
 import GuestsField from './body/GuestsField';
 import RecurrenceComponent from './body/RecurrenceComponent';
+import instanceOfMoment from 'proptypes/moment';
 
-const { func, array, object, bool, number, string } = React.PropTypes;
+const { func, array, object, bool, number } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
@@ -19,7 +20,9 @@ export default class ModalBody extends React.Component {
     errors: object,
     showErrorMessage: bool,
     onGuestsError: func.isRequired,
-    onDateError: func
+    onDateError: func,
+    startTime: instanceOfMoment,
+    endTime: instanceOfMoment
   };
 
   static defaultProps = {
