@@ -63,7 +63,7 @@ describe GoogleCalendar::EventWrapper::Builder do
     context 'given monthly recurrence' do
       let(:params){ {recurrence: 'monthly'} }
 
-      it { is_expected.to eq ['RRULE:FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR'] }
+      it { is_expected.to eq ['RRULE:FREQ=MONTHLY'] }
     end
 
     context 'given every other week reccurence' do

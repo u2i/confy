@@ -82,10 +82,10 @@ module GoogleCalendar
         case recurrence
         when 'none'
           []
-        when 'weekly'
-          ['RRULE:FREQ=WEEKLY']
-        when 'daily', 'monthly'
-          ["RRULE:FREQ=#{recurrence.upcase};#{on_weekdays}"]
+        when 'daily'
+          ["RRULE:FREQ=DAILY;#{on_weekdays}"]
+        when 'weekly', 'monthly'
+          ["RRULE:FREQ=#{recurrence.upcase}"]
         when 'every other week'
           ['RRULE:FREQ=WEEKLY;INTERVAL=2']
         end
