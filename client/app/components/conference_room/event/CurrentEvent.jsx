@@ -46,7 +46,8 @@ const TimeProgressContainer = ({ event, nextEventStart, onCompleted, displayEndT
 TimeProgressContainer.propTypes = {
   event: requiredIf(EventSchema.only('end'), props => !props.nextEventStart),
   nextEventStart: requiredIf(instanceOfMoment, props => !props.event),
-  onCompleted: React.PropTypes.func
+  onCompleted: React.PropTypes.func,
+  displayEndTimeWarning: React.PropTypes.func
 };
 
 
@@ -64,7 +65,7 @@ export default class CurrentEvent extends React.Component {
   static defaultProps = {
     onCompleted: () => {}
   };
-  
+
   constructor(...args) {
     super(...args);
 
@@ -72,26 +73,8 @@ export default class CurrentEvent extends React.Component {
     this.state = { endTimeWarning: false };
   }
 
-  _displayEndTimeWarning() {
-    this.setState({ endTimeWarning: true });
-    setTimeout(() => this.setState({ endTimeWarning: false }), 4000);
-  }
-
-  _onCompleted() {
-    this.setState({ endTimeWarning: false });
-    this.props.onCompleted();
-  }
-
-  _className() {
-    return classNames(
-      'current-event-container',
-      'event-container',
-      { 'end-time-warning': this.state.endTimeWarning }
-    );
-  }
-
   render() {
-    return(
+    return (
       <div className={this._className()}>
         {this.props.event ? <Event event={this.props.event} /> : <NoEvent />}
         {this.props.event || this.props.nextEventStart ? <TimeProgressContainer event={this.props.event}
@@ -107,8 +90,22 @@ export default class CurrentEvent extends React.Component {
       </div>
     );
   }
-}
 
-CurrentEvent.Event = Event;
-CurrentEvent.NoEvent = NoEvent;
-CurrentEvent.TimeProgressContainer = TimeProgressContainer;
+  _className() {
+    return classNames(
+      'current-event-container',
+      'event-container',
+      { 'end-time-warning': this.state.endTimeWarning }
+    );
+  }
+
+  _displayEndTimeWarning() {
+    this.setState({ endTimeWarning: true });
+    setTimeout(() => this.setState({ endTimeWarning: false }), 4000);
+  }
+
+  _onCompleted() {
+    this.setState({ endTimeWarning: false });
+    this.props.onCompleted();
+  }
+}
