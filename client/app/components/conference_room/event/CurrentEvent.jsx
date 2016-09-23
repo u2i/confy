@@ -1,55 +1,13 @@
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
-import requiredIf from 'react-required-if';
-import { TIME_DISPLAY_FORMAT } from 'helpers/DateHelper';
-import moment from 'moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import Controls from '../layout/controls/Controls';
-import TimeProgress from 'components/shared/time/TimeProgress';
-import EventTime from 'components/calendar/event/details/EventTime';
-import EventCreator from 'components/calendar/event/details/EventCreator';
-import EventAttendees from 'components/calendar/event/details/EventAttendees';
-import EventFullDescription from 'components/calendar/event/details/EventFullDescription';
-import { If } from 'react-if';
+import Event from 'components/conference_room/event/Event';
+import NoEvent from 'components/conference_room/event/NoEvent';
+import TimeProgressContainer from 'components/conference_room/event/TimeProgressContainer';
 import classNames from 'classnames';
 import './current_event.scss';
 import bindAll from 'lodash/bindAll';
-
-const Event = ({ event }) => (
-  <div>
-    <h2 className="event-summary">{event.summary}</h2>
-    <EventTime event={event} timeFormat={TIME_DISPLAY_FORMAT} />
-    <EventCreator event={event} />
-    <EventAttendees event={event} />
-    <If condition={event.description != null}>
-      <EventFullDescription description={event.description} />
-    </If>
-  </div>
-);
-
-Event.propTypes = {
-  event: EventSchema.only('summary').isRequired
-};
-
-const NoEvent = () => <p>No event currently in progress</p>;
-
-const TimeProgressContainer = ({ event, nextEventStart, onCompleted, displayEndTimeWarning }) => (
-  <div className="text-center">
-    <TimeProgress
-      end={event ? moment(event.end.date_time) : nextEventStart}
-      suffix={event ? 'left' : 'to next event'}
-      displayEndTimeWarning={displayEndTimeWarning}
-      onCompleted={onCompleted} />
-  </div>
-);
-
-TimeProgressContainer.propTypes = {
-  event: requiredIf(EventSchema.only('end'), props => !props.nextEventStart),
-  nextEventStart: requiredIf(instanceOfMoment, props => !props.event),
-  onCompleted: React.PropTypes.func,
-  displayEndTimeWarning: React.PropTypes.func
-};
-
 
 export default class CurrentEvent extends React.Component {
   static propTypes = {
@@ -121,7 +79,3 @@ export default class CurrentEvent extends React.Component {
     this.props.onCompleted();
   }
 }
-
-CurrentEvent.Event = Event;
-CurrentEvent.NoEvent = NoEvent;
-CurrentEvent.TimeProgressContainer = TimeProgressContainer;
