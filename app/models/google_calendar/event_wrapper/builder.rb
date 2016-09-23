@@ -78,13 +78,14 @@ module GoogleCalendar
       end
 
       def build_recurrence(recurrence)
+        on_weekdays = 'BYDAY=MO,TU,WE,TH,FR'
         case recurrence
         when 'none'
           []
-        when 'daily'
-          ['RRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR']
-        when 'weekly', 'monthly'
-          ["RRULE:FREQ=#{recurrence.upcase}"]
+        when 'weekly'
+          ['RRULE:FREQ=WEEKLY']
+        when 'daily', 'monthly'
+          ["RRULE:FREQ=#{recurrence.upcase};#{on_weekdays}"]
         when 'every other week'
           ['RRULE:FREQ=WEEKLY;INTERVAL=2']
         end
