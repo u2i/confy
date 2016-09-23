@@ -76,11 +76,8 @@ export default class CurrentEvent extends React.Component {
   render() {
     return (
       <div className={this._className()}>
-        {this.props.event ? <Event event={this.props.event} /> : <NoEvent />}
-        {this.props.event || this.props.nextEventStart ? <TimeProgressContainer event={this.props.event}
-                                                          nextEventStart={this.props.nextEventStart}
-                                                          displayEndTimeWarning={this._displayEndTimeWarning}
-                                                          onCompleted={this._onCompleted} /> : ''}
+        {this._eventComponent()}
+        {this._timeProgressComponent()}
         <Controls event={this.props.event}
                   onConfirm={this.props.onConfirm}
                   onFinish={this.props.onFinish}
@@ -99,6 +96,21 @@ export default class CurrentEvent extends React.Component {
     );
   }
 
+  _eventComponent() {
+    return this.props.event ? <Event event={this.props.event} /> : <NoEvent />;
+  }
+
+  _timeProgressComponent() {
+    if(this.props.event || this.props.nextEventStart) {
+      return (
+        <TimeProgressContainer event={this.props.event}
+                               nextEventStart={this.props.nextEventStart}
+                               displayEndTimeWarning={this._displayEndTimeWarning}
+                               onCompleted={this._onCompleted} />);
+    }
+    return '';
+  }
+
   _displayEndTimeWarning() {
     this.setState({ endTimeWarning: true });
     setTimeout(() => this.setState({ endTimeWarning: false }), 4000);
@@ -109,3 +121,7 @@ export default class CurrentEvent extends React.Component {
     this.props.onCompleted();
   }
 }
+
+CurrentEvent.Event = Event;
+CurrentEvent.NoEvent = NoEvent;
+CurrentEvent.TimeProgressContainer = TimeProgressContainer;

@@ -114,6 +114,6 @@ export function humanizeTime(duration) {
   return pluralize('second', Math.max(duration.seconds(), 0), true);
 }
 
-export function isFullMinute(time) {
-  return time % (60 * 1000) < 1000;
+export function isFullMinute(time, precision) {
+  return time % (60 * 1000) <= precision;
 }

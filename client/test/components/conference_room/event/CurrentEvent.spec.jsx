@@ -3,7 +3,6 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import Event from 'test/factories/Event';
-
 import CurrentEvent from 'components/conference_room/event/CurrentEvent';
 import TimeProgress from 'components/shared/time/TimeProgress';
 import EventTime from 'components/calendar/event/details/EventTime';

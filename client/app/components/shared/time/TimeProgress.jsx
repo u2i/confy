@@ -4,7 +4,7 @@ import { instanceOfMoment } from 'proptypes/moment';
 
 import { humanizeTime, isFullMinute } from 'helpers/DateHelper';
 
-const END_TIME_WARNING_TIMEOUT = 60 * 1000 * 5;
+const FIVE_MINUTES = 60 * 1000 * 5;
 
 export default class TimeProgress extends React.Component {
   static propTypes = {
@@ -57,7 +57,7 @@ export default class TimeProgress extends React.Component {
       this.props.onCompleted();
     }
 
-    if (timeToEnd < END_TIME_WARNING_TIMEOUT && isFullMinute(timeToEnd)) {
+    if (timeToEnd <= FIVE_MINUTES && isFullMinute(timeToEnd, this.props.updateInterval)) {
       this.props.displayEndTimeWarning();
     }
   }
