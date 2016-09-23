@@ -36,7 +36,8 @@ const EventAdditionalDetails = ({ event, onDelete }) => (
 );
 
 EventAdditionalDetails.propTypes = {
-  event: EventSchema.only('description', 'attendees').isRequired
+  event: EventSchema.only('description', 'attendees').isRequired,
+  onDelete: React.PropTypes.func
 };
 
 export default EventAdditionalDetails;

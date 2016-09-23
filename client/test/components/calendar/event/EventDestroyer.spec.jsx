@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import EventDestroyer from 'components/calendar/event/EventDestroyer';
 import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
 import { expect } from 'chai';
@@ -10,14 +10,14 @@ import DeleteButton from 'components/calendar/event/DeleteButton';
 
 describe('<EventDestroyer />', () => {
   let spy;
-  const event = EventFactory.build();
+  const defaultEvent = EventFactory.build();
 
   beforeEach(() => {
     spy = sinon.spy();
   });
 
   it('renders', () => {
-    const wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={event} />);
+    const wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={defaultEvent} />);
     expect(wrapper.find('span').props().className).to.contain('delete-button');
     expect(wrapper.find('span').props().className).to.contain('glyphicon');
   });
@@ -26,7 +26,7 @@ describe('<EventDestroyer />', () => {
     let wrapper;
 
     before(() => {
-      wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={event} />);
+      wrapper = mount(<EventDestroyer onDelete={spy} disabled={false} event={defaultEvent} />);
     });
 
     it('has a confirmation box', () => {
@@ -37,7 +37,7 @@ describe('<EventDestroyer />', () => {
 
   describe('<DeleteButton /> onClick', () => {
     const event = EventFactory.build();
-    const wrapper = mount(<EventDestroyer event={event} onDelete={sinon.spy()}/>);
+    const wrapper = mount(<EventDestroyer event={event} onDelete={sinon.spy()} />);
 
     it('initially does not show <DeleteConfirmation />', () => {
       expect(wrapper.find(DeleteConfirmation).prop('show')).to.eq(false);

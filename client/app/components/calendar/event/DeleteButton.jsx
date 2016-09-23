@@ -9,7 +9,7 @@ export default class DeleteButton extends React.Component {
   render() {
     return (
       <span onClick={this.props.onClick}
-            className={`delete-button glyphicon glyphicon-trash enabled`}>
+            className={'delete-button glyphicon glyphicon-trash enabled'}>
       </span>
     );
   }
