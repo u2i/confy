@@ -28,7 +28,7 @@ export default class CurrentEvent extends React.Component {
     super(...args);
 
     bindAll(this, ['_displayEndTimeWarning', '_onCompleted']);
-    this.state = { endTimeWarning: false };
+    this.state = { displayingEndTimeWarning: false };
   }
 
   render() {
@@ -50,7 +50,7 @@ export default class CurrentEvent extends React.Component {
     return classNames(
       'current-event-container',
       'event-container',
-      { 'end-time-warning': this.state.endTimeWarning }
+      { 'end-time-warning': this.state.displayingEndTimeWarning }
     );
   }
 
@@ -70,12 +70,12 @@ export default class CurrentEvent extends React.Component {
   }
 
   _displayEndTimeWarning() {
-    this.setState({ endTimeWarning: true });
-    setTimeout(() => this.setState({ endTimeWarning: false }), 4000);
+    this.setState({ displayingEndTimeWarning: true });
+    setTimeout(() => this.setState({ displayingEndTimeWarning: false }), 4000);
   }
 
   _onCompleted() {
-    this.setState({ endTimeWarning: false });
+    this.setState({ displayingEndTimeWarning: false });
     this.props.onCompleted();
   }
 }

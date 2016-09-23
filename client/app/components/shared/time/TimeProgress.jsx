@@ -55,6 +55,7 @@ export default class TimeProgress extends React.Component {
     this.setState({ timeLeft: this._humanizedTimeLeft() });
     if (timeToEnd <= 0) {
       this.props.onCompleted();
+      clearInterval(this.interval);
     }
 
     if (timeToEnd <= FIVE_MINUTES && isFullMinute(timeToEnd, this.props.updateInterval)) {
