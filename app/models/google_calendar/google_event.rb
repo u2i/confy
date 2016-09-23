@@ -29,6 +29,10 @@ module GoogleCalendar
       event_editor.finish(conference_room_id, event_id)
     end
 
+    def update(conference_room_id, event_id, data)
+      event_editor.update(conference_room_id, event_id, data)
+    end
+
     private
 
     attr_accessor :credentials, :user_email

@@ -1,18 +1,23 @@
 module GoogleCalendar
   class EventEditor
+    EventNotInProgressError = Class.new(StandardError)
+
     def initialize(credentials)
       @credentials = credentials
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def update_end_time(conference_room_id, event_id, ending)
+    def update(conference_room_id, event_id, data)
       update_event(conference_room_id, event_id) do |event|
-        event.update_end_time(ending)
+        event.update(data)
       end
     end
 
     def finish(conference_room_id, event_id)
-      update_end_time(conference_room_id, event_id, DateTime.now)
+      update_event(conference_room_id, event_id) do |event|
+        raise EventNotInProgressError unless event.in_progress?
+        event.end_time = DateTime.now
+      end
     end
 
     private
@@ -22,7 +27,6 @@ module GoogleCalendar
     def update_event(conference_room_id, event_id)
       email = conference_room_email(conference_room_id)
       event_wrapper = event_wrapper(event_id, email)
-      return unless event_wrapper.in_progress?
       yield event_wrapper if block_given?
       update_event_in_google(event_wrapper, email)
     end

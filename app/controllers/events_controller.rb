@@ -70,24 +70,26 @@ class EventsController < ApplicationController
   end
 
   def confirm
-    Event.confirm_or_create(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    Event.confirm_or_create(params[:conference_room_id], params[:event_id])
     head :ok
   end
 
   def finish
-    google_event_client.finish(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    google_event_client.finish(params[:conference_room_id], params[:event_id])
     head :ok
+  rescue GoogleCalendar::EventEditor::EventNotInProgressError
+    head :bad_request
   end
 
   def confirmed
     @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_first_confirmed_event.to_rfc3339)
   end
 
-  private
-
-  def edit_event_params
-    params.permit(:conference_room_id, :event_id)
+  def update
+    google_event_client.update(params[:conference_room_id], params[:event_id], edit_event_params)
   end
+
+  private
 
   def with_confirmation?
     params[:confirmation] == 'true'.freeze
@@ -96,6 +98,10 @@ class EventsController < ApplicationController
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   :confirmed, :recurrence, attendees: [:email])
+  end
+
+  def edit_event_params
+    params.require(:event).permit(:summary, :description, :start_time, :end_time)
   end
 
   def date_param

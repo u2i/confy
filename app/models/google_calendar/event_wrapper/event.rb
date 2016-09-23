@@ -11,6 +11,13 @@ module GoogleCalendar
         @conference_room = params[:conference_room]
       end
 
+      def update(params)
+        self.start_time = params[:start_time] if params.key? :start_time
+        self.end_time = params[:end_time] if params.key? :end_time
+        self.summary = params[:summary] if params.key? :summary
+        self.description = params[:description] if params.key? :description
+      end
+
       def to_h
         super.slice(*FIELDS).merge(conference_room: conference_room)
       end
@@ -21,8 +28,8 @@ module GoogleCalendar
       end
 
       def valid?
-        return false unless start_time.present? || end_time.present?
-        start_time.date_time.present? && end_time.date_time.present?
+        return false unless starting.present? || ending.present?
+        start_time.present? && end_time.present?
       end
 
       def all_day?
@@ -30,11 +37,23 @@ module GoogleCalendar
       end
 
       def in_progress?
-        current_time >= start_time.date_time && current_time <= end_time.date_time
+        current_time >= start_time && current_time <= end_time
       end
 
-      def update_end_time(ending)
-        end_time.date_time = ending
+      def end_time
+        ending.date_time
+      end
+
+      def start_time
+        starting.date_time
+      end
+
+      def end_time=(ending)
+        self.end.date_time = ending
+      end
+
+      def start_time=(starting)
+        self.start.date_time = starting
       end
 
       private
@@ -43,12 +62,12 @@ module GoogleCalendar
         DateTime.now
       end
 
-      def end_time
-        send(:end)
+      def starting
+        send(:start)
       end
 
-      def start_time
-        send(:start)
+      def ending
+        send(:end)
       end
     end
   end
