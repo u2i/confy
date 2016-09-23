@@ -101,7 +101,7 @@ export default class CurrentEvent extends React.Component {
   }
 
   _timeProgressComponent() {
-    if(this.props.event || this.props.nextEventStart) {
+    if (this.props.event || this.props.nextEventStart) {
       return (
         <TimeProgressContainer event={this.props.event}
                                nextEventStart={this.props.nextEventStart}
