@@ -1,5 +1,5 @@
 import React from 'react';
-import instanceOfMoment from 'proptypes/moment';
+import { instanceOfMoment } from 'proptypes/moment';
 import * as DateHelper from 'helpers/DateHelper';
 import EventSchema from 'schemas/EventSchema';
 import TimeCell from './TimeCell';
@@ -16,7 +16,8 @@ export default class CalendarRow extends React.Component {
     unitEventLengthInSeconds: number.isRequired,
     timeFormat: string,
     displayMinutes: bool,
-    onDelete: func.isRequired
+    onDelete: func.isRequired,
+    onCellClick: func
   };
 
   static defaultProps = {
@@ -51,7 +52,8 @@ export default class CalendarRow extends React.Component {
                       unitEventLengthInSeconds={this.props.unitEventLengthInSeconds}
                       events={events}
                       key={timestamp}
-                      onDelete={this.props.onDelete} />
+                      onDelete={this.props.onDelete}
+                      onCellClick={this.props.onCellClick} />
       );
     });
   }

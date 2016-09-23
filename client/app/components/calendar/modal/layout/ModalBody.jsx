@@ -7,8 +7,9 @@ import FormLocationField from './body/FormLocationField';
 import ErrorField from './ErrorField';
 import GuestsField from './body/GuestsField';
 import RecurrenceComponent from './body/RecurrenceComponent';
+import instanceOfMoment from 'proptypes/moment';
 
-const { func, array, object, bool, number, string } = React.PropTypes;
+const { func, array, object, bool, number } = React.PropTypes;
 
 export default class ModalBody extends React.Component {
   static propTypes = {
@@ -19,7 +20,9 @@ export default class ModalBody extends React.Component {
     errors: object,
     showErrorMessage: bool,
     onGuestsError: func.isRequired,
-    onDateError: func
+    onDateError: func,
+    startTime: instanceOfMoment,
+    endTime: instanceOfMoment
   };
 
   static defaultProps = {
@@ -48,8 +51,8 @@ export default class ModalBody extends React.Component {
   }
 
   handleTimeChange(e) {
-    this.props.updateParam('startTime', e.start);
-    this.props.updateParam('endTime', e.end);
+    this.props.updateParam('startTime', e.startTime);
+    this.props.updateParam('endTime', e.endTime);
   }
 
   handleGuestsChange(e) {
@@ -73,6 +76,8 @@ export default class ModalBody extends React.Component {
             onChange={this.handleTimeChange}
             onError={this.props.onDateError}
             error={this.props.errors.start_time || this.props.errors.end_time}
+            startTime={this.props.startTime}
+            endTime={this.props.endTime}
             required />
           <RecurrenceComponent onChange={this.handleRecurrenceChange} />
           <FormLocationField

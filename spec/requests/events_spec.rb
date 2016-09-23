@@ -8,8 +8,10 @@ RSpec.describe 'Events', type: :request do
   end
 
   describe 'POST /events' do
+    let!(:room) { create(:conference_room) }
+    let(:event_attributes) { attributes_for(:event, conference_room_id: room.id) }
+
     before do
-      allow_any_instance_of(EventsController).to receive(:create_event_params) { {conference_room_id: 2} }
       allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
     end
 
@@ -17,7 +19,7 @@ RSpec.describe 'Events', type: :request do
       let(:error) { Google::Apis::ClientError.new('error') }
       it 'responds with 422' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
-        post events_path
+        post events_path, params: { event: event_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -26,7 +28,7 @@ RSpec.describe 'Events', type: :request do
       let(:error) { ActiveRecord::RecordNotFound.new('Cannot find')}
       it 'responds with 422' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).and_raise(error)
-        post events_path
+        post events_path, params: { event: event_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -35,7 +37,7 @@ RSpec.describe 'Events', type: :request do
       let(:error) { Google::Apis::ServerError.new('error') }
       it 'responds with 503' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
-        post events_path
+        post events_path, params: { event: event_attributes }
         expect(response).to have_http_status(:service_unavailable)
       end
     end
@@ -44,16 +46,29 @@ RSpec.describe 'Events', type: :request do
       let(:error) { Google::Apis::AuthorizationError.new('error') }
       it 'responds with 401' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args).and_raise(error)
-        post events_path
+        post events_path, params: { event: event_attributes }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'successfully added new event' do
+      let(:event_id) { 'id1' }
+      before do
+        allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { { id: event_id } }
+      end
+
       it 'repond with 200' do
-        allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:create).with(any_args) { {} }
-        post events_path
+        post events_path, params: { event: event_attributes }
         expect(response).to have_http_status(:created)
+      end
+
+      context 'with event.confimed' do
+        it 'confirms event' do
+          expect do
+            post events_path, params: { event: event_attributes.merge(confirmed: true) }
+          end.to change { Event.confirmed.count }.by(1)
+          expect(Event.confirmed.find_by_event_id(event_id)).to be_present
+        end
       end
     end
   end

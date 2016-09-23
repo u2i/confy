@@ -14,19 +14,14 @@ describe('<ModalBody />', () => {
     ConferenceRoom.build()
   ];
 
-  const wrapper = mount(<ModalBody
+  const wrapper = shallow(<ModalBody
     updateParam={updateSpy}
     availableLocations={rooms}
     unavailableLocations={[]}
     onError={sinon.spy()} />);
 
   it('renders a form for creating event', () => {
-    const wrapperShallow = shallow(<ModalBody
-      updateParam={updateSpy}
-      availableLocations={rooms}
-      unavailableLocations={[]}
-      onError={sinon.spy()} />);
-    expect(wrapperShallow.find('form')).to.exist();
+    expect(wrapper.find('form')).to.exist();
   });
 
   it('renders Summary text field', () => {

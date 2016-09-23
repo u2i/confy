@@ -34,6 +34,10 @@ class EventsController < ApplicationController
     render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 
+  rescue_from ActionController::ParameterMissing do |message|
+    render json: {missing_key: message}, status: :unprocessable_entity
+  end
+
   def index
     events = google_event_client.all(time_interval_rfc3339)
     render json: events
@@ -49,8 +53,14 @@ class EventsController < ApplicationController
   end
 
   def create
-    data = google_event_client.create(create_event_params.to_h)
-    render json: data.to_h, status: :created
+    event_params = create_event_params
+    data = google_event_client.create(event_params.to_h).to_h
+    conference_room_id = event_params[:conference_room_id]
+    if event_params[:confirmed].present?
+      data[:confirmed] = Event.confirm_or_create(conference_room_id, data[:id])
+    end
+    data[:conference_room] = ConferenceRoom.find(conference_room_id)
+    render json: data, status: :created
   end
 
   def destroy
@@ -85,7 +95,7 @@ class EventsController < ApplicationController
 
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
-                                  :recurrence, attendees: [:email])
+                                  :confirmed, :recurrence, attendees: [:email])
   end
 
   def date_param

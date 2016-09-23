@@ -19,10 +19,13 @@ describe('<EventProvider />', () => {
       }
     }).default;
 
-  const DummyComponent = ({ onFinish, onConfirm }) => ( // eslint-disable-line react/prop-types
+  const endTime = moment().add(30, 'minutes');
+  const DummyComponent = ({ onFinish, onConfirm, onCreate, onCancel }) => ( // eslint-disable-line react/prop-types
     <div>
       <button id="finish" onClick={onFinish} />
       <button id="confirm" onClick={onConfirm} />
+      <button id="create" onClick={() => onCreate(endTime)} />
+      <button id="cancel" onClick={onCancel} />
     </div>
   );
 
@@ -112,81 +115,115 @@ describe('<EventProvider />', () => {
     });
   });
 
-  describe('confirming event', () => {
+  describe('event actions', () => {
     const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
     const componentWrapper = wrapper.find(DummyComponent);
     const confirmButton = componentWrapper.find('button#confirm');
+    const finishButton = componentWrapper.find('button#finish');
+    const cancelButton = componentWrapper.find('button#cancel');
 
     before(() => {
       sinon.stub(EventSource, 'confirm');
-    });
-
-    after(() => {
-      EventSource.confirm.restore();
-    });
-
-    context('with successful request', () => {
-      before(() => {
-        wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
-        EventSource.confirm.resolves();
-        confirmButton.simulate('click');
-      });
-
-      it('toggles current event\'s confirmation', () => {
-        expect(componentWrapper.prop('currentEvent').confirmed).to.be.true();
-      });
-    });
-
-    context('with unsuccessful request', () => {
-      before(() => {
-        wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
-        EventSource.confirm.rejects();
-        confirmButton.simulate('click');
-      });
-
-      it('does not toggle current event\'s confirmation', () => {
-        expect(componentWrapper.prop('currentEvent').confirmed).to.be.false();
-      });
-    });
-  });
-
-  describe('finishing event', () => {
-    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
-    const componentWrapper = wrapper.find(DummyComponent);
-    const finishButton = componentWrapper.find('button#finish');
-
-    before(() => {
       sinon.stub(EventSource, 'finish');
     });
 
     after(() => {
+      EventSource.confirm.restore();
       EventSource.finish.restore();
     });
 
-    context('with successful request', () => {
-      before(() => {
-        wrapper.setState({ currentEvent: Event.build() });
-        EventSource.finish.resolves();
-        finishButton.simulate('click');
+    describe('confirming event', () => {
+      context('with successful request', () => {
+        before(() => {
+          wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
+          EventSource.confirm.resolves();
+          confirmButton.simulate('click');
+        });
+
+        it('toggles current event\'s confirmation', () => {
+          expect(componentWrapper.prop('currentEvent').confirmed).to.be.true();
+        });
       });
 
-      it('removes current event', () => {
-        expect(componentWrapper.prop('currentEvent')).not.to.exist();
+      context('with unsuccessful request', () => {
+        before(() => {
+          wrapper.setState({ currentEvent: Event.build({ confirmed: false }) });
+          EventSource.confirm.rejects();
+          confirmButton.simulate('click');
+        });
+
+        it('does not toggle current event\'s confirmation', () => {
+          expect(componentWrapper.prop('currentEvent').confirmed).to.be.false();
+        });
       });
     });
 
-    context('with unsuccessful request', () => {
-      const event = Event.build();
+    function shouldEndEvent(button) {
+      context('with successful request', () => {
+        before(() => {
+          wrapper.setState({ currentEvent: Event.build() });
+          EventSource.finish.resolves();
+          button.simulate('click');
+        });
 
-      before(() => {
-        wrapper.setState({ currentEvent: event });
-        EventSource.finish.rejects();
-        finishButton.simulate('click');
+        it('removes current event', () => {
+          expect(componentWrapper.prop('currentEvent')).not.to.exist();
+        });
       });
 
-      it('does not remove current event', () => {
-        expect(componentWrapper.prop('currentEvent')).to.equal(event);
+      context('with unsuccessful request', () => {
+        const event = Event.build();
+
+        before(() => {
+          wrapper.setState({ currentEvent: event });
+          EventSource.finish.rejects();
+          button.simulate('click');
+        });
+
+        it('does not remove current event', () => {
+          expect(componentWrapper.prop('currentEvent')).to.equal(event);
+        });
       });
+    }
+
+    describe('finishing event', () => {
+      shouldEndEvent(finishButton);
+    });
+
+    describe('canceling event', () => {
+      shouldEndEvent(cancelButton);
+    });
+  });
+
+  describe('creating event', () => {
+    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const createButton = wrapper.find(DummyComponent).find('button#create');
+    let clock;
+    let currentTime;
+    let expectedEvent;
+
+    before(() => {
+      currentTime = moment();
+      clock = sinon.useFakeTimers(currentTime.valueOf());
+      expectedEvent = {
+        start_time: currentTime.format(),
+        end_time: endTime.format(),
+        confirmed: true,
+        conference_room_id: conferenceRoom.id,
+        summary: 'Anonymous event created by Confy'
+      };
+      sinon.stub(EventSource, 'create').resolves();
+      createButton.simulate('click');
+    });
+
+    after(() => {
+      EventSource.create.restore();
+      clock.restore();
+    });
+
+    it('creates event starting at current time', () => {
+      expect(EventSource.create).to.have.been.calledOnce();
+      expect(EventSource.create).to.have.been.calledWith(expectedEvent);
     });
   });
 });
