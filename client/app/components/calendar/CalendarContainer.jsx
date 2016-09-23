@@ -46,7 +46,7 @@ export default class CalendarContainer extends React.Component {
 
     bindAll(this,
       ['openModal', 'closeModal', 'handleCalendarRefresh', 'handleNotificationDismiss', 'handleEventDelete',
-      'notifyError', 'handleCellClick']);
+        'notifyError', 'notifySuccess', 'handleCellClick']);
   }
 
   componentDidMount() {
@@ -88,6 +88,12 @@ export default class CalendarContainer extends React.Component {
     this._addNotification(notification);
   }
 
+
+  notifySuccess(message) {
+    const notification = new Notification('success', message);
+    this._addNotification(notification);
+  }
+
   handleCellClick(startTime, endTime) {
     this.setState({ showModal: true }, () => this.modal.setTimes(startTime, endTime));
   }
@@ -119,7 +125,8 @@ export default class CalendarContainer extends React.Component {
                           showModal={this.state.showModal}
                           conferenceRooms={this.props.conferenceRooms}
                           refresh={this.handleCalendarRefresh}
-                          onError={this.notifyError} />
+                          onError={this.notifyError}
+                          onSuccess={this.notifySuccess} />
         <NotificationStack notifications={notifications} onDismiss={this.handleNotificationDismiss} />
       </div>
     );

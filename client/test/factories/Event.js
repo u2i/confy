@@ -7,6 +7,7 @@ export default new Factory()
   .option('start_time', new Date(2016, 7, 25, 0, 0, 0))
   .option('end_time', new Date(2016, 7, 25, 2, 0, 0))
   .option('attendees_num', 0)
+  .option('with_html_link', false)
   .attr('rounded_start_time', new Date(2016, 7, 25, 0, 0, 0))
   .attr('rounded_end_time', new Date(2016, 7, 25, 2, 0, 0))
   .attr('start_timestamp', ['start_time'], startTime => startTime.getTime() / 1000)
@@ -16,6 +17,9 @@ export default new Factory()
   .attr('attendees', ['attendees_num'], attendeesNum => {
     const room = User.build({ self: true });
     return User.buildList(attendeesNum).concat([room]);
+  })
+  .attr('html_link', ['with_html_link'], withHtmlLink => {
+    if (withHtmlLink) return 'https://www.google.com/calendar/event?eid=123';
   })
   .attrs({
     creator:         User.build(),
