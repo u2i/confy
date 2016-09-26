@@ -1,5 +1,7 @@
 module GoogleCalendar
   class EventCreator
+    include GoogleErrorHandler
+
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
 
@@ -20,7 +22,9 @@ module GoogleCalendar
     def insert_event_and_return_result(event_wrapper)
       raise_error_if_occupied(event_wrapper)
       google_event = event_wrapper.google_event
-      calendar_service.insert_event('primary', google_event, send_notifications: true)
+      rescue_google_request do
+        calendar_service.insert_event('primary', google_event, send_notifications: true)
+      end
     end
 
     def raise_error_if_occupied(wrapper)
