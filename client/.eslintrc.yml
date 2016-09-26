@@ -19,7 +19,6 @@ env:
 
 settings:
   import/extensions: [.js, .jsx]
-  import/resolver: babel-module
 
 rules:
 # Variables
@@ -52,7 +51,6 @@ rules:
   import/no-named-as-default: 1
   import/no-named-as-default-member: 1
   import/no-duplicates: 1
-  import/no-extraneous-dependencies: [2, {devDependencies: ['**/*.spec.js?(x)']}]
 
 # React
   jsx-quotes: [2, prefer-double]
