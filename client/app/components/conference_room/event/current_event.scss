@@ -1,6 +1,8 @@
+$default-color: #eee;
+
 .current-event-container {
   height: 82vh;
-  background-color: #eee;
+  background-color: $default-color;
   border-radius: 5px;
   font-size: 1.1em;
   padding: 20px 30px 5px;
@@ -9,4 +11,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.end-time-warning {
+  animation-name: blinker;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 2;
+}
+
+@keyframes blinker {
+  0% { background-color: $default-color; }
+  50% { background-color: #a94442; }
+  100% { background-color: $default-color; }
 }
