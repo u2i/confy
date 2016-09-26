@@ -24,7 +24,8 @@ const EventShema = {
   start_timestamp: number,
   end_timestamp:   number,
   attendees:       arrayOf(UserSchema),
-  hangout_link:    string
+  hangout_link:    string,
+  html_link:       string
 };
 
 export default schema(EventShema);

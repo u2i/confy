@@ -12,6 +12,7 @@ import ModalHeader from './layout/ModalHeader';
 import ModalFooter from './layout/ModalFooter';
 import ModalBody from './layout/ModalBody';
 import * as DateHelper from 'helpers/DateHelper';
+import SuccessMessage from './SuccessMessage';
 
 const { func, bool, array } = PropTypes;
 const DATE_ERROR_TEXT = 'Start time must be lower than end time';
@@ -40,7 +41,8 @@ export default class CreateEventModal extends React.Component {
     showModal: bool.isRequired,
     conferenceRooms: array.isRequired,
     refresh: func.isRequired,
-    onError: func.isRequired
+    onError: func.isRequired,
+    onSuccess: func.isRequired
   };
 
   static defaultProps = {
@@ -78,6 +80,7 @@ export default class CreateEventModal extends React.Component {
 
   saveChanges() {
     if (!this._validateParams({ presence: true })) return;
+
     this.setState({ disableSaving: true });
 
     const eventParams = {
@@ -91,8 +94,9 @@ export default class CreateEventModal extends React.Component {
     };
 
     EventSource.create(eventParams)
-      .then(() => {
+      .then(({ data }) => {
         this.handleCloseModal();
+        this.props.onSuccess(<SuccessMessage event={data} />);
         this.props.refresh();
       })
       .catch((e) => {
@@ -134,7 +138,7 @@ export default class CreateEventModal extends React.Component {
           endTime={this.state.endTime} />
         <ModalFooter
           closeModal={this.props.closeModal}
-          saveChanges={this.saveChanges}
+          onSave={this.saveChanges}
           hasUnresolvedErrors={!isEmpty(this.state.errors)}
           blockWhileSaving={this.state.disableSaving} />
 

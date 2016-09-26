@@ -203,6 +203,7 @@ describe('<EventProvider />', () => {
     let expectedEvent;
 
     before(() => {
+      EventSource.create.restore();
       currentTime = moment();
       clock = sinon.useFakeTimers(currentTime.valueOf());
       expectedEvent = {
