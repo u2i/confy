@@ -6,53 +6,20 @@
   ],
   "plugins": [
     [
-      "module-alias",
-      [
-        {
-          "src": "./app/cable",
-          "expose": "cable"
-        },
-        {
-          "src": "./app",
-          "expose": "app"
-        },
-        {
-          "src": "./test",
-          "expose": "test"
-        },
-        {
-          "src": "./app/helpers",
-          "expose": "helpers"
-        },
-        {
-          "src": "./app/components",
-          "expose": "components"
-        },
-        {
-          "src": "./app/proptypes/schemas",
-          "expose": "schemas"
-        },
-        {
-          "src": "./app/proptypes",
-          "expose": "proptypes"
-        },
-        {
-          "src": "./app/sources",
-          "expose": "sources"
-        },
-        {
-          "src": "./app/models",
-          "expose": "models"
-        },
-        {
-          "src": "./app/texts",
-          "expose": "texts"
-        },
-        {
-          "src": "npm:lodash",
-          "expose": "underscore"
+      "module-resolver",
+      {
+        "alias": {
+          "cable": "./app/cable",
+          "app": "./app",
+          "test": "./test",
+          "components": "./app/components",
+          "helpers": "./app/helpers",
+          "schemas": "./app/proptypes/schemas",
+          "proptypes": "./app/proptypes",
+          "sources": "./app/sources",
+          "models": "./app/models"
         }
-      ]
+      }
     ]
   ]
 }
