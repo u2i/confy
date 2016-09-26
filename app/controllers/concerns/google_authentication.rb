@@ -2,7 +2,7 @@ module GoogleAuthentication
   extend ActiveSupport::Concern
 
   included do
-    rescue_from ArgumentError do
+    rescue_from GoogleCalendar::GoogleErrorHandler::GoogleAuthenticationError do
       clear_credentials
       redirect_action
     end
