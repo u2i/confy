@@ -29,8 +29,8 @@ const ConferenceRoomContainer = ({
   onCancel,
   onExtend
 }) => (
-  <div>
-    <Navbar activeConferenceRoom={activeConferenceRoom} />
+  <div className="tablet-view">
+    <Navbar conferenceRoom={activeConferenceRoom} />
     <Grid className="conference-room-container">
       {currentEvent || nextEvents.length > 0 ?
         <CurrentAndNextEvents
