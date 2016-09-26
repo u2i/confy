@@ -1,13 +1,13 @@
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
 import EventSchema from 'proptypes/schemas/EventSchema';
-import Controls from '../layout/controls/Controls';
+import Controls from 'components/conference_room/layout/controls/Controls';
 import Event from 'components/conference_room/event/Event';
 import NoEvent from 'components/conference_room/event/NoEvent';
 import TimeProgressContainer from 'components/conference_room/event/TimeProgressContainer';
 import classNames from 'classnames';
-import './current_event.scss';
 import bindAll from 'lodash/bindAll';
+import './current_event.scss';
 
 export default class CurrentEvent extends React.Component {
   static propTypes = {
