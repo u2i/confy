@@ -1,12 +1,12 @@
-$default-color: #eee;
+$default-color: #000;
 
 .current-event-container {
   height: 82vh;
   background-color: $default-color;
-  border-radius: 5px;
   font-size: 1.1em;
   padding: 20px 30px 5px;
   white-space: normal;
+  color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -31,12 +31,16 @@ $default-color: #eee;
 
   .event-controls {
     flex: 0 0 4.5em;
+
+  h2 {
+    font-size: 2em;
+    line-height: 2em;
   }
 }
 
 .end-time-warning {
   animation-name: blinker;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: 2;
 }

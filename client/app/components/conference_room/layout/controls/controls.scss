@@ -1,3 +1,9 @@
+$greenbtn: #417505;
+$lightgreenbtn: #7ED321;
+$bluebtn: #29C8DE;
+
+$amount: 15%;
+
 .event-controls {
   display: flex;
   flex-direction: row;
@@ -12,5 +18,19 @@
     min-width: 100px;
     max-width: 30%;
     flex-grow: 1;
+    border: 0;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.5);
+    font-weight: bold;
+
+    &.btn-primary {
+      background: $greenbtn;
+      box-shadow: 0 3px 0 darken($greenbtn, $amount);
+    }
+
+    &.btn-danger {
+      background: $bluebtn;
+      box-shadow: 0 3px 0 darken($bluebtn, $amount);
+    }
+
   }
 }

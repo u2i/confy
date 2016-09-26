@@ -1,5 +1,29 @@
+$boxsh: 0 1px 0 rgba(0,0,0,0.5);
+
 .next-event-container {
   padding: 5px 30px 5px;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.5);
+
+  h2 {
+    text-align: center;
+    font-size: 1.8em;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+    box-shadow: $boxsh;
+    margin-bottom: 0;
+  }
+
+  .event-container {
+    border-bottom: 1px solid #fff;
+    padding: 10px 0 20px;
+    box-shadow: $boxsh;
+
+    .event-time {
+      font-size: 1.4em;
+    }
+  }
+
 }
 
 @media (min-width: $screen-sm-min) {

@@ -8,7 +8,7 @@ import Help from '../help/HelpContainer';
 import './navbar.scss';
 
 const RoomNavbar = ({ activeConferenceRoom }) => (
-  <Navbar style={{ backgroundColor: activeConferenceRoom.color }} className="conference-room-navbar">
+  <Navbar className="conference-room-navbar">
     <Navbar.Header>
       <Navbar.Brand>
         <a href="#"><h2>{activeConferenceRoom.title}</h2></a>
