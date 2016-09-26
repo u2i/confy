@@ -1,14 +1,18 @@
 module GoogleCalendar
   class EventEditor
+    include GoogleErrorHandler
+
     EventNotInProgressError = Class.new(StandardError)
 
-    def initialize(credentials)
+    def initialize(credentials, user_email)
       @credentials = credentials
+      @user_email = user_email
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
     def update(conference_room_id, event_id, data)
       update_event(conference_room_id, event_id) do |event|
+        GoogleCalendar::EventValidator.new(event, credentials, user_email).raise_if_occupied
         event.update(data)
       end
     end
@@ -22,27 +26,28 @@ module GoogleCalendar
 
     private
 
-    attr_accessor :calendar_service
+    attr_accessor :credentials, :user_email, :calendar_service
 
     def update_event(conference_room_id, event_id)
-      email = conference_room_email(conference_room_id)
-      event_wrapper = event_wrapper(event_id, email)
+      event_wrapper = event_wrapper(event_id, conference_room(conference_room_id))
       yield event_wrapper if block_given?
-      update_event_in_google(event_wrapper, email)
+      update_event_in_google(event_wrapper)
     end
 
-    def conference_room_email(conference_room_id)
-      ConferenceRoom.find(conference_room_id).email
+    def update_event_in_google(event_wrapper)
+      rescue_google_request do
+        calendar_service.update_event(event_wrapper.conference_room.email, event_wrapper.id, event_wrapper.google_event)
+      end
+      event_wrapper
     end
 
-    def event_wrapper(event_id, conference_room_email)
-      google_event = calendar_service.get_event(conference_room_email, event_id)
-      GoogleCalendar::EventWrapper::Event.new(google_event)
+    def conference_room(conference_room_id)
+      ConferenceRoom.find(conference_room_id)
     end
 
-    def update_event_in_google(event_wrapper, conference_room_email)
-      event = event_wrapper.google_event
-      calendar_service.update_event(conference_room_email, event.id, event)
+    def event_wrapper(event_id, room)
+      google_event = calendar_service.get_event(room.email, event_id)
+      GoogleCalendar::EventWrapper::Event.new(google_event, conference_room: room)
     end
   end
 end

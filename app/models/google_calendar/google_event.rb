@@ -50,7 +50,7 @@ module GoogleCalendar
     end
 
     def event_editor
-      @event_editor ||= GoogleCalendar::EventEditor.new(credentials)
+      @event_editor ||= GoogleCalendar::EventEditor.new(credentials, user_email)
     end
   end
 end

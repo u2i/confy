@@ -12,10 +12,11 @@ RSpec.describe GoogleCalendar::EventEditor do
     Google::Apis::CalendarV3::Event.new(start: WithDatetime.new(start_time), end: WithDatetime.new(end_time), id: event_id)
   end
   let(:service) { double('service', get_event: event, update_event: nil) }
-  subject { described_class.new(:credentials) }
+  subject { described_class.new(:credentials, :user_email) }
 
   before do
     allow_any_instance_of(GoogleCalendar::Client).to receive(:calendar_service).and_return(service)
+    allow_any_instance_of(GoogleCalendar::EventValidator).to receive(:raise_if_occupied)
     allow(DateTime).to receive(:now) { now }
   end
 
