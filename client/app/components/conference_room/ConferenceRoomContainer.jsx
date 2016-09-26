@@ -7,7 +7,6 @@ import { Grid } from 'react-bootstrap';
 
 import Navbar from './layout/Navbar';
 import CurrentAndNextEvents from './layout/CurrentAndNextEvents';
-import RoomsAvailability from './layout/RoomsAvailability';
 import NoEvents from './layout/NoEvents';
 
 import './conference_room.scss';
@@ -37,11 +36,12 @@ const ConferenceRoomContainer = ({
           onConfirm={onConfirm}
           onFinish={onFinish}
           onCreate={onCreate}
-          onCancel={onCancel} /> :
+          onCancel={onCancel}
+          conferenceRoom={conferenceRoom}
+          eventsInOtherRooms={eventsInOtherConferenceRooms} /> :
         <NoEvents onCreate={onCreate} />
       }
     </Grid>
-    <RoomsAvailability conferenceRoom={conferenceRoom} events={eventsInOtherConferenceRooms} />
   </div>
 );
 

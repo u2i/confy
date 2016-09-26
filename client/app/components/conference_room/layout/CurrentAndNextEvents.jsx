@@ -1,11 +1,12 @@
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Accordion, Panel } from 'react-bootstrap';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import texts from '../texts/texts';
 
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
+import RoomsAvailability from 'components/conference_room/event/RoomsAvailability';
 
 const CurrentAndNextEvents = ({
   currentEvent,
@@ -15,7 +16,9 @@ const CurrentAndNextEvents = ({
   onConfirm,
   onFinish,
   onCreate,
-  onCancel
+  onCancel,
+  conferenceRoom,
+  eventsInOtherRooms
 }) => (
   <Row>
     <Col xs={12} sm={8}>
@@ -28,7 +31,14 @@ const CurrentAndNextEvents = ({
                     onCancel={onCancel} />
     </Col>
     <Col xs={12} sm={4}>
-      <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
+      <Accordion defaultActiveKey="1">
+        <Panel header="Next events" eventKey="1">
+          <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
+        </Panel>
+        <Panel header="Available rooms" eventKey="2">
+          <RoomsAvailability conferenceRoom={conferenceRoom} events={eventsInOtherRooms} />
+        </Panel>
+      </Accordion>
     </Col>
   </Row>
 );

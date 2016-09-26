@@ -3,6 +3,7 @@ import ConferenceRoomSource from 'app/sources/ConferenceRoomSource';
 import { currentAndNextEvents } from 'helpers/EventHelper';
 import moment from 'moment';
 import { humanizeTime } from 'helpers/DateHelper';
+import sortBy from 'lodash/sortBy';
 
 export default class RoomsAvailability extends React.Component {
   constructor(...args) {
@@ -39,6 +40,8 @@ export default class RoomsAvailability extends React.Component {
 
     const { current, next } = currentAndNextEvents(events);
     if(current === undefined) return this._roomAvailabilityTime(conferenceRoom, next[0]);
+
+    return this._unavailableRoom(conferenceRoom, events);
   }
 
   _eventsInConferenceRoom(events, conferenceRoomId) {
@@ -55,14 +58,25 @@ export default class RoomsAvailability extends React.Component {
     return <p>{conferenceRoom.title + humanizeTime(duration)}</p>;
   }
 
+  _unavailableRoom(conferenceRoom, events) {
+    const endTime = this._lastEventEndTime(sortBy(events, 'start_timestamp'));
+    const duration = moment.duration(endTime.diff(moment()));
+    return <p>{conferenceRoom.title + " available in " + humanizeTime(duration)}</p>;
+  }
+
+  _lastEventEndTime(events) {
+    for (var i = 0; i < events.length - 1; i++) {
+      if (moment(events[i+1].start.date_time).diff(moment(events[i].end.date_time)) >= 1000 * 60) {
+        return moment(events[i].end.date_time);
+      }
+    }
+    return moment(events[events.length - 1].end.date_time);
+  }
+
   _fetchConferenceRooms() {
     ConferenceRoomSource.fetch()
       .then(response => {
-        this.setState({ conferenceRooms: this._otherConferenceRooms(response.data) });
+        this.setState({ conferenceRooms: response.data });
     });
-  }
-
-  _otherConferenceRooms(conferenceRooms) {
-    return conferenceRooms.filter(conferenceRoom => conferenceRoom.id !== this.props.conferenceRoom.id);
   }
 }
