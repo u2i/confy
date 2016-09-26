@@ -7,6 +7,7 @@ import { Grid } from 'react-bootstrap';
 
 import Navbar from './layout/Navbar';
 import CurrentAndNextEvents from './layout/CurrentAndNextEvents';
+import RoomsAvailability from './layout/RoomsAvailability';
 import NoEvents from './layout/NoEvents';
 
 import './conference_room.scss';
@@ -16,6 +17,7 @@ const nextEventStart = (nextEvents) => moment(get(nextEvents[0], 'start.date_tim
 const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
+  eventsInOtherConferenceRooms,
   conferenceRoom,
   onUpdate,
   onConfirm,
@@ -39,6 +41,7 @@ const ConferenceRoomContainer = ({
         <NoEvents onCreate={onCreate} />
       }
     </Grid>
+    <RoomsAvailability conferenceRoom={conferenceRoom} events={eventsInOtherConferenceRooms} />
   </div>
 );
 

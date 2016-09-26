@@ -5,6 +5,10 @@ class ConferenceRoomsController < ApplicationController
   before_action :refresh_token
   before_action :check_authentication
 
+  def index
+    render json: ConferenceRoom.all
+  end
+
   def show
     create_props
   end

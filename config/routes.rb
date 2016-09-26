@@ -27,5 +27,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :conference_rooms, only: [:show], param: :title
+  resources :conference_rooms, only: [:index, :show], param: :title
 end

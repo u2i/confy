@@ -7,6 +7,7 @@ import EventSource from 'sources/EventSource';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { currentAndNextEvents } from 'helpers/EventHelper';
 import bindAll from 'lodash/bindAll';
+import partition from 'lodash/partition';
 
 const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
 
@@ -18,7 +19,7 @@ export default class EventProvider extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { nextEvents: [], creating: false };
+    this.state = { nextEvents: [], creating: false, eventsInOtherConferenceRooms: [] };
     bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate']);
   }
 
@@ -90,6 +91,7 @@ export default class EventProvider extends React.Component {
     return (
       <Component currentEvent={this.state.currentEvent}
                  nextEvents={this.state.nextEvents}
+                 eventsInOtherConferenceRooms={this.state.eventsInOtherConferenceRooms}
                  onUpdate={this.handleUpdate}
                  onConfirm={this.handleConfirm}
                  onFinish={this.handleFinish}
@@ -105,10 +107,13 @@ export default class EventProvider extends React.Component {
       end: moment().endOf('day').toISOString(),
       confirmation: true
     };
-    EventSource.fetch(params, this.props.conferenceRoom.id)
+    EventSource.fetch(params)
       .then(response => {
-        const { current, next } = currentAndNextEvents(response.data);
-        this.setState({ nextEvents: next, currentEvent: current });
+        const events = partition(response.data, e => e.conference_room.id === this.props.conferenceRoom.id);
+        const eventsInCurrentConferenceRoom = events[0];
+        const eventsInOtherConferenceRooms = events[1];
+        const { current, next } = currentAndNextEvents(eventsInCurrentConferenceRoom);
+        this.setState({ nextEvents: next, currentEvent: current, eventsInOtherConferenceRooms: eventsInOtherConferenceRooms });
       });
   }
 
