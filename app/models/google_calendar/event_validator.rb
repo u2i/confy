@@ -37,7 +37,7 @@ module GoogleCalendar
     end
 
     def occupied_error_message(events)
-      "Already #{events.count} #{'event'.pluralize(events.count)} in time span(#{event_list(events)})."
+      "Already #{events.count} #{'event'.pluralize(events.count)} in time span (#{event_list(events)})."
     end
 
     def event_list(events)
