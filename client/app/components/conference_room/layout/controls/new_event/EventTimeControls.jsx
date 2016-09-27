@@ -11,7 +11,8 @@ const DURATIONS = [
 
 const eventTimeControls = ({ onCreate, nextEventStart, currentEventEnd }) => {
   const buttons = DURATIONS.map(duration => (
-    <TimeChoiceButton start={currentEventEnd}
+    <TimeChoiceButton nextEventStart={nextEventStart}
+                      start={currentEventEnd}
                       duration={duration}
                       onClick={onCreate}
                       key={duration} />
