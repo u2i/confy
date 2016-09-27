@@ -31,7 +31,8 @@ rules:
   id-length: [1, { min: 2, exceptions: [_, e, i, k, v, t] }]
   space-before-function-paren: [1, never]
   no-underscore-dangle: 0
-  no-confusing-arrow: [0, {allowParens: true}]
+  no-confusing-arrow: [2, {allowParens: true}]
+  arrow-parens: [2, as-needed]
 
   comma-dangle: [2, never]
   key-spacing: [2, {beforeColon: false, afterColon: true, mode: minimum}]
