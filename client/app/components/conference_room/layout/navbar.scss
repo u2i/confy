@@ -8,7 +8,7 @@
     margin: 0;
     padding: 0;
     color: #fff;
-    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa;
+    text-shadow: 0 1px 0 darken(#4a8b21, 5%), 0 2px 0 darken(#4a8b21, 10%);
   }
 
   .navbar-brand,
@@ -52,7 +52,9 @@
     button {
       background: transparent;
       border: 0;
-      font-size: 2em;
+      font-size: 1.6em;
+      color: #fff;
+      text-shadow: 0 1px 0 darken(#4a8b21, 5%), 0 2px 0 darken(#4a8b21, 10%);
     }
   }
 }

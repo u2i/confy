@@ -11,7 +11,7 @@ $boxsh: 0 1px 0 rgba(0,0,0,0.5);
     padding-bottom: 10px;
     box-shadow: $boxsh;
     margin-bottom: 0;
-    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa;
+    text-shadow: 0 1px 0 darken(#4a8b21, 5%), 0 2px 0 darken(#4a8b21, 10%);
   }
 
   .event-container {

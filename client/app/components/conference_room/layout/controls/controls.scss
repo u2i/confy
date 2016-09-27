@@ -25,11 +25,13 @@ $amount: 15%;
     &.btn-primary {
       background: $greenbtn;
       box-shadow: 0 3px 0 darken($greenbtn, $amount);
+      text-shadow: 0 -1px 0 darken($greenbtn, $amount);
     }
 
     &.btn-danger {
       background: $bluebtn;
       box-shadow: 0 3px 0 darken($bluebtn, $amount);
+      text-shadow: 0 -1px 0 darken($bluebtn, $amount);
     }
 
   }
