@@ -16,11 +16,10 @@ module GoogleCalendar
     private
 
     def insert_event(data)
-      event_wrapper(data).tap do |event_wrapper|
-        validate_event(event_wrapper)
-        rescue_google_request do
-          calendar_service.insert_event('primary', event_wrapper.google_event, send_notifications: true)
-        end
+      event_wrapper = event_wrapper(data)
+      validate_event(event_wrapper)
+      rescue_google_request do
+        calendar_service.insert_event('primary', event_wrapper.google_event, send_notifications: true)
       end
     end
 
