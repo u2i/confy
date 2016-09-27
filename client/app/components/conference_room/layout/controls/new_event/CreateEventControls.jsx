@@ -6,10 +6,10 @@ import ToggleableControls from './ToggleableControls';
 
 const CreateEventControls = (props) => {
   if (props.toggleText) {
-    return <ToggleableControls {...props} />
+    return <ToggleableControls {...props} />;
   }
-  const { toggleText, toggled, ...staticProps } = props;
-  return <StaticControls {...staticProps} />
+  const { toggleText, ...staticProps } = props;
+  return <StaticControls {...staticProps} />;
 };
 
 CreateEventControls.propTypes = {
