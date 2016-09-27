@@ -12,7 +12,7 @@ module GoogleCalendar
     def raise_if_occupied
       events = events_in_span
       return unless events.any?
-      return if events.length == 1 && events.first.id == wrapper.event_id
+      return if events.length == 1 && events.first[:id] == wrapper.id
       raise EventInTimeSpanError, occupied_error_message(events)
     end
 

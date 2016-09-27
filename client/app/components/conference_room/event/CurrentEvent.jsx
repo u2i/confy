@@ -17,7 +17,8 @@ export default class CurrentEvent extends React.Component {
     onConfirm: React.PropTypes.func,
     onFinish: React.PropTypes.func,
     onCreate: React.PropTypes.func,
-    onCancel: React.PropTypes.func
+    onCancel: React.PropTypes.func,
+    onExtend: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -37,11 +38,12 @@ export default class CurrentEvent extends React.Component {
         {this._eventComponent()}
         {this._timeProgressComponent()}
         <Controls event={this.props.event}
+                  nextEventStart={this.props.nextEventStart}
                   onConfirm={this.props.onConfirm}
                   onFinish={this.props.onFinish}
                   onCreate={this.props.onCreate}
-                  nextEventStart={this.props.nextEventStart}
-                  onCancel={this.props.onCancel} />
+                  onCancel={this.props.onCancel}
+                  onExtend={this.props.onExtend} />
       </div>
     );
   }
