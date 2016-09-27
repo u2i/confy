@@ -51,6 +51,6 @@ export default class TimeChoiceButton extends React.Component {
   }
 
   _end() {
-    return this._start().add(this.props.duration);
+    return this._start().clone().add(this.props.duration);
   }
 }
