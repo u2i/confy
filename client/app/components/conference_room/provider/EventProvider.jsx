@@ -81,7 +81,7 @@ export default class EventProvider extends React.Component {
 
     const params = { end_time: end.format() };
     EventSource.update(this.props.conferenceRoom.id, eventId, params)
-      .then(({ data }) => this.setState({ currentEvent: data }))
+      .then(({ data }) => this.setState({ currentEvent: data }));
   }
 
   setEndOfDayTimeout() {
