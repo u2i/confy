@@ -22,7 +22,7 @@ RSpec.describe GoogleCalendar::EventEditor do
 
   describe '#finish' do
     it 'changes event\'s end to current time' do
-      subject.finish(room.id, event_id)
+      subject.finish(room, event_id)
       expect(service).to have_received(:update_event).with(room.email, event_id, satisfy { |n| n.end.date_time == now })
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe GoogleCalendar::EventEditor do
     let(:description) { 'Updated description' }
     let(:event_data) { { start_time: start_time, end_time: end_time, summary: summary, description: description } }
     it 'updates event\'s info' do
-      subject.update(room.id, event_id, event_data)
+      subject.update(room, event_id, event_data)
       expect(service).to have_received(:update_event).with(room.email, event_id, satisfy do |n|
         n.end.date_time == end_time &&
           n.start.date_time == start_time &&

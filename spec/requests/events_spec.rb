@@ -97,24 +97,27 @@ RSpec.describe 'Events', type: :request do
 
   describe 'POST /events/confirm' do
     let(:event_id) { '1' }
-    let(:conference_room_id) { '1' }
+    let!(:conference_room) { create(:conference_room) }
+    let(:conference_room_id) { conference_room.id }
 
     it 'calls google_event_client.confirm with given parameters' do
-      expect(Event).to receive(:confirm_or_create).with(conference_room_id, event_id)
+      expect(Event).to receive(:confirm_or_create).with(conference_room, event_id)
       post confirm_conference_room_event_path(conference_room_id, event_id)
     end
   end
 
   describe 'POST /conference_rooms/events/finish' do
     let(:event_id) { '1' }
-    let(:conference_room_id) { '1' }
+    let!(:conference_room) { create(:conference_room) }
     let(:client) { double('client') }
-    subject { response }
+
     before { allow_any_instance_of(EventsController).to receive(:google_event_client) { client } }
+
+    subject { response }
     describe 'given valid data' do
       before do
         allow(client).to receive(:finish) { true }
-        post finish_conference_room_event_path(conference_room_id, event_id)
+        post finish_conference_room_event_path(conference_room, event_id)
       end
       it { is_expected.to have_http_status :ok }
     end
@@ -122,7 +125,7 @@ RSpec.describe 'Events', type: :request do
     describe 'google_event_client raises ActiveRecord::RecordNotFound' do
       before do
         allow(client).to receive(:finish) { raise ActiveRecord::RecordNotFound }
-        post finish_conference_room_event_path(conference_room_id, event_id)
+        post finish_conference_room_event_path(conference_room, event_id)
       end
       it { is_expected.to have_http_status :unprocessable_entity }
     end
@@ -130,17 +133,17 @@ RSpec.describe 'Events', type: :request do
 
   describe 'PATCH /conference_rooms/:conference_room_id/events/:event_id' do
     let(:event_id) { '1' }
-    let(:conference_room_id) { '1' }
+    let!(:conference_room) { create(:conference_room) }
     let(:client) { double('client') }
     let(:event) { double('event', id: event_id, to_h: {}) }
-    subject { response }
-    before { allow_any_instance_of(EventsController).to receive(:google_event_client) { client } }
 
     before do
+      allow_any_instance_of(EventsController).to receive(:google_event_client) { client }
       allow(client).to receive(:update) { event }
-      patch conference_room_event_path(conference_room_id, event_id), params: {event:{end_time: DateTime.now.rfc3339}}
+      patch conference_room_event_path(conference_room, event_id), params: {event:{end_time: DateTime.now.rfc3339}}
     end
 
+    subject { response }
     it 'updates event' do
       expect(client).to have_received(:update)
     end

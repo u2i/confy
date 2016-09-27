@@ -25,12 +25,12 @@ module GoogleCalendar
       event_finder.confirmed_events(time_interval)
     end
 
-    def finish(conference_room_id, event_id)
+    def finish(conference_room, event_id)
       event_editor.finish(conference_room_id, event_id)
     end
 
-    def update(conference_room_id, event_id, data)
-      event_editor.update(conference_room_id, event_id, data)
+    def update(conference_room, event_id, data)
+      event_editor.update(conference_room, event_id, data)
     end
 
     private

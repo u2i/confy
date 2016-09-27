@@ -10,15 +10,15 @@ module GoogleCalendar
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
-    def update(conference_room_id, event_id, data)
-      update_event(conference_room_id, event_id) do |event|
+    def update(conference_room, event_id, data)
+      update_event(conference_room, event_id) do |event|
         GoogleCalendar::EventValidator.new(event, credentials, user_email).raise_if_occupied
         event.update(data)
       end
     end
 
-    def finish(conference_room_id, event_id)
-      update_event(conference_room_id, event_id) do |event|
+    def finish(conference_room, event_id)
+      update_event(conference_room, event_id) do |event|
         raise EventNotInProgressError unless event.in_progress?
         event.end_time = DateTime.now
       end
@@ -28,8 +28,8 @@ module GoogleCalendar
 
     attr_accessor :credentials, :user_email, :calendar_service
 
-    def update_event(conference_room_id, event_id)
-      event_wrapper = event_wrapper(event_id, conference_room(conference_room_id))
+    def update_event(conference_room, event_id)
+      event_wrapper = event_wrapper(event_id, conference_room)
       yield event_wrapper if block_given?
       update_event_in_google(event_wrapper)
     end
@@ -39,10 +39,6 @@ module GoogleCalendar
         calendar_service.update_event(event_wrapper.conference_room.email, event_wrapper.id, event_wrapper.google_event)
       end
       event_wrapper
-    end
-
-    def conference_room(conference_room_id)
-      ConferenceRoom.find(conference_room_id)
     end
 
     def event_wrapper(event_id, room)

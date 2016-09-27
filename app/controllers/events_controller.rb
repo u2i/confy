@@ -55,11 +55,11 @@ class EventsController < ApplicationController
   def create
     event_params = create_event_params
     data = google_event_client.create(event_params.to_h).to_h
-    conference_room_id = event_params[:conference_room_id]
+    conference_room = ConferenceRoom.find(event_params[:conference_room_id])
     if event_params[:confirmed].present?
-      data[:confirmed] = Event.confirm_or_create(conference_room_id, data[:id])
+      data[:confirmed] = Event.confirm_or_create(conference_room, data[:id])
     end
-    data[:conference_room] = ConferenceRoom.find(conference_room_id)
+    data[:conference_room] = conference_room
     render json: data, status: :created
   end
 
@@ -70,12 +70,12 @@ class EventsController < ApplicationController
   end
 
   def confirm
-    Event.confirm_or_create(params[:conference_room_id], params[:event_id])
+    Event.confirm_or_create(conference_room, params[:event_id])
     head :ok
   end
 
   def finish
-    google_event_client.finish(params[:conference_room_id], params[:event_id])
+    google_event_client.finish(conference_room, params[:event_id])
     head :ok
   rescue GoogleCalendar::EventEditor::EventNotInProgressError
     head :bad_request
@@ -86,7 +86,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    event = google_event_client.update(params[:conference_room_id], params[:event_id], edit_event_params)
+    event = google_event_client.update(conference_room, params[:event_id], edit_event_params)
     confirmed = ::Event.google_event_confirmed?(event)
     render json: event.to_h.merge(confirmed: confirmed)
   end
@@ -120,5 +120,9 @@ class EventsController < ApplicationController
 
   def time_interval_rfc3339
     span_param.to_rfc3339
+  end
+
+  def conference_room
+    ConferenceRoom.find(params[:conference_room_id])
   end
 end
