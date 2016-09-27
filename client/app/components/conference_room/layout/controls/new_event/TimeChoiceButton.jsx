@@ -7,6 +7,7 @@ import { humanizeTime } from 'helpers/DateHelper';
 export default class TimeChoiceButton extends React.Component {
   static propTypes = {
     nextEventStart: instanceOfMoment,
+    start: instanceOfMoment,
     duration: instanceOfDuration.isRequired,
     onClick: React.PropTypes.func
   };
@@ -26,7 +27,7 @@ export default class TimeChoiceButton extends React.Component {
 
   handleClick() {
     if (this.props.onClick) {
-      this.props.onClick(moment().add(this.props.duration));
+      this.props.onClick(this._start().add(this.props.duration));
     }
   }
 
@@ -42,6 +43,14 @@ export default class TimeChoiceButton extends React.Component {
   }
 
   _timeAvailable() {
-    return !this.props.nextEventStart || this.props.nextEventStart.isSameOrAfter(moment().add(this.props.duration));
+    return !this.props.nextEventStart || this.props.nextEventStart.isSameOrAfter(this._end());
+  }
+
+  _start() {
+    return this.props.start || moment();
+  }
+
+  _end() {
+    return this._start().add(this.props.duration);
   }
 }
