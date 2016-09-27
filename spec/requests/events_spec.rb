@@ -127,4 +127,26 @@ RSpec.describe 'Events', type: :request do
       it { is_expected.to have_http_status :unprocessable_entity }
     end
   end
+
+  describe 'PATCH /conference_rooms/:conference_room_id/events/:event_id' do
+    let(:event_id) { '1' }
+    let(:conference_room_id) { '1' }
+    let(:client) { double('client') }
+    let(:event) { double('event', id: event_id, to_h: {}) }
+    subject { response }
+    before { allow_any_instance_of(EventsController).to receive(:google_event_client) { client } }
+
+    before do
+      allow(client).to receive(:update) { event }
+      patch conference_room_event_path(conference_room_id, event_id), params: {event:{end_time: DateTime.now.rfc3339}}
+    end
+
+    it 'updates event' do
+      expect(client).to have_received(:update)
+    end
+
+    it 'returns information about event\'s confirmation' do
+      expect(JSON.parse(response.body).key?('confirmed')).to eq true
+    end
+  end
 end
