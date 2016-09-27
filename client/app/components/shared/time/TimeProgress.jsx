@@ -1,8 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
-
-import { humanizeTime, isFullMinute } from 'helpers/DateHelper';
+import { humanizeTime, isFullNonZeroMinute } from 'helpers/DateHelper';
 
 const FIVE_MINUTES = 60 * 1000 * 5;
 
@@ -46,7 +45,7 @@ export default class TimeProgress extends React.Component {
   }
 
   _timeToEnd() {
-    return this.props.end.diff(moment());
+    return Math.max(this.props.end.diff(moment(), 0));
   }
 
   _update() {
@@ -55,10 +54,9 @@ export default class TimeProgress extends React.Component {
     this.setState({ timeLeft: this._humanizedTimeLeft() });
     if (timeToEnd <= 0) {
       this.props.onCompleted();
-      clearInterval(this.interval);
     }
 
-    if (timeToEnd <= FIVE_MINUTES && isFullMinute(timeToEnd, this.props.updateInterval)) {
+    if (timeToEnd <= FIVE_MINUTES && isFullNonZeroMinute(timeToEnd, this.props.updateInterval)) {
       this.props.displayEndTimeWarning();
     }
   }
