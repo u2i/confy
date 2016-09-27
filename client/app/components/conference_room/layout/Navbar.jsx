@@ -11,7 +11,7 @@ const RoomNavbar = ({ activeConferenceRoom }) => (
   <Navbar className="conference-room-navbar">
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="#"><h2>{activeConferenceRoom.title}</h2></a>
+        <a href="#"><h2 className={activeConferenceRoom.logo}>{activeConferenceRoom.title}</h2></a>
       </Navbar.Brand>
       <Navbar.Form pullRight>
         <Help />
@@ -22,7 +22,7 @@ const RoomNavbar = ({ activeConferenceRoom }) => (
 );
 
 RoomNavbar.propTypes = {
-  activeConferenceRoom: ConferenceRoomSchema.only('color', 'title').isRequired
+  activeConferenceRoom: ConferenceRoomSchema.only('title', 'logo').isRequired
 };
 
 export default RoomNavbar;
