@@ -19,4 +19,8 @@ class Event < ApplicationRecord
   def self.confirmed_event_ids
     confirmed.pluck(:event_id)
   end
+
+  def self.google_event_confirmed?(event)
+    confirmed.where(event_id: event.id).any?
+  end
 end

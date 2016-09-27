@@ -86,7 +86,9 @@ class EventsController < ApplicationController
   end
 
   def update
-    google_event_client.update(params[:conference_room_id], params[:event_id], edit_event_params)
+    event = google_event_client.update(params[:conference_room_id], params[:event_id], edit_event_params)
+    confirmed = ::Event.google_event_confirmed?(event)
+    render json: event.to_h.merge(confirmed: confirmed)
   end
 
   private
