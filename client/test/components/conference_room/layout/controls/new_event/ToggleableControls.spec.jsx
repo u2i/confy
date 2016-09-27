@@ -14,7 +14,7 @@ describe('<ToggleableControls />', () => {
 
     it('renders toggle <Button />', () => {
       expect(button).to.have.lengthOf(1);
-      expect(button).to.have.text(toggleText)
+      expect(button).to.have.text(toggleText);
     });
   }
 

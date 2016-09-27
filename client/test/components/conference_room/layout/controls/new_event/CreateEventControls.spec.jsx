@@ -22,4 +22,4 @@ describe('<CreateEventControls />', () => {
       expect(wrapper).to.have.exactly(1).descendants(StaticControls);
     });
   });
-}); 
+});
