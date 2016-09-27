@@ -102,6 +102,11 @@ function pluralize(string, number, includeNumber) {
   return includeNumber ? `${number} ${word}` : word;
 }
 
+export function durationFromNow(time) {
+  const now = moment();
+  return moment.duration(time.diff(now));
+}
+
 export function humanizeTime(duration) {
   if (duration.hours() > 0) {
     if (duration.minutes() > 0) {

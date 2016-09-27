@@ -16,7 +16,7 @@ const nextEventStart = (nextEvents) => moment(get(nextEvents[0], 'start.date_tim
 const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
-  eventsInOtherConferenceRooms,
+  allEvents,
   conferenceRoom,
   onUpdate,
   onConfirm,
@@ -38,7 +38,7 @@ const ConferenceRoomContainer = ({
           onCreate={onCreate}
           onCancel={onCancel}
           conferenceRoom={conferenceRoom}
-          eventsInOtherRooms={eventsInOtherConferenceRooms} /> :
+          allEvents={allEvents} /> :
         <NoEvents onCreate={onCreate} />
       }
     </Grid>

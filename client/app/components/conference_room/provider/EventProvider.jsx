@@ -19,7 +19,7 @@ export default class EventProvider extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { nextEvents: [], creating: false, eventsInOtherConferenceRooms: [] };
+    this.state = { nextEvents: [], creating: false, allEvents: [] };
     bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate']);
   }
 
@@ -91,7 +91,7 @@ export default class EventProvider extends React.Component {
     return (
       <Component currentEvent={this.state.currentEvent}
                  nextEvents={this.state.nextEvents}
-                 eventsInOtherConferenceRooms={this.state.eventsInOtherConferenceRooms}
+                 allEvents={this.state.allEvents}
                  onUpdate={this.handleUpdate}
                  onConfirm={this.handleConfirm}
                  onFinish={this.handleFinish}
@@ -109,11 +109,9 @@ export default class EventProvider extends React.Component {
     };
     EventSource.fetch(params)
       .then(response => {
-        const events = partition(response.data, e => e.conference_room.id === this.props.conferenceRoom.id);
-        const eventsInCurrentConferenceRoom = events[0];
-        const eventsInOtherConferenceRooms = events[1];
+        const eventsInCurrentConferenceRoom = response.data.filter(e => e.conference_room.id === this.props.conferenceRoom.id);
         const { current, next } = currentAndNextEvents(eventsInCurrentConferenceRoom);
-        this.setState({ nextEvents: next, currentEvent: current, eventsInOtherConferenceRooms: eventsInOtherConferenceRooms });
+        this.setState({ nextEvents: next, currentEvent: current, allEvents: response.data });
       });
   }
 

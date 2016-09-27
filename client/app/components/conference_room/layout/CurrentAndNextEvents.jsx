@@ -6,7 +6,9 @@ import texts from '../texts/texts';
 
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
-import RoomsAvailability from 'components/conference_room/event/RoomsAvailability';
+import RoomsAvailability from 'components/conference_room/availability/RoomsAvailability';
+
+import './current_next_events.scss';
 
 const CurrentAndNextEvents = ({
   currentEvent,
@@ -18,7 +20,7 @@ const CurrentAndNextEvents = ({
   onCreate,
   onCancel,
   conferenceRoom,
-  eventsInOtherRooms
+  allEvents
 }) => (
   <Row>
     <Col xs={12} sm={8}>
@@ -31,12 +33,12 @@ const CurrentAndNextEvents = ({
                     onCancel={onCancel} />
     </Col>
     <Col xs={12} sm={4}>
-      <Accordion defaultActiveKey="1">
+      <Accordion className="side-accordion" defaultActiveKey="1">
         <Panel header="Next events" eventKey="1">
           <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
         </Panel>
         <Panel header="Available rooms" eventKey="2">
-          <RoomsAvailability conferenceRoom={conferenceRoom} events={eventsInOtherRooms} />
+          <RoomsAvailability conferenceRoom={conferenceRoom} events={allEvents} />
         </Panel>
       </Accordion>
     </Col>
