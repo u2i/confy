@@ -2,15 +2,16 @@ html, body {
   height: calc(100% - 25px);
 }
 
-
+html, body, body > div {
+  height: 100%;
+}
 
 html, body, .container {
   width: 100vw;
 }
 
 html body .tablet-view {
-  height: calc(100% + 25px);
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4a8b21+0,1e420f+100 */
+  height: 100%;
   background: #4a8b21; /* Old browsers */
   background: linear-gradient(to bottom,  #4a8b21 0%,#1e420f 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }

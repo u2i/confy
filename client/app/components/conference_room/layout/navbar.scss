@@ -8,7 +8,7 @@
     margin: 0;
     padding: 0;
     color: #fff;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa;
   }
 
   .navbar-brand,
@@ -19,7 +19,7 @@
 
   .clock-date, .clock-time {
     display: inline;
-    margin-right: 30px;
+    margin-left: 30px;
     font-size: 0.8em;
   }
 
@@ -48,6 +48,12 @@
     padding-top: 0;
     padding-bottom: 0;
     box-shadow: none;
+
+    button {
+      background: transparent;
+      border: 0;
+      font-size: 2em;
+    }
   }
 }
 

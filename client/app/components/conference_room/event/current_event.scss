@@ -1,6 +1,6 @@
 $default-color: #000;
 
-.current-event-container {
+.current-event-container, .jumbotron {
   height: 82vh;
   background-color: $default-color;
   font-size: 1.1em;
@@ -32,7 +32,14 @@ $default-color: #000;
   .event-controls {
     flex: 0 0 4.5em;
 
+  h1 {
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa, 0 3px 0 #888;
+    font-size: 3em;
+    font-weight: bold;
+  }
+
   h2 {
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa, 0 3px 0 #888;
     font-size: 2em;
     line-height: 2em;
   }
@@ -42,7 +49,7 @@ $default-color: #000;
   animation-name: blinker;
   animation-duration: 1s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: 2;
+  animation-iteration-count: 3;
 }
 
 @keyframes blinker {
