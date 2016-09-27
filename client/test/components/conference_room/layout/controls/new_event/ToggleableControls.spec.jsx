@@ -43,7 +43,7 @@ describe('<ToggleableControls />', () => {
     });
   });
 
-  describe('on toggle', () => {
+  context('when toggle button is clicked', () => {
     const child = 'Child';
     let wrapper;
 
@@ -60,7 +60,7 @@ describe('<ToggleableControls />', () => {
       });
     });
 
-    describe('on control click', () => {
+    context('when a time button is clicked', () => {
       beforeEach(() => {
         wrapper.find(TimeChoiceButton).first().find('button').simulate('click');
       });
@@ -68,7 +68,7 @@ describe('<ToggleableControls />', () => {
       it('', () => shouldRenderToggleButton(wrapper));
     });
 
-    describe('on cancel click', () => {
+    context('when cancel button is clicked', () => {
       beforeEach(() => {
         wrapper.find('button').findWhere(button => button.text() === 'Cancel').simulate('click');
       });
