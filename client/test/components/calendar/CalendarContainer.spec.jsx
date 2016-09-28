@@ -5,12 +5,9 @@ import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import shared from 'mocha-shared';
 import EventSource from 'sources/EventSource';
-import Event from 'test/factories/Event';
-import User from 'test/factories/User';
 import DefaultProps from 'test/factories/DefaultProps';
 import * as FiltersHelper from 'helpers/FiltersHelper';
 import SideNav from 'components/calendar/layout/SideNav';
-import EventDestroyer from 'components/calendar/event/EventDestroyer';
 
 describe('<CalendarContainer />', () => {
   let props;
@@ -66,23 +63,6 @@ describe('<CalendarContainer />', () => {
       const wrapper = shallow(<CalendarContainer {...props} />);
       wrapper.find(SideNav).simulate('refresh');
       expect(EventSource.fetch).to.have.been.calledOnce();
-    });
-  });
-
-  describe('delete', () => {
-    before(() => {
-      document.querySelector = function querySelector(_e) {
-        return { content: 'xxx' };
-      };
-    });
-
-    it('deletes event', () => {
-      const event = Event.build({ creator: User.build({ self: true }) });
-      const wrapper = mount(<CalendarContainer {...props} initialEvents={[event]} />);
-
-      wrapper.find(EventDestroyer).props().onDelete();
-      expect(EventSource.remove).to.have.been.calledOnce();
-      expect(EventSource.remove).to.have.been.calledWith(event.id);
     });
   });
 });
