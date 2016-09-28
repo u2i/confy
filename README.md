@@ -24,6 +24,8 @@ $ rake db:setup
 ```
 
 ## Running the server in development
+Make sure you have Redis running.
+
 ```bash
 $ foreman start -f Procfile.dev
 ```
