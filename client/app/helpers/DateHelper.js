@@ -115,5 +115,5 @@ export function humanizeTime(duration) {
 }
 
 export function isFullNonZeroMinute(time, precision) {
-  return time % (60 * 1000) <= precision && time >= 60 * 1000;
+  return time % (60 * 1000) <= precision && time >= precision;
 }

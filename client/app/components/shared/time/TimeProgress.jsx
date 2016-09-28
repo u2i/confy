@@ -45,7 +45,7 @@ export default class TimeProgress extends React.Component {
   }
 
   _timeToEnd() {
-    return Math.max(this.props.end.diff(moment(), 0));
+    return Math.max(this.props.end.diff(moment()), 0);
   }
 
   _update() {
