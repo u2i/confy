@@ -8,8 +8,7 @@
   "scripts": {
     "start": "foreman start -f Procfile.dev -p ${PORT:-3000}",
     "postinstall": "cd client && npm install",
-    "test": "rspec && npm run test:client && npm run lint",
-    "test:client": "(cd client && npm run test --silent)",
+    "test": "(cd client && npm run test --silent)",
     "lint": "(cd client && npm run lint --silent)",
     "build:client": "(cd client && npm run build:client --silent)",
     "server:dev": "(cd client && npm run server:dev)"
