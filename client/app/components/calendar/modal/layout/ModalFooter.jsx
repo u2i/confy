@@ -14,7 +14,7 @@ const ModalFooter = (props) => (
     </Button>
     <Button className="save-button"
             bsStyle="primary"
-            onClick={props.saveChanges}
+            onClick={props.onSave}
             disabled={props.hasUnresolvedErrors || props.blockWhileSaving}>
       <If condition={props.blockWhileSaving}>
         <span>{SAVING_TEXT}</span>
@@ -27,8 +27,8 @@ const ModalFooter = (props) => (
 );
 
 ModalFooter.propTypes = {
-  closeModal:       func.isRequired,
-  saveChanges:      func.isRequired,
+  closeModal: func.isRequired,
+  onSave: func.isRequired,
   hasUnresolvedErrors: bool,
   blockWhileSaving: bool
 };

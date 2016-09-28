@@ -1,8 +1,10 @@
 module GoogleCalendar
   class EventFinder
+    include GoogleErrorHandler
+
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, description, recurrence, '\
-                     'creator, attendees(self, responseStatus, displayName, email), hangoutLink)'.freeze
+                     'creator, attendees(self, responseStatus, displayName, email), hangoutLink, htmlLink)'.freeze
 
     def initialize(credentials, user_email)
       @credentials = credentials
@@ -30,9 +32,11 @@ module GoogleCalendar
 
     def list_events(time_interval, rooms)
       listing_configuration = listing_options(time_interval)
-      calendar_service.batch do |service|
-        rooms.each do |room|
-          add_events_from_room(room, service, listing_configuration)
+      rescue_google_request do
+        calendar_service.batch do |service|
+          rooms.each do |room|
+            add_events_from_room(room, service, listing_configuration)
+          end
         end
       end
       all_events

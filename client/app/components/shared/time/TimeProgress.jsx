@@ -2,23 +2,27 @@ import moment from 'moment';
 import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
 
-import { humanizeTime } from 'helpers/DateHelper';
+import { humanizeTime, isFullMinute } from 'helpers/DateHelper';
+
+const FIVE_MINUTES = 60 * 1000 * 5;
 
 export default class TimeProgress extends React.Component {
   static propTypes = {
     end: instanceOfMoment.isRequired,
     onCompleted: React.PropTypes.func,
     updateInterval: React.PropTypes.number,
-    suffix: React.PropTypes.string
+    suffix: React.PropTypes.string,
+    displayEndTimeWarning: React.PropTypes.func
   };
 
   static defaultProps = {
-    updateInterval: 1000
+    updateInterval: 1000,
+    displayEndTimeWarning: () => {}
   };
 
   constructor(...args) {
     super(...args);
-    this.state = { timeLeft: this._timeLeft() };
+    this.state = { timeLeft: this._humanizedTimeLeft() };
     this._update = this._update.bind(this);
   }
 
@@ -37,14 +41,25 @@ export default class TimeProgress extends React.Component {
     );
   }
 
-  _timeLeft() {
-    return humanizeTime(moment.duration(this.props.end.diff(moment())));
+  _humanizedTimeLeft() {
+    return humanizeTime(moment.duration(this._timeToEnd()));
+  }
+
+  _timeToEnd() {
+    return this.props.end.diff(moment());
   }
 
   _update() {
-    this.setState({ timeLeft: this._timeLeft() });
-    if (this.props.onCompleted && this.props.end <= moment()) {
+    const timeToEnd = this._timeToEnd();
+
+    this.setState({ timeLeft: this._humanizedTimeLeft() });
+    if (timeToEnd <= 0) {
       this.props.onCompleted();
+      clearInterval(this.interval);
+    }
+
+    if (timeToEnd <= FIVE_MINUTES && isFullMinute(timeToEnd, this.props.updateInterval)) {
+      this.props.displayEndTimeWarning();
     }
   }
 }

@@ -3,6 +3,7 @@ import EventAttendees from './EventAttendees';
 import EventExpandableDescription from './EventExpandableDescription';
 import EventFullDescription from './EventFullDescription';
 import EventHangoutLink from './EventHangoutLink';
+import EventEditLink from './EventEditLink';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import { If, Then } from 'react-if';
 import { MAX_DESCRIPTION_LENGTH } from 'helpers/EventHelper';
@@ -32,6 +33,7 @@ const EventAdditionalDetails = ({ event, onDelete }) => (
     </If>
     <EventAttendees event={event} />
     <EventHangoutLink event={event} />
+    <EventEditLink event={event} />
   </div>
 );
 
