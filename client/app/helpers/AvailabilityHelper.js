@@ -48,34 +48,33 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
   return currentlyBusyProps(conferenceRoom, events);
 }
 
-function compareByAvailability(left, right) {
-  if (left.availability === right.availability) {
-    return compareWithSameAvailability(left, right);
-  }
-  return left.availability >= right.availability;
-}
-
-function compareWithSameAvailability(left, right) {
-  if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
-    return compareCurrentlyAvailable(left, right);
-  }
-  else if (left.availability === AVAILABILITY.CURRENTLY_BUSY) {
-    return compareCurrentlyBusy(left, right);
-  }
-}
-
-function compareCurrentlyAvailable(left, right) {
-  if (left.duration === right.duration) {
-    return left.conferenceRoomTitle <= right.conferenceRoomTitle
-  }
-  return left.duration <= right.duration;
-}
-
 function compareCurrentlyBusy(left, right) {
   if (left.duration === right.duration) {
     return left.conferenceRoomTitle <= right.conferenceRoomTitle
   }
   return left.duration >= right.duration;
+}
+
+function compareCurrentlyAvailable(left, right) {
+  if (left.duration === right.duration) {
+    return left.conferenceRoomTitle <= right.conferenceRoomTitle;
+  }
+  return left.duration <= right.duration;
+}
+
+function compareWithSameAvailability(left, right) {
+  if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
+    return compareCurrentlyAvailable(left, right);
+  } else if (left.availability === AVAILABILITY.CURRENTLY_BUSY) {
+    return compareCurrentlyBusy(left, right);
+  }
+}
+
+function compareByAvailability(left, right) {
+  if (left.availability === right.availability) {
+    return compareWithSameAvailability(left, right);
+  }
+  return left.availability >= right.availability;
 }
 
 export function sortByAvailability(props) {
