@@ -58,7 +58,7 @@ In order for the application to work you need to configure your environment. Che
 
 `NOTIFICATION_HOST`: hostname where Google should send push notifications. Check [Gotchas#Push Notifications](#push-notifications)
 
-`APPLICATION_OWNER`: email address - can by anybody who has owner status in Google Developer Console
+`APPLICATION_OWNER`: email address - can be anybody who has owner status in Google Developer Console
 
 `GOOGLE_CLIENT_(ID|SECRET)`: look in [Google Developer Console](https://console.developers.google.com/apis/credentials/oauthclient/659112718098-i3u6g3s46vv5tccjvjcsfhrfta3omdvc.apps.googleusercontent.com?project=effective-relic-136507) `Confy > Credentials > OAuth 2.0 client IDs > Web Client 1`
 
