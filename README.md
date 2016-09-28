@@ -54,10 +54,15 @@ Config
 In order for the application to work you need to configure your environment. Check out [.env.example](https://github.com/u2i/confy/blob/develop/.env.example) for a `.env` template.
 
 `HOSTNAME`: address on which your rails server is running. Usually `https://localhost:PORT` where `PORT` is `3000` by default
+
 `NOTIFICATION_HOST`: hostname where Google should send push notifications. Check [Gotchas#Push Notifications](#push-notifications)
+
 `APPLICATION_OWNER`: email address - can by anybody who has owner status in Google Developer Console
+
 `GOOGLE_CLIENT_(ID|SECRET)`: look in [Google Developer Console](https://console.developers.google.com/apis/credentials/oauthclient/659112718098-i3u6g3s46vv5tccjvjcsfhrfta3omdvc.apps.googleusercontent.com?project=effective-relic-136507) `Confy > Credentials > OAuth 2.0 client IDs > Web Client 1`
+
 `GOOGLE_(CLIENT_EMAIL|PRIVATE_KEY|DEFAULT_CLIENT_ID)`: go to [Google Developer Console](https://console.developers.google.com/iam-admin/serviceaccounts/project?project=effective-relic-136507) and `Confy > Credentials > Service Account keys > Manage service accounts` then add a new private key for `push-notifications` service account. This will create a new private key file - find the necessary fields there
+
 `SECRET_KEY_BASE`: used by rails. You can use `rails secret` to generate a secure secret key. Look in [secrets.yml](https://github.com/u2i/confy/blob/develop/config/secrets.yml) for more info
 
 Or you can just ask someone for their `.env` file :)
