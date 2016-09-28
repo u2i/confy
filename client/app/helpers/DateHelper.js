@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'moment-duration-format';
 
 export const DATE_PARAM_FORMAT = 'YYYY-MM-DD';
 
@@ -117,4 +118,8 @@ export function humanizeTime(duration) {
     return pluralize('minute', duration.minutes(), true);
   }
   return pluralize('second', Math.max(duration.seconds(), 0), true);
+}
+
+export function formatDuration(duration, displayFormat = 'hh:mm') {
+  return duration.format(displayFormat, { trim: false })
 }
