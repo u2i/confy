@@ -6,7 +6,7 @@ import EventSchema from 'proptypes/schemas/EventSchema';
 import TimeProgress from 'components/shared/time/TimeProgress';
 
 const TimeProgressContainer = ({ event, nextEventStart, onCompleted, displayEndTimeWarning }) => (
-  <div className="text-center">
+  <div className="text-center time-progress-container">
     <TimeProgress
       end={event ? moment(event.end.date_time) : nextEventStart}
       suffix={event ? 'left' : 'to next event'}
