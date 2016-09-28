@@ -23,6 +23,7 @@ Table of Contents
       * [Review Apps](#review-apps)
     * [Gotchas](#gotchas)
       * [Push notifications](#push-notifications)
+    * [Resources](#resources)
 
 
 Prerequisites
@@ -150,3 +151,23 @@ which will create a tunnel to your local server.
 Unfortunately the free version of ngrok will generate a random domain for you every time you run it. That means you will need to verify this domain in Google Developer Console every time you restart the ngrok server. To verify your domain go to [Google Domain Verification](https://console.developers.google.com/apis/credentials/domainverification?project=effective-relic-136507), add your ngrok domain and follow the instructions.
 
 Once your domain is verified you also need to set `NOTIFICATION_HOST` to your ngrok domain in `.env`.
+
+Resources
+--------------
+
+Here's some reading if you're bored! (or you want to learn more about Confy and the technologies it uses)
+
+* [ES6](https://babeljs.io/docs/learn-es2015/)
+* [React](https://facebook.github.io/react/)
+* [React on Rails](https://github.com/shakacode/react_on_rails)
+* [React Bootstrap](https://react-bootstrap.github.io/)
+* [Webpack](https://blog.madewithlove.be/post/webpack-your-bags/)
+
+* [Action Cable](http://edgeguides.rubyonrails.org/action_cable_overview.html)
+* [Ruby Google API Client](https://developers.google.com/api-client-library/ruby/start/installation)
+* [Google Calendar API Reference](https://developers.google.com/google-apps/calendar/v3/reference/)
+* [Google Calendar Ruby API Docs](http://www.rubydoc.info/github/google/google-api-ruby-client/Google/Apis/CalendarV3)
+
+* [Enzyme](http://airbnb.io/enzyme/)
+* [Mocha](https://mochajs.org/)
+* [Sinon](http://sinonjs.org/)
