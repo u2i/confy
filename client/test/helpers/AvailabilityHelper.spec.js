@@ -71,7 +71,8 @@ describe('AvailabilityHelper', () => {
 
   describe('#sortByAvailability', () => {
     const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: 0 };
-    const currentlyAvailableShort = { availability: CURRENTLY_AVAILABLE, duration: 1 };
+    const currentlyAvailableShort1 = { conferenceRoomTitle: 'a', availability: CURRENTLY_AVAILABLE, duration: 1 };
+    const currentlyAvailableShort2 = { conferenceRoomTitle: 'b', availability: CURRENTLY_AVAILABLE, duration: 1 };
     const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: 2 };
     const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: 1 };
     const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: 2 };
@@ -79,20 +80,22 @@ describe('AvailabilityHelper', () => {
     const shuffledProps = [
       currentlyBusyLong,
       currentlyAvailableLong,
+      currentlyAvailableShort1,
       allDayAvailable,
-      currentlyAvailableShort,
+      currentlyAvailableShort2,
       currentlyBusyShort
     ];
 
     const sortedProps = [
       allDayAvailable,
       currentlyAvailableLong,
-      currentlyAvailableShort,
+      currentlyAvailableShort1,
+      currentlyAvailableShort2,
       currentlyBusyShort,
       currentlyBusyLong
     ];
 
-    it('sorts props by availability and duration', () => {
+    it('sorts props by availability, duration and title', () => {
       AvailabilityHelper.sortByAvailability(shuffledProps);
       expect(shuffledProps).to.eql(sortedProps);
     });

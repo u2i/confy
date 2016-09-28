@@ -50,9 +50,9 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
 
 function compareByDuration(left, right) {
   if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
-    return left.duration <= right.duration;
+    return left.duration < right.duration;
   }
-  return left.duration >= right.duration;
+  return left.duration > right.duration;
 }
 
 function compareWithSameAvailability(left, right) {
