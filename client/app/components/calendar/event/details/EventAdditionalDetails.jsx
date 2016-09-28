@@ -7,6 +7,7 @@ import EventEditLink from './EventEditLink';
 import EventSchema from 'proptypes/schemas/EventSchema';
 import { If, Then } from 'react-if';
 import { MAX_DESCRIPTION_LENGTH } from 'helpers/EventHelper';
+import EventDestroyer from '../EventDestroyer';
 
 const descriptionComponent = (description) => {
   if (description.length > MAX_DESCRIPTION_LENGTH) {
@@ -15,8 +16,16 @@ const descriptionComponent = (description) => {
   return <EventFullDescription description={description} />;
 };
 
-const EventAdditionalDetails = ({ event }) => (
+const userIsCreator = (event) => {
+  const creator = event.creator || { self: false };
+  return creator.self;
+};
+
+const EventAdditionalDetails = ({ event, onDelete }) => (
   <div>
+    <If condition={userIsCreator(event) === true}>
+      <EventDestroyer onDelete={onDelete} event={event} />
+    </If>
     <If condition={event.description != null}>
       <Then>
         {() => descriptionComponent(event.description)}
@@ -29,8 +38,8 @@ const EventAdditionalDetails = ({ event }) => (
 );
 
 EventAdditionalDetails.propTypes = {
-  event: EventSchema.only('description', 'attendees').isRequired
+  event: EventSchema.only('description', 'attendees').isRequired,
+  onDelete: React.PropTypes.func
 };
-
 
 export default EventAdditionalDetails;
