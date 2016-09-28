@@ -39,13 +39,13 @@ class EventsController < ApplicationController
   end
 
   def index
-    events = google_event_client.all(time_interval_rfc3339)
+    events = google_event_client.all(span_param.to_rfc3339)
     render json: events
   end
 
   def room_index
     events = google_event_client.find_by_room(
-      time_interval_rfc3339,
+      span_param.to_rfc3339,
       params[:id].to_i,
       with_confirmation?
     )
@@ -56,9 +56,7 @@ class EventsController < ApplicationController
     event_params = create_event_params
     data = google_event_client.create(event_params.to_h).to_h
     conference_room = ConferenceRoom.find(event_params[:conference_room_id])
-    if event_params[:confirmed].present?
-      data[:confirmed] = Event.confirm_or_create(conference_room, data[:id])
-    end
+    data[:confirmed] = Event.confirm_or_create(conference_room, data[:id]) if event_params[:confirmed].present?
     data[:conference_room] = conference_room
     render json: data, status: :created
   end
@@ -116,10 +114,6 @@ class EventsController < ApplicationController
     TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
   rescue
     TimeInterval.week(date_param)
-  end
-
-  def time_interval_rfc3339
-    span_param.to_rfc3339
   end
 
   def conference_room
