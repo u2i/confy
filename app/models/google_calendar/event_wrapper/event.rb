@@ -28,7 +28,7 @@ module GoogleCalendar
       end
 
       def valid?
-        return false unless starting.present? || ending.present?
+        return false unless starting.present? && ending.present?
         start_time.present? && end_time.present?
       end
 
