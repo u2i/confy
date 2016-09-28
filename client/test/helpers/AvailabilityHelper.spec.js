@@ -13,6 +13,8 @@ describe('AvailabilityHelper', () => {
     }
   });
 
+  const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AvailabilityHelper.AVAILABILITY;
+
   describe('#buildAvailabilityProps', () => {
     const conferenceRooms = ConferenceRoom.buildList(3);
     const currentEvent = Event.build({
@@ -32,15 +34,15 @@ describe('AvailabilityHelper', () => {
 
     const props = AvailabilityHelper.buildAvailabilityProps(conferenceRooms, events);
     it('returns list containing props for all day available conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, AvailabilityHelper.AVAILABILITY.ALL_DAY_AVAILABLE) );
+      expect(props).to.satisfy(props => hasPropWithAvailability(props, ALL_DAY_AVAILABLE) );
     });
 
     it('returns list containing props for currently busy conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, AvailabilityHelper.AVAILABILITY.CURRENTLY_BUSY) );
+      expect(props).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_BUSY) );
     });
 
     it('returns list containing props for currently available conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, AvailabilityHelper.AVAILABILITY.CURRENTLY_AVAILABLE) );
+      expect(props).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_AVAILABLE) );
     });
 
     context('given continuous sequence of events currently taking place in conference room', () => {
@@ -68,11 +70,11 @@ describe('AvailabilityHelper', () => {
   });
 
   describe('#sortByAvailability', () => {
-    const allDayAvailable = { availability: AvailabilityHelper.AVAILABILITY.ALL_DAY_AVAILABLE, duration: 0 };
-    const currentlyAvailableShort = { availability: AvailabilityHelper.AVAILABILITY.CURRENTLY_AVAILABLE, duration: 1 };
-    const currentlyAvailableLong = { availability: AvailabilityHelper.AVAILABILITY.CURRENTLY_AVAILABLE, duration: 2 };
-    const currentlyBusyShort = { availability: AvailabilityHelper.AVAILABILITY.CURRENTLY_BUSY, duration: 1 };
-    const currentlyBusyLong = { availability: AvailabilityHelper.AVAILABILITY.CURRENTLY_BUSY, duration: 2 };
+    const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: 0 };
+    const currentlyAvailableShort = { availability: CURRENTLY_AVAILABLE, duration: 1 };
+    const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: 2 };
+    const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: 1 };
+    const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: 2 };
 
     const shuffledProps = [
       currentlyBusyLong,
