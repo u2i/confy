@@ -1,10 +1,8 @@
 import React from 'react';
 import ConferenceRoomSource from 'app/sources/ConferenceRoomSource';
-import { currentAndNextEvents } from 'helpers/EventHelper';
-import { humanizeTime, durationFromNow } from 'helpers/DateHelper';
 import AllDayAvailable from 'components/conference_room/availability/AllDayAvailable';
 import CurrentlyAvailable from 'components/conference_room/availability/CurrentlyAvailable';
-import Busy from 'components/conference_room/availability/Busy';
+import CurrentlyBusy from 'components/conference_room/availability/CurrentlyBusy';
 import uuid from 'uuid';
 import { AVAILABILITY, sortByAvailability, buildAvailabilityProps } from 'helpers/AvailabilityHelper';
 
@@ -14,8 +12,8 @@ const allDayAvailableComponent = (props) =>
 const currentlyAvailableComponent = (props) =>
   <CurrentlyAvailable key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} duration={props.duration} />;
 
-const busyComponent = (props) =>
-  <Busy key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} duration={props.duration} />;
+const currentlyBusyComponent = (props) =>
+  <CurrentlyBusy key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} duration={props.duration} />;
 
 export default class RoomsAvailability extends React.Component {
   constructor(...args) {
@@ -53,8 +51,8 @@ export default class RoomsAvailability extends React.Component {
         return allDayAvailableComponent(props);
       case AVAILABILITY.CURRENTLY_AVAILABLE:
         return currentlyAvailableComponent(props);
-      case AVAILABILITY.BUSY:
-        return busyComponent(props);
+      case AVAILABILITY.CURRENTLY_BUSY:
+        return currentlyBusyComponent(props);
     }
   }
 

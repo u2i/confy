@@ -1,32 +1,26 @@
 import { currentAndNextEvents } from './EventHelper';
-import { durationFromNow } from 'helpers/DateHelper';
+import { durationFromNow } from './DateHelper';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
 export const AVAILABILITY = {
   ALL_DAY_AVAILABLE: 0,
   CURRENTLY_AVAILABLE: 1,
-  BUSY: 2
+  CURRENTLY_BUSY: 2
 };
 
 function eventsInConferenceRoom(events, conferenceRoomId) {
   return events.filter(event => event.conference_room.id === conferenceRoomId);
 }
 
-function noEventsTodayProps(conferenceRoom) {
+function allDayAvailableProps(conferenceRoom) {
   return { conferenceRoomTitle: conferenceRoom.title, availability: AVAILABILITY.ALL_DAY_AVAILABLE };
 }
 
-function timeTillNextEventProps(conferenceRoom, nextEvent) {
+function currentlyAvailableProps(conferenceRoom, nextEvent) {
   const startTime = moment(nextEvent.start.date_time);
   const duration = durationFromNow(startTime);
   return { conferenceRoomTitle: conferenceRoom.title, duration, availability: AVAILABILITY.CURRENTLY_AVAILABLE };
-}
-
-function occupiedTimeProps(conferenceRoom, events) {
-  const endTime = lastEventEndTime(sortBy(events, 'start_timestamp'));
-  const duration = durationFromNow(endTime);
-  return { conferenceRoomTitle: conferenceRoom.title, duration, availability: AVAILABILITY.BUSY };
 }
 
 function lastEventEndTime(events) {
@@ -38,26 +32,50 @@ function lastEventEndTime(events) {
   return moment(events[events.length - 1].end.date_time);
 }
 
-export function roomAvailabilityProps(conferenceRoom, allEvents) {
+function currentlyBusyProps(conferenceRoom, events) {
+  const endTime = lastEventEndTime(sortBy(events, 'start_timestamp'));
+  const duration = durationFromNow(endTime);
+  return { conferenceRoomTitle: conferenceRoom.title, duration, availability: AVAILABILITY.CURRENTLY_BUSY };
+}
+
+function roomAvailabilityProps(conferenceRoom, allEvents) {
   const events = eventsInConferenceRoom(allEvents, conferenceRoom.id);
-  if (events.length === 0) return noEventsTodayProps(conferenceRoom);
+  if (events.length === 0) return allDayAvailableProps(conferenceRoom);
 
   const { current, next } = currentAndNextEvents(events);
-  if (current === undefined) return timeTillNextEventProps(conferenceRoom, next[0]);
+  if (current === undefined) return currentlyAvailableProps(conferenceRoom, next[0]);
 
-  return occupiedTimeProps(conferenceRoom, events);
+  return currentlyBusyProps(conferenceRoom, events);
 }
 
 function compareByAvailability(left, right) {
   if (left.availability === right.availability) {
-    if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
-      return left.duration <= right.duration;
-    }
-    if (left.availability === AVAILABILITY.BUSY) {
-      return left.duration >= right.duration;
-    }
+    return compareWithSameAvailability(left, right);
   }
   return left.availability >= right.availability;
+}
+
+function compareWithSameAvailability(left, right) {
+  if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
+    return compareCurrentlyAvailable(left, right);
+  }
+  else if (left.availability === AVAILABILITY.CURRENTLY_BUSY) {
+    return compareCurrentlyBusy(left, right);
+  }
+}
+
+function compareCurrentlyAvailable(left, right) {
+  if (left.duration === right.duration) {
+    return left.conferenceRoomTitle <= right.conferenceRoomTitle
+  }
+  return left.duration <= right.duration;
+}
+
+function compareCurrentlyBusy(left, right) {
+  if (left.duration === right.duration) {
+    return left.conferenceRoomTitle <= right.conferenceRoomTitle
+  }
+  return left.duration >= right.duration;
 }
 
 export function sortByAvailability(props) {

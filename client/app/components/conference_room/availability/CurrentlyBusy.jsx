@@ -3,16 +3,16 @@ import { humanizeTime } from 'helpers/DateHelper';
 
 import './availability.scss';
 
-const Busy = ({ conferenceRoomTitle, duration }) => (
+const CurrentlyBusy = ({ conferenceRoomTitle, duration }) => (
   <p className="unavailable">
     <span className="conference-room">{conferenceRoomTitle}</span>
     available in {humanizeTime(duration)}
   </p>
 );
 
-Busy.propTypes = {
+CurrentlyBusy.propTypes = {
   conferenceRoomTitle: React.PropTypes.string.isRequired,
   duration: React.PropTypes.object.isRequired
 };
 
-export default Busy;
+export default CurrentlyBusy;
