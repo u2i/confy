@@ -1,6 +1,5 @@
 import React from 'react';
 import { formatDuration } from 'helpers/DateHelper';
-import 'moment-duration-format';
 
 import './availability.scss';
 
@@ -9,7 +8,7 @@ const CurrentlyAvailable = ({ conferenceRoomTitle, duration }) => {
   return (
   <p className="available">
     <span className="conference-room">{conferenceRoomTitle}</span>
-    available for {formatDuration(duration)}
+    available for {formatDuration(duration, 'HH:mm')}
   </p>
   );
 };
