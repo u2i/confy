@@ -11,7 +11,10 @@ import NoEvents from './layout/NoEvents';
 
 import './conference_room.scss';
 
-const nextEventStart = (nextEvents) => moment(get(nextEvents[0], 'start.date_time'));
+const nextEventStart = (nextEvents) => {
+  const startTime = get(nextEvents[0], 'start.date_time');
+  return startTime ? moment(startTime) : undefined;
+};
 
 const ConferenceRoomContainer = ({
   currentEvent,
