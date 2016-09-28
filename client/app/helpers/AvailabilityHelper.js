@@ -50,7 +50,7 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
 
 function compareCurrentlyBusy(left, right) {
   if (left.duration === right.duration) {
-    return left.conferenceRoomTitle <= right.conferenceRoomTitle
+    return left.conferenceRoomTitle <= right.conferenceRoomTitle;
   }
   return left.duration >= right.duration;
 }
