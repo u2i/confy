@@ -36,7 +36,7 @@ export default class TimeProgress extends React.Component {
 
   render() {
     return (
-      <h1>{`${this.state.timeLeft} ${this.props.suffix || 'left'}`}</h1>
+      <h1 className="time-progress">{`${this.state.timeLeft} ${this.props.suffix || 'left'}`}</h1>
     );
   }
 

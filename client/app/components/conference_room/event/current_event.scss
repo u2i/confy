@@ -11,6 +11,24 @@ $default-color: #eee;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  & > div {
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+
+  .time-progress-container {
+    flex: 0 0 5em;
+    .time-progress {
+      font-size: 3em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  .event-controls {
+    flex: 0 0 4.5em;
+  }
 }
 
 .end-time-warning {
