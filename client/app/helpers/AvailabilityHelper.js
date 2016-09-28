@@ -48,26 +48,18 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
   return currentlyBusyProps(conferenceRoom, events);
 }
 
-function compareCurrentlyBusy(left, right) {
-  if (left.duration === right.duration) {
-    return left.conferenceRoomTitle <= right.conferenceRoomTitle;
+function compareByDuration(left, right) {
+  if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
+    return left.duration <= right.duration;
   }
   return left.duration >= right.duration;
 }
 
-function compareCurrentlyAvailable(left, right) {
-  if (left.duration === right.duration) {
-    return left.conferenceRoomTitle <= right.conferenceRoomTitle;
-  }
-  return left.duration <= right.duration;
-}
-
 function compareWithSameAvailability(left, right) {
-  if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
-    return compareCurrentlyAvailable(left, right);
-  } else if (left.availability === AVAILABILITY.CURRENTLY_BUSY) {
-    return compareCurrentlyBusy(left, right);
+  if (left.duration === right.duration) {
+    return left.conferenceRoomTitle >= right.conferenceRoomTitle;
   }
+  return compareByDuration(left, right);
 }
 
 function compareByAvailability(left, right) {
