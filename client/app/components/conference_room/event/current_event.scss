@@ -11,6 +11,10 @@ $default-color: #eee;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .time-progress {
+    font-size: 3em;
+  }
 }
 
 .end-time-warning {
