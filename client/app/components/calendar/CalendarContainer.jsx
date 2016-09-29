@@ -15,6 +15,8 @@ import CreateEventModal from './modal/CreateEventModal';
 
 import './app.scss';
 
+import 'external';
+
 const { number, string, shape, array, arrayOf } = React.PropTypes;
 
 export default class CalendarContainer extends React.Component {
