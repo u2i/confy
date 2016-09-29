@@ -14,19 +14,19 @@ function eventsInConferenceRoom(events, conferenceRoomId) {
 }
 
 function allDayAvailableProps(conferenceRoom) {
-  return { conferenceRoom: conferenceRoom, availability: AVAILABILITY.ALL_DAY_AVAILABLE };
+  return { conferenceRoom, availability: AVAILABILITY.ALL_DAY_AVAILABLE };
 }
 
 function currentlyAvailableProps(conferenceRoom, nextEvent) {
   const startTime = moment(nextEvent.start.date_time);
   const duration = durationFromNow(startTime);
-  return { conferenceRoom: conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_AVAILABLE };
+  return { conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_AVAILABLE };
 }
 
 function currentlyBusyProps(conferenceRoom, events) {
   const endTime = lastEventEndTime(sortBy(events, 'start_timestamp'));
   const duration = durationFromNow(endTime);
-  return { conferenceRoom: conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_BUSY };
+  return { conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_BUSY };
 }
 
 function lastEventEndTime(events) {
