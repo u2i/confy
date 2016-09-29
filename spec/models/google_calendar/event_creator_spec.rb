@@ -11,26 +11,12 @@ RSpec.describe GoogleCalendar::EventCreator do
     allow(client).to receive(:calendar_service) { service }
     allow(GoogleCalendar::Client).to receive(:new) { client }
   end
-  describe '.events_in_span' do
-    let(:start_time) { Time.now }
-    let(:end_time) { Time.now + 3.hour }
-    let(:start_date_time) { double('date_time', date_time: start_time) }
-    let(:end_date_time) { double('date_time', date_time: end_time) }
-    let(:wrapper) { double('wrapper', conference_room: conference_room,
-                           start: start_date_time,
-                           end: end_date_time) }
-
-    it 'calls calendar_service' do
-      expect(service).to receive(:batch)
-      event_creator.send(:events_in_span, wrapper)
-    end
-  end
 
   describe '.create' do
     context 'given invalid params' do
-      it 'raises GoogleCalendar::Adding::EventInvalidParamsError' do
+      it 'raises GoogleCalendar::EventValidator::EventInvalidParamsError' do
         expect { described_class.new(credentials, email).create({conference_room_id: conference_room.id}) }.
-          to raise_error(GoogleCalendar::EventCreator::EventInvalidParamsError)
+          to raise_error(GoogleCalendar::EventValidator::EventInvalidParamsError)
       end
     end
 
@@ -52,14 +38,14 @@ RSpec.describe GoogleCalendar::EventCreator do
         end
 
         before do
-          allow(event_creator).to receive(:events_in_span) { [first_event, second_event] }
+          allow_any_instance_of(GoogleCalendar::EventValidator).to receive(:raise_if_occupied)
+            .and_raise(GoogleCalendar::EventValidator::EventInTimeSpanError)
         end
 
         it 'raises EventInTimeSpanError' do
           expect do
             event_creator.create(event_data)
-          end.to raise_error(GoogleCalendar::EventCreator::EventInTimeSpanError,
-                             'Already 2 events in time span(Summary, Meeting).')
+          end.to raise_error(GoogleCalendar::EventValidator::EventInTimeSpanError)
         end
       end
 
@@ -72,7 +58,7 @@ RSpec.describe GoogleCalendar::EventCreator do
         let(:event_data) { {attendees: [], start_time: start_time, end_time: end_time, conference_room_id: conference_room.id} }
 
         before do
-          allow(event_creator).to receive(:events_in_span) { [] }
+          allow_any_instance_of(GoogleCalendar::EventValidator).to receive(:raise_if_invalid)
           allow(event_creator).to receive(:calendar_service) { service }
           allow(service).to receive(:insert_event) { true }
         end

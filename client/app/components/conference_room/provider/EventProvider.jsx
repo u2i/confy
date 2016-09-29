@@ -19,7 +19,7 @@ export default class EventProvider extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = { nextEvents: [], creating: false };
-    bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate']);
+    bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate', 'handleExtend']);
   }
 
   componentDidMount() {
@@ -76,6 +76,14 @@ export default class EventProvider extends React.Component {
       .catch(() => this.setState({ creating: false }));
   }
 
+  handleExtend(eventId, end) {
+    if (!this.state.currentEvent) return;
+
+    const params = { end_time: end.format() };
+    EventSource.update(this.props.conferenceRoom.id, eventId, params)
+      .then(({ data }) => this.setState({ currentEvent: data }));
+  }
+
   setEndOfDayTimeout() {
     const now = moment();
     const timeToBeginningOfTheNextDay = now.clone().add(1, 'day').startOf('day') - now;
@@ -95,6 +103,7 @@ export default class EventProvider extends React.Component {
                  onFinish={this.handleFinish}
                  onCreate={this.handleCreate}
                  onCancel={this.handleFinish}
+                 onExtend={this.handleExtend}
                  {...props} />
     );
   }

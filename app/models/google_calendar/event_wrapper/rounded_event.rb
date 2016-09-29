@@ -20,11 +20,11 @@ module GoogleCalendar
       end
 
       def rounded_start_time
-        @rounded_start_time ||= TimeRound.floor_time(start.date_time)
+        @rounded_start_time ||= TimeRound.floor_time(start_time)
       end
 
       def rounded_end_time
-        @rounded_end_time ||= TimeRound.ceil_time(end_time.date_time)
+        @rounded_end_time ||= TimeRound.ceil_time(end_time)
       end
 
       def at_beginning_of_day(date)
@@ -38,8 +38,8 @@ module GoogleCalendar
       end
 
       def normalize_whole_day_event
-        start.date_time = at_beginning_of_day(start.date)
-        end_time.date_time = at_beginning_of_day(end_time.date)
+        self.start_time = at_beginning_of_day(starting.date)
+        self.end_time = at_beginning_of_day(ending.date)
       end
     end
   end
