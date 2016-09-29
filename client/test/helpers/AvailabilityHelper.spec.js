@@ -32,15 +32,15 @@ describe('AvailabilityHelper', () => {
 
     const defaultProps = AvailabilityHelper.buildAvailabilityProps(conferenceRooms, defaultEvents);
     it('returns list containing defaultProps for all day available conference room', () => {
-      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, ALL_DAY_AVAILABLE));
+      expect(defaultProps).to.satisfy(props => hasPropWithAvailability(props, ALL_DAY_AVAILABLE));
     });
 
     it('returns list containing defaultProps for currently busy conference room', () => {
-      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, CURRENTLY_BUSY));
+      expect(defaultProps).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_BUSY));
     });
 
     it('returns list containing defaultProps for currently available conference room', () => {
-      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, CURRENTLY_AVAILABLE));
+      expect(defaultProps).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_AVAILABLE));
     });
 
     context('given continuous sequence of events currently taking place in conference room', () => {

@@ -22,7 +22,7 @@ describe('<RoomsAvailability />', () => {
   ];
   const RoomsAvailability = proxyquire('../../../../app/components/conference_room/availability/RoomsAvailability', {
     '../../../helpers/AvailabilityHelper': {
-      buildAvailabilityProps: (a, b) => availabilityProps
+      buildAvailabilityProps: (_winter, _summer) => availabilityProps
     }
   }).default;
 
