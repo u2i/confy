@@ -30,7 +30,7 @@ describe('<RoomAvailabilityStatus />', () => {
     });
 
     it('renders availability duration status', () => {
-      expect(wrapper.find('p').text()).to.contain(`available for 00:01`);
+      expect(wrapper.find('p').text()).to.contain('available for 00:01');
     });
   });
 
@@ -45,7 +45,7 @@ describe('<RoomAvailabilityStatus />', () => {
 
     it('renders availability duration status', () => {
       console.log(wrapper.debug());
-      expect(wrapper.find('p').text()).to.contain(`available in 00:01`);
+      expect(wrapper.find('p').text()).to.contain('available in 00:01');
     });
   });
 });
