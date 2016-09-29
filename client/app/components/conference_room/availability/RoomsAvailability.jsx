@@ -1,34 +1,14 @@
 import React from 'react';
 import ConferenceRoomSource from 'app/sources/ConferenceRoomSource';
-import AllDayAvailable from 'components/conference_room/availability/AllDayAvailable';
-import CurrentlyAvailable from 'components/conference_room/availability/CurrentlyAvailable';
-import CurrentlyBusy from 'components/conference_room/availability/CurrentlyBusy';
-import uuid from 'uuid';
+import RoomAvailabilityStatus from 'components/conference_room/availability/RoomAvailabilityStatus';
 import { AVAILABILITY, sortByAvailability, buildAvailabilityProps } from 'helpers/AvailabilityHelper';
-
-const allDayAvailableComponent = (props) =>
-  <AllDayAvailable key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} />;
-
-const currentlyAvailableComponent = (props) =>
-  <CurrentlyAvailable key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} duration={props.duration} />;
-
-const currentlyBusyComponent = (props) =>
-  <CurrentlyBusy key={uuid()} conferenceRoomTitle={props.conferenceRoomTitle} duration={props.duration} />;
 
 export default class RoomsAvailability extends React.Component {
   constructor(...args) {
     super(...args);
-    this.state = { events: [], conferenceRooms: [] };
+    this.state = { conferenceRooms: [] };
     this._fetchConferenceRooms();
     this.refreshInterval = setInterval(() => this.forceUpdate(), 1000);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.events !== this.state.events || this.state.conferenceRooms !== nextState.conferenceRooms;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ events: nextProps.events });
   }
 
   componentWillUnmount() {
@@ -40,20 +20,9 @@ export default class RoomsAvailability extends React.Component {
   }
 
   _roomsAvailability() {
-    let availabilityProps = buildAvailabilityProps(this.state.conferenceRooms, this.state.events);
+    let availabilityProps = buildAvailabilityProps(this.state.conferenceRooms, this.props.events);
     sortByAvailability(availabilityProps);
-    return availabilityProps.map(props => this._availabilityComponent(props));
-  }
-
-  _availabilityComponent(props) {
-    switch (props.availability) {
-      case AVAILABILITY.ALL_DAY_AVAILABLE:
-        return allDayAvailableComponent(props);
-      case AVAILABILITY.CURRENTLY_AVAILABLE:
-        return currentlyAvailableComponent(props);
-      case AVAILABILITY.CURRENTLY_BUSY:
-        return currentlyBusyComponent(props);
-    }
+    return availabilityProps.map(props => <RoomAvailabilityStatus key={props.conferenceRoomTitle} {...props} />);
   }
 
   _fetchConferenceRooms() {

@@ -7,7 +7,6 @@ import EventSource from 'sources/EventSource';
 import ConferenceRoomSchema from 'schemas/ConferenceRoomSchema';
 import { currentAndNextEvents } from 'helpers/EventHelper';
 import bindAll from 'lodash/bindAll';
-import partition from 'lodash/partition';
 
 const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
 

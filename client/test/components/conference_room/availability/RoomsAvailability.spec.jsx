@@ -25,9 +25,7 @@ describe('<RoomsAvailability />', () => {
   }).default;
 
   const wrapper = shallow(<RoomsAvailability />);
-  it('renders appropriate component per props', () => {
-    expect(wrapper.find('AllDayAvailable')).to.have.lengthOf(1);
-    expect(wrapper.find('CurrentlyAvailable')).to.have.lengthOf(2);
-    expect(wrapper.find('CurrentlyBusy')).to.have.lengthOf(2);
+  it('renders <RoomAvailabilityStatus /> per props', () => {
+    expect(wrapper.find('RoomAvailabilityStatus')).to.have.lengthOf(availabilityProps.length);
   });
 });
