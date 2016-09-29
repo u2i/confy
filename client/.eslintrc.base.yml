@@ -5,6 +5,7 @@ extends: airbnb
 
 plugins:
   - react
+  - import
 
 globals:
   __DEBUG_SERVER_ERRORS__: true
@@ -15,6 +16,9 @@ env:
   node: true
   mocha: true
   jquery: true
+
+settings:
+  import/extensions: [.js, .jsx]
 
 rules:
 # Variables
@@ -35,6 +39,20 @@ rules:
   max-len: [2, 120]
   no-param-reassign: 0
   one-var: 0
+
+# Import
+  import/no-unresolved: 0
+  import/no-extraneous-dependencies: 0
+  import/named: 2
+  import/namespace: 2
+  import/default: 2
+  import/export: 2
+  import/extensions: 0
+  import/newline-after-import: 2
+  import/prefer-default-export: 2
+  import/no-named-as-default: 1
+  import/no-named-as-default-member: 1
+  import/no-duplicates: 1
 
 # React
   jsx-quotes: [2, prefer-double]
