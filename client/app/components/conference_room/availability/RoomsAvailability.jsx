@@ -13,11 +13,11 @@ export default class RoomsAvailability extends React.Component {
     super(...args);
     this.state = { conferenceRooms: [] };
     this._fetchConferenceRooms();
-    this.refreshInterval = setInterval(() => this.forceUpdate(), 1000);
+    this.refreshAvailabilityInterval = setInterval(() => this.forceUpdate(), 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.refreshInterval);
+    clearInterval(this.refreshAvailabilityInterval);
   }
 
   render() {

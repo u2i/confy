@@ -3,44 +3,37 @@ import { AVAILABILITY } from 'helpers/AvailabilityHelper';
 import { formatDuration } from 'helpers/DateHelper';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
 import { instanceOfDuration } from 'proptypes/moment';
+import values from 'lodash/values';
 import './availability.scss';
 
 const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AVAILABILITY;
 
-export default class RoomAvailabilityStatus extends React.Component {
-  static propTypes = {
-    conferenceRoom: ConferenceRoomSchema.only('title').isRequired,
-    availability: React.PropTypes.number.isRequired,
-    duration: instanceOfDuration
-  };
-
-  render() {
-    return (
-      <p className={this._availabilityClassName()}>
-        <span className="conference-room">{this.props.conferenceRoom.title}</span>
-        {this._availabilityStatus()}
-      </p>
-    );
+const availabilityClassName = availability => availability === CURRENTLY_BUSY ? 'unavailable' : 'available';
+const remainingTime = duration => formatDuration(duration, 'HH:mm');
+const availabilityStatus = (availability, duration) => {
+  switch (availability) {
+    case ALL_DAY_AVAILABLE:
+      return 'available for the whole day';
+    case CURRENTLY_AVAILABLE:
+      return `available for ${remainingTime(duration)}`;
+    case CURRENTLY_BUSY:
+      return `available in ${remainingTime(duration)}`;
+    default:
+      return '';
   }
+};
 
-  _availabilityClassName() {
-    return this.props.availability === CURRENTLY_BUSY ? 'unavailable' : 'available';
-  }
+const RoomAvailabilityStatus = ({ conferenceRoom, availability, duration }) => (
+  <p className={availabilityClassName(availability)}>
+    <span className="conference-room">{conferenceRoom.title}</span>
+    {availabilityStatus(availability, duration)}
+  </p>
+);
 
-  _availabilityStatus() {
-    switch (this.props.availability) {
-      case ALL_DAY_AVAILABLE:
-        return 'available for the whole day';
-      case CURRENTLY_AVAILABLE:
-        return `available for ${this._remainingTime()}`;
-      case CURRENTLY_BUSY:
-        return `available in ${this._remainingTime()}`;
-      default:
-        return '';
-    }
-  }
+RoomAvailabilityStatus.propTypes = {
+  conferenceRoom: ConferenceRoomSchema.only('title').isRequired,
+  availability: React.PropTypes.oneOf(values(AVAILABILITY)),
+  duration: instanceOfDuration
+};
 
-  _remainingTime() {
-    return formatDuration(this.props.duration, 'HH:mm');
-  }
-}
+export default RoomAvailabilityStatus;
