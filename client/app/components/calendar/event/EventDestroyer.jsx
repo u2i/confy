@@ -1,16 +1,14 @@
 import React, { PropTypes } from 'react';
 import { If, Else } from 'react-if';
 import bindAll from 'lodash/bindAll';
-import DeleteButton from 'components/calendar/event/DeleteButton';
-import DeleteTooltip from 'components/calendar/event/DeleteTooltip';
-import DeleteConfirmation from 'components/calendar/event/DeleteConfirmation';
+import DeleteButton from './DeleteButton';
+import DeleteConfirmation from './DeleteConfirmation';
 import EventSchema from 'schemas/EventSchema';
 import './event.scss';
 
 export default class EventDestroyer extends React.Component {
   static propTypes = {
     onDelete: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
     event:    EventSchema.except('creator').isRequired
   };
 
@@ -28,17 +26,12 @@ export default class EventDestroyer extends React.Component {
   render() {
     return (
       <div>
-        <DeleteButton onClick={this._handleOnClick} disabled={this.props.disabled} ref="target" />
-        <If condition={this.props.disabled}>
-          <DeleteTooltip show={this.state.showIndicator} target={() => this.refs.target} />
-          <Else>
-            <DeleteConfirmation show={this.state.showConfirmationModal}
-                                onCancel={this._hideConfirmationModal}
-                                onConfirm={this._handleConfirmDeletion}
-                                onHide={this._hideConfirmationModal}
-                                event={this.props.event} />
-          </Else>
-        </If>
+        <DeleteButton onClick={this._handleOnClick} ref="target" />
+        <DeleteConfirmation show={this.state.showConfirmationModal}
+                            onCancel={this._hideConfirmationModal}
+                            onConfirm={this._handleConfirmDeletion}
+                            onHide={this._hideConfirmationModal}
+                            event={this.props.event} />
       </div>
     );
   }
@@ -52,24 +45,8 @@ export default class EventDestroyer extends React.Component {
     return this.props.onDelete();
   }
 
-  _handleOnClickEnabled() {
-    this.setState({ showConfirmationModal: true });
-  }
-
-  _handleOnClickDisabled() {
-    this.setState({ showIndicator: true });
-
-    setTimeout(() => this.setState({ showIndicator: false }), 2000);
-
-    return false;
-  }
-
   _handleOnClick(event) {
     event.stopPropagation();
-
-    if (!this.props.disabled) {
-      return this._handleOnClickEnabled();
-    }
-    return this._handleOnClickDisabled();
+    this.setState({ showConfirmationModal: true });
   }
 }
