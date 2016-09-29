@@ -1,15 +1,13 @@
 import { expect } from 'chai';
-import Event from '../factories/Event';
-import ConferenceRoom from '../factories/ConferenceRoom';
-import { currentAndNextEvents } from 'helpers/EventHelper';
 import moment from 'moment';
 import proxyquire from 'proxyquire';
+import Event from '../factories/Event';
+import ConferenceRoom from '../factories/ConferenceRoom';
 
 describe('AvailabilityHelper', () => {
-
   const AvailabilityHelper = proxyquire('../../app/helpers/AvailabilityHelper', {
     './DateHelper': {
-      durationFromNow: (e) => e
+      durationFromNow: e => e
     }
   });
 
@@ -29,20 +27,20 @@ describe('AvailabilityHelper', () => {
       start_time: moment().add(1, 'hours').toDate(),
       end_time: moment().add(2, 'hours').toDate()
     });
-    const events = [currentEvent, followingEvent];
+    const defaultEvents = [currentEvent, followingEvent];
     const hasPropWithAvailability = (allProps, availability) => allProps.some(props => props.availability === availability);
 
-    const props = AvailabilityHelper.buildAvailabilityProps(conferenceRooms, events);
-    it('returns list containing props for all day available conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, ALL_DAY_AVAILABLE) );
+    const defaultProps = AvailabilityHelper.buildAvailabilityProps(conferenceRooms, defaultEvents);
+    it('returns list containing defaultProps for all day available conference room', () => {
+      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, ALL_DAY_AVAILABLE));
     });
 
-    it('returns list containing props for currently busy conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_BUSY) );
+    it('returns list containing defaultProps for currently busy conference room', () => {
+      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, CURRENTLY_BUSY));
     });
 
-    it('returns list containing props for currently available conference room', () => {
-      expect(props).to.satisfy(props => hasPropWithAvailability(props, CURRENTLY_AVAILABLE) );
+    it('returns list containing defaultProps for currently available conference room', () => {
+      expect(defaultProps).to.satisfy(defaultProps => hasPropWithAvailability(defaultProps, CURRENTLY_AVAILABLE));
     });
 
     context('given continuous sequence of events currently taking place in conference room', () => {
@@ -101,5 +99,5 @@ describe('AvailabilityHelper', () => {
       AvailabilityHelper.sortAvailabilityProps(shuffledProps);
       expect(shuffledProps).to.eql(sortedProps);
     });
-  })
+  });
 });
