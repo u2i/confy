@@ -17,9 +17,11 @@ module GoogleCalendar
     end
 
     def confirmed_events(time_interval)
-      all_google_events = all(time_interval)
-      confirmed_ids = Event.confirmed_event_ids
-      all_google_events.select { |event| confirmed_ids.include?(event[:id]) }
+      filtered_events(time_interval) { |event| Event.confirmed_event_ids.include?(event[:id])}
+    end
+
+    def unconfirmed_events(time_interval)
+      filtered_events(time_interval) { |event| !Event.confirmed_event_ids.include?(event[:id]) }
     end
 
     def by_room(time_interval, conference_room_ids, with_confirmation = false)
@@ -29,6 +31,11 @@ module GoogleCalendar
     end
 
     private
+
+    def filtered_events(time_interval, &block)
+      all_google_events = all(time_interval)
+      all_google_events.select &block
+    end
 
     def list_events(time_interval, rooms)
       listing_configuration = listing_options(time_interval)
@@ -67,9 +74,9 @@ module GoogleCalendar
     end
 
     def listing_options(time_interval)
-      {fields: LISTING_FIELDS, single_events: true, time_min: time_interval.starting,
-       time_max: time_interval.ending, time_zone: ENV.fetch('TZ'),
-       always_include_email: true}.freeze
+      { fields: LISTING_FIELDS, single_events: true, time_min: time_interval.starting,
+        time_max: time_interval.ending, time_zone: ENV.fetch('TZ'),
+        always_include_email: true }.freeze
     end
 
     def add_events_from_room(room, service, config)
@@ -96,7 +103,7 @@ module GoogleCalendar
     end
 
     def rounded_event_wrapper(google_event, conference_room)
-      params = {conference_room: conference_room, user_email: user_email}
+      params = { conference_room: conference_room, user_email: user_email }
       GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, params)
     end
 

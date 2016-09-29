@@ -1,4 +1,3 @@
-
 require 'rails_helper'
 
 describe GoogleCalendar::EventFinder do
@@ -160,20 +159,25 @@ describe GoogleCalendar::EventFinder do
     end
   end
 
-  describe '#confirmed_events' do
-    let(:id1) { 'id1' }
-    let(:id2) { 'id2' }
-    let(:confirmed_event_ids) { [id1] }
-    let(:confirmed_event) {{ id: id1 }}
-    let(:unconfirmed_event) {{ id: id2 }}
+  describe 'confirmation' do
+    let(:confirmed_event) { { id: 1 } }
+    let(:unconfirmed_event) { { id: 2 } }
+    let(:confirmed_event_ids) { [confirmed_event[:id]] }
 
     before do
-      allow(Event).to receive(:confirmed_event_ids) { [id1] }
+      allow(Event).to receive(:confirmed_event_ids) { confirmed_event_ids }
       allow(event_finder).to receive(:all) { [confirmed_event, unconfirmed_event] }
     end
 
-    subject { event_finder.confirmed_events(nil) }
-    it { is_expected.to eq [confirmed_event] }
+    describe '#confirmed_events' do
+      subject { event_finder.confirmed_events(nil) }
+      it { is_expected.to eq [confirmed_event] }
+    end
+
+    describe '#unconfirmed_events' do
+      subject { event_finder.unconfirmed_events(nil) }
+      it { is_expected.to eq [unconfirmed_event] }
+    end
   end
 
   describe '#by_room' do
