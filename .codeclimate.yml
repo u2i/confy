@@ -14,7 +14,7 @@ engines:
   eslint:
     enabled: true
     config:
-      config: client/.eslintrc.base.yml
+      config: client/.eslintrc.yml
     checks:
       import/named:
         enabled: false
