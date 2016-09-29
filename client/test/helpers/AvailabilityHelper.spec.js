@@ -69,10 +69,12 @@ describe('AvailabilityHelper', () => {
     });
   });
 
-  describe('#sortByAvailability', () => {
+  describe('#sortAvailabilityProps', () => {
+    const conferenceRoomA = ConferenceRoom.build({ title: 'a' });
+    const conferenceRoomB = ConferenceRoom.build({ title: 'b' });
     const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: 0 };
-    const currentlyAvailableShort1 = { conferenceRoomTitle: 'a', availability: CURRENTLY_AVAILABLE, duration: 1 };
-    const currentlyAvailableShort2 = { conferenceRoomTitle: 'b', availability: CURRENTLY_AVAILABLE, duration: 1 };
+    const currentlyAvailableShort1 = { conferenceRoom: conferenceRoomA, availability: CURRENTLY_AVAILABLE, duration: 1 };
+    const currentlyAvailableShort2 = { conferenceRoom: conferenceRoomB, availability: CURRENTLY_AVAILABLE, duration: 1 };
     const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: 2 };
     const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: 1 };
     const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: 2 };
@@ -96,7 +98,7 @@ describe('AvailabilityHelper', () => {
     ];
 
     it('sorts props by availability, duration and title', () => {
-      AvailabilityHelper.sortByAvailability(shuffledProps);
+      AvailabilityHelper.sortAvailabilityProps(shuffledProps);
       expect(shuffledProps).to.eql(sortedProps);
     });
   })

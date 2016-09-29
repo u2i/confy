@@ -14,13 +14,19 @@ function eventsInConferenceRoom(events, conferenceRoomId) {
 }
 
 function allDayAvailableProps(conferenceRoom) {
-  return { conferenceRoomTitle: conferenceRoom.title, availability: AVAILABILITY.ALL_DAY_AVAILABLE };
+  return { conferenceRoom: conferenceRoom, availability: AVAILABILITY.ALL_DAY_AVAILABLE };
 }
 
 function currentlyAvailableProps(conferenceRoom, nextEvent) {
   const startTime = moment(nextEvent.start.date_time);
   const duration = durationFromNow(startTime);
-  return { conferenceRoomTitle: conferenceRoom.title, duration, availability: AVAILABILITY.CURRENTLY_AVAILABLE };
+  return { conferenceRoom: conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_AVAILABLE };
+}
+
+function currentlyBusyProps(conferenceRoom, events) {
+  const endTime = lastEventEndTime(sortBy(events, 'start_timestamp'));
+  const duration = durationFromNow(endTime);
+  return { conferenceRoom: conferenceRoom, duration, availability: AVAILABILITY.CURRENTLY_BUSY };
 }
 
 function lastEventEndTime(events) {
@@ -30,12 +36,6 @@ function lastEventEndTime(events) {
     }
   }
   return moment(events[events.length - 1].end.date_time);
-}
-
-function currentlyBusyProps(conferenceRoom, events) {
-  const endTime = lastEventEndTime(sortBy(events, 'start_timestamp'));
-  const duration = durationFromNow(endTime);
-  return { conferenceRoomTitle: conferenceRoom.title, duration, availability: AVAILABILITY.CURRENTLY_BUSY };
 }
 
 function roomAvailabilityProps(conferenceRoom, allEvents) {
@@ -57,7 +57,7 @@ function compareByDuration(left, right) {
 
 function compareWithSameAvailability(left, right) {
   if (left.duration === right.duration) {
-    return left.conferenceRoomTitle >= right.conferenceRoomTitle;
+    return left.conferenceRoom.title >= right.conferenceRoom.title;
   }
   return compareByDuration(left, right);
 }
@@ -69,8 +69,8 @@ function compareByAvailability(left, right) {
   return left.availability >= right.availability;
 }
 
-export function sortByAvailability(props) {
-  props.sort((left, right) => compareByAvailability(left, right));
+export function sortAvailabilityProps(availabilityProps) {
+  availabilityProps.sort((left, right) => compareByAvailability(left, right));
 }
 
 export function buildAvailabilityProps(conferenceRooms, events) {
