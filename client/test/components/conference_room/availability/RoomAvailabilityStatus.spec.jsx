@@ -2,13 +2,13 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import RoomAvailabilityStatus from 'components/conference_room/availability/RoomAvailabilityStatus';
-import * as AvailabilityHelper from 'helpers/AvailabilityHelper';
+import { AVAILABILITY } from 'helpers/AvailabilityHelper';
 import moment from 'moment';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
 
 describe('<RoomAvailabilityStatus />', () => {
-  const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AvailabilityHelper.AVAILABILITY;
-  const buildWrapper = (props) => shallow(<RoomAvailabilityStatus {...props} />);
+  const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AVAILABILITY;
+  const buildWrapper = props => shallow(<RoomAvailabilityStatus {...props} />);
   const conferenceRoom = ConferenceRoom.build();
 
   context('given all day available props', () => {
@@ -44,7 +44,6 @@ describe('<RoomAvailabilityStatus />', () => {
     });
 
     it('renders availability duration status', () => {
-      console.log(wrapper.debug());
       expect(wrapper.find('p').text()).to.contain('available in 00:01');
     });
   });
