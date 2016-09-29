@@ -32,8 +32,8 @@ export default class RoomsAvailability extends React.Component {
 
   _fetchConferenceRooms() {
     ConferenceRoomSource.fetch()
-      .then(response => {
-        this.setState({ conferenceRooms: response.data });
+      .then(({data}) => {
+        this.setState({ conferenceRooms: data });
     });
   }
 }

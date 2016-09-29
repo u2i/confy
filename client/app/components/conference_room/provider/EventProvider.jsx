@@ -107,10 +107,10 @@ export default class EventProvider extends React.Component {
       confirmation: true
     };
     EventSource.fetch(params)
-      .then(response => {
-        const eventsInCurrentConferenceRoom = response.data.filter(e => e.conference_room.id === this.props.conferenceRoom.id);
+      .then(({data}) => {
+        const eventsInCurrentConferenceRoom = data.filter(e => e.conference_room.id === this.props.conferenceRoom.id);
         const { current, next } = currentAndNextEvents(eventsInCurrentConferenceRoom);
-        this.setState({ nextEvents: next, currentEvent: current, allEvents: response.data });
+        this.setState({ nextEvents: next, currentEvent: current, allEvents: data });
       });
   }
 

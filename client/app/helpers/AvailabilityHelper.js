@@ -1,5 +1,5 @@
 import { currentAndNextEvents } from './EventHelper';
-import { durationFromNow } from './DateHelper';
+import { durationFromNow, ONE_MINUTE } from './DateHelper';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 
@@ -31,7 +31,7 @@ function currentlyBusyProps(conferenceRoom, events) {
 
 function lastEventEndTime(events) {
   for (let i = 0; i < events.length - 1; i++) {
-    if (moment(events[i + 1].start.date_time).diff(moment(events[i].end.date_time)) >= 1000 * 60) {
+    if (moment(events[i + 1].start.date_time).diff(moment(events[i].end.date_time)) >= ONE_MINUTE) {
       return moment(events[i].end.date_time);
     }
   }

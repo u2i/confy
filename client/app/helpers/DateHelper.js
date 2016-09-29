@@ -6,6 +6,8 @@ export const DATE_DISPLAY_FORMAT = 'DD-MM-YYYY HH:mm';
 
 export const TIME_DISPLAY_FORMAT = 'HH:mm';
 
+export const ONE_MINUTE = 1000 * 60;
+
 export function addDateAndTime(date, time) {
   const [hours, minutes, seconds] = [time.hours(), time.minutes(), time.seconds()];
   return date
