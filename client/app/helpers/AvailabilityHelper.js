@@ -1,7 +1,7 @@
-import { currentAndNextEvents } from './EventHelper';
-import { durationFromNow, ONE_MINUTE } from './DateHelper';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
+import { currentAndNextEvents } from './EventHelper';
+import { durationFromNow, ONE_MINUTE } from './DateHelper';
 
 export const AVAILABILITY = {
   ALL_DAY_AVAILABLE: 0,

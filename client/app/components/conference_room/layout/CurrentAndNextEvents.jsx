@@ -2,11 +2,11 @@ import React from 'react';
 import { instanceOfMoment } from 'proptypes/moment';
 import { Row, Col, Accordion, Panel } from 'react-bootstrap';
 import EventSchema from 'proptypes/schemas/EventSchema';
-import texts from '../texts/texts';
-
+import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
+import RoomsAvailability from 'components/conference_room/availability/RoomsAvailability';
 import CurrentEvent from '../event/CurrentEvent';
 import NextEvents from '../event/NextEvents';
-import RoomsAvailability from 'components/conference_room/availability/RoomsAvailability';
+import texts from '../texts/texts';
 
 import './current_next_events.scss';
 
@@ -53,7 +53,9 @@ CurrentAndNextEvents.propTypes = {
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,
   onCreate: React.PropTypes.func,
-  onCancel: React.PropTypes.func
+  onCancel: React.PropTypes.func,
+  conferenceRoom: ConferenceRoomSchema,
+  allEvents: React.PropTypes.arrayOf(EventSchema.only('start'))
 };
 
 export default CurrentAndNextEvents;
