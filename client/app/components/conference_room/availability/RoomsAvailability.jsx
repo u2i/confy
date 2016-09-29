@@ -1,7 +1,7 @@
 import React from 'react';
 import ConferenceRoomSource from 'app/sources/ConferenceRoomSource';
 import RoomAvailabilityStatus from 'components/conference_room/availability/RoomAvailabilityStatus';
-import { AVAILABILITY, sortAvailabilityProps, buildAvailabilityProps } from 'helpers/AvailabilityHelper';
+import { sortAvailabilityProps, buildAvailabilityProps } from 'helpers/AvailabilityHelper';
 import EventSchema from 'proptypes/schemas/EventSchema';
 
 export default class RoomsAvailability extends React.Component {
@@ -25,15 +25,15 @@ export default class RoomsAvailability extends React.Component {
   }
 
   _roomsAvailability() {
-    let availabilityProps = buildAvailabilityProps(this.state.conferenceRooms, this.props.events);
+    const availabilityProps = buildAvailabilityProps(this.state.conferenceRooms, this.props.events);
     sortAvailabilityProps(availabilityProps);
     return availabilityProps.map(props => <RoomAvailabilityStatus key={props.conferenceRoom.id} {...props} />);
   }
 
   _fetchConferenceRooms() {
     ConferenceRoomSource.fetch()
-      .then(({data}) => {
+      .then(({ data }) => {
         this.setState({ conferenceRooms: data });
-    });
+      });
   }
 }

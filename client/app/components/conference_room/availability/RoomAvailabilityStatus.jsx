@@ -2,14 +2,16 @@ import React from 'react';
 import { AVAILABILITY } from 'helpers/AvailabilityHelper';
 import { formatDuration } from 'helpers/DateHelper';
 import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
+import { instanceOfDuration } from 'proptypes/moment';
 import './availability.scss';
+
 const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AVAILABILITY;
 
 export default class RoomAvailabilityStatus extends React.Component {
   static propTypes = {
     conferenceRoom: ConferenceRoomSchema.only('title').isRequired,
     availability: React.PropTypes.number.isRequired,
-    duration: React.PropTypes.object
+    duration: instanceOfDuration
   };
 
   render() {
@@ -33,6 +35,8 @@ export default class RoomAvailabilityStatus extends React.Component {
         return `available for ${this._remainingTime()}`;
       case CURRENTLY_BUSY:
         return `available in ${this._remainingTime()}`;
+      default:
+        return '';
     }
   }
 
