@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<p>You forgot to confirm your event:</p>
+<h1><%= @event.summary %></h1>
+<p>at</p>
+<h2><%= event_time(@event) %></h2>
+
+<p>Did you attend the event?</p>
+<p>If you're not using your reservation please consider removing it in the future.</p>
+
+<a href="<%= @event.html_link %>">See it in Google</a>
+
+</body>
+</html>
