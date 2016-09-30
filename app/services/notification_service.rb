@@ -1,6 +1,6 @@
 class NotificationService
   def initialize(conference_room)
-    @client = GoogleOauth.push_notification_client
+    @client = GoogleOauth.application_default_client
     @conference_room = conference_room
     @channel = conference_room.channel
   end

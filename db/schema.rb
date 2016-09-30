@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160905115019) do
+ActiveRecord::Schema.define(version: 20160929104442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "channels", force: :cascade do |t|
-    t.string   "channel_id",         null: false
-    t.string   "resource_id",        null: false
-    t.integer  "conference_room_id", null: false
-    t.datetime "expiration",         null: false
+    t.string   "channel_id"
+    t.string   "resource_id"
+    t.integer  "conference_room_id"
+    t.datetime "expiration"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.index ["conference_room_id"], name: "index_channels_on_conference_room_id", using: :btree
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20160905115019) do
     t.boolean  "confirmed",          default: false
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.boolean  "notified"
     t.index ["conference_room_id"], name: "index_events_on_conference_room_id", using: :btree
   end
 

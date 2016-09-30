@@ -1,8 +1,7 @@
 module GoogleCalendar
   class EventEditor
-    def initialize(credentials)
-      @credentials = credentials
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+    def initialize(client)
+      @calendar_service = client
     end
 
     def finish(conference_room_id, event_id)

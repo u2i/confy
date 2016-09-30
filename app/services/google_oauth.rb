@@ -56,7 +56,7 @@ class GoogleOauth
       service.get_userinfo.email
     end
 
-    def push_notification_client
+    def application_default_client
       Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = authorization_details }
     end
 

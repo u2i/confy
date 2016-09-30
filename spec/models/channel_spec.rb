@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Channel, type: :model do
   include GoogleCalendar::Timestamp
 
-  before { allow(GoogleOauth).to receive(:push_notification_client) }
+  before { allow(GoogleOauth).to receive(:application_default_client) }
 
   subject(:channel) { create :channel }
   describe 'factory' do

@@ -21,7 +21,7 @@ RSpec.describe NotificationService do
   let(:client) { double('client', watch_event: google_channel, stop_channel: false) }
 
   before do
-    allow(GoogleOauth).to receive(:push_notification_client) { client }
+    allow(GoogleOauth).to receive(:application_default_client) { client }
   end
 
   describe '#renew_subscription' do

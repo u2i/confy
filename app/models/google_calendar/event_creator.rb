@@ -5,9 +5,8 @@ module GoogleCalendar
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
 
-    def initialize(credentials, user_email)
-      @credentials = credentials
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+    def initialize(client, user_email)
+      @calendar_service = client
       @user_email = user_email
     end
 
