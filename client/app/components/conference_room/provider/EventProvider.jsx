@@ -12,7 +12,8 @@ const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
 
 export default class EventProvider extends React.Component {
   static propTypes = {
-    conferenceRoom: ConferenceRoomSchema.isRequired,
+    activeConferenceRoom: ConferenceRoomSchema.isRequired,
+    allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
     component: React.PropTypes.func.isRequired
   };
 
@@ -41,7 +42,7 @@ export default class EventProvider extends React.Component {
     if (typeof(this.state.currentEvent) === 'undefined') return;
 
     this._toggleConfirmed();
-    EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
+    EventSource.confirm(this.props.activeConferenceRoom.id, this.state.currentEvent.id)
       .catch(() => this._toggleConfirmed());
   }
 
@@ -50,7 +51,7 @@ export default class EventProvider extends React.Component {
 
     const currentEvent = this.state.currentEvent;
     this.setState({ currentEvent: undefined });
-    EventSource.finish(this.props.conferenceRoom.id, currentEvent.id)
+    EventSource.finish(this.props.activeConferenceRoom.id, currentEvent.id)
       .catch(() => this.setState({ currentEvent }));
   }
 
@@ -62,7 +63,7 @@ export default class EventProvider extends React.Component {
       start_time: moment().format(),
       end_time: end.format(),
       confirmed: true,
-      conference_room_id: this.props.conferenceRoom.id,
+      conference_room_id: this.props.activeConferenceRoom.id,
       summary: NEW_EVENT_SUMMARY
     };
 
@@ -108,8 +109,8 @@ export default class EventProvider extends React.Component {
     };
     EventSource.fetch(params)
       .then(({ data }) => {
-        const eventsInCurrentConferenceRoom = data.filter(e => e.conference_room.id === this.props.conferenceRoom.id);
-        const { current, next } = currentAndNextEvents(eventsInCurrentConferenceRoom);
+        const eventsInActiveConferenceRoom = data.filter(e => e.conference_room.id === this.props.activeConferenceRoom.id);
+        const { current, next } = currentAndNextEvents(eventsInActiveConferenceRoom);
         this.setState({ nextEvents: next, currentEvent: current, allEvents: data });
       });
   }

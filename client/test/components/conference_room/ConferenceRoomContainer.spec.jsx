@@ -10,9 +10,16 @@ import Navbar from 'components/conference_room/layout/Navbar';
 import CurrentEvent from 'components/conference_room/event/CurrentEvent';
 
 describe('<ConferenceRoomContainer />', () => {
-  const conferenceRoom = ConferenceRoom.build();
-  const shallowWrapper = shallow(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
-  const mountedWrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[]} />);
+  const conferenceRooms = ConferenceRoom.buildList(3);
+  const events = Event.buildList(3);
+  const conferenceRoom = conferenceRooms[0];
+  const shallowWrapper = shallow(<ConferenceRoomContainer allConferenceRooms={conferenceRooms}
+                                                          activeConferenceRoom={conferenceRoom}
+                                                          nextEvents={[]} />);
+  const mountedWrapper = mount(<ConferenceRoomContainer allEvents={events}
+                                                        allConferenceRooms={conferenceRooms}
+                                                        activeConferenceRoom={conferenceRoom}
+                                                        nextEvents={[]} />);
 
   it('renders <Navbar />', () => {
     expect(shallowWrapper).to.have.exactly(1).descendants(Navbar);
@@ -20,7 +27,9 @@ describe('<ConferenceRoomContainer />', () => {
 
   context('with current event', () => {
     const event = Event.build();
-    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom}
+    const wrapper = mount(<ConferenceRoomContainer activeConferenceRoom={conferenceRoom}
+                                                   allConferenceRooms={conferenceRooms}
+                                                   allEvents={events}
                                                    currentEvent={event}
                                                    nextEvents={[]} />);
 
@@ -31,7 +40,10 @@ describe('<ConferenceRoomContainer />', () => {
 
   context('with next event', () => {
     const event = Event.build();
-    const wrapper = mount(<ConferenceRoomContainer conferenceRoom={conferenceRoom} nextEvents={[event]} />);
+    const wrapper = mount(<ConferenceRoomContainer allConferenceRooms={conferenceRooms}
+                                                   activeConferenceRoom={conferenceRoom}
+                                                   allEvents={events}
+                                                   nextEvents={[event]} />);
 
     it('renders <NextEvents />', () => {
       expect(wrapper).to.have.exactly(1).descendants(NextEvents);

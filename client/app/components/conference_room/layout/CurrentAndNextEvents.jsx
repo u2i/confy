@@ -19,7 +19,8 @@ const CurrentAndNextEvents = ({
   onFinish,
   onCreate,
   onCancel,
-  conferenceRoom,
+  activeConferenceRoom,
+  allConferenceRooms,
   allEvents
 }) => (
   <Row>
@@ -38,7 +39,7 @@ const CurrentAndNextEvents = ({
           <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />
         </Panel>
         <Panel header="Available rooms" eventKey="2">
-          <RoomsAvailability conferenceRoom={conferenceRoom} events={allEvents} />
+          <RoomsAvailability allConferenceRooms={allConferenceRooms} events={allEvents} />
         </Panel>
       </Accordion>
     </Col>
@@ -54,7 +55,8 @@ CurrentAndNextEvents.propTypes = {
   onFinish: React.PropTypes.func,
   onCreate: React.PropTypes.func,
   onCancel: React.PropTypes.func,
-  conferenceRoom: ConferenceRoomSchema,
+  activeConferenceRoom: ConferenceRoomSchema,
+  allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
   allEvents: React.PropTypes.arrayOf(EventSchema.only('start'))
 };
 

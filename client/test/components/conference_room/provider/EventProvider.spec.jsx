@@ -34,7 +34,7 @@ describe('<EventProvider />', () => {
   const nextEvents = Event.buildList(3);
   const ownProps = { example: true };
 
-  const defaultWrapper = shallow(<EventProvider conferenceRoom={conferenceRoom}
+  const defaultWrapper = shallow(<EventProvider activeConferenceRoom={conferenceRoom}
                                                 component={DummyComponent} {...ownProps} />);
 
   before(() => {
@@ -58,7 +58,7 @@ describe('<EventProvider />', () => {
   });
 
   it('passes conferenceRoom prop to <Component />', () => {
-    expect(defaultWrapper.find(DummyComponent)).to.have.prop('conferenceRoom').equal(conferenceRoom);
+    expect(defaultWrapper.find(DummyComponent)).to.have.prop('activeConferenceRoom').equal(conferenceRoom);
   });
 
   it('provides <Component /> with current and next events', () => {
@@ -85,7 +85,7 @@ describe('<EventProvider />', () => {
       });
 
       it('reloads page on next day', () => {
-        mount(<EventProvider conferenceRoom={conferenceRoom}
+        mount(<EventProvider activeConferenceRoom={conferenceRoom}
                              component={DummyComponent} {...ownProps} />);
         EventSource.fetch.reset();
         clock.tick(MILLISECONDS_IN_DAY);
@@ -106,7 +106,7 @@ describe('<EventProvider />', () => {
       });
 
       it('reloads page on next day', () => {
-        mount(<EventProvider conferenceRoom={conferenceRoom}
+        mount(<EventProvider activeConferenceRoom={conferenceRoom}
                              component={DummyComponent} {...ownProps} />);
         EventSource.fetch.reset();
         clock.tick(MILLISECONDS_IN_DAY - timeStamp);
@@ -116,7 +116,7 @@ describe('<EventProvider />', () => {
   });
 
   describe('event actions', () => {
-    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const wrapper = mount(<EventProvider activeConferenceRoom={conferenceRoom} component={DummyComponent} />);
     const componentWrapper = wrapper.find(DummyComponent);
     const confirmButton = componentWrapper.find('button#confirm');
     const finishButton = componentWrapper.find('button#finish');
@@ -196,7 +196,7 @@ describe('<EventProvider />', () => {
   });
 
   describe('creating event', () => {
-    const wrapper = mount(<EventProvider conferenceRoom={conferenceRoom} component={DummyComponent} />);
+    const wrapper = mount(<EventProvider activeConferenceRoom={conferenceRoom} component={DummyComponent} />);
     const createButton = wrapper.find(DummyComponent).find('button#create');
     let clock;
     let currentTime;
