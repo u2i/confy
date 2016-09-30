@@ -1,12 +1,10 @@
-
 require 'rails_helper'
 
 describe GoogleCalendar::EventFinder do
   let(:client) { double(:client) }
   let(:service) { double(:calendar_service) }
   let(:credentials) { :credentials }
-  let(:user_email) { 'example@com' }
-  let(:event_finder) { described_class.new(credentials, user_email) }
+  let(:event_finder) { described_class.new(credentials) }
   let(:rooms) { ConferenceRoom.all }
 
   before do
@@ -25,7 +23,8 @@ describe GoogleCalendar::EventFinder do
                                           creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
                                           end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time1),
                                           summary: 'Event1', description: sample_summary,
-                                          attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')])
+                                          attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')],
+                                          html_link: 'https://google.com/calendar/event?eid=event1')
     end
 
     let(:google_event2) do
@@ -34,7 +33,15 @@ describe GoogleCalendar::EventFinder do
         creator: Google::Apis::CalendarV3::Event::Creator.new(display_name: 'User'),
         end: Google::Apis::CalendarV3::EventDateTime.new(date_time: end_time2),
         summary: 'Event2', description: sample_summary,
-        attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')])
+        attendees: [Google::Apis::CalendarV3::EventAttendee.new(self: true, response_status: 'accepted')],
+        html_link: 'https://google.com/calendar/event?eid=event2')
+    end
+
+    let(:user_event) do
+      google_event1.dup.tap do |event|
+        event.creator.self = true
+        event.html_link = 'https://google.com/calendar/event?eid=user_event1'
+      end
     end
 
     let(:sample_events) do
@@ -46,19 +53,42 @@ describe GoogleCalendar::EventFinder do
     before do
       events = double('events')
 
-      allow(GoogleOauth).to receive(:user_email) { 'example@com' }
       allow(events).to receive(:items) { sample_events }
       allow(service).to receive(:batch).and_yield(service)
       allow(service).to receive(:list_events) do |email, &block|
-        if email == ConferenceRoom.first.email
-          block.call [double('EventList', items: [google_event1]), nil]
-        else
-          block.call [double('EventList', items: [google_event2]), nil]
-        end
+        result = case email
+                 when ConferenceRoom.first.email
+                   double('EventList', items: [google_event1])
+                 when 'primary'
+                   double('EventList', items: [user_event])
+                 else
+                   double('EventList', items: [google_event2])
+                 end
+        block.call [result, nil] if block
+        result
       end
     end
 
     let(:time_interval) { double('time_interval', starting: start_time1, ending: start_time2) }
+
+    context 'user event' do
+      let(:start_time1) { DateTime.now.beginning_of_week }
+      let(:start_time2) { DateTime.now.beginning_of_week + 1.day }
+      let(:end_time1) { start_time1 + 2.hours }
+      let(:end_time2) { start_time2 + 2.hours }
+
+      let(:expected_events) { [user_event, google_event2] }
+
+      subject(:all_events) { event_finder.all(time_interval)}
+      it 'marks user event' do
+        expect(subject[0][:creator][:self]).to eq(true)
+      end
+
+      it 'updates html link' do
+        expect(subject[0][:html_link]).to eq(user_event.html_link)
+      end
+    end
+
     context 'rejected event' do
       let(:start_time1) { DateTime.now.beginning_of_week }
       let(:start_time2) { DateTime.now.beginning_of_week + 1.day }
@@ -164,8 +194,8 @@ describe GoogleCalendar::EventFinder do
     let(:id1) { 'id1' }
     let(:id2) { 'id2' }
     let(:confirmed_event_ids) { [id1] }
-    let(:confirmed_event) {{ id: id1 }}
-    let(:unconfirmed_event) {{ id: id2 }}
+    let(:confirmed_event) { { id: id1 } }
+    let(:unconfirmed_event) { { id: id2 } }
 
     before do
       allow(Event).to receive(:confirmed_event_ids) { [id1] }
@@ -205,7 +235,8 @@ describe GoogleCalendar::EventFinder do
       allow(events).to receive(:items) { [event] }
       allow(service).to receive(:batch).and_yield(service)
       allow(service).to receive(:list_events) do |email, &block|
-        block.call [double('EventList', items: [google_event]), nil]
+        block.call [double('EventList', items: [google_event]), nil] if block
+        double('EventList', items: [google_event])
       end
     end
 

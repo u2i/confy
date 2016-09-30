@@ -2,29 +2,24 @@ module GoogleCalendar
   module EventWrapper
     class Event < DelegateClass(::Google::Apis::CalendarV3::Event)
       attr_accessor :conference_room, :user_email, :google_event
-      FIELDS = %i(id start end description creator attendees summary hangout_link html_link).freeze
+      ATTRIBUTES = %i(start end start_time end_time description creator attendees summary hangout_link html_link).freeze
+      DISPLAY_ATTRIBUTES = %i(id start end description creator attendees summary hangout_link html_link).freeze
 
-      def initialize(google_event, params = {})
+      def initialize(google_event, conference_room)
         super(google_event)
         @google_event = google_event
-        @user_email = params[:user_email]
-        @conference_room = params[:conference_room]
+        @conference_room = conference_room
       end
 
       def update(params)
-        self.start_time = params[:start_time] if params.key? :start_time
-        self.end_time = params[:end_time] if params.key? :end_time
-        self.summary = params[:summary] if params.key? :summary
-        self.description = params[:description] if params.key? :description
+        raise ArgumentError unless valid_params?(params)
+        params.each do |key, value|
+          send("#{key}=", value)
+        end
       end
 
       def to_h
-        super.slice(*FIELDS).merge(conference_room: conference_room)
-      end
-
-      def mark_user_event
-        return if creator.nil?
-        creator.self = (user_email == creator.email)
+        super.slice(*DISPLAY_ATTRIBUTES).merge(conference_room: conference_room)
       end
 
       def valid?
@@ -38,6 +33,10 @@ module GoogleCalendar
 
       def in_progress?
         current_time >= start_time && current_time <= end_time
+      end
+
+      def finish
+        end_time.date_time = current_time
       end
 
       def end_time
@@ -57,6 +56,10 @@ module GoogleCalendar
       end
 
       private
+
+      def valid_params?(params)
+        params.keys.all? { |key| ATTRIBUTES.include?(key) }
+      end
 
       def current_time
         DateTime.now

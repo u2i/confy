@@ -5,7 +5,7 @@ module GoogleCalendar
     end
 
     def calendar_service
-      Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = new_auth_client }
+      @dupa ||= Google::Apis::CalendarV3::CalendarService.new.tap { |s| s.authorization = new_auth_client }
     end
 
     private

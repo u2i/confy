@@ -3,10 +3,10 @@ module GoogleCalendar
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
 
-    def initialize(wrapper, credentials, user_email)
+    def initialize(wrapper, credentials)
       @wrapper = wrapper
       @credentials = credentials
-      @event_finder = GoogleCalendar::EventFinder.new(credentials, user_email)
+      @event_finder = GoogleCalendar::EventFinder.new(credentials)
     end
 
     def raise_if_occupied
@@ -32,7 +32,6 @@ module GoogleCalendar
     end
 
     def events_in_span
-      return [] unless wrapper.conference_room
       event_finder.by_room(event_interval, wrapper.conference_room.id)
     end
 

@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 describe GoogleCalendar::EventWrapper::RoundedEvent do
+  let(:conference_room) { build(:conference_room)}
   let(:start_date) { Date.parse('2016-01-01') }
   let(:end_date) { Date.parse('2016-01-02') }
   let(:google_event) { double('google_event', start: start, end: ending) }
-  let(:event) { GoogleCalendar::EventWrapper::RoundedEvent.new(google_event) }
+  let(:event) { GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, conference_room) }
 
   describe 'initialization' do
     before do
@@ -20,7 +21,7 @@ describe GoogleCalendar::EventWrapper::RoundedEvent do
       it 'sets events start_time.date_time and end_time.date_time attributes to the beginning of day' do
         expect(start).to receive(:date_time=).with expected_start_result
         expect(ending).to receive(:date_time=).with expected_end_result
-        GoogleCalendar::EventWrapper::RoundedEvent.new(google_event)
+        GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, conference_room)
       end
     end
 

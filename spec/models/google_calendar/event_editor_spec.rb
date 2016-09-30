@@ -12,7 +12,7 @@ RSpec.describe GoogleCalendar::EventEditor do
     Google::Apis::CalendarV3::Event.new(start: WithDatetime.new(start_time), end: WithDatetime.new(end_time), id: event_id)
   end
   let(:service) { double('service', get_event: event, update_event: nil) }
-  subject { described_class.new(:credentials, :user_email) }
+  subject { described_class.new(:credentials) }
 
   before do
     allow_any_instance_of(GoogleCalendar::Client).to receive(:calendar_service).and_return(service)
@@ -36,6 +36,7 @@ RSpec.describe GoogleCalendar::EventEditor do
     it 'updates event\'s info' do
       subject.update(room, event_id, event_data)
       expect(service).to have_received(:update_event).with(room.email, event_id, satisfy do |n|
+        binding.pry
         n.end.date_time == end_time &&
           n.start.date_time == start_time &&
           n.summary == summary &&

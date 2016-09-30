@@ -5,17 +5,18 @@ describe GoogleCalendar::EventWrapper::Event do
   let(:summary) { 'sample_summary' }
   let(:attendees) { [] }
   let(:google_event) { double('google_event', id: id, summary: summary, attendees: attendees) }
-  let(:default_wrapper) { described_class.new(google_event) }
+  let(:conference_room) { build(:conference_room) }
+  let(:default_wrapper) { described_class.new(google_event, conference_room) }
   let(:default_google_event) { default_wrapper.google_event }
 
   describe '.new' do
-    subject { described_class.new(google_event) }
+    subject { described_class.new(google_event, conference_room) }
     it { is_expected.to be_instance_of described_class }
   end
 
   describe '#valid?' do
     let(:google_event) { double('event', start: starting, end: ending) }
-    let(:event) { described_class.new(google_event) }
+    let(:event) { described_class.new(google_event, conference_room) }
     subject { event.valid? }
 
     context 'google_event has start and end fields' do
@@ -38,26 +39,9 @@ describe GoogleCalendar::EventWrapper::Event do
     it { is_expected.to eq summary }
   end
 
-  describe '#mark_user_event' do
-    let(:current_user_email) { 'example@something.com' }
-
-    context 'creator is given' do
-      let(:creator) { double('creator', email: current_user_email) }
-      let(:google_event) { double('google_event', creator: creator) }
-      let(:event_wrapper) { described_class.new google_event, user_email: current_user_email }
-
-      subject { creator }
-      before do
-        allow(creator).to receive(:self=)
-        event_wrapper.mark_user_event
-      end
-      it { is_expected.to have_received(:self=).with true }
-    end
-  end
-
   describe '#all_day?' do
     let(:google_event) { double('google_event', start: start) }
-    subject { described_class.new(google_event).all_day? }
+    subject { described_class.new(google_event, conference_room).all_day? }
 
     context 'given google_event without start.date' do
       let(:start) { double('start', date: nil) }

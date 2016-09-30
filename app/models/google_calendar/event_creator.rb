@@ -2,14 +2,12 @@ module GoogleCalendar
   class EventCreator
     include GoogleErrorHandler
 
-    def initialize(credentials, user_email)
+    def initialize(credentials)
       @credentials = credentials
       @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
-      @user_email = user_email
     end
 
     def create(data = {})
-      data[:user_email] = user_email
       insert_event(data)
     end
 
@@ -28,9 +26,9 @@ module GoogleCalendar
     end
 
     def validate_event(wrapper)
-      GoogleCalendar::EventValidator.new(wrapper, credentials, user_email).raise_if_invalid
+      GoogleCalendar::EventValidator.new(wrapper, credentials).raise_if_invalid
     end
 
-    attr_accessor :credentials, :calendar_service, :user_email
+    attr_accessor :credentials, :calendar_service
   end
 end

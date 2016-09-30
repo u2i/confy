@@ -5,7 +5,6 @@ RSpec.describe GoogleCalendar::EventValidator do
   let(:client) { double(:client) }
   let(:service) { double(:calendar_service) }
   let(:credentials) { :credentials }
-  let(:user_email) { 'mail@example.com'.freeze }
   let(:event_id) { 'sample_id' }
   let(:start_time) { Time.now }
   let(:end_time) { Time.now + 3.hours }
@@ -22,7 +21,7 @@ RSpec.describe GoogleCalendar::EventValidator do
     allow(GoogleCalendar::EventFinder).to receive(:new) { event_finder }
   end
 
-  subject { described_class.new(event, credentials, user_email) }
+  subject { described_class.new(event, credentials) }
   describe '#raise_if_occupied' do
     context 'with no colliding events' do
       before do

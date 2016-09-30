@@ -5,11 +5,11 @@ module GoogleCalendar
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, description, recurrence, '\
                      'creator, attendees(self, responseStatus, displayName, email), hangoutLink, htmlLink)'.freeze
+    USER_FIELDS = 'items(id, creator, htmlLink)'.freeze
 
-    def initialize(credentials, user_email)
+    def initialize(credentials)
       @credentials = credentials
-      @user_email = user_email
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+      @client = GoogleCalendar::Client.new(credentials)
     end
 
     def all(time_interval)
@@ -30,8 +30,12 @@ module GoogleCalendar
 
     private
 
+    def calendar_service
+      client.calendar_service
+    end
+
     def list_events(time_interval, rooms)
-      listing_configuration = listing_options(time_interval)
+      listing_configuration = listing_options(time_interval, LISTING_FIELDS)
       rescue_google_request do
         calendar_service.batch do |service|
           rooms.each do |room|
@@ -39,7 +43,20 @@ module GoogleCalendar
           end
         end
       end
-      all_events
+      merge_events(all_events, user_events(time_interval)).map(&:to_h)
+    end
+
+    def user_events(time_interval)
+      listing_configuration = listing_options(time_interval, USER_FIELDS)
+      calendar_service.list_events('primary', listing_configuration).items
+    end
+
+    def merge_events(room_events, user_events)
+      room_events.each do |event|
+        user_event = user_events.select { |e| e.id == event.id }.first
+        next unless user_event.present?
+        event.update(user_event.to_h)
+      end
     end
 
     def include_confirmation(events)
@@ -60,14 +77,8 @@ module GoogleCalendar
       @rooms ||= ConferenceRoom.all
     end
 
-    def mark_user_events(all_events)
-      all_events.each do |event|
-        event[:creator][:self] = (user_email == event[:creator][:email])
-      end
-    end
-
-    def listing_options(time_interval)
-      {fields: LISTING_FIELDS, single_events: true, time_min: time_interval.starting,
+    def listing_options(time_interval, fields)
+      {fields: fields, single_events: true, time_min: time_interval.starting,
        time_max: time_interval.ending, time_zone: ENV.fetch('TZ'),
        always_include_email: true}.freeze
     end
@@ -77,7 +88,7 @@ module GoogleCalendar
         if result
           result.items.each do |google_event|
             next if event_declined?(google_event)
-            all_events << build_event_data(google_event, room)
+            all_events << rounded_event_wrapper(google_event, room)
           end
         end
       end
@@ -89,17 +100,10 @@ module GoogleCalendar
       event.attendees.find(&:self).response_status == GOOGLE_EVENT_DECLINED_RESPONSE
     end
 
-    def build_event_data(google_event, conference_room)
-      event_wrapper = rounded_event_wrapper(google_event, conference_room)
-      event_wrapper.mark_user_event
-      event_wrapper.to_h
-    end
-
     def rounded_event_wrapper(google_event, conference_room)
-      params = {conference_room: conference_room, user_email: user_email}
-      GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, params)
+      GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, conference_room)
     end
 
-    attr_accessor :credentials, :user_email, :calendar_service
+    attr_accessor :credentials, :client
   end
 end
