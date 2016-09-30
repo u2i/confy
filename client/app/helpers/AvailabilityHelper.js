@@ -50,14 +50,14 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
 
 function compareByDuration(left, right) {
   if (left.availability === AVAILABILITY.CURRENTLY_AVAILABLE) {
-    return left.duration < right.duration;
+    return right.duration.asMilliseconds() - left.duration.asMilliseconds();
   }
-  return left.duration >= right.duration;
+  return left.duration.asMilliseconds() - right.duration.asMilliseconds();
 }
 
 function compareWithSameAvailability(left, right) {
   if (left.duration === right.duration) {
-    return left.conferenceRoom.title >= right.conferenceRoom.title;
+    return left.conferenceRoom.title.localeCompare(right.conferenceRoom.title);
   }
   return compareByDuration(left, right);
 }
@@ -66,7 +66,7 @@ function compareByAvailability(left, right) {
   if (left.availability === right.availability) {
     return compareWithSameAvailability(left, right);
   }
-  return left.availability >= right.availability;
+  return left.availability - right.availability;
 }
 
 export function sortAvailabilityProps(availabilityProps) {

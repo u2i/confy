@@ -7,7 +7,7 @@ import ConferenceRoom from '../factories/ConferenceRoom';
 describe('AvailabilityHelper', () => {
   const AvailabilityHelper = proxyquire('../../app/helpers/AvailabilityHelper', {
     './DateHelper': {
-      durationFromNow: e => e
+      durationFromNow: e => moment(e, 'minutes')
     }
   });
 
@@ -68,14 +68,17 @@ describe('AvailabilityHelper', () => {
   });
 
   describe('#sortAvailabilityProps', () => {
+    const duration0 = moment.duration(0, 'minutes');
+    const duration1 = moment.duration(1, 'minutes');
+    const duration2 = moment.duration(2, 'minutes');
     const conferenceRoomA = ConferenceRoom.build({ title: 'a' });
     const conferenceRoomB = ConferenceRoom.build({ title: 'b' });
-    const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: 0 };
-    const currentlyAvailableShort1 = { conferenceRoom: conferenceRoomA, availability: CURRENTLY_AVAILABLE, duration: 1 };
-    const currentlyAvailableShort2 = { conferenceRoom: conferenceRoomB, availability: CURRENTLY_AVAILABLE, duration: 1 };
-    const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: 2 };
-    const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: 1 };
-    const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: 2 };
+    const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: duration0 };
+    const currentlyAvailableShort1 = { conferenceRoom: conferenceRoomA, availability: CURRENTLY_AVAILABLE, duration: duration1 };
+    const currentlyAvailableShort2 = { conferenceRoom: conferenceRoomB, availability: CURRENTLY_AVAILABLE, duration: duration1 };
+    const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: duration2 };
+    const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: duration1 };
+    const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: duration2 };
 
     const shuffledProps = [
       currentlyBusyLong,

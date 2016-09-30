@@ -4,15 +4,19 @@ import { shallow } from 'enzyme';
 import proxyquire from 'proxyquire';
 import * as AvailabilityHelper from 'helpers/AvailabilityHelper';
 import ConferenceRoom from 'test/factories/ConferenceRoom';
+import moment from 'moment';
 
 describe('<RoomsAvailability />', () => {
   const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AvailabilityHelper.AVAILABILITY;
   const conferenceRoom = ConferenceRoom.build();
-  const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: 0, conferenceRoom };
-  const currentlyAvailableShort = { availability: CURRENTLY_AVAILABLE, duration: 1, conferenceRoom };
-  const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: 2, conferenceRoom };
-  const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: 1, conferenceRoom };
-  const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: 2, conferenceRoom };
+  const duration0 = moment.duration(0, 'minutes');
+  const duration1 = moment.duration(1, 'minutes');
+  const duration2 = moment.duration(2, 'minutes');
+  const allDayAvailable = { availability: ALL_DAY_AVAILABLE, duration: duration0, conferenceRoom };
+  const currentlyAvailableShort = { availability: CURRENTLY_AVAILABLE, duration: duration1, conferenceRoom };
+  const currentlyAvailableLong = { availability: CURRENTLY_AVAILABLE, duration: duration2, conferenceRoom };
+  const currentlyBusyShort = { availability: CURRENTLY_BUSY, duration: duration1, conferenceRoom };
+  const currentlyBusyLong = { availability: CURRENTLY_BUSY, duration: duration2, conferenceRoom };
   const availabilityProps = [
     currentlyBusyShort,
     currentlyAvailableLong,
