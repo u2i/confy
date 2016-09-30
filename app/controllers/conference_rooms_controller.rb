@@ -4,7 +4,7 @@ class ConferenceRoomsController < ApplicationController
 
   before_action :refresh_token
   before_action :check_authentication
-  
+
   def show
     create_props
   end

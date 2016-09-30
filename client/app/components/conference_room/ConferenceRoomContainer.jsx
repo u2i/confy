@@ -51,7 +51,7 @@ ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
   allEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
-  conferenceRoom: ConferenceRoomSchema,
+  activeConferenceRoom: ConferenceRoomSchema,
   allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,

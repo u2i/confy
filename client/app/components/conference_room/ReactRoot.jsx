@@ -11,7 +11,8 @@ const ReactRoot = ({ active_conference_room, all_conference_rooms }) => (
 );
 
 ReactRoot.propTypes = {
-  conference_room: ConferenceRoomSchema.isRequired
+  active_conference_room: ConferenceRoomSchema.isRequired,
+  all_conference_rooms: React.PropTypes.arrayOf(ConferenceRoomSchema).isRequired
 };
 
 export default ReactRoot;

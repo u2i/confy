@@ -13,7 +13,6 @@ const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
 export default class EventProvider extends React.Component {
   static propTypes = {
     activeConferenceRoom: ConferenceRoomSchema.isRequired,
-    allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
     component: React.PropTypes.func.isRequired
   };
 
@@ -109,7 +108,9 @@ export default class EventProvider extends React.Component {
     };
     EventSource.fetch(params)
       .then(({ data }) => {
-        const eventsInActiveConferenceRoom = data.filter(e => e.conference_room.id === this.props.activeConferenceRoom.id);
+        const eventsInActiveConferenceRoom = data.filter(event =>
+          event.conference_room.id === this.props.activeConferenceRoom.id
+        );
         const { current, next } = currentAndNextEvents(eventsInActiveConferenceRoom);
         this.setState({ nextEvents: next, currentEvent: current, allEvents: data });
       });
