@@ -7,9 +7,14 @@ import NoEventControls from './NoEventControls';
 
 import './controls.scss';
 
-const Controls = ({ event, onConfirm, onCreate, onCancel, onFinish, nextEventStart }) => {
+const Controls = ({ event, onConfirm, onCreate, onCancel, onFinish, onExtend, nextEventStart }) => {
   if (event) {
-    return <EventControls event={event} onConfirm={onConfirm} onCancel={onCancel} onFinish={onFinish} />;
+    return (<EventControls event={event}
+                          nextEventStart={nextEventStart}
+                          onConfirm={onConfirm}
+                          onCancel={onCancel}
+                          onFinish={onFinish}
+                          onExtend={onExtend} />);
   }
   return <NoEventControls onCreate={onCreate} nextEventStart={nextEventStart} />;
 };
@@ -20,6 +25,7 @@ Controls.propTypes = {
   onCreate: React.PropTypes.func,
   onCancel: React.PropTypes.func,
   onFinish: React.PropTypes.func,
+  onExtend: React.PropTypes.func,
   nextEventStart: instanceOfMoment
 };
 

@@ -8,8 +8,7 @@ class Event < ApplicationRecord
     update(confirmed: true)
   end
 
-  def self.confirm_or_create(conference_room_id, event_id)
-    conference_room = ConferenceRoom.find(conference_room_id)
+  def self.confirm_or_create(conference_room, event_id)
     event = find_or_create_by(conference_room: conference_room, event_id: event_id)
     event.confirm
   end
@@ -18,5 +17,9 @@ class Event < ApplicationRecord
 
   def self.confirmed_event_ids
     confirmed.pluck(:event_id)
+  end
+
+  def self.google_event_confirmed?(event)
+    confirmed.where(event_id: event.id).any?
   end
 end

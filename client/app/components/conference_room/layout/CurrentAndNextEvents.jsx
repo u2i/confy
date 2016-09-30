@@ -21,7 +21,8 @@ const CurrentAndNextEvents = ({
   onCancel,
   activeConferenceRoom,
   allConferenceRooms,
-  allEvents
+  allEvents,
+  onExtend
 }) => (
   <Row>
     <Col xs={12} sm={8}>
@@ -31,7 +32,8 @@ const CurrentAndNextEvents = ({
                     onConfirm={onConfirm}
                     onFinish={onFinish}
                     onCreate={onCreate}
-                    onCancel={onCancel} />
+                    onCancel={onCancel}
+                    onExtend={onExtend} />
     </Col>
     <Col xs={12} sm={4}>
       <Accordion className="side-accordion" defaultActiveKey="1">
@@ -57,7 +59,8 @@ CurrentAndNextEvents.propTypes = {
   onCancel: React.PropTypes.func,
   activeConferenceRoom: ConferenceRoomSchema,
   allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
-  allEvents: React.PropTypes.arrayOf(EventSchema.only('start'))
+  allEvents: React.PropTypes.arrayOf(EventSchema.only('start')),
+  onExtend: React.PropTypes.func
 };
 
 export default CurrentAndNextEvents;

@@ -43,23 +43,14 @@ RSpec.describe Event, type: :model do
   describe '.confirm_or_create' do
     context 'given event_id that does not exist in db' do
       let(:event_id) { 'invalid_event_id' }
+      let!(:conference_room) { create :conference_room }
 
-      context 'given invalid conference_room_id' do
-        let(:conference_room_id) { 0 }
-        subject { -> { described_class.confirm_or_create(conference_room_id, event_id) } }
-        it { is_expected.to raise_error(ActiveRecord::RecordNotFound) }
-      end
+      it 'creates new confirmed event' do
+        described_class.confirm_or_create(conference_room, event_id)
+        created_event = conference_room.events.first
 
-      context 'given valid conference_room_id' do
-        let!(:conference_room) { create :conference_room }
-
-        it 'creates new confirmed event' do
-          described_class.confirm_or_create(conference_room.id, event_id)
-          created_event = conference_room.events.first
-
-          expect(created_event.event_id).to eq event_id
-          expect(created_event.confirmed).to eq true
-        end
+        expect(created_event.event_id).to eq event_id
+        expect(created_event.confirmed).to eq true
       end
     end
 

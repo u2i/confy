@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     member do
       get 'events', controller: 'events', action: 'room_index'
     end
-    resources :events, only: [], param: :event_id do
+    resources :events, only: [:update], param: :event_id do
       member do
         post 'confirm'
         post 'finish'

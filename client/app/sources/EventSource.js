@@ -35,6 +35,9 @@ const EventSource = {
   },
   finish(conferenceRoomId, eventId) {
     return axios.post(finishPath(conferenceRoomId, eventId));
+  },
+  update(conferenceRoomId, eventId, params) {
+    return axios.patch(eventPath(conferenceRoomId, eventId), { event: params });
   }
 };
 

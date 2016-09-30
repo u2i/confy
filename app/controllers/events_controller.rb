@@ -9,7 +9,7 @@ class EventsController < ApplicationController
     render json: {error: 'Google Server error'}, status: :service_unavailable
   end
 
-  rescue_from Google::Apis::ClientError, GoogleCalendar::EventCreator::EventInvalidParamsError do |error|
+  rescue_from Google::Apis::ClientError, GoogleCalendar::EventValidator::EventInvalidParamsError do |error|
     error_data = {error: error.message}
     case params[:action]
     when 'create'
@@ -30,7 +30,7 @@ class EventsController < ApplicationController
     render json: {error: 'Authorization error'}, status: :unauthorized
   end
 
-  rescue_from GoogleCalendar::EventCreator::EventInTimeSpanError do |message|
+  rescue_from GoogleCalendar::EventValidator::EventInTimeSpanError do |message|
     render json: {conference_room_id: [message]}, status: :unprocessable_entity
   end
 
@@ -39,13 +39,13 @@ class EventsController < ApplicationController
   end
 
   def index
-    events = google_event_client.all(time_interval_rfc3339)
+    events = google_event_client.all(span_param.to_rfc3339)
     render json: events
   end
 
   def room_index
     events = google_event_client.find_by_room(
-      time_interval_rfc3339,
+      span_param.to_rfc3339,
       params[:id].to_i,
       with_confirmation?
     )
@@ -55,11 +55,9 @@ class EventsController < ApplicationController
   def create
     event_params = create_event_params
     data = google_event_client.create(event_params.to_h).to_h
-    conference_room_id = event_params[:conference_room_id]
-    if event_params[:confirmed].present?
-      data[:confirmed] = Event.confirm_or_create(conference_room_id, data[:id])
-    end
-    data[:conference_room] = ConferenceRoom.find(conference_room_id)
+    conference_room = ConferenceRoom.find(event_params[:conference_room_id])
+    data[:confirmed] = Event.confirm_or_create(conference_room, data[:id]) if event_params[:confirmed].present?
+    data[:conference_room] = conference_room
     render json: data, status: :created
   end
 
@@ -70,24 +68,28 @@ class EventsController < ApplicationController
   end
 
   def confirm
-    Event.confirm_or_create(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    Event.confirm_or_create(conference_room, params[:event_id])
     head :ok
   end
 
   def finish
-    google_event_client.finish(edit_event_params[:conference_room_id], edit_event_params[:event_id])
+    google_event_client.finish(conference_room, params[:event_id])
     head :ok
+  rescue GoogleCalendar::EventEditor::EventNotInProgressError
+    head :bad_request
   end
 
   def confirmed
     @confirmed_events = google_event_client.confirmed_events(TimeInterval.since_first_confirmed_event.to_rfc3339)
   end
 
-  private
-
-  def edit_event_params
-    params.permit(:conference_room_id, :event_id)
+  def update
+    event = google_event_client.update(conference_room, params[:event_id], edit_event_params)
+    confirmed = ::Event.google_event_confirmed?(event)
+    render json: event.to_h.merge(confirmed: confirmed)
   end
+
+  private
 
   def with_confirmation?
     params[:confirmation] == 'true'.freeze
@@ -96,6 +98,10 @@ class EventsController < ApplicationController
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   :confirmed, :recurrence, attendees: [:email])
+  end
+
+  def edit_event_params
+    params.require(:event).permit(:summary, :description, :start_time, :end_time)
   end
 
   def date_param
@@ -110,7 +116,7 @@ class EventsController < ApplicationController
     TimeInterval.week(date_param)
   end
 
-  def time_interval_rfc3339
-    span_param.to_rfc3339
+  def conference_room
+    ConferenceRoom.find(params[:conference_room_id])
   end
 end
