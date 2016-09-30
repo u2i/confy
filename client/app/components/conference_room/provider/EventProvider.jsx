@@ -80,7 +80,7 @@ export default class EventProvider extends React.Component {
     if (!this.state.currentEvent) return;
 
     const params = { end_time: end.format() };
-    EventSource.update(this.props.conferenceRoom.id, eventId, params)
+    EventSource.update(this.props.activeConferenceRoom.id, eventId, params)
       .then(({ data }) => this.setState({ currentEvent: data }));
   }
 
