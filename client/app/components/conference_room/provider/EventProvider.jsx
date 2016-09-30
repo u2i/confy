@@ -12,13 +12,13 @@ const NEW_EVENT_SUMMARY = 'Anonymous event created by Confy';
 
 export default class EventProvider extends React.Component {
   static propTypes = {
-    conferenceRoom: ConferenceRoomSchema.isRequired,
+    activeConferenceRoom: ConferenceRoomSchema.isRequired,
     component: React.PropTypes.func.isRequired
   };
 
   constructor(...args) {
     super(...args);
-    this.state = { nextEvents: [], creating: false };
+    this.state = { nextEvents: [], creating: false, allEvents: [] };
     bindAll(this, ['_fetchForToday', 'handleUpdate', 'handleConfirm', 'handleFinish', 'handleCreate', 'handleExtend']);
   }
 
@@ -41,7 +41,7 @@ export default class EventProvider extends React.Component {
     if (typeof(this.state.currentEvent) === 'undefined') return;
 
     this._toggleConfirmed();
-    EventSource.confirm(this.props.conferenceRoom.id, this.state.currentEvent.id)
+    EventSource.confirm(this.props.activeConferenceRoom.id, this.state.currentEvent.id)
       .catch(() => this._toggleConfirmed());
   }
 
@@ -50,7 +50,7 @@ export default class EventProvider extends React.Component {
 
     const currentEvent = this.state.currentEvent;
     this.setState({ currentEvent: undefined });
-    EventSource.finish(this.props.conferenceRoom.id, currentEvent.id)
+    EventSource.finish(this.props.activeConferenceRoom.id, currentEvent.id)
       .catch(() => this.setState({ currentEvent }));
   }
 
@@ -62,7 +62,7 @@ export default class EventProvider extends React.Component {
       start_time: moment().format(),
       end_time: end.format(),
       confirmed: true,
-      conference_room_id: this.props.conferenceRoom.id,
+      conference_room_id: this.props.activeConferenceRoom.id,
       summary: NEW_EVENT_SUMMARY
     };
 
@@ -98,6 +98,7 @@ export default class EventProvider extends React.Component {
     return (
       <Component currentEvent={this.state.currentEvent}
                  nextEvents={this.state.nextEvents}
+                 allEvents={this.state.allEvents}
                  onUpdate={this.handleUpdate}
                  onConfirm={this.handleConfirm}
                  onFinish={this.handleFinish}
@@ -114,10 +115,13 @@ export default class EventProvider extends React.Component {
       end: moment().endOf('day').toISOString(),
       confirmation: true
     };
-    EventSource.fetch(params, this.props.conferenceRoom.id)
-      .then(response => {
-        const { current, next } = currentAndNextEvents(response.data);
-        this.setState({ nextEvents: next, currentEvent: current });
+    EventSource.fetch(params)
+      .then(({ data }) => {
+        const eventsInActiveConferenceRoom = data.filter(event =>
+          event.conference_room.id === this.props.activeConferenceRoom.id
+        );
+        const { current, next } = currentAndNextEvents(eventsInActiveConferenceRoom);
+        this.setState({ nextEvents: next, currentEvent: current, allEvents: data });
       });
   }
 

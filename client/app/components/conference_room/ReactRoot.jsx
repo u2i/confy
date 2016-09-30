@@ -4,12 +4,15 @@ import ConferenceRoomSchema from 'proptypes/schemas/ConferenceRoomSchema';
 import ConferenceRoomContainer from './ConferenceRoomContainer';
 import EventProvider from './provider/EventProvider';
 
-const ReactRoot = ({ conference_room }) => (
-  <EventProvider conferenceRoom={conference_room} component={ConferenceRoomContainer} />
+const ReactRoot = ({ active_conference_room, all_conference_rooms }) => (
+  <EventProvider activeConferenceRoom={active_conference_room}
+                 allConferenceRooms={all_conference_rooms}
+                 component={ConferenceRoomContainer} />
 );
 
 ReactRoot.propTypes = {
-  conference_room: ConferenceRoomSchema.isRequired
+  active_conference_room: ConferenceRoomSchema.isRequired,
+  all_conference_rooms: React.PropTypes.arrayOf(ConferenceRoomSchema).isRequired
 };
 
 export default ReactRoot;

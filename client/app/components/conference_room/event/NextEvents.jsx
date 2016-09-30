@@ -5,7 +5,7 @@ import EventSchema from 'proptypes/schemas/EventSchema';
 import EventSummary from 'components/calendar/event/details/EventSummary';
 import EventTime from 'components/calendar/event/details/EventTime';
 import EventCreator from 'components/calendar/event/details/EventCreator';
-import './next_event.scss';
+import './next_events.scss';
 
 const NextEvents = ({ events, noEventLabel }) => (
   <div className="next-event-container">

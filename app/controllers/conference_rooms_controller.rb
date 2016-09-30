@@ -12,7 +12,7 @@ class ConferenceRoomsController < ApplicationController
   private
 
   def create_props
-    @props = {conference_room: conference_room}
+    @props = {active_conference_room: conference_room, all_conference_rooms: ConferenceRoom.all}
   end
 
   def conference_room

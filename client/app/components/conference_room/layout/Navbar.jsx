@@ -7,11 +7,11 @@ import Help from '../help/HelpContainer';
 
 import './navbar.scss';
 
-const RoomNavbar = ({ conferenceRoom }) => (
-  <Navbar style={{ backgroundColor: conferenceRoom.color }} className="conference-room-navbar">
+const RoomNavbar = ({ activeConferenceRoom }) => (
+  <Navbar style={{ backgroundColor: activeConferenceRoom.color }} className="conference-room-navbar">
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="#"><h2>{conferenceRoom.title}</h2></a>
+        <a href="#"><h2>{activeConferenceRoom.title}</h2></a>
       </Navbar.Brand>
       <Navbar.Form pullRight>
         <Help />
@@ -22,7 +22,7 @@ const RoomNavbar = ({ conferenceRoom }) => (
 );
 
 RoomNavbar.propTypes = {
-  conferenceRoom: ConferenceRoomSchema.only('color', 'title').isRequired
+  activeConferenceRoom: ConferenceRoomSchema.only('color', 'title').isRequired
 };
 
 export default RoomNavbar;

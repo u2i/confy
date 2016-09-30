@@ -19,7 +19,9 @@ const nextEventStart = (nextEvents) => {
 const ConferenceRoomContainer = ({
   currentEvent,
   nextEvents,
-  conferenceRoom,
+  allEvents,
+  activeConferenceRoom,
+  allConferenceRooms,
   onUpdate,
   onConfirm,
   onFinish,
@@ -28,7 +30,7 @@ const ConferenceRoomContainer = ({
   onExtend
 }) => (
   <div>
-    <Navbar conferenceRoom={conferenceRoom} />
+    <Navbar activeConferenceRoom={activeConferenceRoom} />
     <Grid className="conference-room-container">
       {currentEvent || nextEvents.length > 0 ?
         <CurrentAndNextEvents
@@ -40,6 +42,9 @@ const ConferenceRoomContainer = ({
           onFinish={onFinish}
           onCreate={onCreate}
           onCancel={onCancel}
+          activeConferenceRoom={activeConferenceRoom}
+          allConferenceRooms={allConferenceRooms}
+          allEvents={allEvents}
           onExtend={onExtend} /> :
         <NoEvents onCreate={onCreate} />
       }
@@ -50,7 +55,9 @@ const ConferenceRoomContainer = ({
 ConferenceRoomContainer.propTypes = {
   currentEvent: EventSchema.except('width', 'offset'),
   nextEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
-  conferenceRoom: ConferenceRoomSchema.only('color').isRequired,
+  allEvents: React.PropTypes.arrayOf(EventSchema.except('width', 'offset')),
+  activeConferenceRoom: ConferenceRoomSchema,
+  allConferenceRooms: React.PropTypes.arrayOf(ConferenceRoomSchema),
   onUpdate: React.PropTypes.func,
   onConfirm: React.PropTypes.func,
   onFinish: React.PropTypes.func,

@@ -10,7 +10,7 @@ import HelpContainer from 'components/conference_room/help/HelpContainer';
 
 describe('<Navbar />', () => {
   const conferenceRoom = ConferenceRoom.build();
-  const wrapper = shallow(<RoomNavbar conferenceRoom={conferenceRoom} />);
+  const wrapper = shallow(<RoomNavbar activeConferenceRoom={conferenceRoom} />);
 
   it('renders bootstrap <Navbar />', () => {
     expect(wrapper).to.have.exactly(1).descendants(Navbar);
