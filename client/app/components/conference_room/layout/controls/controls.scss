@@ -13,10 +13,15 @@ $amount: 15%;
   margin-top: 10px;
   flex-wrap: wrap;
 
+  h3 {
+    font-size: 1.2em;
+    color: $lightgreenbtn;
+  }
+
   button {
     margin: 15px 15px;
     min-width: 100px;
-    max-width: 30%;
+    max-width: 35%;
     flex-grow: 1;
     border: 0;
     text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa;
@@ -32,6 +37,13 @@ $amount: 15%;
       background: $bluebtn;
       box-shadow: 0 3px 0 darken($bluebtn, $amount);
       text-shadow: 0 -1px 0 darken($bluebtn, $amount);
+    }
+
+    &.btn-default {
+      background: $lightgreenbtn;
+      box-shadow: 0 3px 0 darken($lightgreenbtn, $amount);
+      text-shadow: 0 -1px 0 darken($lightgreenbtn, $amount);
+      color: #fff;
     }
 
   }
