@@ -9,7 +9,6 @@ import './next_events.scss';
 
 const NextEvents = ({ events, noEventLabel }) => (
   <div className="next-event-container">
-    <h2>Next events</h2>
     <If condition={events.length > 0}>
       <div>
         {events.map(event => (

@@ -25,7 +25,7 @@ const CurrentAndNextEvents = ({
   onExtend
 }) => (
   <Row>
-    <Col xs={12} sm={8}>
+    <Col xs={12} sm={7}>
       <CurrentEvent event={currentEvent}
                     nextEventStart={nextEventStart}
                     onCompleted={onUpdate}
@@ -35,7 +35,7 @@ const CurrentAndNextEvents = ({
                     onCancel={onCancel}
                     onExtend={onExtend} />
     </Col>
-    <Col xs={12} sm={4}>
+    <Col xs={12} sm={5}>
       <Accordion className="side-accordion" defaultActiveKey="1">
         <Panel header="Next events" eventKey="1">
           <NextEvents events={nextEvents} noEventLabel={texts.NO_MORE_EVENTS} />

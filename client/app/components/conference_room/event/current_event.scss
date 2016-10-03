@@ -31,6 +31,7 @@ $default-color: #000;
 
   .event-controls {
     flex: 0 0 4.5em;
+  }
 
   h1 {
     text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa, 0 3px 0 #888;
@@ -54,6 +55,6 @@ $default-color: #000;
 
 @keyframes blinker {
   0% { background-color: $default-color; }
-  50% { background-color: #a94442; }
+  50% { background-color: #f00; }
   100% { background-color: $default-color; }
 }

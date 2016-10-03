@@ -1,11 +1,15 @@
 .conference-room {
   font-weight: bold;
-  padding: 4px;
+  padding: 3px;
   border-radius: 5px;
 }
 
 .available {
-  color: green;
+  color: #7ED321;
+
+  &.day {
+    color: #29C8DE;
+  }
 }
 
 .unavailable {

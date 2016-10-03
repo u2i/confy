@@ -30,7 +30,7 @@ const ConferenceRoomContainer = ({
   onExtend
 }) => (
   <div className="tablet-view">
-    <Navbar conferenceRoom={activeConferenceRoom} />
+    <Navbar activeConferenceRoom={activeConferenceRoom} />
     <Grid className="conference-room-container">
       {currentEvent || nextEvents.length > 0 ?
         <CurrentAndNextEvents
