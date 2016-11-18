@@ -1,5 +1,55 @@
 .next-event-container {
   padding: 5px 30px 5px;
+  color: #fff;
+
+
+  .event-container {
+    border-bottom: 1px solid #fff;
+    padding: 0 0 10px;
+    color: #7ED321;
+
+    &:last-child {
+      border: 0;
+    }
+
+    .event-time {
+      font-size: 1.4em;
+      color: #fff;
+    }
+    .event-creator {
+      color: #29C8DE;
+      margin-top: 5px;
+      font-size: 0.8em;
+    }
+  }
+}
+
+.conference-room-container .row {
+  .panel-default, .panel {
+    background: #000;
+    background-color: #000;
+    border-radius: 0;
+    border: 0;
+
+    & > .panel-heading {
+      background-color: transparent;
+      border: 0; 
+      .panel-title {
+        font-size: 1.6em;
+        color: #fff;
+        text-shadow: 0 1px 0 #ccc;
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+
+    & > .panel-heading + .panel-collapse > .panel-body {
+      overflow: scroll;
+      max-height: 66vh;
+    }
+
+  }
 }
 
 @media (min-width: $screen-sm-min) {

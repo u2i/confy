@@ -1,12 +1,12 @@
-$default-color: #eee;
+$default-color: #000;
 
-.current-event-container {
+.current-event-container, .jumbotron {
   height: 82vh;
   background-color: $default-color;
-  border-radius: 5px;
   font-size: 1.1em;
   padding: 20px 30px 5px;
   white-space: normal;
+  color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -30,19 +30,31 @@ $default-color: #eee;
   }
 
   .event-controls {
-    flex: 0 0 4.5em;
+    flex: 0 0 8em;
+  }
+
+  h1 {
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa, 0 3px 0 #888;
+    font-size: 3em;
+    font-weight: bold;
+  }
+
+  h2 {
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa, 0 3px 0 #888;
+    font-size: 2em;
+    line-height: 2em;
   }
 }
 
 .end-time-warning {
   animation-name: blinker;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: 2;
+  animation-iteration-count: 3;
 }
 
 @keyframes blinker {
   0% { background-color: $default-color; }
-  50% { background-color: #a94442; }
+  50% { background-color: #f00; }
   100% { background-color: $default-color; }
 }

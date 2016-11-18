@@ -1,3 +1,9 @@
+$greenbtn: #417505;
+$lightgreenbtn: #7ED321;
+$bluebtn: #29C8DE;
+
+$amount: 15%;
+
 .event-controls {
   display: flex;
   flex-direction: row;
@@ -7,10 +13,38 @@
   margin-top: 10px;
   flex-wrap: wrap;
 
+  h3 {
+    font-size: 1.2em;
+    color: $lightgreenbtn;
+  }
+
   button {
     margin: 15px 15px;
     min-width: 100px;
-    max-width: 30%;
+    max-width: 35%;
     flex-grow: 1;
+    border: 0;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #aaa;
+    font-weight: bold;
+
+    &.btn-primary {
+      background: $greenbtn;
+      box-shadow: 0 3px 0 darken($greenbtn, $amount);
+      text-shadow: 0 -1px 0 darken($greenbtn, $amount);
+    }
+
+    &.btn-danger {
+      background: $bluebtn;
+      box-shadow: 0 3px 0 darken($bluebtn, $amount);
+      text-shadow: 0 -1px 0 darken($bluebtn, $amount);
+    }
+
+    &.btn-default {
+      background: $lightgreenbtn;
+      box-shadow: 0 3px 0 darken($lightgreenbtn, $amount);
+      text-shadow: 0 -1px 0 darken($lightgreenbtn, $amount);
+      color: #fff;
+    }
+
   }
 }

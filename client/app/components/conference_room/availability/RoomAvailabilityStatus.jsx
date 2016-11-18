@@ -8,7 +8,7 @@ import './availability.scss';
 
 const { ALL_DAY_AVAILABLE, CURRENTLY_AVAILABLE, CURRENTLY_BUSY } = AVAILABILITY;
 
-const availabilityClassName = availability => availability === CURRENTLY_BUSY ? 'unavailable' : 'available';
+
 const remainingTime = duration => formatDuration(duration, 'HH:mm');
 const availabilityStatus = (availability, duration) => {
   switch (availability) {
@@ -18,6 +18,18 @@ const availabilityStatus = (availability, duration) => {
       return `available for ${remainingTime(duration)}`;
     case CURRENTLY_BUSY:
       return `available in ${remainingTime(duration)}`;
+    default:
+      return '';
+  }
+};
+const availabilityClassName = (availability) => {
+  switch (availability) {
+    case ALL_DAY_AVAILABLE:
+      return 'available day';
+    case CURRENTLY_AVAILABLE:
+      return 'available';
+    case CURRENTLY_BUSY:
+      return 'unavailable';
     default:
       return '';
   }

@@ -1,11 +1,14 @@
 .conference-room-navbar {
   font-size: 1.2em;
+  background: transparent;  
 
   .navbar-brand h2,
   .navbar-text h3 {
-    font-size: 1.2em;
+    font-size: 2em;
     margin: 0;
     padding: 0;
+    color: #fff;
+    text-shadow: 0 1px 0 darken(#4a8b21, 5%), 0 2px 0 darken(#4a8b21, 10%);
   }
 
   .navbar-brand,
@@ -16,7 +19,8 @@
 
   .clock-date, .clock-time {
     display: inline;
-    margin-right: 10px;
+    margin-left: 30px;
+    font-size: 0.8em;
   }
 
   .clock-time {
@@ -44,5 +48,18 @@
     padding-top: 0;
     padding-bottom: 0;
     box-shadow: none;
+
+    button {
+      background: transparent;
+      border: 0;
+      font-size: 1.6em;
+      color: #fff;
+      text-shadow: 0 1px 0 darken(#4a8b21, 5%), 0 2px 0 darken(#4a8b21, 10%);
+    }
   }
+}
+
+.navbar-default {
+  background: transparent;
+  border: 0;
 }
