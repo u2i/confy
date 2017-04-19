@@ -74,6 +74,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'pry-rails'
   gem 'spring-commands-rspec'
+  gem 'terminal-notifier-guard'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
