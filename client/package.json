@@ -90,7 +90,7 @@
     "proxyquire": "^1.7.10",
     "react-addons-test-utils": "^0.14.8 || ^15.0.0",
     "react-transform-hmr": "^1.0.4",
-    "sinon": "*",
+    "sinon": "^1.17.4",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^2.8.0",
     "webpack-dev-server": "^1.14.1",
