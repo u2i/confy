@@ -91,4 +91,10 @@ Rails.application.configure do
 
     ENV['HOSTNAME'] = ENV['NOTIFICATION_HOST'] = "https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com"
   end
+
+  if ENV['KUBERNETES_DOMAIN_NAME'].present?
+    config.web_socket_server_url = "wss://#{ENV['KUBERNETES_DOMAIN_NAME']}/cable"
+    config.action_cable.allowed_request_origins = ["https://#{ENV['KUBERNETES_DOMAIN_NAME']}",
+                                                   "http://#{ENV['KUBERNETES_DOMAIN_NAME']}"]
+  end
 end
