@@ -12,6 +12,7 @@ const compiler = webpack(webpackConfig);
 const devServer = new WebpackDevServer(compiler, {
   contentBase:        `http://lvh.me:${hotRailsPort}`,
   publicPath:         webpackConfig.output.publicPath,
+  host:               '0.0.0.0',
   hot:                true,
   inline:             true,
   historyApiFallback: true,
@@ -24,10 +25,13 @@ const devServer = new WebpackDevServer(compiler, {
     version:  false,
     chunks:   false,
     children: false
+  },
+  headers: {
+    'Access-Control-Allow-Origin': '*',
   }
 });
 
-devServer.listen(hotRailsPort, 'localhost', err => {
+devServer.listen(hotRailsPort, '0.0.0.0', err => {
   if (err) console.error(err);
   console.log(
     `=> 🔥  Webpack development server is running on port ${hotRailsPort}`
