@@ -42,8 +42,6 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 1234
-    ports:
-      - 5432:5432
   redis:
     image: redis:3.2
 volumes:
