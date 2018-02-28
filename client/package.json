@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build:client": "NODE_ENV=production webpack --config webpack.build.config.js",
-    "test": "NODE_ENV=test mocha \"test/**/*.js?(x)\"",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/_mocha \"test/**/*.js?(x)\"",
     "server:dev": "babel-node webpack-dev-server.js",
     "lint": "eslint --ext .js,.jsx ."
   },
