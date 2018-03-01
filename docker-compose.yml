@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: confy:1.1
+    image: "confy:${CONFY_VERSION}"
     command: rails s -b 0.0.0.0
     environment:
         REACT_ON_RAILS_ENV: HOT
@@ -21,7 +21,7 @@ services:
       - redis
       - sidekiq
   sidekiq:
-    image: confy:1.1
+    image: "confy:${CONFY_VERSION}"
     command: sidekiq -q default
     environment:
         REDIS_PROVIDER: REDIS_URL
@@ -30,7 +30,7 @@ services:
       - db
       - redis
   dev-server:
-    image: confy:1.1
+    image: "confy:${CONFY_VERSION}"
     command: npm run server:dev
     ports:
       - 3500:3500
