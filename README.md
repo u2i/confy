@@ -61,6 +61,22 @@ In order for the application to work you need to configure your environment. Che
 
 Or you can just ask someone for their `.env` file :)
 
+Encryption
+--------------
+Several files are encrypted: .env.enc, gcloud_credentials.json.enc, kubernetes/env.yml.enc
+
+You can decrypt/encrypt them using key that can be found in LastPass, Shared-confy/ENV_CRYPT_KEY
+
+Encrypt:
+```bash
+$ openssl enc -aes-256-cbc -k $ENV_CRYPT_KEY -in .env -out .env.enc
+```
+
+Decrypt:
+```bash
+$ openssl enc -d -aes-256-cbc -k $ENV_CRYPT_KEY -in .env.enc -out .env2
+```
+
 Running the development server
 --------------
 
