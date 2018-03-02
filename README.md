@@ -19,7 +19,7 @@ Table of Contents
       * [Linting](#linting)
       * [Running all tests](#running-all-tests)
     * [Deployment](#deployment)
-      * [Heroku](#heroku)
+      * [Kubernetes](#kubernetes)
       * [Review Apps](#review-apps)
     * [Gotchas](#gotchas)
       * [Push notifications](#push-notifications)
@@ -29,24 +29,17 @@ Table of Contents
 Prerequisites
 --------------
 
-* Ruby v2.3.0
-* Node.js v4.4.7 or higher
-* [PostgreSQL](https://www.postgresql.org/download/)
-* [Sidekiq](https://github.com/mperham/sidekiq)
-* [Redis](http://redis.io/download)
-* [Foreman](https://github.com/ddollar/foreman)
+* Docker
+* Docker Compose
 
 Installation
 --------------
 
 ```bash
-$ bundle install
+$ docker build -t confy:1.0 .
 ```
 ```bash
-$ npm install
-```
-```bash
-$ rake db:setup
+$ CONFY_VERSION=1.0 docker-compose run web rake db:setup
 ```
 
 Config
@@ -71,30 +64,24 @@ Or you can just ask someone for their `.env` file :)
 Running the development server
 --------------
 
-Make sure you have Redis running.
 
 ```bash
-$ foreman start -f Procfile.dev
+$ CONFY_VERSION=1.0 docker-compose up
 ```
-or
-```bash
-$ npm start
-```
-which will run the above command for you. You can specify the Rails port by setting the `PORT` environment variable.
 
-This will run the Rails server, Sidekiq, as well as a Webpack development server that will hot reload assets as you change them.
+This will run the Rails server, Postgres, Redis, Sidekiq, as well as a Webpack development server that will hot reload assets as you change them.
 
 Running tests
 --------------
 
 ### Rails tests
 ```bash
-$ rspec
+$ CONFY_VERSION=1.0 docker-compose run web bundle exec rspec
 ```
 
-Or install [Guard](https://github.com/guard/guard) and 
+Or 
 ```bash
-$ bundle exec guard
+$ CONFY_VERSION=1.0 docker-compose run web bundle exec guard
 ```
 to watch for test and code changes
 
@@ -102,38 +89,30 @@ Here's [how to setup Guard in RubyMine](http://stackoverflow.com/questions/11996
 
 ### React tests
 ```bash
-$ npm run test
+$ CONFY_VERSION=1.0 docker-compose run web npm run test
 ```
 or
 ```bash
-$ rake test:client
+$ CONFY_VERSION=1.0 docker-compose run web rake test:client
 ```
 
 ### Linting
 ```bash
-$ npm run lint
+$ CONFY_VERSION=1.0 docker-compose run web npm run lint
 ```
 
 ### Running all tests
 ```bash
-$ rake test:all
+$ CONFY_VERSION=1.0 docker-compose run web rake test:all
 ```
 
 Deployment
 --------------
 
-### Heroku
-All changes to `develop` branch are automatically deployed to Heroku [Staging](https://u2i-confy-staging.herokuapp.com/). That means that ideally you would never deploy manually and instead create a Pull Request for your changes which will get deployed after being merged. 
+### Kubernetes
+After successful test phase, travis automatically pushes new image to GCR (only when git tag is present) with appropriate version derived from git tag.
 
-To deploy to [production](https://u2i-confy.herokuapp.com/) you can either promote the staging app to production in [Heroku Dashboard](https://dashboard.heroku.com/pipelines/1cbd7b9e-0cb0-4da3-9f6d-56761206e16f) or commit to `master` branch.
-
-Heroku will not build any deployments with failing tests!
-
-### Review Apps
-Review Apps are enabled on Heroku Dashboard. That means you can create a temporary app for your Pull Request.
-To deploy a Review App you simply need to find your PR on the list in [Heroku Dashboard](https://dashboard.heroku.com/pipelines/1cbd7b9e-0cb0-4da3-9f6d-56761206e16f) Review Apps and click on **Create Review App**. After that any changes to that branch will cause an automatic deployment to your Review App.
-
-There is an extra step you need to take for your Review App to work. We currently only support logging in via Google OAuth. If you try to launch your Review App now you will find an error from Google saying that the URI is not authorized. Follow the instructions and add the Review App to the Authorized redirect URIs in [Google Developer Console](https://console.developers.google.com/apis/credentials/oauthclient/659112718098-i3u6g3s46vv5tccjvjcsfhrfta3omdvc.apps.googleusercontent.com?project=effective-relic-136507). Remember to hit **Save**!
+You need to manually change image version in `kubernetes/confy-app.yml` and `kubernetes/cron.yml` files and then apply changes in order to deploy new version.
 
 Gotchas
 --------------
