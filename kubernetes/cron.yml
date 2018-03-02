@@ -1,0 +1,20 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: confy-push-notifications-register
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: push-notification-register
+            image: gcr.io/kubernetes-playground-195112/confy:1.02
+            args:
+            - rake
+            - google:push_register
+            envFrom:
+            - configMapRef:
+                name: confy-env
+          restartPolicy: Never

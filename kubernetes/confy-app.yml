@@ -1,0 +1,87 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: confy-web-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: confy-web
+    spec:
+      containers:
+      - name: confy-web
+        image: gcr.io/kubernetes-playground-195112/confy:1.02
+        command:
+          - "bundle"
+          - "exec"
+          - "rails"
+          - "server"
+        envFrom:
+        - configMapRef:
+            name: confy-env
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: confy-web
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: confy-redis-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: confy-redis
+    spec:
+      containers:
+      - name: confy-redis
+        image: redis:3.2
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: confy-redis
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: confy-sidekiq-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: confy-sidekiq
+    spec:
+      containers:
+      - name: confy-sidekiq
+        image: gcr.io/kubernetes-playground-195112/confy:1.02
+        command:
+          - "bundle"
+          - "exec"
+          - "sidekiq"
+          - "-q"
+          - "default"
+        envFrom:
+        - configMapRef:
+            name: confy-env
