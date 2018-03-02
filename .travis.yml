@@ -10,7 +10,6 @@ before_install:
     -in client_secrets.json.enc -out client_secrets.json -d
   - openssl enc -d -aes-256-cbc -k $ENV_CRYPT_KEY -in .env.enc -out .env
   - openssl enc -d -aes-256-cbc -k $ENV_CRYPT_KEY -in gcloud_credentials.json.enc -out gcloud_credentials.json
-  - echo $CONFY_VERSION
 install:
   - docker build -t confy:"$CONFY_VERSION" .
 before_script:
