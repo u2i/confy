@@ -1,0 +1,19 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: confy-u2i-com-tls
+  namespace: confy
+spec:
+  secretName: confy-u2i-com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer
+  commonName: confy.u2i.com
+  dnsNames:
+  - confy.u2i.com
+  acme:
+    config:
+    - http01:
+        ingress: basic-ingress
+      domains:
+      - confy.u2i.com

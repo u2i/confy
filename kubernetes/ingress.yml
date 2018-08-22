@@ -6,3 +6,7 @@ spec:
   backend:
     serviceName: web-service
     servicePort: 80
+  tls:
+  - secretName: confy-u2i-com-tls
+    hosts:
+    - confy.u2i.com
