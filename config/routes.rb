@@ -8,6 +8,15 @@ Rails.application.routes.draw do
   get 'healthz' => 'health#check_health'
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
 
+  namespace :api do
+    resources :events, only: [:create, :index, :show, :destroy],
+                       defaults: { format: :json } do
+      collection do
+        get :confirmed
+      end
+    end
+  end
+
   resources :conference_rooms, only: [] do
     member do
       get :events, controller: :events, action: :room_index
