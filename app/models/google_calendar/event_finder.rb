@@ -6,10 +6,9 @@ module GoogleCalendar
     LISTING_FIELDS = 'items(id, start, end, summary, description, recurrence, '\
                      'creator, attendees(self, responseStatus, displayName, email), hangoutLink, htmlLink)'.freeze
 
-    def initialize(credentials, user_email)
-      @credentials = credentials
+    def initialize(calendar_service, user_email)
+      @calendar_service = calendar_service
       @user_email = user_email
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
     def all(time_interval)
@@ -100,6 +99,6 @@ module GoogleCalendar
       GoogleCalendar::EventWrapper::RoundedEvent.new(google_event, params)
     end
 
-    attr_accessor :credentials, :user_email, :calendar_service
+    attr_accessor :user_email, :calendar_service
   end
 end

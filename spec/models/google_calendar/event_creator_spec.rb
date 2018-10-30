@@ -15,7 +15,7 @@ RSpec.describe GoogleCalendar::EventCreator do
   describe '.create' do
     context 'given invalid params' do
       it 'raises GoogleCalendar::EventValidator::EventInvalidParamsError' do
-        expect { described_class.new(credentials, email).create({conference_room_id: conference_room.id}) }.
+        expect { described_class.new(service, email).create({conference_room_id: conference_room.id}) }.
           to raise_error(GoogleCalendar::EventValidator::EventInvalidParamsError)
       end
     end

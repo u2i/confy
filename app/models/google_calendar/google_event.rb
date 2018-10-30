@@ -1,8 +1,8 @@
 module GoogleCalendar
   class GoogleEvent
-    def initialize(credentials, user_email)
-      @credentials = credentials
+    def initialize(calendar_service:, user_email:)
       @user_email = user_email
+      @calendar_service = calendar_service
     end
 
     def create(event_data = {})
@@ -35,22 +35,22 @@ module GoogleCalendar
 
     private
 
-    attr_accessor :credentials, :user_email
+    attr_accessor :calendar_service, :user_email
 
     def event_creator
-      @event_creator ||= GoogleCalendar::EventCreator.new(credentials, user_email)
+      @event_creator ||= GoogleCalendar::EventCreator.new(calendar_service, user_email)
     end
 
     def event_remover
-      @event_remover ||= GoogleCalendar::EventRemover.new(credentials)
+      @event_remover ||= GoogleCalendar::EventRemover.new(calendar_service)
     end
 
     def event_finder
-      @event_finder ||= GoogleCalendar::EventFinder.new(credentials, user_email)
+      @event_finder ||= GoogleCalendar::EventFinder.new(calendar_service, user_email)
     end
 
     def event_editor
-      @event_editor ||= GoogleCalendar::EventEditor.new(credentials, user_email)
+      @event_editor ||= GoogleCalendar::EventEditor.new(calendar_service, user_email)
     end
   end
 end

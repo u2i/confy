@@ -5,15 +5,12 @@ RSpec.describe 'Events', type: :request do
     # Disable authentication filters
     allow_any_instance_of(EventsController).to receive(:check_authentication) { true }
     allow_any_instance_of(EventsController).to receive(:refresh_token) { true }
+    allow(GoogleCalendar::Client).to receive(:new) { double(calendar_service: double) }
   end
 
   describe 'POST /events' do
     let!(:room) { create(:conference_room) }
     let(:event_attributes) { attributes_for(:event, conference_room_id: room.id) }
-
-    before do
-      allow_any_instance_of(EventsController).to receive(:session) { {credentials: 123} }
-    end
 
     context 'given invalid event attributes' do
       let(:error) { Google::Apis::ClientError.new('error') }
@@ -75,12 +72,11 @@ RSpec.describe 'Events', type: :request do
 
   describe 'DELETE /event' do
     let(:event_id) { 'test_event_id' }
-    let(:session) { {credentials: 'test_credentials'} }
+
     context 'request is forbidden' do
       let(:error) { Google::Apis::ClientError.new('forbidden error') }
       it 'responds with 403' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:delete).and_raise(error)
-        allow_any_instance_of(EventsController).to receive(:session) { session }
         delete event_path event_id
         expect(response).to have_http_status :forbidden
       end
@@ -88,7 +84,6 @@ RSpec.describe 'Events', type: :request do
     context 'request is valid' do
       it 'redirects to root_path' do
         allow_any_instance_of(GoogleCalendar::GoogleEvent).to receive(:delete) { true }
-        allow_any_instance_of(EventsController).to receive(:session) { session }
         delete event_path event_id
         expect(response).to have_http_status(:ok)
       end

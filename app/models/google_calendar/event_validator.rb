@@ -3,10 +3,9 @@ module GoogleCalendar
     EventInvalidParamsError = Class.new(StandardError)
     EventInTimeSpanError = Class.new(StandardError)
 
-    def initialize(wrapper, credentials, user_email)
+    def initialize(wrapper, calendar_service, user_email)
       @wrapper = wrapper
-      @credentials = credentials
-      @event_finder = GoogleCalendar::EventFinder.new(credentials, user_email)
+      @event_finder = GoogleCalendar::EventFinder.new(calendar_service, user_email)
     end
 
     def raise_if_occupied
@@ -44,6 +43,6 @@ module GoogleCalendar
       events.map { |event| event[:summary] }.join(', '.freeze)
     end
 
-    attr_accessor :wrapper, :credentials, :event_finder
+    attr_accessor :wrapper, :event_finder
   end
 end
