@@ -10,12 +10,12 @@ Rails.application.routes.draw do
 
   resources :conference_rooms, only: [] do
     member do
-      get 'events', controller: 'events', action: 'room_index'
+      get :events, controller: :events, action: :room_index
     end
     resources :events, only: [:update], param: :event_id do
       member do
-        post 'confirm'
-        post 'finish'
+        post :confirm
+        post :finish
       end
     end
   end
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   resources :events, only: [:create, :index, :show, :destroy] do
     collection do
-      get 'confirmed'
+      get :confirmed
     end
   end
 
