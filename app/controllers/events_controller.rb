@@ -91,10 +91,6 @@ class EventsController < ApplicationController
 
   private
 
-  def with_confirmation?
-    params[:confirmation] == 'true'.freeze
-  end
-
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   :confirmed, :recurrence, attendees: [:email])
