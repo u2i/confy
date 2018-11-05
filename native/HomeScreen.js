@@ -1,11 +1,12 @@
 import React from 'react';
 import moment from 'moment';
-import { StyleSheet, View, ActivityIndicator, AsyncStorage, Image, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, FlatList } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { createSubscription, removeSubscription } from './cable';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
 import TimeProgress from './components/TimeProgress';
+import Clock from './components/Clock'
 import Controls from './components/controls/Controls';
 import { styles } from './styles/home';
 
@@ -221,7 +222,7 @@ export default class App extends React.Component {
                               onCompleted={this._refreshRoom}
                 />
               </View>
-              <View style={{ flex: 1, flexDirection: 'row', alignSelf: 'center' }}>
+              <View style={{ height: 80, flexDirection: 'row', alignSelf: 'center' }}>
                 {
                   this.state.loading && (
                     <View style={{alignSelf: 'center'}}>
@@ -244,15 +245,23 @@ export default class App extends React.Component {
                  }
               </View>
             </View>
-            <Card containerStyle={{ flex: 2, margin: 0, marginBottom: 0 }}
-                  titleStyle={{ fontSize: 20 }}
-                  title='Next Events'>
-              <NextEvents
-                events={this.state.nextEvents}
-                eventTimeString={eventTimeString}
-                eventCreator={eventCreator}
-              />
-            </Card>
+            <View style={{ flex: 2, backgroundColor: '#222'}}>
+              <View style={{ flex: 1}}>
+                <View style={{ flex: 1, padding: 10  }}>
+                  <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>Next Events</Text>
+
+                  <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+                  <NextEvents
+                    events={this.state.nextEvents}
+                    eventTimeString={eventTimeString}
+                    eventCreator={eventCreator}
+                  />
+                </View>
+                <View style={{ backgroundColor: 'black', height: 70, padding: 10  }}>
+                  <Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" />
+                </View>
+              </View>
+            </View>
           </View>
         )}
       </View>
@@ -264,14 +273,17 @@ const NextEvents = props => {
   if (props.events.length > 0) {
     return (
       <FlatList
-        style={{ paddingBottom: 10, marginBottom: 50 }}
         data={props.events}
         renderItem={({item}) => (
           <ListItem
             leftIcon={{ name: 'event' }}
             title={props.eventTimeString(item)}
             rightTitle={item.summary}
+            rightTitleNumberOfLines={2}
+            titleStyle={{color: '#FFF'}}
+            titleNumberOfLines={2}
             subtitle={`by ${props.eventCreator(item)}`}
+            subtitleNumberOfLines={2}
             hideChevron
           />
         )}
@@ -336,7 +348,7 @@ const EventAttendees = props => {
 const CurrentEvent = props => {
   if (props.event) {
     return (
-      <View>
+      <ScrollView>
         <Text h2 style={{ marginBottom: 20, color: '#FFF' }}>{props.event.summary}</Text>
         <Text h4 style={{ marginBottom: 10, color: '#FFF' }}>{props.eventTimeString(props.event)}</Text>
         <View style={{ flexDirection: 'row' }}>
@@ -367,7 +379,7 @@ const CurrentEvent = props => {
             onCompleted={props.onCompleted}
           />
         </View>
-      </View>
+      </ScrollView>
     )
   } else {
     return (

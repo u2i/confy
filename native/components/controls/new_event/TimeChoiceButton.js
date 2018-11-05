@@ -30,7 +30,7 @@ export default class TimeChoiceButton extends React.Component {
               backgroundColor='blue'
               onPress={this.handleClick}
               disabled={!this._timeAvailable()}
-              textStyle={{fontSize: 20}}
+              textStyle={{fontSize: 20, height: 26, paddingTop: 3}}
               containerViewStyle={{ marginLeft: 5, marginRight: 5 }}
               title={humanizeTime(this.props.duration)} />
     );
