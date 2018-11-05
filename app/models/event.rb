@@ -14,9 +14,10 @@ class Event < ApplicationRecord
   end
 
   scope :confirmed, -> { where(confirmed: true) }
+  scope :recent, -> { where("updated_at > ?", 1.day.ago) }
 
   def self.confirmed_event_ids
-    confirmed.pluck(:event_id)
+    confirmed.recent.pluck(:event_id)
   end
 
   def self.google_event_confirmed?(event)

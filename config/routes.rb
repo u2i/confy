@@ -9,8 +9,13 @@ Rails.application.routes.draw do
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
 
   namespace :api do
-    resources :events, only: [:create, :index, :show, :destroy],
+    resources :conference_rooms, only: [:index], defaults: { format: :json }
+    resources :events, param: :event_id,
                        defaults: { format: :json } do
+      member do
+        post :confirm
+        post :finish
+      end
       collection do
         get :confirmed
       end
