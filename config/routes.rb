@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   get 'oauth2callback' => 'authentication#authenticate'
   get 'healthz' => 'health#check_health'
   post 'notify/:conference_room_id' => 'notification#receive', as: :notifications
+  get 'admin' => 'admin/conference_rooms#index'
+
+  namespace :admin do
+    resources :conference_rooms
+  end
 
   namespace :api do
     resources :conference_rooms, only: [:index], defaults: { format: :json }
