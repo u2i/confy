@@ -1,35 +1,39 @@
 import React from 'react';
 import { AsyncStorage, View, FlatList, Text, ActivityIndicator } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Divider, Badge } from 'react-native-elements';
+import ApiService from './services/ApiService';
 import { styles } from './styles/home';
 
 export default class App extends React.Component {
   state = {
     room: {},
+    device: {},
     data: [],
     refreshing: false
   }
 
   componentDidMount = async () => {
-    this._loadRooms();
-
     const room = JSON.parse(await AsyncStorage.getItem('room'));
+    const device = JSON.parse(await AsyncStorage.getItem('device'));
 
-    if (room) {
-      this.setState({
-        room: room,
-        confirm: false
-      });
-    }
+    this.setState({
+      room: (room || {}),
+      device: device,
+      confirm: false
+    });
+
+    this._loadRooms();
   }
 
   _logOut = async () => {
     await AsyncStorage.clear();
+
     this.props.navigation.navigate('Auth');
   }
 
   _handlePress = async (item) => {
     await AsyncStorage.setItem('room', JSON.stringify(item));
+
     this.setState({
       room: item,
       confirm: true,
@@ -40,21 +44,12 @@ export default class App extends React.Component {
     await this.setState({ refreshing: true });
 
     const userToken = await AsyncStorage.getItem('userToken');
-    const response = await fetch('https://eceb5186.ngrok.io/api/conference_rooms', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + userToken
-      }
+    const response = await ApiService.get('conference_rooms')
+
+    this.setState({
+      refreshing: false,
+      data: response
     });
-
-    if (response.ok) {
-      const responseJson = await response.json();
-
-      this.setState({
-        refreshing: false,
-        data: responseJson
-      })
-    }
   }
 
   render() {
@@ -67,30 +62,40 @@ export default class App extends React.Component {
           outerContainerStyles={{ borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Card titleStyle={{ fontSize: 20 }}
-                containerStyle={{ flex: 1, margin: 10, marginBottom: 10 }}
-                title='Selected Room'>
-            <Badge value={this.state.room.title || '-'}
-                   textStyle={{ fontSize: 20, color: '#000', padding: 10 }}
-                   containerStyle={{ backgroundColor: this.state.room.color, marginBottom: 10 }} />
-            <Button large={true}
-                    raised={true}
-                    backgroundColor='green'
-                    icon={{name: 'check'}}
-                    disabled={!this.state.confirm}
-                    textStyle={{fontSize: 20}}
-                    onPress={() => this.props.navigation.goBack()}
-                    title='Confirm' />
+          <View style={{ flex: 1 }}>
+            <Card titleStyle={{ fontSize: 20 }}
+                  containerStyle={{ flex: 1, margin: 10, marginBottom: 10 }}
+                  title='Selected Room'>
+              <Badge value={this.state.room.title || '-'}
+                     textStyle={{ fontSize: 20, color: '#000', padding: 10 }}
+                     containerStyle={{ backgroundColor: this.state.room.color, marginBottom: 10 }} />
+              <Button large={true}
+                      raised={true}
+                      backgroundColor='green'
+                      icon={{name: 'check'}}
+                      disabled={!this.state.confirm}
+                      textStyle={{fontSize: 20}}
+                      onPress={() => this.props.navigation.goBack()}
+                      title='Confirm' />
+            </Card>
 
-            <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+            <Card titleStyle={{ fontSize: 20 }}
+                  containerStyle={{ flex: 1, margin: 10, marginTop: 0, marginBottom: 10 }}
+                  title='Device Info'>
 
-            <Button large={true}
-                    raised={true}
-                    backgroundColor='red'
-                    textStyle={{fontSize: 20}}
-                    onPress={this._logOut}
-                    title='Log out' />
-          </Card>
+              <Badge value={this.state.device.id}
+                     textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
+                     containerStyle={{ backgroundColor: 'orange', marginBottom: 10 }} />
+
+              <Button large={true}
+                      raised={true}
+                      backgroundColor='red'
+                      icon={{ name: 'adjust' }}
+                      textStyle={{fontSize: 20}}
+                      onPress={this._logOut}
+                      title='Log out' />
+            </Card>
+          </View>
           <Card titleStyle={{ fontSize: 20 }}
                 containerStyle={{ flex: 1, margin: 10, marginBottom: 10, marginLeft: 0 }}
                 title='Conference Rooms'>

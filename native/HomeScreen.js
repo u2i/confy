@@ -154,58 +154,66 @@ export default class App extends React.Component {
           centerComponent={{ text: this.state.currentRoom.title, style: { color: '#fff', fontSize: 40, paddingBottom: 5 } }}
           outerContainerStyles={{ height: 80, borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
         />
-        {this.state.currentRoom && (
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{ flex: 5, backgroundColor: '#000', padding: 10 }}>
-              <View style={{ flex: 3 }}>
-                <CurrentEvent event={this.state.currentEvent}
-                              eventTimeString={eventTimeString}
-                              eventCreator={eventCreator}
-                              onCompleted={this._refreshRoom}
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ flex: 5, backgroundColor: '#000', padding: 10 }}>
+            <View style={{ flex: 3 }}>
+              {
+                this.state.currentRoom.id && (
+                  <CurrentEvent event={this.state.currentEvent}
+                                eventTimeString={eventTimeString}
+                                eventCreator={eventCreator}
+                                onCompleted={this._refreshRoom}
+                  />
+                )
+              }
+              {
+                !this.state.currentRoom.id && (
+                  <NoRoom onPress={() => this.props.navigation.navigate('Settings')}
+                          style={{ fontSize: 40, color: 'yellow', marginTop: 20, alignSelf: 'center' }} />
+                )
+              }
+            </View>
+            <View style={{ height: 80, flexDirection: 'row', alignSelf: 'center' }}>
+              {
+                this.state.loading && (
+                  <View style={{alignSelf: 'center'}}>
+                    <Badge value='Please wait ...' />
+                    <ActivityIndicator style={{ margin: 20 }} color='#FFF' size='large' animating={true} />
+                  </View>
+                )
+              }
+              {
+                (!this.state.loading && this.state.currentRoom.id) && (
+                  <Controls event={this.state.currentEvent}
+                        nextEventStart={this._nextEventStart()}
+                        onCreate={this._onCreate}
+                        onCancel={this._onCancel}
+                        onConfirm={this._onConfirm}
+                        onFinish={this._onFinish}
+                        onExtend={this._onExtend}
+                  />
+                )
+               }
+            </View>
+          </View>
+          <View style={{ flex: 2, backgroundColor: '#222'}}>
+            <View style={{ flex: 1}}>
+              <View style={{ flex: 1, padding: 10  }}>
+                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>Next Events</Text>
+
+                <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+                <NextEvents
+                  events={this.state.nextEvents}
+                  eventTimeString={eventTimeString}
+                  eventCreator={eventCreator}
                 />
               </View>
-              <View style={{ height: 80, flexDirection: 'row', alignSelf: 'center' }}>
-                {
-                  this.state.loading && (
-                    <View style={{alignSelf: 'center'}}>
-                      <Badge value='Please wait ...' />
-                      <ActivityIndicator style={{ margin: 20 }} color='#FFF' size='large' animating={true} />
-                    </View>
-                  )
-                }
-                {
-                  !this.state.loading && (
-                    <Controls event={this.state.currentEvent}
-                          nextEventStart={this._nextEventStart()}
-                          onCreate={this._onCreate}
-                          onCancel={this._onCancel}
-                          onConfirm={this._onConfirm}
-                          onFinish={this._onFinish}
-                          onExtend={this._onExtend}
-                    />
-                  )
-                 }
-              </View>
-            </View>
-            <View style={{ flex: 2, backgroundColor: '#222'}}>
-              <View style={{ flex: 1}}>
-                <View style={{ flex: 1, padding: 10  }}>
-                  <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>Next Events</Text>
-
-                  <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-                  <NextEvents
-                    events={this.state.nextEvents}
-                    eventTimeString={eventTimeString}
-                    eventCreator={eventCreator}
-                  />
-                </View>
-                <View style={{ backgroundColor: 'black', height: 70, padding: 10  }}>
-                  <Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" />
-                </View>
+              <View style={{ backgroundColor: 'black', height: 70, padding: 10  }}>
+                <Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" />
               </View>
             </View>
           </View>
-        )}
+        </View>
       </View>
     );
   }
@@ -332,9 +340,29 @@ const CurrentEvent = props => {
 
 const NoEvent = props => {
   return (
-    <Text {...props} style={{ alignSelf: 'center', color: 'red' }}>
+    <Text {...props} style={{ alignSelf: 'center', color: 'red', marginTop: 20 }}>
       No more events for today
     </Text>
+  )
+}
+
+const NoRoom = props => {
+  return (
+    <View>
+      <Text style={props.style}>
+        Please select a conference room !!!
+      </Text>
+
+      <Button large={true}
+              raised={true}
+              onPress={props.onPress}
+              icon={{name: 'settings'}}
+              backgroundColor='blue'
+              textStyle={{fontSize: 20}}
+              containerViewStyle={{marginTop: 20, alignSelf: 'center'}}
+              title='Settings'
+      />
+    </View>
   )
 }
 
