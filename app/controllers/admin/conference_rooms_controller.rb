@@ -20,7 +20,7 @@ module Admin
       @room = ::ConferenceRoom.new(conference_room_params)
 
       if @room.save
-        redirect_to admin_conference_room(@room), notice: 'Conference room was successfully created.'
+        redirect_to admin_conference_room_url(@room), notice: 'Conference room was successfully created.'
       else
         render :new
       end
@@ -28,7 +28,7 @@ module Admin
 
     def update
       if @room.update(conference_room_params)
-        redirect_to admin_conference_room(@room), notice: 'Conference room was successfully updated.'
+        redirect_to admin_conference_room_url(@room), notice: 'Conference room was successfully updated.'
       else
         render :edit
       end
@@ -46,7 +46,7 @@ module Admin
     end
 
     def conference_room_params
-      params.fetch(:room, {})
+      params.require(:conference_room).permit(:capacity, :color, :title, :email)
     end
   end
 end
