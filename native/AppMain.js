@@ -10,14 +10,14 @@ class AuthLoadingScreen extends React.Component {
     title: 'Loading ...',
   };
 
-  constructor(props) {
-    super(props);
+  constructor(...props) {
+    super(...props);
     this._bootstrapAsync();
   }
 
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    const device = await AsyncStorage.getItem('device');
+    this.props.navigation.navigate(device ? 'App' : 'Auth');
   };
 
   render() {

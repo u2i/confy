@@ -5,6 +5,7 @@ import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'reac
 import { NavigationEvents } from 'react-navigation';
 import { createSubscription, removeSubscription } from './cable';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
+import ApiService from './services/ApiService';
 import TimeProgress from './components/TimeProgress';
 import Clock from './components/Clock'
 import Controls from './components/controls/Controls';
@@ -27,46 +28,15 @@ export default class App extends React.Component {
     this.props.navigation.navigate('Auth');
   }
 
-  _buildUrl = (url, parameters) => {
-    let qs = '';
-    for (const key in parameters) {
-      if (parameters.hasOwnProperty(key)) {
-        const value = parameters[key];
-        qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
-      }
-    }
-
-    if (qs.length > 0) {
-      qs = qs.substring(0, qs.length - 1);
-      url = url + '?' + qs;
-    }
-
-    return url;
-  }
-
   _getEvents = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
-    const roomId = this.state.currentRoom.id;
     const params = {
       start: moment().toISOString(),
       end: moment().endOf('day').toISOString(),
       confirmation: true,
-      conference_room_id: roomId
+      conference_room_id: this.state.currentRoom.id
     };
-    const url = this._buildUrl('https://eceb5186.ngrok.io/api/events', params)
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + userToken
-      }
-    });
 
-    if (response.ok) {
-      const responseJson = await response.json();
-      return responseJson;
-    } else {
-      return [];
-    }
+    return await ApiService.get('events', params);
   }
 
   _refreshRoom = async () => {
@@ -113,23 +83,16 @@ export default class App extends React.Component {
       summary: 'Anonymous event ...'
     };
 
-    const response = await fetch('https://eceb5186.ngrok.io/api/events', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        conference_room_id: roomId,
-        event: eventParams
-      })
-    });
+    const params = {
+      conference_room_id: roomId,
+      event: eventParams
+    };
 
-    const responseJson = await response.json();
+    const response = await ApiService.post('events', params);
 
     this.setState({
       loading: false,
-      currentEvent: responseJson
+      currentEvent: response
     });
   }
 
@@ -138,18 +101,11 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-
     const apiPath = `events/${eventId}/finish`
-    const response = await fetch(`https://eceb5186.ngrok.io/api/${apiPath}`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        conference_room_id: roomId
-      })
-    });
+
+    await ApiService.post(apiPath, {
+      conference_room_id: roomId
+    }, false);
 
     this._refreshRoom();
   }
@@ -159,18 +115,11 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-
     const apiPath = `events/${eventId}`
-    const response = await fetch(`https://eceb5186.ngrok.io/api/${apiPath}`, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        conference_room_id: roomId,
-        event: { end_time: end.format() }
-      })
+
+    await ApiService.put(apiPath, {
+      conference_room_id: roomId,
+      event: { end_time: end.format() }
     });
 
     this._refreshRoom();
@@ -181,18 +130,11 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-
     const apiPath = `events/${eventId}/confirm`
-    const response = await fetch(`https://eceb5186.ngrok.io/api/${apiPath}`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        conference_room_id: roomId
-      })
-    });
+
+    await ApiService.post(apiPath, {
+      conference_room_id: roomId
+    }, false);
 
     this._refreshRoom();
   }
