@@ -1,6 +1,6 @@
 module Api
   class DevicesController < Api::ApplicationController
-    before_action :device_authentication, only: :create
+    skip_before_action :device_authentication, only: :create
     before_action :set_device, only: [:show, :update, :destroy]
 
     def show
