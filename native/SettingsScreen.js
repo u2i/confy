@@ -37,6 +37,12 @@ export default class App extends React.Component {
     this.setState({
       room: item,
       confirm: true,
+    }, () => {
+      ApiService.put(`devices/${this.state.device.id}`, {
+        device: {
+          conference_room_id: item.id
+        }
+      });
     });
   }
 
@@ -83,7 +89,7 @@ export default class App extends React.Component {
                   containerStyle={{ flex: 1, margin: 10, marginTop: 0, marginBottom: 10 }}
                   title='Device Info'>
 
-              <Badge value={this.state.device.id}
+              <Badge value={this.state.device.device_id}
                      textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
                      containerStyle={{ backgroundColor: 'orange', marginBottom: 10 }} />
 

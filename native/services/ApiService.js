@@ -29,13 +29,14 @@ const buildUrl = (url, parameters) => {
 
 
 const buildHeaders = async () => {
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  };
+
   const device = JSON.parse(await AsyncStorage.getItem('device'));
 
-  return device ? {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Device': device.id
-  } : {};
+  return device ? Object.assign({ 'Device': device.device_id }, headers) : headers;
 }
 
 export default class ApiService {
