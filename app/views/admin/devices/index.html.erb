@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Devices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Device</th>
+      <th>Device name</th>
+      <th>Conference Room</th>
+      <th>Authorized</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @devices.each do |device| %>
+      <tr>
+        <td><%= device.device_id %></td>
+        <td><%= device.device_name %></td>
+        <td><%= device.conference_room.try(:title) %></td>
+        <td><%= device.authorized ? 'Yes' : 'No' %></td>
+        <td><%= link_to 'Edit', edit_admin_device_path(device) %></td>
+        <td><%= link_to 'Destroy', admin_device_path(device), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

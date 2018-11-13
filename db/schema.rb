@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927112017) do
+ActiveRecord::Schema.define(version: 20181113073139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20160927112017) do
     t.string   "email",                  null: false
     t.integer  "kind",       default: 0
     t.string   "logo"
+  end
+
+  create_table "devices", force: :cascade do |t|
+    t.string   "device_id"
+    t.string   "device_name"
+    t.integer  "conference_room_id"
+    t.boolean  "authorized"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["device_id"], name: "index_devices_on_device_id", unique: true, using: :btree
   end
 
   create_table "events", force: :cascade do |t|

@@ -10,11 +10,13 @@ Rails.application.routes.draw do
   get 'admin' => 'admin/conference_rooms#index'
 
   namespace :admin do
-    resources :conference_rooms
+    resources :conference_rooms, except: [:show]
+    resources :devices, except: [:show, :create, :new]
   end
 
   namespace :api do
     resources :conference_rooms, only: [:index], defaults: { format: :json }
+    resources :devices, except: [:index, :edit, :new], defaults: { format: :json }
     resources :events, param: :event_id,
                        defaults: { format: :json } do
       member do

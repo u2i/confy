@@ -5,32 +5,21 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
   let(:valid_attributes) { { title: 'Room', color: '#AABBCC', email: 'room@test.com', capacity: 4 } }
   let(:invalid_attributes) { { title: '', color: '', email: '' } }
 
-  describe 'GET #index' do
+  describe 'GET /admin/conference_rooms' do
     subject { get admin_conference_rooms_url, headers: headers }
 
-    let!(:conference_room) { create(:conference_room) }
-
     it_behaves_like 'successfull request'
     it_behaves_like 'unauthenticated request'
   end
 
-  describe 'GET #show' do
-    subject { get admin_conference_room_url(conference_room), headers: headers }
-
-    let!(:conference_room) { create(:conference_room, valid_attributes) }
-
-    it_behaves_like 'successfull request'
-    it_behaves_like 'unauthenticated request'
-  end
-
-  describe 'GET #new' do
+  describe 'GET /admin/conference_rooms/new' do
     subject { get new_admin_conference_room_url, headers: headers }
 
     it_behaves_like 'successfull request'
     it_behaves_like 'unauthenticated request'
   end
 
-  describe 'GET #edit' do
+  describe 'GET /admin/conference_rooms/1/edit' do
     subject { get edit_admin_conference_room_url(conference_room), headers: headers }
 
     let!(:conference_room) { create(:conference_room, valid_attributes) }
@@ -39,7 +28,7 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
     it_behaves_like 'unauthenticated request'
   end
 
-  describe 'POST #create' do
+  describe 'POST /admin/conference_rooms' do
     subject { post admin_conference_rooms_url, headers: headers, params: { conference_room: attributes } }
 
     context 'with valid params' do
@@ -53,7 +42,7 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
 
       it 'redirects to the created conference_room' do
         subject
-        expect(response).to redirect_to(admin_conference_room_url(ConferenceRoom.last))
+        expect(response).to redirect_to(admin_conference_rooms_url)
       end
     end
 
@@ -69,7 +58,7 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
     end
   end
 
-  describe 'PUT #update' do
+  describe 'PUT /admin/conference_rooms/1' do
     subject { put admin_conference_room_url(conference_room), headers: headers, params: { conference_room: new_attributes } }
 
     let!(:conference_room) { create(:conference_room, valid_attributes) }
@@ -86,7 +75,7 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
 
       it 'redirects to the updated conference_room' do
         subject
-        expect(response).to redirect_to(admin_conference_room_url(conference_room))
+        expect(response).to redirect_to(admin_conference_rooms_url)
       end
 
       it_behaves_like 'unauthenticated request'
@@ -107,7 +96,7 @@ RSpec.describe 'Admin::ConferenceRooms', type: :request do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe 'DELETE /admin/conference_rooms/1' do
     subject { delete admin_conference_room_url(conference_room), headers: headers }
 
     let!(:conference_room) { create(:conference_room, valid_attributes) }

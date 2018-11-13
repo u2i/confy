@@ -20,6 +20,7 @@ class ConferenceRoom < ApplicationRecord
 
   has_one :channel, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :devices, dependent: :destroy
 
   scope :without_channel, -> { left_outer_joins(:channel).where(channels: {id: nil}) }
 

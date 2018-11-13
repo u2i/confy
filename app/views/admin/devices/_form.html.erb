@@ -1,0 +1,37 @@
+<%= form_for([:admin, device]) do |f| %>
+  <% if device.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(device.errors.count, "error") %> prohibited this admin_device from being saved:</h2>
+
+      <ul>
+      <% device.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :device_id %>
+    <%= f.text_field :device_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :device_name %>
+    <%= f.text_field :device_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :conference_room_id %>
+    <%= f.select(:conference_room_id, ConferenceRoom.all.collect { |p| [ p.title, p.id ] }, { include_blank: true }) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :authorized %>
+    <%= f.check_box :authorized %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
