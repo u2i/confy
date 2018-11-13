@@ -12,6 +12,8 @@ describe GoogleEventClient do
   end
 
   describe '.service_account_client' do
+    before { expect(GoogleOauth).to receive(:push_notification_client) { double } }
+
     it 'returns GoogleCalendar::GoogleEvent instance' do
       expect(test_instance.service_account_client).to be_a(GoogleCalendar::GoogleEvent)
     end
