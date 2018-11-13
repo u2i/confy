@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: confy-web
-        image: gcr.io/kubernetes-playground-195112/confy:1.02
+        image: gcr.io/kubernetes-playground-195112/confy:1.07
         command:
           - "bundle"
           - "exec"
