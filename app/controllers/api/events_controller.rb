@@ -1,5 +1,5 @@
 module Api
-  class EventsController < ApplicationController
+  class EventsController < Api::ApplicationController
     include GoogleEventClient
 
     def index

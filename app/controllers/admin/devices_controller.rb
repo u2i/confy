@@ -1,5 +1,5 @@
 module Admin
-  class DevicesController < ApplicationController
+  class DevicesController < Admin::ApplicationController
     before_action :set_admin_device, only: [:edit, :update, :destroy]
 
     def index

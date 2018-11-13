@@ -13,7 +13,7 @@ RSpec.describe 'Admin::Devices', type: :request do
   end
 
   describe 'GET /admin/devices/1/edit' do
-    subject { get edit_admin_devices_url(device), headers: headers }
+    subject { get edit_admin_device_url(device), headers: headers }
 
     let!(:device) { create(:device, valid_attributes) }
 

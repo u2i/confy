@@ -1,5 +1,5 @@
 module Admin
-  class ConferenceRoomsController < ApplicationController
+  class ConferenceRoomsController < Admin::ApplicationController
     before_action :set_admin_conference_room, only: [:edit, :update, :destroy]
 
     def index
