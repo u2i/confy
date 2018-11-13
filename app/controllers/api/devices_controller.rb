@@ -1,13 +1,13 @@
 module Api
   class DevicesController < ApplicationController
+    skip_before_action :check_authentication, only: :create
     before_action :set_device, only: [:show, :update, :destroy]
 
     def show
     end
 
     def create
-      @device = ::Device.new(device_params)
-      @device.authorized = false
+      @device = ::Device.find_or_initialize_by(device_params)
 
       if @device.save
         render json: @device.to_json, status: :ok
@@ -32,7 +32,7 @@ module Api
     private
 
     def set_device
-      @device = ::Device.find(params[:device_id])
+      @device = ::Device.find(params[:id])
     end
 
     def device_params
