@@ -33,8 +33,6 @@ export default class App extends React.Component {
   _handleChanges = (value) => {
     const roomId = value.conference_room_id;
 
-    alert(this.state.currentRoom.id);
-
     if (roomId === this.state.currentRoom.id) {
       this._refreshRoom();
     }
@@ -106,7 +104,7 @@ export default class App extends React.Component {
       end_time: end.format(),
       confirmed: true,
       conference_room_id: roomId,
-      summary: 'Anonymous event ...'
+      summary: 'Anonymous event created by Confy'
     };
 
     const params = {
@@ -166,7 +164,17 @@ export default class App extends React.Component {
   }
 
   _onCancel = async (event) => {
+    this.setState({ loading: true });
 
+    const roomId = this.state.currentRoom.id;
+    const eventId = this.state.currentEvent.id;
+    const apiPath = `events/${eventId}/finish`
+
+    await ApiService.post(apiPath, {
+      conference_room_id: roomId
+    }, false);
+
+    this._refreshRoom();
   }
 
   render() {
