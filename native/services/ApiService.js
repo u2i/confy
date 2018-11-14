@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 const baseUrl = (env = 'prod') => {
   const envs = {
     dev: 'https://ac3a3798.ngrok.io/api',
-    prod: 'http://confy.u2i.com/api'
+    prod: 'https://confy.u2i.com/api'
   }
 
   return envs[env];
@@ -40,6 +40,7 @@ const buildHeaders = async () => {
 }
 
 export default class ApiService {
+  static url = baseUrl
   static get = async (resource, params = {}) => {
     const base = baseUrl();
     const headers = await buildHeaders();

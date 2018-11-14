@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import eventTimeControls from './EventTimeControls';
+import { styles } from '../../../styles/buttons';
 
 export default class ToggleableControls extends React.Component {
   static defaultProps = {
@@ -35,10 +36,10 @@ export default class ToggleableControls extends React.Component {
           <Button backgroundColor='orange'
                   large={true}
                   raised={true}
-                  textStyle={{fontSize: 20}}
+                  textStyle={styles.buttonText}
+                  containerViewStyle={styles.buttonContainer}
                   icon={{name: 'arrow-back'}}
                   onPress={this.handleToggle}
-                  containerViewStyle={{ marginLeft: 5, marginRight: 5 }}
                   title='Back' />
         </View>
       )
@@ -50,10 +51,10 @@ export default class ToggleableControls extends React.Component {
             backgroundColor='blue'
             large={true}
             raised={true}
-            textStyle={{fontSize: 20}}
+            textStyle={styles.buttonText}
+            containerViewStyle={styles.buttonContainer}
             icon={{ name: 'timer' }}
             onPress={this.handleToggle}
-            containerViewStyle={{ marginLeft: 5, marginRight: 5 }}
             title={toggleText} />
         </View>
       )

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Badge } from 'react-native-elements';
 import CreateEventControls from '../new_event/CreateEventControls';
+import { styles } from '../../../styles/buttons';
 
 const InProgress = ({ nextEventStart, currentEventEnd, onFinish, onExtend }) => (
   <CreateEventControls toggleText='Extend'
@@ -14,9 +15,9 @@ const InProgress = ({ nextEventStart, currentEventEnd, onFinish, onExtend }) => 
       backgroundColor='red'
       large={true}
       raised={true}
-      textStyle={{fontSize: 20}}
+      textStyle={styles.buttonText}
+      containerViewStyle={styles.buttonContainer}
       icon={{name: 'close'}}
-      containerViewStyle={{ marginLeft: 5, marginRight: 5 }}
       onPress={onFinish}
       title='Finish' />
   </CreateEventControls>

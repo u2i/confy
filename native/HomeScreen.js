@@ -3,8 +3,8 @@ import moment from 'moment';
 import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, FlatList } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
-import { createSubscription, removeSubscription } from './cable';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
+import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
 import TimeProgress from './components/TimeProgress';
 import Clock from './components/Clock'
@@ -19,7 +19,35 @@ export default class App extends React.Component {
   }
 
   componentDidMount = async () => {
-    createSubscription();
+    createSubscription(this._handleChanges);
+    this._needToRefresh();
+    this.interval = setInterval(() => { this._needToRefresh() }, 1000 * 60);
+  }
+
+  componentWillUnmount = () => {
+    removeSubscription();
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+  }
+
+  _handleChanges = (value) => {
+    const roomId = value.conference_room_id;
+
+    alert(this.state.currentRoom.id);
+
+    if (roomId === this.state.currentRoom.id) {
+      this._refreshRoom();
+    }
+  }
+
+  _needToRefresh = () => {
+    const now = moment();
+    const tomorrow = now.clone().add(1, 'day').startOf('day');
+
+    if (now.clone().add(1, 'minute').isAfter(tomorrow)) {
+      const timeToTomorrow = tomorrow - now;
+      this.timeout = setTimeout(() => { this._refreshRoom() }, timeToTomorrow + 1000 * 10);
+    }
   }
 
   _logOut = async () => {
@@ -57,8 +85,6 @@ export default class App extends React.Component {
         currentEvent: current,
         allEvents: data
       });
-
-      console.log(current);
     }
   }
 
@@ -155,7 +181,7 @@ export default class App extends React.Component {
           outerContainerStyles={{ height: 80, borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 5, backgroundColor: '#000', padding: 10 }}>
+          <View style={{ flex: 2, backgroundColor: '#000', padding: 10 }}>
             <View style={{ flex: 3 }}>
               {
                 this.state.currentRoom.id && (
@@ -185,18 +211,18 @@ export default class App extends React.Component {
               {
                 (!this.state.loading && this.state.currentRoom.id) && (
                   <Controls event={this.state.currentEvent}
-                        nextEventStart={this._nextEventStart()}
-                        onCreate={this._onCreate}
-                        onCancel={this._onCancel}
-                        onConfirm={this._onConfirm}
-                        onFinish={this._onFinish}
-                        onExtend={this._onExtend}
+                            nextEventStart={this._nextEventStart()}
+                            onCreate={this._onCreate}
+                            onCancel={this._onCancel}
+                            onConfirm={this._onConfirm}
+                            onFinish={this._onFinish}
+                            onExtend={this._onExtend}
                   />
                 )
                }
             </View>
           </View>
-          <View style={{ flex: 2, backgroundColor: '#222'}}>
+          <View style={{ flex: 1, backgroundColor: '#222'}}>
             <View style={{ flex: 1}}>
               <View style={{ flex: 1, padding: 10  }}>
                 <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>Next Events</Text>
@@ -230,10 +256,12 @@ const NextEvents = props => {
             title={props.eventTimeString(item)}
             rightTitle={item.summary}
             rightTitleNumberOfLines={2}
-            titleStyle={{color: '#FFF'}}
+            rightTitleStyle={{fontSize: 18, flex: 1, textAlign: 'right' }}
+            titleStyle={{color: '#FFF', fontSize: 18}}
             titleNumberOfLines={2}
             subtitle={`by ${props.eventCreator(item)}`}
             subtitleNumberOfLines={2}
+            subtitleStyle={{fontSize: 14, fontWeight: '100'}}
             hideChevron
           />
         )}

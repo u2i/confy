@@ -9,7 +9,7 @@ const Unstarted = ({ onConfirm, onCancel }) => {
         backgroundColor='blue'
         large={true}
         raised={true}
-        textStyle={{fontSize: 20}}
+        textStyle={{fontSize: 22}}
         onPress={onConfirm}
         icon={{name: 'check'}}
         containerViewStyle={{ marginLeft: 5, marginRight: 5 }}
@@ -19,7 +19,7 @@ const Unstarted = ({ onConfirm, onCancel }) => {
         backgroundColor='red'
         large={true}
         raised={true}
-        textStyle={{fontSize: 20}}
+        textStyle={{fontSize: 22}}
         onPress={onCancel}
         icon={{name: 'close'}}
         containerViewStyle={{ marginLeft: 5, marginRight: 5 }}

@@ -19,8 +19,6 @@ export default class App extends React.Component {
         device_name: Expo.Constants.deviceName
       }
     });
-
-    console.log(Expo.Constants);
   }
 
   _onPress = async () => {
