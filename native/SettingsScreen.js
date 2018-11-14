@@ -9,7 +9,8 @@ export default class App extends React.Component {
     room: {},
     device: {},
     data: [],
-    refreshing: false
+    refreshing: false,
+    updating: false
   }
 
   componentDidMount = async () => {
@@ -58,6 +59,24 @@ export default class App extends React.Component {
     });
   }
 
+  _checkForUpdates = async () => {
+    this.setState({ updating: true });
+
+    try {
+      const update = await Expo.Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        await Expo.Updates.fetchUpdateAsync();
+
+        Expo.Updates.reloadFromCache();
+      }
+    } catch(e) {
+      console.log(e);
+    }
+
+    this.setState({ updating: false });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -87,11 +106,26 @@ export default class App extends React.Component {
 
             <Card titleStyle={{ fontSize: 20 }}
                   containerStyle={{ flex: 1, margin: 10, marginTop: 0, marginBottom: 10 }}
-                  title='Device Info'>
+                  title='Info'>
 
-              <Badge value={this.state.device.device_id}
+              <Badge value={`Device: ${this.state.device.device_id}`}
                      textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
                      containerStyle={{ backgroundColor: 'orange', marginBottom: 10 }} />
+
+              <Badge value={`Version: ${Expo.Constants.manifest.version}`}
+                     textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
+                     containerStyle={{ backgroundColor: 'violet', marginBottom: 10 }} />
+
+              <Button large={true}
+                      raised={true}
+                      backgroundColor='green'
+                      disabled={this.state.updating}
+                      loading={this.state.updating}
+                      icon={{ name: 'update' }}
+                      textStyle={{fontSize: 20}}
+                      containerViewStyle={{marginBottom: 10}}
+                      onPress={this._checkForUpdates}
+                      title='Check for updates' />
 
               <Button large={true}
                       raised={true}
@@ -119,6 +153,7 @@ export default class App extends React.Component {
               renderItem={({item}) => (
                 <ListItem
                   title={item.title}
+                  titleStyle={{fontSize: 18}}
                   hideChevron
                   leftIcon={ item.id === this.state.room.id ? { name: 'check' } : {} }
                   badge={{ value: item.capacity, textStyle: { color: '#000' }, containerStyle: { backgroundColor: item.color }}}

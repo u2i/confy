@@ -86,7 +86,7 @@ export default class App extends React.Component {
     }
   }
 
-  _onFocus = () => {
+  _onFocus = async () => {
     this._refreshRoom();
   }
 
