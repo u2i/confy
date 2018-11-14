@@ -86,15 +86,16 @@ Rails.application.configure do
 
   if ENV['HEROKU_APP_NAME'].present?
     config.web_socket_server_url = "wss://#{ENV['HEROKU_APP_NAME']}.herokuapp.com/cable"
-    config.action_cable.allowed_request_origins = ["https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com",
-                                                   "http://#{ENV['HEROKU_APP_NAME']}.herokuapp.com"]
-
+    config.action_cable.allowed_request_origins = [
+      /^https?:\/\/#{ENV['HEROKU_APP_NAME']}.herokuapp.com\/?$/
+    ]
     ENV['HOSTNAME'] = ENV['NOTIFICATION_HOST'] = "https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com"
   end
 
   if ENV['KUBERNETES_DOMAIN_NAME'].present?
     config.web_socket_server_url = "wss://#{ENV['KUBERNETES_DOMAIN_NAME']}/cable"
-    config.action_cable.allowed_request_origins = ["https://#{ENV['KUBERNETES_DOMAIN_NAME']}",
-                                                   "http://#{ENV['KUBERNETES_DOMAIN_NAME']}"]
+    config.action_cable.allowed_request_origins = [
+      /^https?:\/\/#{ENV['KUBERNETES_DOMAIN_NAME']}\/?$/
+    ]
   end
 end
