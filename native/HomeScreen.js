@@ -194,6 +194,7 @@ export default class App extends React.Component {
               {
                 this.state.currentRoom.id && (
                   <CurrentEvent event={this.state.currentEvent}
+                                nextEventStart={this._nextEventStart()}
                                 eventTimeString={eventTimeString}
                                 eventCreator={eventCreator}
                                 onCompleted={this._refreshRoom}
@@ -366,6 +367,21 @@ const CurrentEvent = props => {
           />
         </View>
       </ScrollView>
+    )
+  } else if (props.nextEventStart) {
+    return (
+      <View style={{flex: 1, alignItems: 'center', alignSelf: 'center'}}>
+        <Text style={{flex: 1, fontSize: 24, alignSelf: 'center', color: 'white', marginTop: 40}}>
+          No event currently in progress
+        </Text>
+        <View style={{flex: 2}}>
+          <TimeProgress
+            end={props.nextEventStart}
+            suffix={'to next event'}
+            onCompleted={props.onCompleted}
+          />
+        </View>
+      </View>
     )
   } else {
     return (
