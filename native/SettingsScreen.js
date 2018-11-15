@@ -112,7 +112,7 @@ export default class App extends React.Component {
                      textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
                      containerStyle={{ backgroundColor: 'orange', marginBottom: 10 }} />
 
-              <Badge value={`Version: ${Expo.Constants.manifest.version}`}
+              <Badge value={`App Version: ${Expo.Constants.manifest.version}`}
                      textStyle={{ fontSize: 14, color: '#000', padding: 10 }}
                      containerStyle={{ backgroundColor: 'violet', marginBottom: 10 }} />
 
