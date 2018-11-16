@@ -5,4 +5,5 @@ class Device < ApplicationRecord
   validates_uniqueness_of :device_id
 
   scope :authorized, -> { where(authorized: true) }
+  scope :sorted, -> { order(updated_at: :desc) }
 end

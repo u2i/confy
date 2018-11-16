@@ -3,7 +3,7 @@ module Admin
     before_action :set_admin_device, only: [:edit, :update, :destroy]
 
     def index
-      @devices = ::Device.all
+      @devices = ::Device.sorted.all
     end
 
     def edit
