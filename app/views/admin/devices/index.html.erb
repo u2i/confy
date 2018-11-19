@@ -26,7 +26,7 @@
           <b><%= distance_of_time_in_words(Time.now, device.updated_at) -%> ago</b>
         </td>
         <td><%= link_to 'Edit', edit_admin_device_path(device) %></td>
-        <td><%= link_to 'Destroy', admin_device_path(device), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= delete_button_to 'Destroy', admin_device_path(device), data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
