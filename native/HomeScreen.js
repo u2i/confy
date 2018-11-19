@@ -4,6 +4,7 @@ import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, F
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
+import { humanize } from './helpers/StringHelper';
 import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
 import TimeProgress from './components/TimeProgress';
@@ -322,7 +323,7 @@ const EventAttendees = props => {
             <View style={{flexDirection: 'row'}}>
               <Icon name={attendeeIcon(guest)} color='#FFF' containerStyle={{marginBottom: 0}} />
               <Text style={{fontSize: 16, padding: 5, color: '#FFF'}}>
-                {guest.display_name || guest.email}
+                {guest.display_name || humanize(guest.email)}
               </Text>
             </View>
           </Badge>
