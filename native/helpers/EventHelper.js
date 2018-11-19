@@ -1,6 +1,6 @@
 import moment from 'moment';
 import sortBy from 'lodash/sortBy';
-import { humanize } from './StringHelper';
+import { attendeeName } from './AttendeeHelper';
 
 export const currentAndNextEvents = (events) => {
   events = sortBy(events, 'start_timestamp');
@@ -25,7 +25,7 @@ export const eventTimeString = (event) => {
 export const eventCreator = (event) => {
   const defaultCreator = { display_name: 'private' };
   const creator = event.creator || defaultCreator;
-  return creator.display_name || humanize(creator.email);
+  return attendeeName(creator);
 }
 
 export const formatDate = (date, format = 'ddd M/D') => {

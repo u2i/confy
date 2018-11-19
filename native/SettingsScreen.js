@@ -156,7 +156,7 @@ export default class App extends React.Component {
                   titleStyle={{fontSize: 18}}
                   hideChevron
                   leftIcon={ item.id === this.state.room.id ? { name: 'check' } : {} }
-                  badge={{ value: item.capacity, textStyle: { color: '#000' }, containerStyle: { backgroundColor: item.color }}}
+                  badge={{ value: item.capacity, textStyle: { color: '#000' }, containerStyle: { backgroundColor: 'orange' }}}
                   onPress={() => this._handlePress(item)}
                 />
               )}

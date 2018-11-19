@@ -4,7 +4,8 @@ import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, F
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
-import { humanize } from './helpers/StringHelper';
+import { attendeeName, attendeeClass, attendeeIcon } from './helpers/AttendeeHelper';
+import { buildAvailabilityProps, sortAvailabilityProps, availabilityStatus, availabilityClass } from './helpers/AvailabilityHelper';
 import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
 import TimeProgress from './components/TimeProgress';
@@ -15,14 +16,20 @@ import { styles } from './styles/home';
 export default class App extends React.Component {
   state = {
     loading: false,
+    allRooms: [],
+    allEvents: [],
     nextEvents: [],
-    currentRoom: {}
+    currentRoom: {},
   }
 
   componentDidMount = async () => {
     createSubscription(this._handleChanges);
     this._needToRefresh();
     this.interval = setInterval(() => { this._needToRefresh() }, 1000 * 60);
+
+    const response = await ApiService.get('conference_rooms')
+
+    this.setState({ allRooms: response });
   }
 
   componentWillUnmount = () => {
@@ -59,8 +66,7 @@ export default class App extends React.Component {
     const params = {
       start: moment().toISOString(),
       end: moment().endOf('day').toISOString(),
-      confirmation: true,
-      conference_room_id: this.state.currentRoom.id
+      confirmation: true
     };
 
     return await ApiService.get('events', params);
@@ -234,18 +240,29 @@ export default class App extends React.Component {
           </View>
           <View style={{ flex: 1, backgroundColor: '#222'}}>
             <View style={{ flex: 1}}>
-              <View style={{ flex: 1, padding: 10  }}>
-                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>Next Events</Text>
+              <View style={{ flex: 2, padding: 10  }}>
+                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
+                  Next Events
+                </Text>
 
-                <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-                <NextEvents
-                  events={this.state.nextEvents}
-                  eventTimeString={eventTimeString}
-                  eventCreator={eventCreator}
+                <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
+
+                <NextEvents events={this.state.nextEvents}
+                            eventTimeString={eventTimeString}
+                            eventCreator={eventCreator}
                 />
               </View>
+              <View style={{ flex: 1, padding: 10  }}>
+                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
+                  Available Rooms
+                </Text>
+
+                <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
+
+                <Rooms events={this.state.allEvents} allConferenceRooms={this.state.allRooms} />
+              </View>
               <View style={{ backgroundColor: 'black', height: 70, padding: 10  }}>
-                <Clock dateFormat="MM-DD dddd" timeFormat="HH:mm" />
+                <Clock dateFormat='MM-DD dddd' timeFormat='HH:mm' />
               </View>
             </View>
           </View>
@@ -253,6 +270,30 @@ export default class App extends React.Component {
       </View>
     );
   }
+}
+
+const Rooms = props => {
+  const availabilityProps = buildAvailabilityProps(props.allConferenceRooms, props.events);
+  sortAvailabilityProps(availabilityProps);
+
+  return (
+    <FlatList
+      data={availabilityProps}
+      renderItem={({item}) => (
+        <ListItem
+          leftIcon={{ name: 'domain' }}
+          title={item.conferenceRoom.title}
+          titleStyle={{color: '#FFF', fontSize: 18}}
+          subtitle={availabilityStatus(item.availability, item.duration)}
+          subtitleStyle={{fontSize: 14, fontWeight: '100'}}
+          badge={{ textStyle: { color: '#000' },
+                   containerStyle: { backgroundColor: availabilityClass(item.availability) }}}
+          hideChevron
+        />
+      )}
+      keyExtractor={(item, index) => `room_${item.conferenceRoom.id}`}
+    />
+  )
 }
 
 const NextEvents = props => {
@@ -285,34 +326,6 @@ const NextEvents = props => {
   }
 }
 
-const attendeeClass = (guest) => {
-  const status = guest.response_status;
-
-  if (status === 'needsAction') {
-    return 'gray';
-  }
-  else if (status === 'accepted') {
-    return 'green';
-  }
-  else {
-    return 'red';
-  }
-}
-
-const attendeeIcon = (guest) => {
-  const status = guest.response_status;
-
-  if (status === 'needsAction') {
-    return 'help';
-  }
-  else if (status === 'accepted') {
-    return 'check-circle';
-  }
-  else {
-    return 'cancel';
-  }
-}
-
 const EventAttendees = props => {
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -323,7 +336,7 @@ const EventAttendees = props => {
             <View style={{flexDirection: 'row'}}>
               <Icon name={attendeeIcon(guest)} color='#FFF' containerStyle={{marginBottom: 0}} />
               <Text style={{fontSize: 16, padding: 5, color: '#FFF'}}>
-                {guest.display_name || humanize(guest.email)}
+                {attendeeName(guest)}
               </Text>
             </View>
           </Badge>

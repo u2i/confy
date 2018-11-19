@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 
-const baseUrl = (env = 'prod') => {
+const baseUrl = (env = 'dev') => {
   const envs = {
     dev: 'https://36ac49a6.ngrok.io/api',
     prod: 'https://confy.u2i.com/api'
