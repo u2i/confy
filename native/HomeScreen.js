@@ -52,12 +52,6 @@ export default class App extends React.Component {
     }
   }
 
-  _logOut = async () => {
-    await AsyncStorage.clear();
-    removeSubscription();
-    this.props.navigation.navigate('Auth');
-  }
-
   _getEvents = async () => {
     const params = {
       start: moment().toISOString(),
