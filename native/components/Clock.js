@@ -25,6 +25,7 @@ export default class Clock extends React.Component {
   render() {
     const { dateFormat, timeFormat } = this.props;
     const time = this.state.time;
+
     return (
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
         <Text style={{ color: '#FFF', fontSize: 20, flex:1 }}>{time.format(dateFormat)}</Text>

@@ -5,9 +5,9 @@ import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'reac
 import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
 import { attendeeName, attendeeClass, attendeeIcon } from './helpers/AttendeeHelper';
-import { buildAvailabilityProps, sortAvailabilityProps, availabilityStatus, availabilityClass } from './helpers/AvailabilityHelper';
 import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
+import RoomsAvailability from './components/RoomsAvailability';
 import TimeProgress from './components/TimeProgress';
 import Clock from './components/Clock'
 import Controls from './components/controls/Controls';
@@ -26,10 +26,6 @@ export default class App extends React.Component {
     createSubscription(this._handleChanges);
     this._needToRefresh();
     this.interval = setInterval(() => { this._needToRefresh() }, 1000 * 60);
-
-    const response = await ApiService.get('conference_rooms')
-
-    this.setState({ allRooms: response });
   }
 
   componentWillUnmount = () => {
@@ -79,6 +75,7 @@ export default class App extends React.Component {
       this.setState({ loading: true, currentRoom: room });
 
       const data = await this._getEvents();
+      const rooms = await ApiService.get('conference_rooms')
       const eventsInActiveConferenceRoom = data.filter(event =>
         event.conference_room.id === room.id
       );
@@ -88,6 +85,7 @@ export default class App extends React.Component {
         loading: false,
         nextEvents: next,
         currentEvent: current,
+        allRooms: rooms,
         allEvents: data
       });
     }
@@ -238,9 +236,9 @@ export default class App extends React.Component {
                }
             </View>
           </View>
-          <View style={{ flex: 1, backgroundColor: '#222'}}>
+          <View style={{ flex: 1, backgroundColor: '#222' }}>
             <View style={{ flex: 1}}>
-              <View style={{ flex: 2, padding: 10  }}>
+              <View style={{ flex: 2, padding: 10 }}>
                 <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
                   Next Events
                 </Text>
@@ -252,16 +250,21 @@ export default class App extends React.Component {
                             eventCreator={eventCreator}
                 />
               </View>
-              <View style={{ flex: 1, padding: 10  }}>
-                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
-                  Available Rooms
-                </Text>
+              {
+                this.state.currentEvent && (
+                  <View style={{ flex: 1, padding: 10 }}>
+                    <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
+                      Available Rooms
+                    </Text>
 
-                <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
+                    <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
 
-                <Rooms events={this.state.allEvents} allConferenceRooms={this.state.allRooms} />
-              </View>
-              <View style={{ backgroundColor: 'black', height: 70, padding: 10  }}>
+                    <RoomsAvailability events={this.state.allEvents}
+                                       allConferenceRooms={this.state.allRooms} />
+                  </View>
+                )
+              }
+              <View style={{ backgroundColor: '#000', height: 70, padding: 10  }}>
                 <Clock dateFormat='MM-DD dddd' timeFormat='HH:mm' />
               </View>
             </View>
@@ -270,30 +273,6 @@ export default class App extends React.Component {
       </View>
     );
   }
-}
-
-const Rooms = props => {
-  const availabilityProps = buildAvailabilityProps(props.allConferenceRooms, props.events);
-  sortAvailabilityProps(availabilityProps);
-
-  return (
-    <FlatList
-      data={availabilityProps}
-      renderItem={({item}) => (
-        <ListItem
-          leftIcon={{ name: 'domain' }}
-          title={item.conferenceRoom.title}
-          titleStyle={{color: '#FFF', fontSize: 18}}
-          subtitle={availabilityStatus(item.availability, item.duration)}
-          subtitleStyle={{fontSize: 14, fontWeight: '100'}}
-          badge={{ textStyle: { color: '#000' },
-                   containerStyle: { backgroundColor: availabilityClass(item.availability) }}}
-          hideChevron
-        />
-      )}
-      keyExtractor={(item, index) => `room_${item.conferenceRoom.id}`}
-    />
-  )
 }
 
 const NextEvents = props => {

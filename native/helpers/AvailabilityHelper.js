@@ -78,7 +78,7 @@ export function buildAvailabilityProps(conferenceRooms, events) {
   return conferenceRooms.map(conferenceRoom => roomAvailabilityProps(conferenceRoom, events));
 }
 
-export const remainingTime = duration => formatDuration(duration, 'HH:mm');
+export const remainingTime = duration => formatDuration(duration, 'H[h] m[m] s[s]');
 
 export const availabilityStatus = (availability, duration) => {
   switch (availability) {
