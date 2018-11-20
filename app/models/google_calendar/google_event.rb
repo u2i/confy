@@ -13,8 +13,8 @@ module GoogleCalendar
       event_remover.delete(event_id)
     end
 
-    def all(time_interval)
-      event_finder.all(time_interval)
+    def all(time_interval, with_confirmation = false)
+      event_finder.all(time_interval, with_confirmation)
     end
 
     def find_by_room(time_interval, conference_room_ids, with_confirmation = false)

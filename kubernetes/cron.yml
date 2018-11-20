@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: push-notification-register
-            image: gcr.io/kubernetes-playground-195112/confy:1.09
+            image: gcr.io/kubernetes-playground-195112/confy:1.10
             args:
             - rake
             - google:push_register

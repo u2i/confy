@@ -3,7 +3,7 @@ module Api
     include GoogleEventClient
 
     def index
-      events = service_account_client.all(span_param.to_rfc3339)
+      events = service_account_client.all(span_param.to_rfc3339, with_confirmation?)
       render json: events
     end
 

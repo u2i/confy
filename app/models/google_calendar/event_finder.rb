@@ -11,8 +11,10 @@ module GoogleCalendar
       @user_email = user_email
     end
 
-    def all(time_interval)
-      list_events(time_interval, rooms)
+    def all(time_interval, with_confirmation = false)
+      events = list_events(time_interval, rooms)
+      include_confirmation(events) if with_confirmation
+      events
     end
 
     def confirmed_events(time_interval)
