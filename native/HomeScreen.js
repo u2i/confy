@@ -30,6 +30,7 @@ export default class App extends React.Component {
 
   componentWillUnmount = () => {
     removeSubscription();
+
     clearInterval(this.interval);
     clearTimeout(this.timeout);
   }

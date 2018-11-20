@@ -152,11 +152,12 @@ export default class App extends React.Component {
               data={this.state.data}
               renderItem={({item}) => (
                 <ListItem
+                  leftIcon={{ name: 'domain' }}
                   title={item.title}
                   titleStyle={{fontSize: 18}}
-                  hideChevron
-                  leftIcon={ item.id === this.state.room.id ? { name: 'check' } : {} }
-                  badge={{ value: item.capacity, textStyle: { color: '#000' }, containerStyle: { backgroundColor: 'orange' }}}
+                  subtitle={`Capacity: ${item.capacity}`}
+                  subtitleStyle={{fontSize: 14, fontWeight: '100'}}
+                  rightIcon={ item.id === this.state.room.id ? <Icon color='green' name='check' /> : <Icon name='cancel' size={0} /> }
                   onPress={() => this._handlePress(item)}
                 />
               )}
