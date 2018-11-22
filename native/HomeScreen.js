@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, FlatList } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
+import Modal from 'react-native-modal';
 import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
 import { attendeeName, attendeeClass, attendeeIcon } from './helpers/AttendeeHelper';
@@ -16,6 +17,7 @@ import { styles } from './styles/home';
 export default class App extends React.Component {
   state = {
     loading: false,
+    showModal: false,
     allRooms: [],
     allEvents: [],
     nextEvents: [],
@@ -177,6 +179,19 @@ export default class App extends React.Component {
     this._refreshRoom();
   }
 
+  _closeModal = () => {
+    this.setState({
+      showModal: false
+    });
+  }
+
+  _eventDetails = (event) => {
+    this.setState({
+      eventInfo: event,
+      showModal: true
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -187,6 +202,12 @@ export default class App extends React.Component {
           rightComponent={<SettingComponent onPress={() => this.props.navigation.navigate('Settings')} />}
           centerComponent={{ text: this.state.currentRoom.title, style: { color: '#fff', fontSize: 40, paddingBottom: 5 } }}
           outerContainerStyles={{ height: 80, borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
+        />
+        <EventDetails isVisible={this.state.showModal}
+                      eventTimeString={eventTimeString}
+                      eventCreator={eventCreator}
+                      event={this.state.eventInfo}
+                      onClose={this._closeModal}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 2, backgroundColor: '#000', padding: 10 }}>
@@ -241,6 +262,7 @@ export default class App extends React.Component {
                 <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
 
                 <NextEvents events={this.state.nextEvents}
+                            eventDetails={this._eventDetails}
                             eventTimeString={eventTimeString}
                             eventCreator={eventCreator}
                 />
@@ -270,6 +292,63 @@ export default class App extends React.Component {
   }
 }
 
+const EventDetails = props => {
+  const currentEvent = props.event;
+
+  if (currentEvent) {
+    return (
+      <Modal isVisible={props.isVisible}
+             animationIn='slideInRight'
+             animationOut='slideOutRight'
+             backdropOpacity={0.9}>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Text h2 style={{ flex: 1, marginBottom: 20, color: '#FFF' }}>{currentEvent.summary}</Text>
+            <Icon name='close' color='#FFF' size={40}
+                  underlayColor='#444'
+                  containerStyle={{alignSelf: 'flex-start', alignItems: 'flex-end'}}
+                  onPress={props.onClose}
+             />
+          </View>
+          <Text h4 style={{ marginBottom: 10, color: '#FFF' }}>{props.eventTimeString(currentEvent)}</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{flex: 1, alignItems: 'flex-start'}}>
+              <Text style={{ fontStyle: 'italic', fontSize: 16, color: '#FFF' }}>
+                {`by ${props.eventCreator(currentEvent)}`}
+              </Text>
+            </View>
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
+              <Text style={{ paddingRight: 10, fontSize: 16, color: '#FFF' }}>
+                { currentEvent.hangout_link}
+               </Text>
+             </View>
+          </View>
+
+          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+
+          <EventAttendees event={currentEvent} />
+
+          <Text style={{ marginTop: 10, fontSize: 16, color: '#FFF' }}>
+            {currentEvent.description}
+          </Text>
+
+          <Button large={true}
+                  raised={true}
+                  icon={{name: 'close'}}
+                  backgroundColor='orange'
+                  textStyle={{fontSize: 20}}
+                  onPress={props.onClose}
+                  containerViewStyle={{marginTop: 20, alignSelf: 'center'}}
+                  title='Close'
+          />
+        </ScrollView>
+      </Modal>
+    )
+  } else {
+    return <Modal isVisible={false}><View style={{ flex: 1 }}></View></Modal>
+  }
+}
+
 const NextEvents = props => {
   if (props.events.length > 0) {
     return (
@@ -287,6 +366,8 @@ const NextEvents = props => {
             subtitle={`by ${props.eventCreator(item)}`}
             subtitleNumberOfLines={2}
             subtitleStyle={{fontSize: 14, fontWeight: '100'}}
+            onPress={() => props.eventDetails(item)}
+            underlayColor='#444'
             hideChevron
           />
         )}

@@ -87,7 +87,7 @@ export default class App extends React.Component {
           outerContainerStyles={{ borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 3 }}>
             <Card titleStyle={{ fontSize: 20 }}
                   containerStyle={{ flex: 1, margin: 10, marginBottom: 10 }}
                   title='Selected Room'>
@@ -137,7 +137,7 @@ export default class App extends React.Component {
             </Card>
           </View>
           <Card titleStyle={{ fontSize: 20 }}
-                containerStyle={{ flex: 1, margin: 10, marginBottom: 10, marginLeft: 0 }}
+                containerStyle={{ flex: 2, margin: 10, marginBottom: 10, marginLeft: 0 }}
                 title='Conference Rooms'>
             {
               this.state.refreshing && (
@@ -157,7 +157,7 @@ export default class App extends React.Component {
                   titleStyle={{fontSize: 18}}
                   subtitle={`Capacity: ${item.capacity}`}
                   subtitleStyle={{fontSize: 14, fontWeight: '100'}}
-                  rightIcon={ item.id === this.state.room.id ? <Icon color='green' name='check' /> : <Icon name='cancel' size={0} /> }
+                  rightIcon={ item.id === this.state.room.id ? <Icon color='green' name='check' /> : <Icon color='#FFF' name='cancel' /> }
                   onPress={() => this._handlePress(item)}
                 />
               )}
