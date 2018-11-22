@@ -1,6 +1,8 @@
 import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
-import { ActivityIndicator, AsyncStorage, StyleSheet, SafeAreaView, Easing, Animated } from 'react-native';
+import { AsyncStorage, StyleSheet, SafeAreaView, View } from 'react-native';
+import { Badge } from 'react-native-elements';
+import PleaseWait  from './components/PleaseWait';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import SettingsScreen from './SettingsScreen'
@@ -23,7 +25,9 @@ class AuthLoadingScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ActivityIndicator />
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+          <PleaseWait size='large' />
+        </View>
       </SafeAreaView>
     );
   }
@@ -59,6 +63,7 @@ export default createSwitchNavigator(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#6a51ae',
+    alignItems: 'center',
+    backgroundColor: '#000',
   },
 });

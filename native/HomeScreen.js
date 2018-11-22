@@ -6,6 +6,7 @@ import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
 import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
+import PleaseWait  from './components/PleaseWait';
 import RoomsAvailability from './components/RoomsAvailability';
 import TimeProgress from './components/TimeProgress';
 import Clock from './components/Clock'
@@ -229,12 +230,7 @@ export default class App extends React.Component {
             </View>
             <View style={{ height: 80, flexDirection: 'row', alignSelf: 'center' }}>
               {
-                this.state.loading && (
-                  <View style={{alignSelf: 'center'}}>
-                    <Badge value='Please wait ...' />
-                    <ActivityIndicator style={{ margin: 20 }} color='#FFF' size='large' animating={true} />
-                  </View>
-                )
+                this.state.loading && <PleaseWait color='#FFF' size='large' />
               }
               {
                 (!this.state.loading && this.state.currentRoom.id) && (

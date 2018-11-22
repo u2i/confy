@@ -1,6 +1,7 @@
 import React from 'react';
 import { AsyncStorage, View, FlatList, Text, ActivityIndicator } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Divider, Badge } from 'react-native-elements';
+import PleaseWait  from './components/PleaseWait';
 import ApiService from './services/ApiService';
 import { styles } from './styles/home';
 
@@ -140,12 +141,7 @@ export default class App extends React.Component {
                 containerStyle={{ flex: 2, margin: 10, marginBottom: 10, marginLeft: 0 }}
                 title='Conference Rooms'>
             {
-              this.state.refreshing && (
-                <View style={{alignSelf: 'center'}}>
-                  <Badge value='Please wait ...' />
-                  <ActivityIndicator style={{ margin: 20 }} size='large' animating={true} />
-                </View>
-              )
+              this.state.refreshing && <PleaseWait size='large' />
             }
             <FlatList
               style={{ paddingBottom: 10, marginBottom: 50 }}
