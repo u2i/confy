@@ -14,7 +14,10 @@ export default class TimeProgress extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { timeLeft: this._humanizedTimeLeft() };
+    this.state = {
+      timeLeft: this._humanizedTimeLeft(),
+      color: 'green'
+    };
     this._update = this._update.bind(this);
   }
 
@@ -30,7 +33,7 @@ export default class TimeProgress extends React.Component {
   render() {
     return (
       <Badge textStyle={{fontSize: 40, padding: 10, fontWeight: 'bold' }}
-             containerStyle={{backgroundColor: 'green', marginTop: 50}}
+             containerStyle={{backgroundColor: this.state.color, marginTop: 50}}
              value={`${this.state.timeLeft} ${this.props.suffix || 'left'}`} />
     );
   }
@@ -47,12 +50,19 @@ export default class TimeProgress extends React.Component {
     const timeToEnd = this._timeToEnd();
 
     this.setState({ timeLeft: this._humanizedTimeLeft() });
+
     if (timeToEnd <= 0) {
       this.props.onCompleted();
     }
 
-    if (timeToEnd <= FIVE_MINUTES && isFullNonZeroMinute(timeToEnd, this.props.updateInterval)) {
-      this.props.displayEndTimeWarning();
+    if (timeToEnd <= FIVE_MINUTES) {
+      this.setState({ color: '#EE6C00' });
+
+      if (isFullNonZeroMinute(timeToEnd, this.props.updateInterval)) {
+        this.props.displayEndTimeWarning();
+      }
+    } else {
+      this.setState({ color: 'green' });
     }
   }
 }
