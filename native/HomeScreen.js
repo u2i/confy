@@ -2,16 +2,18 @@ import React from 'react';
 import moment from 'moment';
 import { StyleSheet, View, ScrollView, ActivityIndicator, AsyncStorage, Image, FlatList } from 'react-native';
 import { Button, Header, Card, Icon, ListItem, Text, Divider, Badge } from 'react-native-elements';
-import Modal from 'react-native-modal';
 import { NavigationEvents } from 'react-navigation';
 import { currentAndNextEvents, eventTimeString, eventCreator, nextEventStart } from './helpers/EventHelper';
-import { attendeeName, attendeeClass, attendeeIcon } from './helpers/AttendeeHelper';
 import { createSubscription, removeSubscription } from './services/Cable';
 import ApiService from './services/ApiService';
 import RoomsAvailability from './components/RoomsAvailability';
 import TimeProgress from './components/TimeProgress';
 import Clock from './components/Clock'
 import Controls from './components/controls/Controls';
+import EventDetails from './components/event/EventDetails';
+import EventAttendees from './components/event/EventAttendees';
+import CurrentEvent from './components/event/CurrentEvent';
+import NextEvents from './components/event/NextEvents';
 import { styles } from './styles/home';
 
 export default class App extends React.Component {
@@ -204,8 +206,6 @@ export default class App extends React.Component {
           outerContainerStyles={{ height: 80, borderBottomWidth: 0, alignSelf: 'stretch', backgroundColor: '#3D6DCC', paddingBottom: 5 }}
         />
         <EventDetails isVisible={this.state.showModal}
-                      eventTimeString={eventTimeString}
-                      eventCreator={eventCreator}
                       event={this.state.eventInfo}
                       onClose={this._closeModal}
         />
@@ -216,8 +216,6 @@ export default class App extends React.Component {
                 this.state.currentRoom.id && (
                   <CurrentEvent event={this.state.currentEvent}
                                 nextEventStart={this._nextEventStart()}
-                                eventTimeString={eventTimeString}
-                                eventCreator={eventCreator}
                                 onCompleted={this._refreshRoom}
                   />
                 )
@@ -263,8 +261,6 @@ export default class App extends React.Component {
 
                 <NextEvents events={this.state.nextEvents}
                             eventDetails={this._eventDetails}
-                            eventTimeString={eventTimeString}
-                            eventCreator={eventCreator}
                 />
               </View>
               {
@@ -290,181 +286,6 @@ export default class App extends React.Component {
       </View>
     );
   }
-}
-
-const EventDetails = props => {
-  const currentEvent = props.event;
-
-  if (currentEvent) {
-    return (
-      <Modal isVisible={props.isVisible}
-             animationIn='slideInRight'
-             animationOut='slideOutRight'
-             backdropOpacity={0.9}>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Text h2 style={{ flex: 1, marginBottom: 20, color: '#FFF' }}>{currentEvent.summary}</Text>
-            <Icon name='close' color='#FFF' size={40}
-                  underlayColor='#444'
-                  containerStyle={{alignSelf: 'flex-start', alignItems: 'flex-end'}}
-                  onPress={props.onClose}
-             />
-          </View>
-          <Text h4 style={{ marginBottom: 10, color: '#FFF' }}>{props.eventTimeString(currentEvent)}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <Text style={{ fontStyle: 'italic', fontSize: 16, color: '#FFF' }}>
-                {`by ${props.eventCreator(currentEvent)}`}
-              </Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-              <Text style={{ paddingRight: 10, fontSize: 16, color: '#FFF' }}>
-                { currentEvent.hangout_link}
-               </Text>
-             </View>
-          </View>
-
-          <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-
-          <EventAttendees event={currentEvent} />
-
-          <Text style={{ marginTop: 10, fontSize: 16, color: '#FFF' }}>
-            {currentEvent.description}
-          </Text>
-
-          <Button large={true}
-                  raised={true}
-                  icon={{name: 'close'}}
-                  backgroundColor='orange'
-                  textStyle={{fontSize: 20}}
-                  onPress={props.onClose}
-                  containerViewStyle={{marginTop: 20, alignSelf: 'center'}}
-                  title='Close'
-          />
-        </ScrollView>
-      </Modal>
-    )
-  } else {
-    return <Modal isVisible={false}><View style={{ flex: 1 }}></View></Modal>
-  }
-}
-
-const NextEvents = props => {
-  if (props.events.length > 0) {
-    return (
-      <FlatList
-        data={props.events}
-        renderItem={({item}) => (
-          <ListItem
-            leftIcon={{ name: 'event' }}
-            title={props.eventTimeString(item)}
-            rightTitle={item.summary}
-            rightTitleNumberOfLines={2}
-            rightTitleStyle={{fontSize: 18, flex: 1, textAlign: 'right' }}
-            titleStyle={{color: '#FFF', fontSize: 18}}
-            titleNumberOfLines={2}
-            subtitle={`by ${props.eventCreator(item)}`}
-            subtitleNumberOfLines={2}
-            subtitleStyle={{fontSize: 14, fontWeight: '100'}}
-            onPress={() => props.eventDetails(item)}
-            underlayColor='#444'
-            hideChevron
-          />
-        )}
-        keyExtractor={(item, index) => `event_${item.id}`}
-      />
-    )
-  } else {
-    return (
-      <NoEvent h4 />
-    )
-  }
-}
-
-const EventAttendees = props => {
-  return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-      {
-        props.event.attendees.filter(guest => !guest.self).map((guest, idx) => (
-          <Badge key={`guest_${idx}`}
-                 containerStyle={{backgroundColor: attendeeClass(guest), margin: 5}}>
-            <View style={{flexDirection: 'row'}}>
-              <Icon name={attendeeIcon(guest)} color='#FFF' containerStyle={{marginBottom: 0}} />
-              <Text style={{fontSize: 16, padding: 5, color: '#FFF'}}>
-                {attendeeName(guest)}
-              </Text>
-            </View>
-          </Badge>
-        ))
-      }
-    </View>
-  )
-}
-
-const CurrentEvent = props => {
-  if (props.event) {
-    return (
-      <ScrollView>
-        <Text h2 style={{ marginBottom: 20, color: '#FFF' }}>{props.event.summary}</Text>
-        <Text h4 style={{ marginBottom: 10, color: '#FFF' }}>{props.eventTimeString(props.event)}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{flex: 1, alignItems: 'flex-start'}}>
-            <Text style={{ fontStyle: 'italic', fontSize: 16, color: '#FFF' }}>
-              {`by ${props.eventCreator(props.event)}`}
-            </Text>
-          </View>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text style={{ paddingRight: 10, fontSize: 16, color: '#FFF' }}>
-              { props.event.hangout_link}
-             </Text>
-           </View>
-        </View>
-
-        <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-
-        <EventAttendees event={props.event} />
-
-        <Text style={{ marginTop: 10, fontSize: 16, color: '#FFF' }}>
-          {props.event.description}
-        </Text>
-
-        <View style={{ alignItems: 'center' }}>
-          <TimeProgress
-            end={props.event ? moment(props.event.end.date_time) : props.nextEventStart}
-            suffix={props.event ? 'left' : 'to next event'}
-            onCompleted={props.onCompleted}
-          />
-        </View>
-      </ScrollView>
-    )
-  } else if (props.nextEventStart) {
-    return (
-      <View style={{flex: 1, alignItems: 'center', alignSelf: 'center'}}>
-        <Text style={{flex: 1, fontSize: 24, alignSelf: 'center', color: 'white', marginTop: 40}}>
-          No event currently in progress
-        </Text>
-        <View style={{flex: 2}}>
-          <TimeProgress
-            end={props.nextEventStart}
-            suffix={'to next event'}
-            onCompleted={props.onCompleted}
-          />
-        </View>
-      </View>
-    )
-  } else {
-    return (
-      <NoEvent h2 />
-    )
-  }
-}
-
-const NoEvent = props => {
-  return (
-    <Text {...props} style={{ alignSelf: 'center', color: 'red', marginTop: 20 }}>
-      No more events for today
-    </Text>
-  )
 }
 
 const NoRoom = props => {
