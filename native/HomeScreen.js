@@ -74,8 +74,9 @@ export default class App extends React.Component {
     if (room) {
       this.setState({ loading: true, currentRoom: room });
 
-      const data = await this._getEvents();
       const rooms = await ApiService.get('conference_rooms')
+      const data = await this._getEvents();
+
       const eventsInActiveConferenceRoom = data.filter(event =>
         event.conference_room.id === room.id
       );
@@ -130,11 +131,10 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-    const apiPath = `events/${eventId}/finish`
 
-    await ApiService.post(apiPath, {
+    await ApiService.post(`events/${eventId}/finish`, {
       conference_room_id: roomId
-    }, false);
+    });
 
     this._refreshRoom();
   }
@@ -144,9 +144,8 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-    const apiPath = `events/${eventId}`
 
-    await ApiService.put(apiPath, {
+    await ApiService.put(`events/${eventId}`, {
       conference_room_id: roomId,
       event: { end_time: end.format() }
     });
@@ -159,11 +158,10 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-    const apiPath = `events/${eventId}/confirm`
 
-    await ApiService.post(apiPath, {
+    await ApiService.post(`events/${eventId}/confirm`, {
       conference_room_id: roomId
-    }, false);
+    });
 
     this._refreshRoom();
   }
@@ -173,11 +171,10 @@ export default class App extends React.Component {
 
     const roomId = this.state.currentRoom.id;
     const eventId = this.state.currentEvent.id;
-    const apiPath = `events/${eventId}/finish`
 
-    await ApiService.post(apiPath, {
+    await ApiService.post(`events/${eventId}/finish`, {
       conference_room_id: roomId
-    }, false);
+    });
 
     this._refreshRoom();
   }

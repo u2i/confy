@@ -9,8 +9,9 @@ let subscription;
 
 export const createSubscription = (callback) => {
   console.log(`cable: ${Expo.Constants.deviceId}`)
-  //const url = baseUrl.replace('/api', '/cable');
-  const url = 'wss://confy.u2i.com/cable'
+
+  const url = baseUrl.replace('/api', '/cable');
+
   cable = ActionCable.createConsumer(url);
   subscription = cable.subscriptions.create(EVENT_CHANNEL, {
     connected: () => {
