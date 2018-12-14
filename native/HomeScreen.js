@@ -185,6 +185,12 @@ export default class App extends React.Component {
     });
   }
 
+  _startCall = async (link) => {
+    await ApiService.post('calls', {
+      link: link
+    });
+  }
+
   _eventDetails = (event) => {
     this.setState({
       eventInfo: event,
@@ -214,6 +220,7 @@ export default class App extends React.Component {
                 this.state.currentRoom.id && (
                   <CurrentEvent event={this.state.currentEvent}
                                 nextEventStart={this._nextEventStart()}
+                                onCallStart={this._startCall}
                                 onCompleted={this._refreshRoom}
                   />
                 )

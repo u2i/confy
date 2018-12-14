@@ -8,7 +8,7 @@ import TimeProgress from '../TimeProgress';
 
 export default class CurrentEvent extends React.Component {
   render() {
-    const { event, onCompleted, nextEventStart } = this.props;
+    const { event, onCompleted, onCallStart, nextEventStart } = this.props;
 
     if (event) {
         return (
@@ -22,9 +22,13 @@ export default class CurrentEvent extends React.Component {
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
-                <Text style={{ paddingRight: 10, fontSize: 16, color: '#FFF' }}>
-                  { event.hangout_link}
-                 </Text>
+                <Button raised={true}
+                        onPress={() => { onCallStart(event.hangout_link) } }
+                        icon={{name: 'call'}}
+                        backgroundColor='violet'
+                        containerViewStyle={{marginRight: 0}}
+                        title='Start'
+                />
                </View>
             </View>
 
