@@ -185,9 +185,16 @@ export default class App extends React.Component {
     });
   }
 
-  _startCall = async (link) => {
-    await ApiService.post('calls', {
-      link: link
+  _startCall = async (eventId, link) => {
+    const roomId = this.state.currentRoom.id;
+
+    const response = await ApiService.post('calls', {
+      conference_room_id: roomId,
+      call: {
+        link: link,
+        event_id: eventId,
+        active: true
+      }
     });
   }
 

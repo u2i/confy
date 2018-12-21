@@ -2,7 +2,7 @@ class CreateCalls < ActiveRecord::Migration[5.0]
   def change
     create_table :calls do |t|
       t.string :link
-      t.integer :event_id
+      t.string :event_id
       t.boolean :active
 
       t.timestamps

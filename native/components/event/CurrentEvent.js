@@ -22,13 +22,15 @@ export default class CurrentEvent extends React.Component {
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
-                <Button raised={true}
-                        onPress={() => { onCallStart(event.hangout_link) } }
-                        icon={{name: 'call'}}
-                        backgroundColor='violet'
-                        containerViewStyle={{marginRight: 0}}
-                        title='Start'
-                />
+                { event.hangout_link &&
+                  <Button raised={true}
+                          onPress={() => { onCallStart(event.id, event.hangout_link) } }
+                          icon={{name: 'call'}}
+                          backgroundColor='violet'
+                          containerViewStyle={{marginRight: 0}}
+                          title='Start'
+                  />
+                }
                </View>
             </View>
 
