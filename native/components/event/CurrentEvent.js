@@ -6,11 +6,26 @@ import EventAttendees from './EventAttendees';
 import { eventTimeString, eventCreator } from '../../helpers/EventHelper';
 import TimeProgress from '../TimeProgress';
 
+const ZOOM_REGEX = new RegExp('https:\/\/zoom.us\/j\/[0-9]+')
+
 export default class CurrentEvent extends React.Component {
+  findZoomLink = (event) => {
+    const match = event.summary.match(ZOOM_REGEX)
+
+    return match ? match[0] : null
+  }
+
+  hasZoomCall = (event) => {
+    return !!event.summary.match(ZOOM_REGEX)
+  }
+
   render() {
-    const { event, onCompleted, onCallStart, nextEventStart } = this.props;
+    const { event, onCompleted, onCallStart, nextEventStart } = this.props
 
     if (event) {
+        const startCallLabel = this.hasZoomCall(event) ? 'Start Zoom' : 'Start Hangouts'
+        const callLink = this.findZoomLink(event) || event.hangout_link
+
         return (
           <ScrollView>
             <Text h2 style={{ marginBottom: 20, color: '#FFF' }}>{event.summary}</Text>
@@ -22,13 +37,13 @@ export default class CurrentEvent extends React.Component {
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
-                { event.hangout_link &&
+                { callLink &&
                   <Button raised={true}
-                          onPress={() => { onCallStart(event.id, event.hangout_link) } }
+                          onPress={() => { onCallStart(event.id, callLink) } }
                           icon={{name: 'call'}}
                           backgroundColor='violet'
                           containerViewStyle={{marginRight: 0}}
-                          title='Start'
+                          title={startCallLabel}
                   />
                 }
                </View>
