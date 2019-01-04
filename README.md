@@ -177,13 +177,13 @@ This is a native client for iOS and Android devices.
 Development
 --------------
 
-In order to start the development you need to install the Expo CLI. More info here(https://expo.io/learn)
+In order to start the development you need to install the Expo CLI. More info [here](https://expo.io/learn)
 
 
 Deployment
 --------------
 
-Once the development is finished you can publish the changes using the expo command. More info here(https://docs.expo.io/versions/latest/workflow/publishing)
+Once the development is finished you can publish the changes using the expo command. More info [here](https://docs.expo.io/versions/latest/workflow/publishing)
 
 ```bash
 cd native
@@ -195,7 +195,7 @@ All the necessary credentials you will find in LastPass
 Building
 --------------
 
-In case you changes require a new IPA/APK build you can use the expo command too. More info here(https://docs.expo.io/versions/latest/distribution/building-standalone-apps)
+In case you changes require a new IPA/APK build you can use the expo command too. More info [here](https://docs.expo.io/versions/latest/distribution/building-standalone-apps)
 
 ```bash
 cd native
@@ -207,20 +207,18 @@ Client Configuration
 --------------
 
 * In order to install the client on the mobile device, you need to download the newest version of IPA/APK file on the device.
-* In case of Android device you can email the build URL which you can find on the expo builds page(https://expo.io/builds)
+* In case of Android device you can email the build URL which you can find on the expo [builds page](https://expo.io/builds)
 * Just download the file and install it on the device.
-* You will probably need to authorize the device.
+* You will probably need to [authorize the device](#client-authorization)
 * In the Confy app setting section you will be able to associate the device with one of the conference rooms.
-
 
 Client Authorization
 --------------
 
-In case your device is not yet authorized, you can do it in the Confy Admin Panel(http://confy.u2i.com/admin/devices)
+In case your device is not yet authorized, you can do it in the Confy Admin Panel (http://confy.u2i.com/admin/devices)
 Find the device on the list (by name or device id) and authorize it. Once you do it, please re-open the Confy application.
 
 All the necessary credentials you will find in LastPass
-
 
 Automate
 --------------
