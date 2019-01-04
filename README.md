@@ -24,7 +24,7 @@ Table of Contents
     * [Gotchas](#gotchas)
       * [Push notifications](#push-notifications)
     * [Resources](#resources)
-
+  * [Confy Native](#confy-native)
 
 Prerequisites
 --------------
@@ -95,7 +95,7 @@ Running tests
 $ CONFY_VERSION=1.0 docker-compose run web bundle exec rspec
 ```
 
-Or 
+Or
 ```bash
 $ CONFY_VERSION=1.0 docker-compose run web bundle exec guard
 ```
@@ -135,7 +135,7 @@ Gotchas
 
 ### Push notifications
 If you want to have push notifications from Google work locally you will need to expose your local server to the Internet.
-First of all, install [ngrok](https://ngrok.com/download). 
+First of all, install [ngrok](https://ngrok.com/download).
 
 Once you've done that, run
 ```bash
@@ -166,3 +166,63 @@ Here's some reading if you're bored! (or you want to learn more about Confy and 
 * [Enzyme](http://airbnb.io/enzyme/)
 * [Mocha](https://mochajs.org/)
 * [Sinon](http://sinonjs.org/)
+
+
+Confy Native
+=================
+
+This is a native client for iOS and Android devices.
+
+
+Development
+--------------
+
+In order to start the development you need to install the Expo CLI. More info here(https://expo.io/learn)
+
+
+Deployment
+--------------
+
+Once the development is finished you can publish the changes using the expo command. More info here(https://docs.expo.io/versions/latest/workflow/publishing)
+
+```bash
+cd native
+$ expo publish
+```
+
+All the necessary credentials you will find in LastPass
+
+Building
+--------------
+
+In case you changes require a new IPA/APK build you can use the expo command too. More info here(https://docs.expo.io/versions/latest/distribution/building-standalone-apps)
+
+```bash
+cd native
+$ expo build:android
+$ expo build:ios
+```
+
+Client Configuration
+--------------
+
+* In order to install the client on the mobile device, you need to download the newest version of IPA/APK file on the device.
+* In case of Android device you can email the build URL which you can find on the expo builds page(https://expo.io/builds)
+* Just download the file and install it on the device.
+* You will probably need to authorize the device.
+* In the Confy app setting section you will be able to associate the device with one of the conference rooms.
+
+
+Client Authorization
+--------------
+
+In case your device is not yet authorized, you can do it in the Confy Admin Panel(http://confy.u2i.com/admin/devices)
+Find the device on the list (by name or device id) and authorize it. Once you do it, please re-open the Confy application.
+
+All the necessary credentials you will find in LastPass
+
+
+Automate
+--------------
+
+For better user experience on Adroid devices we use Automate. It allow us to wake up the Confy app at the specific time and put the device to sleep after certain hour. You can find the Confy automate flow in the automate public directory. Just search for Confy and install the flow on the device and activate the flow.
