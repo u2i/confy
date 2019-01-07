@@ -6,7 +6,7 @@
     "privacy": "unlisted",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.9",
+    "version": "1.0.10",
     "orientation": "landscape",
     "icon": "./assets/u2i_logo.png",
     "splash": {

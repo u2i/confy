@@ -212,10 +212,10 @@ Client Configuration
 * You will probably need to [authorize the device](#client-authorization)
 * In the Confy app setting section you will be able to associate the device with one of the conference rooms.
 
-Client Authorization
+Device Authorization
 --------------
 
-In case your device is not yet authorized, you can do it in the Confy Admin Panel (http://confy.u2i.com/admin/devices)
+In case your device is not yet authorized, you can do it in the [Confy Admin Panel](http://confy.u2i.com/admin/devices)
 Find the device on the list (by name or device id) and authorize it. Once you do it, please re-open the Confy application.
 
 All the necessary credentials you will find in LastPass
