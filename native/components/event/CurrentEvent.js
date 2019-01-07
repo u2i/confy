@@ -9,21 +9,36 @@ import TimeProgress from '../TimeProgress';
 const ZOOM_REGEX = new RegExp('https:\/\/zoom.us\/j\/[0-9]+')
 
 export default class CurrentEvent extends React.Component {
-  findZoomLink = (event) => {
-    const match = event.summary.match(ZOOM_REGEX)
+  state = {
+    opening: false
+  }
 
-    return match ? match[0] : null
+  findZoomLink = (event) => {
+    if (event.description) {
+      const match = event.description.match(ZOOM_REGEX)
+
+      return match ? match[0] : null
+    }
   }
 
   hasZoomCall = (event) => {
-    return !!event.summary.match(ZOOM_REGEX)
+    return event.description && event.description.match(ZOOM_REGEX)
+  }
+
+  onPress = (event, callLink, onCallStart) => {
+    if (!this.state.opening) {
+      this.setState({ opening: true }, () => {
+        setTimeout(() => { this.setState({ opening: false }) }, 5000);
+        onCallStart(event.id, callLink)
+      })
+    }
   }
 
   render() {
     const { event, onCompleted, onCallStart, nextEventStart } = this.props
 
     if (event) {
-        const startCallLabel = this.hasZoomCall(event) ? 'Start Zoom' : 'Start Hangouts'
+        const startCallLabel = this.hasZoomCall(event) ? 'Open Zoom' : 'Open Hangouts'
         const callLink = this.findZoomLink(event) || event.hangout_link
 
         return (
@@ -38,12 +53,15 @@ export default class CurrentEvent extends React.Component {
               </View>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
                 { callLink &&
-                  <Button raised={true}
-                          onPress={() => { onCallStart(event.id, callLink) } }
-                          icon={{name: 'call'}}
-                          backgroundColor='violet'
+                  <Button loading={this.state.opening}
+                          loadingRight={true}
+                          rounded={true}
+                          textStyle={{fontSize: 18}}
+                          onPress={() => { this.onPress(event, callLink, onCallStart) } }
+                          icon={this.state.opening ? {} : {name: 'call'}}
+                          backgroundColor='darkblue'
                           containerViewStyle={{marginRight: 0}}
-                          title={startCallLabel}
+                          title={this.state.opening ? 'Opening': startCallLabel}
                   />
                 }
                </View>
