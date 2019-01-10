@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    resources :calls, only: [:create], defaults: { format: :json }
     resources :conference_rooms, only: [:index], defaults: { format: :json }
     resources :devices, except: [:index, :edit, :new], defaults: { format: :json }
     resources :events, param: :event_id,

@@ -10,7 +10,8 @@ module Api
       @device = ::Device.find_or_initialize_by(device_params)
 
       if @device.save
-        render json: @device.to_json, status: :ok
+        render json: @device.to_json(only: [:device_id, :device_name,
+                                            :authorized, :conference_room_id]), status: :ok
       else
         render json: @device.errors, status: :unprocessable_entity
       end

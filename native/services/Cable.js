@@ -4,29 +4,44 @@ import ApiService from './ApiService';
 
 const baseUrl = ApiService.url();
 const EVENT_CHANNEL = 'EventChannel';
+const CALL_CHANNEL = 'CallChannel';
+
 let cable;
-let subscription;
+let callSubscription;
+let eventSubscription;
 
 export const createSubscription = (callback) => {
-  console.log(`cable: ${Expo.Constants.deviceId}`)
-
   const url = baseUrl.replace('/api', '/cable');
-
   cable = ActionCable.createConsumer(url);
-  subscription = cable.subscriptions.create(EVENT_CHANNEL, {
+
+  callSubscription = cable.subscriptions.create(CALL_CHANNEL, {
     connected: () => {
-      console.log(`cable: connected ${Expo.Constants.deviceId}`);
+      // console.log(`cable: call connected ${Expo.Constants.deviceId}`);
     },
     received: (data) => {
-      console.log(`cable: received ${Expo.Constants.deviceId}`);
-      console.log(data);
+      // console.log(`cable: call received ${Expo.Constants.deviceId}`);
+      // console.log(data);
+      //callback(data);
+    }
+  });
+
+  eventSubscription = cable.subscriptions.create(EVENT_CHANNEL, {
+    connected: () => {
+      // console.log(`cable: event connected ${Expo.Constants.deviceId}`);
+    },
+    received: (data) => {
+      // console.log(`cable: event received ${Expo.Constants.deviceId}`);
+      // console.log(data);
       callback(data);
     }
   });
 }
 
 export const removeSubscription = () => {
-  if (cable && subscription) {
-    cable.subscriptions.remove(subscription);
+  if (cable && eventSubscription) {
+    cable.subscriptions.remove(eventSubscription);
+  }
+  if (cable && callSubscription) {
+    cable.subscriptions.remove(callSubscription);
   }
 }
