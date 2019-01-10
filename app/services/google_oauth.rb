@@ -70,6 +70,11 @@ class GoogleOauth
     def user_info_service(credentials)
       Google::Apis::Oauth2V2::Oauth2Service.new.tap { |s| s.authorization = new_auth_client(credentials) }
     end
+
+    def token_info(access_token)
+      service = Google::Apis::Oauth2V2::Oauth2Service.new
+      service.tokeninfo(access_token: access_token)
+    end
   end
 
   private_class_method :user_info_service, :new_auth_client, :authorization_details

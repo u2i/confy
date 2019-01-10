@@ -15,6 +15,7 @@ install:
 before_script:
   - docker-compose run web bundle exec rake db:create
   - docker-compose run web bundle exec rake db:migrate
+  - docker-compose run web bundle exec rails assets:precompile
 script:
   - docker-compose run web bundle exec rake test:all
 after_success:

@@ -2,9 +2,8 @@ module GoogleCalendar
   class EventRemover
     include GoogleErrorHandler
 
-    def initialize(credentials)
-      @credentials = credentials
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
+    def initialize(calendar_service)
+      @calendar_service = calendar_service
     end
 
     def delete(event_id)
@@ -13,6 +12,6 @@ module GoogleCalendar
 
     private
 
-    attr_accessor :credentials, :calendar_service
+    attr_accessor :calendar_service
   end
 end

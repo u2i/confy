@@ -42,6 +42,7 @@ gem 'activerecord-session_store'
 gem 'faker'
 
 gem 'google-api-client', '~> 0.9', require: ['google/apis/calendar_v3', 'google/apis/oauth2_v2']
+gem 'scout_apm'
 
 group :test do
   gem 'shoulda-matchers', '~> 3.1'

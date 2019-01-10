@@ -22,7 +22,8 @@ RSpec.describe GoogleCalendar::EventValidator do
     allow(GoogleCalendar::EventFinder).to receive(:new) { event_finder }
   end
 
-  subject { described_class.new(event, credentials, user_email) }
+  subject { described_class.new(event, service, user_email) }
+
   describe '#raise_if_occupied' do
     context 'with no colliding events' do
       before do

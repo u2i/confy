@@ -6,7 +6,7 @@ describe GoogleCalendar::EventFinder do
   let(:service) { double(:calendar_service) }
   let(:credentials) { :credentials }
   let(:user_email) { 'example@com' }
-  let(:event_finder) { described_class.new(credentials, user_email) }
+  let(:event_finder) { described_class.new(service, user_email) }
   let(:rooms) { ConferenceRoom.all }
 
   before do

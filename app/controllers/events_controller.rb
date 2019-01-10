@@ -91,10 +91,6 @@ class EventsController < ApplicationController
 
   private
 
-  def with_confirmation?
-    params[:confirmation] == 'true'.freeze
-  end
-
   def create_event_params
     params.require(:event).permit(:summary, :description, :location, :start_time, :end_time, :conference_room_id,
                                   :confirmed, :recurrence, attendees: [:email])
@@ -102,18 +98,6 @@ class EventsController < ApplicationController
 
   def edit_event_params
     params.require(:event).permit(:summary, :description, :start_time, :end_time)
-  end
-
-  def date_param
-    Date.parse(params[:date])
-  rescue
-    Date.today
-  end
-
-  def span_param
-    TimeInterval.new(Time.parse(params[:start]), Time.parse(params[:end]))
-  rescue
-    TimeInterval.week(date_param)
   end
 
   def conference_room

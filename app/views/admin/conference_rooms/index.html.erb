@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Conference Rooms</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Capacity</th>
+      <th>Color</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= room.title -%></td>
+        <td><%= room.email -%></td>
+        <td><%= room.capacity -%></td>
+        <td><%= room.color -%></td>
+        <td><%= link_to 'Edit', edit_admin_conference_room_path(room) %></td>
+        <td><%= delete_button_to 'Destroy', admin_conference_room_path(room), data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Conference Room', new_admin_conference_room_path %>

@@ -4,15 +4,14 @@ module GoogleCalendar
 
     EventNotInProgressError = Class.new(StandardError)
 
-    def initialize(credentials, user_email)
-      @credentials = credentials
+    def initialize(calendar_service, user_email)
+      @calendar_service = calendar_service
       @user_email = user_email
-      @calendar_service = GoogleCalendar::Client.new(credentials).calendar_service
     end
 
     def update(conference_room, event_id, data)
       update_event(conference_room, event_id) do |event|
-        GoogleCalendar::EventValidator.new(event, credentials, user_email).raise_if_occupied
+        GoogleCalendar::EventValidator.new(event, calendar_service, user_email).raise_if_occupied
         event.update(data)
       end
     end
@@ -25,8 +24,6 @@ module GoogleCalendar
     end
 
     private
-
-    attr_accessor :credentials, :user_email, :calendar_service
 
     def update_event(conference_room, event_id)
       event_wrapper = event_wrapper(event_id, conference_room)
@@ -45,5 +42,7 @@ module GoogleCalendar
       google_event = calendar_service.get_event(room.email, event_id)
       GoogleCalendar::EventWrapper::Event.new(google_event, conference_room: room)
     end
+
+    attr_accessor :calendar_service, :user_email
   end
 end

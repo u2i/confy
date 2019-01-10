@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Devices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Device</th>
+      <th>Device name</th>
+      <th>Conference Room</th>
+      <th>Authorized</th>
+      <th>Last Change</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @devices.each do |device| %>
+      <tr>
+        <td><%= device.device_id %></td>
+        <td><%= device.device_name %></td>
+        <td><%= device.conference_room.try(:title) %></td>
+        <td><%= device.authorized ? 'Yes' : 'No' %></td>
+        <td style="text-align: right">
+          <%= device.updated_at -%><br />
+          <b><%= distance_of_time_in_words(Time.now, device.updated_at) -%> ago</b>
+        </td>
+        <td><%= link_to 'Edit', edit_admin_device_path(device) %></td>
+        <td><%= delete_button_to 'Destroy', admin_device_path(device), data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

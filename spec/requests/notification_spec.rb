@@ -4,6 +4,7 @@ RSpec.describe 'Notification', type: :request do
   before do
     allow(NotifyClientsJob).to receive(:perform_later) {}
   end
+
   describe 'POST /notify/:conference_room_id' do
     context 'with invalid conference_room_id' do
       let(:invalid_conference_room_id) { 2 }
@@ -16,6 +17,7 @@ RSpec.describe 'Notification', type: :request do
         expect(response).to have_http_status :not_found
       end
     end
+
     context 'with valid conference_room_id' do
       let!(:channel) { create :channel }
       let(:valid_conference_room_id) { channel.conference_room.id }
