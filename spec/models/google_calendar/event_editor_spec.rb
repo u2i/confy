@@ -34,15 +34,25 @@ RSpec.describe GoogleCalendar::EventEditor do
     let(:end_time) { DateTime.now + 30.minutes }
     let(:summary) { 'Updated summary' }
     let(:description) { 'Updated description' }
-    let(:event_data) { { start_time: start_time, end_time: end_time, summary: summary, description: description } }
+    let(:extended_properties) { { shared: { invitation: 'John is inviting you to a scheduled Zoom meeting' } } }
+    let(:event_data) do
+      {
+        start_time: start_time,
+        end_time: end_time,
+        summary: summary,
+        description: description,
+        extended_properties: extended_properties
+      }
+    end
 
     it "updates event's info" do
       subject.update(room, event_id, event_data)
       expect(service).to have_received(:update_event).with(room.email, event_id, satisfy do |n|
         n.end.date_time == end_time &&
-          n.start.date_time == start_time &&
-          n.summary == summary &&
-          n.description == description
+        n.start.date_time == start_time &&
+        n.summary == summary &&
+        n.description == description &&
+        n.extended_properties == extended_properties
       end)
     end
   end

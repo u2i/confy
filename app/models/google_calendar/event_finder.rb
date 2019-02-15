@@ -4,7 +4,8 @@ module GoogleCalendar
 
     GOOGLE_EVENT_DECLINED_RESPONSE = 'declined'.freeze
     LISTING_FIELDS = 'items(id, start, end, summary, description, recurrence, '\
-                     'creator, attendees(self, responseStatus, displayName, email), hangoutLink, htmlLink)'.freeze
+                     'creator, attendees(self, responseStatus, displayName, email), '\
+                     'extendedProperties, hangoutLink, htmlLink)'.freeze
 
     def initialize(calendar_service, user_email)
       @calendar_service = calendar_service
