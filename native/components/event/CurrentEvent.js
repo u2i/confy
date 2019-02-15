@@ -14,21 +14,26 @@ export default class CurrentEvent extends React.Component {
   }
 
   findZoomLink = (event) => {
-    if (event.description) {
-      const match = event.description.match(ZOOM_REGEX)
+    let match = null
 
-      return match ? match[0] : null
+    if (event.description) {
+      match = event.description.match(ZOOM_REGEX)
+    } else if (event.extended_properties) {
+      match = event.extended_properties.shared.invitation0.match(ZOOM_REGEX)
     }
+
+    return match ? match[0] : null
   }
 
   hasZoomCall = (event) => {
-    return event.description && event.description.match(ZOOM_REGEX)
+    return event.description && event.description.match(ZOOM_REGEX) ||
+      event.extended_properties && event.extended_properties.shared.invitation0.match(ZOOM_REGEX)
   }
 
   onPress = (event, callLink, onCallStart) => {
     if (!this.state.opening) {
       this.setState({ opening: true }, () => {
-        setTimeout(() => { this.setState({ opening: false }) }, 5000);
+        setTimeout(() => { this.setState({ opening: false }) }, 5000)
         onCallStart(event.id, callLink)
       })
     }
@@ -59,7 +64,7 @@ export default class CurrentEvent extends React.Component {
                           textStyle={{fontSize: 18}}
                           onPress={() => { this.onPress(event, callLink, onCallStart) } }
                           icon={this.state.opening ? {} : {name: 'call'}}
-                          backgroundColor='darkblue'
+                          backgroundColor='purple'
                           containerViewStyle={{marginRight: 0}}
                           title={this.state.opening ? 'Opening': startCallLabel}
                   />
