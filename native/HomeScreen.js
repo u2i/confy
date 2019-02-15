@@ -153,6 +153,21 @@ export default class App extends React.Component {
     this._refreshRoom();
   }
 
+  _startNow = async (event) => {
+    this.setState({ loading: true });
+
+    const roomId = this.state.currentRoom.id;
+    const eventId = event.id;
+    const now = moment();
+
+    await ApiService.put(`events/${eventId}`, {
+      conference_room_id: roomId,
+      event: { start_time: now.format() }
+    });
+
+    this._refreshRoom();
+  }
+
   _onConfirm = async (event) => {
     this.setState({ loading: true });
 
@@ -198,8 +213,9 @@ export default class App extends React.Component {
     });
   }
 
-  _eventDetails = (event) => {
+  _eventDetails = (event, index) => {
     this.setState({
+      allowStartNow: !this.state.currentEvent && index === 0,
       eventInfo: event,
       showModal: true
     });
@@ -218,7 +234,9 @@ export default class App extends React.Component {
         />
         <EventDetails isVisible={this.state.showModal}
                       event={this.state.eventInfo}
+                      allowStartNow={this.state.allowStartNow}
                       onClose={this._closeModal}
+                      onStartNow={this._startNow}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 2, backgroundColor: '#000', padding: 10 }}>

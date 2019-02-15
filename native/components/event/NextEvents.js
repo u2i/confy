@@ -11,7 +11,7 @@ export default class NextEvents extends React.Component {
       return (
         <FlatList
           data={events}
-          renderItem={({item}) => (
+          renderItem={({ item, index }) => (
             <ListItem
               leftIcon={{name: 'event'}}
               title={eventTimeString(item)}
@@ -23,7 +23,7 @@ export default class NextEvents extends React.Component {
               subtitle={`by ${eventCreator(item)}`}
               subtitleNumberOfLines={2}
               subtitleStyle={{fontSize: 14, fontWeight: '100'}}
-              onPress={() => eventDetails(item)}
+              onPress={() => eventDetails(item, index)}
               underlayColor='#444'
               rightIcon={{name:'info'}}
             />
