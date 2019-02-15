@@ -130,6 +130,17 @@ After successful test phase, travis automatically pushes new image to GCR (only 
 
 You need to manually change image version in `kubernetes/confy-app.yml` and `kubernetes/cron.yml` files and then apply changes in order to deploy new version.
 
+Once you've done that, run
+```bash
+kubectl apply -f kubernetes/confy-app.yml --namespace confy
+kubectl apply -f kubernetes/cron.yml --namespace confy
+```
+
+Check the pods
+```bash
+kubectl get pods --namespace confy
+```
+
 Gotchas
 --------------
 
