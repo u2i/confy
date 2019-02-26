@@ -289,21 +289,17 @@ export default class App extends React.Component {
                             eventDetails={this._eventDetails}
                 />
               </View>
-              {
-                this.state.currentEvent && (
-                  <View style={{ flex: 1, padding: 10 }}>
-                    <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
-                      Available Rooms
-                    </Text>
+              <View style={{ flex: 1, padding: 10 }}>
+                <Text style={{ fontSize: 20, alignSelf: 'center', color: '#888' }}>
+                  Available Rooms
+                </Text>
 
-                    <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
+                <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
 
-                    <RoomsAvailability events={this.state.allEvents}
-                                       eventDetails={this._eventDetails}
-                                       allConferenceRooms={this.state.allRooms} />
-                  </View>
-                )
-              }
+                <RoomsAvailability events={this.state.allEvents}
+                                   eventDetails={this._eventDetails}
+                                   allConferenceRooms={this.state.allRooms} />
+              </View>
               <View style={{ backgroundColor: '#000', height: 70, padding: 10  }}>
                 <Clock dateFormat='MM-DD dddd' timeFormat='HH:mm' />
               </View>
