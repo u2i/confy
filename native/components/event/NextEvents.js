@@ -24,7 +24,7 @@ export default class NextEvents extends React.Component {
               subtitleNumberOfLines={2}
               subtitleStyle={{fontSize: 14, fontWeight: '100'}}
               onPress={() => eventDetails(item, index)}
-              underlayColor='#444'
+              underlayColor='#888'
               rightIcon={{name:'info'}}
             />
           )}

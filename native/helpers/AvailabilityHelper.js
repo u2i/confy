@@ -46,7 +46,10 @@ function roomAvailabilityProps(conferenceRoom, allEvents) {
   const { current, next } = currentAndNextEvents(events);
   if (current === undefined) return currentlyAvailableProps(conferenceRoom, next[0]);
 
-  return currentlyBusyProps(conferenceRoom, events);
+  let props = currentlyBusyProps(conferenceRoom, events);
+  props.currentEvent = current;
+
+  return props;
 }
 
 function compareByDuration(left, right) {
@@ -93,15 +96,24 @@ export const availabilityStatus = (availability, duration) => {
   }
 };
 
-export const availabilityClass = (availability) => {
+export const availabilityIcon = (availability) => {
   switch (availability) {
     case AVAILABILITY.ALL_DAY_AVAILABLE:
-      return 'green';
+      return {
+        color: 'green',
+        name: 'event-available'
+      }
     case AVAILABILITY.CURRENTLY_AVAILABLE:
-      return 'yellow';
+      return {
+        color: 'yellow',
+        name: 'event-available'
+      }
     case AVAILABILITY.CURRENTLY_BUSY:
-      return 'red';
+      return {
+        color: 'red',
+        name: 'event-busy'
+      }
     default:
-      return '';
+      return {};
   }
 };

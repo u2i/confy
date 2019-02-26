@@ -298,6 +298,7 @@ export default class App extends React.Component {
                     <Divider style={{ marginTop: 10, marginBottom: 10, backgroundColor: '#888' }} />
 
                     <RoomsAvailability events={this.state.allEvents}
+                                       eventDetails={this._eventDetails}
                                        allConferenceRooms={this.state.allRooms} />
                   </View>
                 )
