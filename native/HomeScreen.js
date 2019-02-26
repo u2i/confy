@@ -237,6 +237,7 @@ export default class App extends React.Component {
                       allowStartNow={this.state.allowStartNow}
                       onClose={this._closeModal}
                       onStartNow={this._startNow}
+                      onCallStart={this._startCall}
         />
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flex: 2, backgroundColor: '#000', padding: 10 }}>

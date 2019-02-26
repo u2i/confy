@@ -3,7 +3,7 @@ import { create } from 'apisauce'
 
 const baseUrl = (env = 'prod') => {
   const envs = {
-    dev: 'https://7de18b90.ngrok.io/api',
+    dev: 'https://c79d0572.ngrok.io/api',
     prod: 'https://confy.u2i.com/api'
   }
   return envs[env];

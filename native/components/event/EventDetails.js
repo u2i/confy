@@ -3,11 +3,12 @@ import { View, ScrollView } from 'react-native';
 import { Button, Icon, Text, Divider } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import EventAttendees from './EventAttendees';
+import EventCallLink from './EventCallLink';
 import { eventTimeString, eventCreator } from '../../helpers/EventHelper';
 
 export default class EventDetails extends React.Component {
   render() {
-    const { event, isVisible, allowStartNow, onClose, onStartNow } = this.props;
+    const { event, isVisible, allowStartNow, onClose, onStartNow, onCallStart } = this.props;
 
     if (event) {
       return (
@@ -30,10 +31,15 @@ export default class EventDetails extends React.Component {
               {eventTimeString(event)}
             </Text>
 
-            <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <Text style={{fontStyle: 'italic', fontSize: 16, color: '#FFF'}}>
-                {`by ${eventCreator(event)}`}
-              </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <Text style={{fontStyle: 'italic', fontSize: 16, color: '#FFF'}}>
+                  {`by ${eventCreator(event)}`}
+                </Text>
+              </View>
+              <View style={{flex: 1, alignItems: 'flex-end'}}>
+                <EventCallLink event={event} onCallStart={onCallStart} />
+              </View>
             </View>
 
             <Divider style={{marginTop: 10, marginBottom: 10}} />
