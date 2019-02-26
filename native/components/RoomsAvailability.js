@@ -6,7 +6,7 @@ import { buildAvailabilityProps, sortAvailabilityProps,
 
 export default class RoomsAvailability extends React.Component {
   componentDidMount() {
-    this.refreshAvailabilityInterval = setInterval(() => this.forceUpdate(), 1000);
+    this.refreshAvailabilityInterval = setInterval(() => this.forceUpdate(), 10000);
   }
 
   componentWillUnmount() {

@@ -12,16 +12,34 @@ export const durationFromNow = (time) => {
   return moment.duration(time.diff(now));
 }
 
-export const humanizeTime = (duration) => {
+export const humanizeTime = (duration, format) => {
   if (duration.hours() > 0) {
     if (duration.minutes() > 0) {
-      return `${pluralize('hour', duration.hours(), true)} and ${pluralize('minute', duration.minutes(), true)}`;
+      if (format === 'short') {
+        return `${duration.hours()} hr ${duration.minutes()} min`;
+      } else {
+        return `${pluralize('hour', duration.hours(), true)} and ${pluralize('minute', duration.minutes(), true)}`;
+      }
     }
-    return pluralize('hour', duration.hours(), true);
+
+    if (format === 'short') {
+      return `${duration.hours()} hr`;
+    } else {
+      return pluralize('hour', duration.hours(), true);
+    }
   } else if (duration.minutes() > 0) {
-    return pluralize('minute', duration.minutes(), true);
+    if (format === 'short') {
+      return `${duration.minutes()} min`;
+    } else {
+      return pluralize('minute', duration.minutes(), true);
+    }
   }
-  return pluralize('second', Math.max(duration.seconds(), 0), true);
+
+  if (format === 'short') {
+    return `${duration.seconds()} sec`;
+  } else {
+    return pluralize('second', Math.max(duration.seconds(), 0), true);
+  }
 }
 
 export const isFullNonZeroMinute = (time, precision) => {

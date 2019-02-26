@@ -1,7 +1,7 @@
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 import { currentAndNextEvents } from './EventHelper';
-import { formatDuration, durationFromNow, ONE_MINUTE } from './DateHelper';
+import { formatDuration, durationFromNow, humanizeTime, ONE_MINUTE } from './DateHelper';
 
 export const AVAILABILITY = {
   ALL_DAY_AVAILABLE: 0,
@@ -81,7 +81,7 @@ export function buildAvailabilityProps(conferenceRooms, events) {
   return conferenceRooms.map(conferenceRoom => roomAvailabilityProps(conferenceRoom, events));
 }
 
-export const remainingTime = duration => formatDuration(duration, 'H[h] m[m] s[s]');
+export const remainingTime = duration => humanizeTime(duration, 'short');
 
 export const availabilityStatus = (availability, duration) => {
   switch (availability) {
