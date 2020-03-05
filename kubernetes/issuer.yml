@@ -1,4 +1,4 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: letsencrypt-staging
@@ -8,9 +8,13 @@ spec:
     email: 'confy@u2i.com'
     privateKeySecretRef:
       name: letsencrypt-staging
-    http01: {}
+    solvers:
+      -
+        http01:
+          ingress:
+            name: basic-ingress
 ---
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: letsencrypt-prod
@@ -20,4 +24,9 @@ spec:
     email: 'confy@u2i.com'
     privateKeySecretRef:
       name: letsencrypt-prod
-    http01: {}
+    solvers:
+      -
+        http01:
+          ingress:
+            name: basic-ingress
+
