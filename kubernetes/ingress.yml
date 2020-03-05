@@ -4,7 +4,7 @@ metadata:
   name: confy-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    kubernetes.io/ingress.global-static-ip-name: "confy-ip"
+    kubernetes.io/ingress.global-static-ip-name: "confy"
 spec:
   backend:
     serviceName: web-service

@@ -12,7 +12,7 @@ spec:
       -
         http01:
           ingress:
-            name: basic-ingress
+            name: confy-ingress
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
@@ -28,5 +28,5 @@ spec:
       -
         http01:
           ingress:
-            name: basic-ingress
+            name: confy-ingress
 
