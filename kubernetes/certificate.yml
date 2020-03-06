@@ -1,4 +1,4 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: confy-u2i-com-tls
@@ -9,11 +9,7 @@ spec:
     name: letsencrypt-prod
     kind: Issuer
   commonName: confy.u2i.com
+  renewBefore: 720h # 30 days
   dnsNames:
-  - confy.u2i.com
-  acme:
-    config:
-    - http01:
-        ingress: basic-ingress
-      domains:
-      - confy.u2i.com
+    - confy.u2i.com
+
